@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vince Nelmar Alobin | Resume</title>
         <link rel="canonical" href="https://Alobin_Resume.com" />
-      </head>
+        </head>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
+
     :root {
       --primary: #6C63FF;
       --secondary: #FF6584;
@@ -18,12 +20,21 @@
       --card-bg: white;
       --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
     }
+
+    /* Dark Mode Variables */
+    body.dark-mode {
+      --light: #121212;
+      --dark: #121212;
+      --text-primary: #F4F4FD;
+      --text-secondary: #2A2A2A;
+      --card-bg: #1E1E1E;
+    }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Roboto', sans-serif; /* Changed font */
       transition: background-color 0.3s ease, color 0.3s ease;
     }
     
@@ -66,6 +77,7 @@
       background-color: var(--light);
       margin-bottom: 1.5rem;
       border: 4px solid white;
+      object-fit: cover; /* Ensures image covers the area */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -74,6 +86,7 @@
     }
     
     h1 {
+      font-family: 'Poppins', sans-serif; /* Changed font */
       font-size: 3rem;
       margin-bottom: 0.5rem;
       text-transform: uppercase;
@@ -145,9 +158,10 @@
     
     .shape {
       position: absolute;
-      opacity: 0.2;
+      opacity: 0.15; /* Slightly reduced opacity */
       background: white;
       border-radius: 50%;
+      animation: floatShape 10s ease-in-out infinite; /* Added animation */
     }
     
     .shape-1 {
@@ -155,6 +169,7 @@
       height: 150px;
       top: -75px;
       left: 10%;
+      animation-delay: 0s;
     }
     
     .shape-2 {
@@ -162,6 +177,7 @@
       height: 100px;
       bottom: -50px;
       right: 20%;
+      animation-delay: 2s;
     }
     
     .shape-3 {
@@ -169,6 +185,13 @@
       height: 80px;
       top: 50%;
       left: 30%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatShape {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(20px, -20px) scale(1.05); }
+        100% { transform: translate(0, 0) scale(1); }
     }
     
     main {
@@ -439,14 +462,7 @@
       font-size: 1.5rem;
     }
     
-    body.dark-mode {
-      --light: #121212;
-      --dark: #121212;
-      --text-primary: #F4F4FD;
-      --text-secondary: #2A2A2A;
-      --card-bg: #1E1E1E;
-    }
-    
+    /* Dark Mode Specific Styles */
     body.dark-mode .info-list li {
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
@@ -473,6 +489,7 @@
       flex-wrap: wrap;
       gap: 1.5rem;
       margin-top: 1rem;
+      justify-content: center; /* Center skills */
     }
     
     .skill-item {
@@ -484,22 +501,26 @@
       align-items: center;
       width: calc(20% - 1.5rem);
       transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
     }
     
     .skill-item:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px); /* Increased lift on hover */
       background-color: rgba(108, 99, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
     }
     
     .skill-icon {
       width: 50px;
       height: 50px;
       margin-bottom: 0.8rem;
+      object-fit: contain; /* Ensures icons scale correctly */
     }
     
     .skill-name {
       font-weight: bold;
       text-align: center;
+      font-size: 0.95rem; /* Slightly larger text */
     }
     
     .certificate-item {
@@ -509,6 +530,13 @@
       border-radius: 10px;
       background-color: rgba(69, 217, 184, 0.1);
       align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .certificate-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     
     .certificate-icon {
@@ -537,6 +565,31 @@
       .skill-item {
         width: calc(50% - 0.75rem);
       }
+    }
+
+    /* Scroll to Top Button */
+    #scrollToTopBtn {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed/sticky position */
+        bottom: 80px; /* Place the button slightly above theme switch */
+        right: 20px;
+        z-index: 99; /* Ensure it's above other content */
+        border: none; /* Remove borders */
+        outline: none; /* Remove outline */
+        background-color: var(--accent); /* Set a background color */
+        color: white; /* Text color */
+        cursor: pointer; /* Add a mouse pointer on hover */
+        padding: 15px; /* Some padding */
+        border-radius: 50%; /* Rounded corners */
+        font-size: 18px; /* Increase font size */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #scrollToTopBtn:hover {
+        background-color: var(--primary); /* Darker on hover */
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
@@ -649,6 +702,17 @@
                       <img src="images/csss.png" alt="CSS" class="skill-icon">
                       <span class="skill-name">CSS</span>
                   </div>
+                  <div class="skill-item">
+                      <img src="images/javascript.png" alt="JavaScript" class="skill-icon">
+                      <span class="skill-name">JavaScript</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/php.png" alt="PHP" class="skill-icon">
+                      <span class="skill-name">PHP</span>
+                  </div><div class="skill-item">
+                      <img src="images/Typescript.png" alt="Typescript" class="skill-icon">
+                      <span class="skill-name">Typescript</span>
+                  </div>
               </div>
               <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Certifications</h3>
               <div class="certificate-item">
@@ -728,8 +792,7 @@
             </li>
             <li>
               <span class="info-label">Age:</span>
-              <span>18 years old</span>
-            </li>
+              <span id="ageDisplay">18 years old</span> </li>
             <li>
               <span class="info-label">Date of Birth:</span>
               <span>June 28, 2006</span>
@@ -771,6 +834,8 @@
   <div class="theme-switch" id="themeSwitch">
     <span class="theme-icon">🌙</span>
   </div>
+
+  <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">⬆️</button>
   
   <script>
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -837,6 +902,39 @@
     checkFade();
     
     window.addEventListener('scroll', checkFade);
+
+    // Dynamic Age Calculation
+    const dob = new Date('2006-06-28');
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+    document.getElementById('ageDisplay').textContent = `${age} years old`;
+
+    // Dynamic Copyright Year
+    document.querySelector('.footer-text').textContent = `© ${new Date().getFullYear()} Vince Nelmar Alobin. All rights reserved.`;
+
+    // Scroll to Top Button Logic
+    let mybutton = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
   </script>
 </body>
 </html>
