@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vince Nelmar Alobin | Resume</title>
         <link rel="canonical" href="https://Alobin_Resume.com" />
-        </head>
-  <style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+        <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
 
     :root {
@@ -83,6 +85,8 @@
       justify-content: center;
       font-size: 3rem;
       color: var(--primary);
+      animation: floatProfile 4s ease-in-out infinite;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.15);
     }
     
     h1 {
@@ -591,9 +595,130 @@
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
+    /* --- NEW ANIMATIONS & EFFECTS --- */
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      border-right: .15em solid var(--secondary);
+      white-space: nowrap;
+      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+      font-size: 1.3rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: var(--secondary); }
+    }
+    .profile-img {
+      animation: floatProfile 4s ease-in-out infinite;
+      box-shadow: 0 8px 32px rgba(108,99,255,0.15);
+    }
+    @keyframes floatProfile {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+    .animated-section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
+    }
+    .animated-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .skill-bar {
+      width: 100%;
+      background: #ececff;
+      border-radius: 8px;
+      margin: 0.5rem 0 1.2rem 0;
+      height: 18px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      background: var(--gradient);
+      width: 0;
+      transition: width 1.5s cubic-bezier(.77,0,.18,1);
+    }
+    .skill-bar-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    @media (max-width: 600px) {
+      .typewriter { font-size: 1rem; }
+    }
+    /* --- PARALLAX BACKGROUND --- */
+    .parallax-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .parallax-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      will-change: transform;
+      filter: blur(2px);
+      animation: parallaxMove 18s linear infinite alternate;
+    }
+    .parallax-shape1 { width: 300px; height: 300px; background: #6C63FF; left: 5vw; top: 10vh; animation-delay: 0s; }
+    .parallax-shape2 { width: 200px; height: 200px; background: #FF6584; right: 10vw; top: 30vh; animation-delay: 2s; }
+    .parallax-shape3 { width: 150px; height: 150px; background: #45D9B8; left: 30vw; bottom: 10vh; animation-delay: 4s; }
+    @keyframes parallaxMove {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(60px) scale(1.08); }
+    }
+    /* --- 3D TILT PROFILE --- */
+    .profile-img {
+      transition: transform 0.2s cubic-bezier(.77,0,.18,1);
+      will-change: transform;
+      perspective: 600px;
+    }
+    /* --- ANIMATED SVG DIVIDER --- */
+    .svg-divider {
+      width: 100%;
+      height: 60px;
+      display: block;
+      margin: 0;
+      z-index: 2;
+      position: relative;
+    }
+    /* --- ENHANCED SECTION TRANSITIONS --- */
+    .animated-section {
+      opacity: 0;
+      transform: translateY(60px) scale(0.98);
+      transition: opacity 0.9s cubic-bezier(.77,0,.18,1), transform 0.9s cubic-bezier(.77,0,.18,1);
+    }
+    .animated-section.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    /* --- RESPONSIVE TWEAKS --- */
+    @media (max-width: 900px) {
+      .parallax-shape1 { width: 180px; height: 180px; }
+      .parallax-shape2 { width: 120px; height: 120px; }
+      .parallax-shape3 { width: 90px; height: 90px; }
+    }
+    @media (max-width: 600px) {
+      .parallax-shape1, .parallax-shape2, .parallax-shape3 { display: none; }
+      .svg-divider { height: 30px; }
+    }
   </style>
 </head>
 <body>
+  <div class="parallax-bg">
+    <div class="parallax-shape parallax-shape1"></div>
+    <div class="parallax-shape parallax-shape2"></div>
+    <div class="parallax-shape parallax-shape3"></div>
+  </div>
   <header>
     <div class="shapes">
       <div class="shape shape-1"></div>
@@ -602,10 +727,10 @@
     </div>
     <div class="container">
       <div class="header-content fade-in">
-        <img src="images/vinc.png" alt="VA" class="profile-img">
+        <img src="images/vinc.png" alt="VA" class="profile-img" id="profileImg">
         <h1>Vince Nelmar Alobin</h1>
         <p class="nickname">You can call me Bin</p>
-        <p class="tagline">Aspiring Professional | Student Leader</p>
+        <p class="tagline"><span class="typewriter" id="typewriterTagline"></span></p>
         <div class="contact-buttons">
           <button class="btn btn-primary" id="contactBtn">
             <i>✉️</i> Contact Me
@@ -616,6 +741,9 @@
         </div>
       </div>
     </div>
+    <svg class="svg-divider" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 Q360,60 720,30 T1440,30 V60 H0 Z" fill="#F4F4FD"/>
+    </svg>
   </header>
   
   <main class="container">
@@ -674,7 +802,7 @@
       </div>
     </div>
     
-    <div id="specialization" class="tab-content fade-in delay-2">
+    <div id="specialization" class="tab-content fade-in delay-2 animated-section">
       <div class="card">
           <div class="card-header">
               <div class="card-icon">💻</div>
@@ -685,33 +813,42 @@
                   <div class="skill-item">
                       <img src="images/javaa.png" alt="Java" class="skill-icon">
                       <span class="skill-name">Java</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Java" style="background: linear-gradient(90deg, #6C63FF, #FF6584);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/pythoon.png" alt="Python" class="skill-icon">
                       <span class="skill-name">Python</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Python" style="background: linear-gradient(90deg, #45D9B8, #6C63FF);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/sqll.png" alt="SQL" class="skill-icon">
                       <span class="skill-name">SQL</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="SQL" style="background: linear-gradient(90deg, #FF6584, #45D9B8);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/htmml.png" alt="HTML" class="skill-icon">
                       <span class="skill-name">HTML</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="HTML" style="background: linear-gradient(90deg, #6C63FF, #F4F4FD);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/csss.png" alt="CSS" class="skill-icon">
                       <span class="skill-name">CSS</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="CSS" style="background: linear-gradient(90deg, #FF6584, #2A2A2A);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/javascript.png" alt="JavaScript" class="skill-icon">
                       <span class="skill-name">JavaScript</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="JavaScript" style="background: linear-gradient(90deg, #45D9B8, #FF6584);"></div></div>
                   </div>
                   <div class="skill-item">
                       <img src="images/php.png" alt="PHP" class="skill-icon">
                       <span class="skill-name">PHP</span>
-                  </div><div class="skill-item">
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="PHP" style="background: linear-gradient(90deg, #2A2A2A, #6C63FF);"></div></div>
+                  </div>
+                  <div class="skill-item">
                       <img src="images/Typescript.png" alt="Typescript" class="skill-icon">
                       <span class="skill-name">Typescript</span>
+                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Typescript" style="background: linear-gradient(90deg, #6C63FF, #45D9B8);"></div></div>
                   </div>
               </div>
               <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Certifications</h3>
@@ -935,6 +1072,76 @@
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
+
+    // --- TYPEWRITER EFFECT FOR TAGLINE ---
+    const taglineText = "Aspiring Professional | Student Leader";
+    const typewriterTagline = document.getElementById('typewriterTagline');
+    let twIndex = 0;
+    function typeTagline() {
+      if (twIndex < taglineText.length) {
+        typewriterTagline.textContent += taglineText.charAt(twIndex);
+        twIndex++;
+        setTimeout(typeTagline, 60);
+      }
+    }
+    typeTagline();
+
+    // --- ANIMATED SKILL BARS ---
+    function animateSkillBars() {
+      document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        let skill = bar.getAttribute('data-skill');
+        let percent = 0;
+        switch(skill) {
+          case 'Java': percent = 85; break;
+          case 'Python': percent = 80; break;
+          case 'SQL': percent = 75; break;
+          case 'HTML': percent = 90; break;
+          case 'CSS': percent = 85; break;
+          case 'JavaScript': percent = 80; break;
+          case 'PHP': percent = 70; break;
+          case 'Typescript': percent = 65; break;
+        }
+        setTimeout(() => { bar.style.width = percent + '%'; }, 500);
+      });
+    }
+    // Animate skill bars when specialization tab is shown
+    document.querySelector('[data-tab="specialization"]').addEventListener('click', animateSkillBars);
+    // Animate on load if already active
+    if(document.getElementById('specialization').classList.contains('active')) animateSkillBars();
+
+    // --- 3D TILT PROFILE IMAGE ---
+    const profileImg = document.getElementById('profileImg');
+    profileImg.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (centerY - y) / 10;
+      const rotateY = (x - centerX) / 10;
+      this.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    });
+    profileImg.addEventListener('mouseleave', function() {
+      this.style.transform = '';
+    });
+    // --- PARALLAX BG ON SCROLL ---
+    window.addEventListener('scroll', function() {
+      const scrollY = window.scrollY;
+      document.querySelectorAll('.parallax-shape').forEach((shape, i) => {
+        shape.style.transform = `translateY(${scrollY * (0.1 + i*0.07)}px)`;
+      });
+    });
+    // --- ENHANCED SECTION REVEAL ---
+    function revealSections() {
+      document.querySelectorAll('.animated-section').forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 60) {
+          section.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealSections);
+    window.addEventListener('load', revealSections);
   </script>
 </body>
 </html>
