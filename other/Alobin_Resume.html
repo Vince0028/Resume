@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vince Nelmar Alobin | Resume</title>
+        <link rel="canonical" href="https://Alobin_Resume.com" />
+        </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
+
+    :root {
+      --primary: #6C63FF;
+      --secondary: #FF6584;
+      --accent: #45D9B8;
+      --dark: #2A2A2A;
+      --light: #F4F4FD;
+      --text-primary: #2A2A2A;
+      --text-secondary: #F4F4FD;
+      --card-bg: white;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    /* Dark Mode Variables */
+    body.dark-mode {
+      --light: #121212;
+      --dark: #121212;
+      --text-primary: #F4F4FD;
+      --text-secondary: #2A2A2A;
+      --card-bg: #1E1E1E;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif; /* Changed font */
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: var(--gradient);
+      color: white;
+      padding: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: var(--light);
+      margin-bottom: 1.5rem;
+      border: 4px solid white;
+      object-fit: cover; /* Ensures image covers the area */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--primary);
+    }
+    
+    h1 {
+      font-family: 'Poppins', sans-serif; /* Changed font */
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .nickname {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      opacity: 0.9;
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+    
+    .contact-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: white;
+      color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: white;
+      color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.15; /* Slightly reduced opacity */
+      background: white;
+      border-radius: 50%;
+      animation: floatShape 10s ease-in-out infinite; /* Added animation */
+    }
+    
+    .shape-1 {
+      width: 150px;
+      height: 150px;
+      top: -75px;
+      left: 10%;
+      animation-delay: 0s;
+    }
+    
+    .shape-2 {
+      width: 100px;
+      height: 100px;
+      bottom: -50px;
+      right: 20%;
+      animation-delay: 2s;
+    }
+    
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      top: 50%;
+      left: 30%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatShape {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(20px, -20px) scale(1.05); }
+        100% { transform: translate(0, 0) scale(1); }
+    }
+    
+    main {
+      padding: 4rem 0;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .card-header h2 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    
+    .card-icon {
+      font-size: 1.8rem;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+    
+    .card-content {
+      padding: 2rem;
+    }
+    
+    .info-list {
+      list-style: none;
+    }
+    
+    .info-list li {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .info-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      min-width: 120px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .education-item {
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .education-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      background-color: var(--secondary);
+      border-radius: 50%;
+    }
+    
+    .education-item:after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 15px;
+      width: 2px;
+      height: calc(100% - 15px);
+      background-color: var(--secondary);
+      opacity: 0.5;
+    }
+    
+    .education-item:last-child:after {
+      display: none;
+    }
+    
+    .school-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .education-year {
+      font-size: 0.9rem;
+      color: var(--secondary);
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      background-color: rgba(255, 101, 132, 0.1);
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .school-address {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .achievement {
+      font-style: italic;
+      color: var(--primary);
+      margin-top: 0.3rem;
+    }
+    
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+    }
+    
+    .footer-text {
+      margin-bottom: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary);
+      transform: translateY(-5px);
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .contact-buttons {
+        flex-direction: column;
+      }
+      
+      .info-list li {
+        flex-direction: column;
+      }
+      
+      .info-label {
+        margin-bottom: 0.3rem;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+      opacity: 0;
+    }
+    
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+    
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .tab-btn {
+      padding: 1rem 1.5rem;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+    }
+    
+    .tab-btn:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    
+    .tab-btn.active:after {
+      width: 80%;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    .theme-switch {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+    
+    .theme-switch:hover {
+      transform: scale(1.1);
+    }
+    
+    .theme-icon {
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    /* Dark Mode Specific Styles */
+    body.dark-mode .info-list li {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    body.dark-mode .card {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    body.dark-mode .school-address,
+    body.dark-mode .school-level {
+      opacity: 0.7;
+    }
+    
+    body.dark-mode footer {
+      background-color: #0A0A0A;
+    }
+    
+    body.dark-mode .education-year {
+      background-color: rgba(255, 101, 132, 0.2);
+    }
+    
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      justify-content: center; /* Center skills */
+    }
+    
+    .skill-item {
+      background-color: rgba(108, 99, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: calc(20% - 1.5rem);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
+    }
+    
+    .skill-item:hover {
+      transform: translateY(-8px); /* Increased lift on hover */
+      background-color: rgba(108, 99, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
+    }
+    
+    .skill-icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.8rem;
+      object-fit: contain; /* Ensures icons scale correctly */
+    }
+    
+    .skill-name {
+      font-weight: bold;
+      text-align: center;
+      font-size: 0.95rem; /* Slightly larger text */
+    }
+    
+    .certificate-item {
+      display: flex;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background-color: rgba(69, 217, 184, 0.1);
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .certificate-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .certificate-icon {
+      font-size: 2rem;
+      margin-right: 1rem;
+      color: var(--accent);
+    }
+    
+    .certificate-info h3 {
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .certificate-date {
+      font-size: 0.9rem;
+      color: var(--secondary);
+    }
+    
+    @media (max-width: 768px) {
+      .skill-item {
+        width: calc(33.33% - 1rem);
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .skill-item {
+        width: calc(50% - 0.75rem);
+      }
+    }
+
+    /* Scroll to Top Button */
+    #scrollToTopBtn {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed/sticky position */
+        bottom: 80px; /* Place the button slightly above theme switch */
+        right: 20px;
+        z-index: 99; /* Ensure it's above other content */
+        border: none; /* Remove borders */
+        outline: none; /* Remove outline */
+        background-color: var(--accent); /* Set a background color */
+        color: white; /* Text color */
+        cursor: pointer; /* Add a mouse pointer on hover */
+        padding: 15px; /* Some padding */
+        border-radius: 50%; /* Rounded corners */
+        font-size: 18px; /* Increase font size */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #scrollToTopBtn:hover {
+        background-color: var(--primary); /* Darker on hover */
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="container">
+      <div class="header-content fade-in">
+        <img src="images/vinc.png" alt="VA" class="profile-img">
+        <h1>Vince Nelmar Alobin</h1>
+        <p class="nickname">You can call me Bin</p>
+        <p class="tagline">Aspiring Professional | Student Leader</p>
+        <div class="contact-buttons">
+          <button class="btn btn-primary" id="contactBtn">
+            <i>✉️</i> Contact Me
+          </button>
+          <button class="btn btn-secondary" id="specializationBtn">
+            <i>🔧</i> Specialization
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main class="container">
+    <div class="tabs fade-in delay-1">
+      <button class="tab-btn active" data-tab="about">About Me</button>
+      <button class="tab-btn" data-tab="education">Education</button>
+      <button class="tab-btn" data-tab="specialization">Specialization</button>
+      <button class="tab-btn" data-tab="personal">Personal Info</button>
+    </div>
+    
+    <div id="about" class="tab-content active fade-in delay-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">👋</div>
+          <h2>About Me</h2>
+        </div>
+        <div class="card-content">
+          <p>Hello! I'm Vince Nelmar Alobin, a dedicated and ambitious 18-year-old student with a passion for learning and personal growth. As a recent Senior High School graduate, I'm excited to explore new opportunities and challenges that will help me develop professionally.</p>
+          <br>
+          <p>I pride myself on my strong work ethic, adaptability, and commitment to excellence in everything I do. Coming from a family with military background, I've developed discipline and respect for structure while maintaining creativity and innovation in my approach to problem-solving.</p>
+          <br>
+          <p>I'm eager to contribute my skills and fresh perspective to meaningful projects and continue my educational journey.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="education" class="tab-content fade-in delay-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🎓</div>
+          <h2>Educational Background</h2>
+        </div>
+        <div class="card-content">
+          <div class="education-item">
+            <div class="school-name">Pasay City South High School</div>
+            <div class="education-year">2022-2024</div>
+            <div class="school-address">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+            <div class="school-level">Senior High School</div>
+          </div>
+          
+          <div class="education-item">
+            <div class="school-name">Pasay City South High School</div>
+            <div class="education-year">2018-2022</div>
+            <div class="school-address">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+            <div class="school-level">Junior High School</div>
+            <div class="achievement">Graduated With Honors</div>
+          </div>
+          
+          <div class="education-item">
+            <div class="school-name">R and O Academy, Inc.</div>
+            <div class="education-year">2012-2018</div>
+            <div class="school-address">P01-22, 4th-3rd St., Barangay 183, Villamor, Pasay City</div>
+            <div class="school-level">Elementary</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="specialization" class="tab-content fade-in delay-2">
+      <div class="card">
+          <div class="card-header">
+              <div class="card-icon">💻</div>
+              <h2>Technical Skills</h2>
+          </div>
+          <div class="card-content">
+              <div class="skills-container">
+                  <div class="skill-item">
+                      <img src="images/javaa.png" alt="Java" class="skill-icon">
+                      <span class="skill-name">Java</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/pythoon.png" alt="Python" class="skill-icon">
+                      <span class="skill-name">Python</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/sqll.png" alt="SQL" class="skill-icon">
+                      <span class="skill-name">SQL</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/htmml.png" alt="HTML" class="skill-icon">
+                      <span class="skill-name">HTML</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/csss.png" alt="CSS" class="skill-icon">
+                      <span class="skill-name">CSS</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/javascript.png" alt="JavaScript" class="skill-icon">
+                      <span class="skill-name">JavaScript</span>
+                  </div>
+                  <div class="skill-item">
+                      <img src="images/php.png" alt="PHP" class="skill-icon">
+                      <span class="skill-name">PHP</span>
+                  </div><div class="skill-item">
+                      <img src="images/Typescript.png" alt="Typescript" class="skill-icon">
+                      <span class="skill-name">Typescript</span>
+                  </div>
+              </div>
+              <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Certifications</h3>
+              <div class="certificate-item">
+                  <div class="certificate-icon">🏆</div>
+                  <div class="certificate-info">
+                      <h3>NC2 in Animation</h3>
+                      <p>Certificate awarded for proficiency in Computer Animation techniques and skills.</p>
+                      <div class="certificate-date">Issued: 2023</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <div class="card">
+          <div class="card-header">
+              <div class="card-icon">🎨</div>
+              <h2>Creative Skills</h2>
+          </div>
+          <div class="card-content">
+              <div class="skills-container">
+                  <div class="skill-item">
+                      <span class="skill-name">Web Development</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Computer Programming</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Computer Animation</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Video Editing</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      
+      <div class="card">
+          <div class="card-header">
+              <div class="card-icon">🏸</div>
+              <h2>Hobbies</h2>
+          </div>
+          <div class="card-content">
+              <div class="skills-container">
+                  <div class="skill-item">
+                      <span class="skill-name">Badminton</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Reading</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Chess</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Wave Board</span>
+                  </div>
+                  <div class="skill-item">
+                      <span class="skill-name">Working Out</span>
+                  </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+    <div id="personal" class="tab-content fade-in delay-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">👤</div>
+          <h2>Personal Information</h2>
+        </div>
+        <div class="card-content">
+          <ul class="info-list">
+            <li>
+              <span class="info-label">Full Name:</span>
+              <span>Vince Nelmar Pega Alobin</span>
+            </li>
+            <li>
+              <span class="info-label">Age:</span>
+              <span id="ageDisplay">18 years old</span> </li>
+            <li>
+              <span class="info-label">Date of Birth:</span>
+              <span>June 28, 2006</span>
+            </li>
+            <li>
+              <span class="info-label">Address:</span>
+              <span>Blk 80 Lot 9, 12th-23rd St., Barangay 183, Villamor, Pasay City</span>
+            </li>
+            <li>
+              <span class="info-label">Email:</span>
+              <span>alobinvince@gmail.com</span>
+            </li>
+            <li>
+              <span class="info-label">Phone:</span>
+              <span>09480914634</span>
+            </li>
+            <li>
+              <span class="info-label">Nationality:</span>
+              <span>Filipino</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="fade-in delay-4">
+    <div class="container">
+      <p class="footer-text">© 2025 Vince Nelmar Alobin. All rights reserved.</p>
+      <p>I hereby certify that the information provided is true and correct to the best of my knowledge and belief.</p>
+      <div class="social-links">
+        <a href="#" class="social-link">FB</a>
+        <a href="#" class="social-link">IN</a>
+        <a href="#" class="social-link">TW</a>
+      </div>
+    </div>
+  </footer>
+  
+  <div class="theme-switch" id="themeSwitch">
+    <span class="theme-icon">🌙</span>
+  </div>
+
+  <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">⬆️</button>
+  
+  <script>
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        button.classList.add('active');
+        const tabId = button.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+    
+    document.getElementById('contactBtn').addEventListener('click', () => {
+      const email = 'alobinvince@gmail.com';
+      const phone = '09480914634';
+      
+      alert(`Contact Information:\nEmail: ${email}\nPhone: ${phone}`);
+    });
+    
+    document.getElementById('specializationBtn').addEventListener('click', () => {
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      const specializationTab = document.querySelector('[data-tab="specialization"]');
+      specializationTab.classList.add('active');
+      document.getElementById('specialization').classList.add('active');
+    });
+    
+    let darkMode = false;
+    const themeSwitch = document.getElementById('themeSwitch');
+    const themeIcon = document.querySelector('.theme-icon');
+    const body = document.body;
+    
+    themeSwitch.addEventListener('click', () => {
+      darkMode = !darkMode;
+      
+      if (darkMode) {
+        body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+      } else {
+        body.classList.remove('dark-mode');
+        themeIcon.textContent = '🌙';
+      }
+    });
+    
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    function checkFade() {
+      fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 50) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    }
+    
+    checkFade();
+    
+    window.addEventListener('scroll', checkFade);
+
+    // Dynamic Age Calculation
+    const dob = new Date('2006-06-28');
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+    document.getElementById('ageDisplay').textContent = `${age} years old`;
+
+    // Dynamic Copyright Year
+    document.querySelector('.footer-text').textContent = `© ${new Date().getFullYear()} Vince Nelmar Alobin. All rights reserved.`;
+
+    // Scroll to Top Button Logic
+    let mybutton = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+  </script>
+</body>
+</html>
