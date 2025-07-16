@@ -1,1147 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Vince Nelmar Alobin | Resume</title>
-        <link rel="canonical" href="https://Alobin_Resume.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-        <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vince Nelmar Alobin | Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
     :root {
       --primary: #6C63FF;
       --secondary: #FF6584;
       --accent: #45D9B8;
-      --dark: #2A2A2A;
-      --light: #F4F4FD;
-      --text-primary: #2A2A2A;
-      --text-secondary: #F4F4FD;
-      --card-bg: white;
-      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --bg: #f4f4fd;
+      --glass: rgba(255,255,255,0.7);
+      --shadow: 0 8px 32px rgba(108,99,255,0.15);
+      --radius: 18px;
+      --transition: 0.4s cubic-bezier(.77,0,.18,1);
     }
-
-    /* Dark Mode Variables */
-    body.dark-mode {
-      --light: #121212;
-      --dark: #121212;
-      --text-primary: #F4F4FD;
-      --text-secondary: #2A2A2A;
-      --card-bg: #1E1E1E;
+    html, body {
+      margin: 0; padding: 0; font-family: 'Poppins', 'Roboto', sans-serif; background: var(--bg); color: #222; min-height: 100vh; scroll-behavior: smooth;
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif; /* Changed font */
-      transition: background-color 0.3s ease, color 0.3s ease;
+    body { display: flex; min-height: 100vh; }
+    /* SIDEBAR */
+    .sidebar {
+      width: 290px; background: var(--glass); box-shadow: var(--shadow); position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 1rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; backdrop-filter: blur(12px);
     }
-    
-    body {
-      background-color: var(--light);
-      color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
+    .sidebar-profile {
+      display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;
     }
-    
-    .container {
+    .sidebar-img {
+      width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: var(--shadow); margin-bottom: 0.7rem; background: #fff; animation: floatProfile 4s ease-in-out infinite;
+    }
+    @keyframes floatProfile { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+    .sidebar-name { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.2rem; }
+    .sidebar-nickname { font-size: 1rem; color: #555; margin-bottom: 0.5rem; }
+    .sidebar-typewriter { font-size: 1.05rem; color: var(--secondary); min-height: 1.5rem; border-right: .15em solid var(--secondary); white-space: nowrap; overflow: hidden; animation: blink-caret .75s step-end infinite; }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--secondary); } }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 1.2rem; width: 100%; margin-top: 2rem; }
+    .sidebar-link { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--primary); font-weight: 600; font-size: 1.1rem; padding: 0.7rem 1.2rem; border-radius: 12px; transition: background var(--transition), color var(--transition); position: relative; }
+    .sidebar-link.active, .sidebar-link:hover { background: var(--primary); color: #fff; }
+    .sidebar-link .icon { font-size: 1.2rem; }
+    .sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+    .sidebar-btn { background: var(--secondary); color: #fff; border: none; border-radius: 12px; padding: 0.7rem 1.5rem; font-weight: 600; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow); transition: background 0.3s, transform 0.3s; }
+    .sidebar-btn:hover { background: var(--primary); transform: translateY(-3px) scale(1.04); }
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 290px;
+      flex: 1;
+      padding: 0 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
       max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
+      margin-right: auto;
+      margin-left: 290px;
+      box-sizing: border-box;
     }
-    
-    header {
-      background: var(--gradient);
-      color: white;
-      padding: 2rem 0;
-      position: relative;
-      overflow: hidden;
+    @media (max-width: 1300px) {
+      .main-content { max-width: 98vw; }
     }
-    
-    .header-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 3rem 1rem;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .profile-img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: var(--light);
-      margin-bottom: 1.5rem;
-      border: 4px solid white;
-      object-fit: cover; /* Ensures image covers the area */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      color: var(--primary);
-      animation: floatProfile 4s ease-in-out infinite;
-      box-shadow: 0 8px 32px rgba(108,99,255,0.15);
-    }
-    
-    h1 {
-      font-family: 'Poppins', sans-serif; /* Changed font */
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    
-    .nickname {
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
-      opacity: 0.9;
-    }
-    
-    .tagline {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-      opacity: 0.9;
-    }
-    
-    .contact-buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .btn-primary {
-      background-color: white;
-      color: var(--primary);
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .btn-secondary {
-      background-color: transparent;
-      color: white;
-      border: 2px solid white;
-    }
-    
-    .btn-secondary:hover {
-      background-color: white;
-      color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .shapes {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    .shape {
-      position: absolute;
-      opacity: 0.15; /* Slightly reduced opacity */
-      background: white;
-      border-radius: 50%;
-      animation: floatShape 10s ease-in-out infinite; /* Added animation */
-    }
-    
-    .shape-1 {
-      width: 150px;
-      height: 150px;
-      top: -75px;
-      left: 10%;
-      animation-delay: 0s;
-    }
-    
-    .shape-2 {
-      width: 100px;
-      height: 100px;
-      bottom: -50px;
-      right: 20%;
-      animation-delay: 2s;
-    }
-    
-    .shape-3 {
-      width: 80px;
-      height: 80px;
-      top: 50%;
-      left: 30%;
-      animation-delay: 4s;
-    }
-
-    @keyframes floatShape {
-        0% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(20px, -20px) scale(1.05); }
-        100% { transform: translate(0, 0) scale(1); }
-    }
-    
-    main {
-      padding: 4rem 0;
-    }
-    
-    .card {
-      background-color: var(--card-bg);
-      border-radius: 15px;
-      overflow: hidden;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    }
-    
-    .card-header {
-      background-color: var(--primary);
-      color: white;
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    
-    .card-header h2 {
-      font-size: 1.5rem;
-      margin: 0;
-    }
-    
-    .card-icon {
-      font-size: 1.8rem;
-      width: 50px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-    }
-    
-    .card-content {
-      padding: 2rem;
-    }
-    
-    .info-list {
-      list-style: none;
-    }
-    
-    .info-list li {
-      padding: 0.8rem 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      display: flex;
-      align-items: flex-start;
-    }
-    
-    .info-list li:last-child {
-      border-bottom: none;
-    }
-    
-    .info-label {
-      min-width: 120px;
-      font-weight: bold;
-      color: var(--primary);
-    }
-    
-    .education-item {
-      margin-bottom: 1.5rem;
-      position: relative;
-      padding-left: 30px;
-    }
-    
-    .education-item:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 15px;
-      height: 15px;
-      background-color: var(--secondary);
-      border-radius: 50%;
-    }
-    
-    .education-item:after {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 15px;
-      width: 2px;
-      height: calc(100% - 15px);
-      background-color: var(--secondary);
-      opacity: 0.5;
-    }
-    
-    .education-item:last-child:after {
-      display: none;
-    }
-    
-    .school-name {
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-    }
-    
-    .education-year {
-      font-size: 0.9rem;
-      color: var(--secondary);
-      display: inline-block;
-      padding: 0.2rem 0.5rem;
-      background-color: rgba(255, 101, 132, 0.1);
-      border-radius: 5px;
-      margin-bottom: 0.5rem;
-    }
-    
-    .school-address {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    
-    .achievement {
-      font-style: italic;
-      color: var(--primary);
-      margin-top: 0.3rem;
-    }
-    
-    footer {
-      background-color: var(--dark);
-      color: white;
-      padding: 2rem 0;
-      text-align: center;
-    }
-    
-    .footer-text {
-      margin-bottom: 1rem;
-    }
-    
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    
-    .social-link {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: white;
-      transition: all 0.3s ease;
-    }
-    
-    .social-link:hover {
-      background-color: var(--primary);
-      transform: translateY(-5px);
-    }
-    
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.2rem;
-      }
-      
-      .contact-buttons {
-        flex-direction: column;
-      }
-      
-      .info-list li {
-        flex-direction: column;
-      }
-      
-      .info-label {
-        margin-bottom: 0.3rem;
-      }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .fade-in {
-      animation: fadeIn 0.8s ease forwards;
-      opacity: 0;
-    }
-    
-    .delay-1 { animation-delay: 0.2s; }
-    .delay-2 { animation-delay: 0.4s; }
-    .delay-3 { animation-delay: 0.6s; }
-    .delay-4 { animation-delay: 0.8s; }
-    
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-    
-    .tab-btn {
-      padding: 1rem 1.5rem;
-      border: none;
-      background: transparent;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s ease;
-      color: var(--text-primary);
-    }
-    
-    .tab-btn:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 3px;
-      background-color: var(--primary);
-      transition: width 0.3s ease;
-    }
-    
-    .tab-btn.active {
-      color: var(--primary);
-    }
-    
-    .tab-btn.active:after {
-      width: 80%;
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.5s ease forwards;
-    }
-    
-    .theme-switch {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      z-index: 100;
-      transition: all 0.3s ease;
-    }
-    
-    .theme-switch:hover {
-      transform: scale(1.1);
-    }
-    
-    .theme-icon {
-      color: white;
-      font-size: 1.5rem;
-    }
-    
-    /* Dark Mode Specific Styles */
-    body.dark-mode .info-list li {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    body.dark-mode .card {
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-    
-    body.dark-mode .school-address,
-    body.dark-mode .school-level {
-      opacity: 0.7;
-    }
-    
-    body.dark-mode footer {
-      background-color: #0A0A0A;
-    }
-    
-    body.dark-mode .education-year {
-      background-color: rgba(255, 101, 132, 0.2);
-    }
-    
-    .skills-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-top: 1rem;
-      justify-content: center; /* Center skills */
-    }
-    
-    .skill-item {
-      background-color: rgba(108, 99, 255, 0.1);
-      border-radius: 10px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: calc(20% - 1.5rem);
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
-    }
-    
-    .skill-item:hover {
-      transform: translateY(-8px); /* Increased lift on hover */
-      background-color: rgba(108, 99, 255, 0.2);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
-    }
-    
-    .skill-icon {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 0.8rem;
-      object-fit: contain; /* Ensures icons scale correctly */
-    }
-    
-    .skill-name {
-      font-weight: bold;
-      text-align: center;
-      font-size: 0.95rem; /* Slightly larger text */
-    }
-    
-    .certificate-item {
-      display: flex;
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      border-radius: 10px;
-      background-color: rgba(69, 217, 184, 0.1);
-      align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Added subtle shadow */
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .certificate-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    
-    .certificate-icon {
-      font-size: 2rem;
-      margin-right: 1rem;
-      color: var(--accent);
-    }
-    
-    .certificate-info h3 {
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-    }
-    
-    .certificate-date {
-      font-size: 0.9rem;
-      color: var(--secondary);
-    }
-    
-    @media (max-width: 768px) {
-      .skill-item {
-        width: calc(33.33% - 1rem);
-      }
-    }
-    
-    @media (max-width: 576px) {
-      .skill-item {
-        width: calc(50% - 0.75rem);
-      }
-    }
-
-    /* Scroll to Top Button */
-    #scrollToTopBtn {
-        display: none; /* Hidden by default */
-        position: fixed; /* Fixed/sticky position */
-        bottom: 80px; /* Place the button slightly above theme switch */
-        right: 20px;
-        z-index: 99; /* Ensure it's above other content */
-        border: none; /* Remove borders */
-        outline: none; /* Remove outline */
-        background-color: var(--accent); /* Set a background color */
-        color: white; /* Text color */
-        cursor: pointer; /* Add a mouse pointer on hover */
-        padding: 15px; /* Some padding */
-        border-radius: 50%; /* Rounded corners */
-        font-size: 18px; /* Increase font size */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    #scrollToTopBtn:hover {
-        background-color: var(--primary); /* Darker on hover */
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-    /* --- NEW ANIMATIONS & EFFECTS --- */
-    .typewriter {
-      display: inline-block;
-      overflow: hidden;
-      border-right: .15em solid var(--secondary);
-      white-space: nowrap;
-      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
-      font-size: 1.3rem;
-      font-family: 'Poppins', sans-serif;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: var(--secondary); }
-    }
-    .profile-img {
-      animation: floatProfile 4s ease-in-out infinite;
-      box-shadow: 0 8px 32px rgba(108,99,255,0.15);
-    }
-    @keyframes floatProfile {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-18px); }
-    }
-    .animated-section {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
-    }
-    .animated-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .skill-bar {
-      width: 100%;
-      background: #ececff;
-      border-radius: 8px;
-      margin: 0.5rem 0 1.2rem 0;
-      height: 18px;
-      overflow: hidden;
-    }
-    .skill-bar-fill {
-      height: 100%;
-      border-radius: 8px;
-      background: var(--gradient);
-      width: 0;
-      transition: width 1.5s cubic-bezier(.77,0,.18,1);
-    }
-    .skill-bar-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    @media (max-width: 600px) {
-      .typewriter { font-size: 1rem; }
-    }
-    /* --- PARALLAX BACKGROUND --- */
-    .parallax-bg {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .parallax-shape {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.12;
-      will-change: transform;
-      filter: blur(2px);
-      animation: parallaxMove 18s linear infinite alternate;
-    }
-    .parallax-shape1 { width: 300px; height: 300px; background: #6C63FF; left: 5vw; top: 10vh; animation-delay: 0s; }
-    .parallax-shape2 { width: 200px; height: 200px; background: #FF6584; right: 10vw; top: 30vh; animation-delay: 2s; }
-    .parallax-shape3 { width: 150px; height: 150px; background: #45D9B8; left: 30vw; bottom: 10vh; animation-delay: 4s; }
-    @keyframes parallaxMove {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(60px) scale(1.08); }
-    }
-    /* --- 3D TILT PROFILE --- */
-    .profile-img {
-      transition: transform 0.2s cubic-bezier(.77,0,.18,1);
-      will-change: transform;
-      perspective: 600px;
-    }
-    /* --- ANIMATED SVG DIVIDER --- */
-    .svg-divider {
-      width: 100%;
-      height: 60px;
-      display: block;
-      margin: 0;
-      z-index: 2;
-      position: relative;
-    }
-    /* --- ENHANCED SECTION TRANSITIONS --- */
-    .animated-section {
-      opacity: 0;
-      transform: translateY(60px) scale(0.98);
-      transition: opacity 0.9s cubic-bezier(.77,0,.18,1), transform 0.9s cubic-bezier(.77,0,.18,1);
-    }
-    .animated-section.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-    /* --- RESPONSIVE TWEAKS --- */
     @media (max-width: 900px) {
-      .parallax-shape1 { width: 180px; height: 180px; }
-      .parallax-shape2 { width: 120px; height: 120px; }
-      .parallax-shape3 { width: 90px; height: 90px; }
+      .main-content { margin-left: 70px; padding: 0 0.5rem 1.2rem 0.5rem; }
     }
     @media (max-width: 600px) {
-      .parallax-shape1, .parallax-shape2, .parallax-shape3 { display: none; }
-      .svg-divider { height: 30px; }
+      .main-content { margin-left: 0; max-width: 100vw; padding: 0 0.2rem 0.5rem 0.2rem; }
     }
+    .hero-banner {
+      background: linear-gradient(135deg, var(--primary) 60%, var(--secondary) 100%);
+      color: #fff;
+      border-radius: 0;
+      box-shadow: var(--shadow);
+      padding: 2.5rem 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+      min-height: 220px;
+      margin-top: 0 !important;
+      margin-bottom: 1.5rem;
+      width: 100%;
+      max-width: 100%;
+      /* Responsive light effect */
+      --light-x: 50%;
+      --light-y: 50%;
+      --light-gradient: radial-gradient(600px circle at var(--light-x) var(--light-y), rgba(255,255,255,0.18) 0%, rgba(108,99,255,0.18) 40%, rgba(69,217,184,0.13) 70%, transparent 90%);
+      background: var(--light-gradient), linear-gradient(135deg, var(--primary) 60%, var(--secondary) 100%);
+      transition: background 0.3s;
+    }
+    @media (max-width: 900px) {
+      .hero-banner {
+        max-width: 98vw;
+        padding: 1.5rem 0.5rem 1.2rem 0.5rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero-banner {
+        max-width: 100vw;
+        padding: 1rem 0.2rem 1rem 0.2rem;
+      }
+    }
+    .hero-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; }
+    .hero-date { font-size: 1rem; opacity: 0.8; margin-bottom: 0.7rem; }
+    .hero-welcome { font-size: 1.5rem; font-family: 'Poppins', monospace; margin-bottom: 1.2rem; }
+    .hero-btns { display: flex; gap: 1.2rem; margin-top: 1rem; }
+    .hero-btn { padding: 0.8rem 1.7rem; border-radius: 30px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; background: #fff; color: var(--primary); box-shadow: var(--shadow); transition: all var(--transition); display: flex; align-items: center; gap: 0.5rem; }
+    .hero-btn.secondary { background: transparent; color: #fff; border: 2px solid #fff; }
+    .hero-btn:hover { transform: translateY(-4px) scale(1.04); background: var(--secondary); color: #fff; }
+    /* STATS */
+    .stats-row { display: flex; gap: 2rem; margin-bottom: 1.5rem; }
+    .stat-card { background: #fff; border-radius: 14px; box-shadow: var(--shadow); padding: 1.2rem 2rem; display: flex; flex-direction: column; align-items: center; min-width: 120px; }
+    .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 1rem; color: #555; }
+    /* SKILLS */
+    .skills-section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; }
+    .skills-title { font-size: 1.5rem; color: var(--primary); font-weight: 700; margin-bottom: 1.2rem; }
+    .skills-carousel-container { position: relative; overflow: hidden; max-width: 900px; margin: 0 auto; width: 100%; }
+    .skills-grid { display: flex; gap: 1.5rem; will-change: transform; }
+    .skill-card { background: var(--glass); color: var(--primary); border-radius: 14px; padding: 1.2rem; box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; transition: transform 0.2s; position: relative; min-width: 180px; max-width: 220px; flex: 0 0 22%; }
+    .skill-card:hover { transform: translateY(-6px) scale(1.04); background: var(--primary); color: #fff; }
+    .skill-icon { width: 48px; height: 48px; margin-bottom: 0.7rem; object-fit: contain; }
+    .skill-name { font-weight: 600; margin-bottom: 0.5rem; }
+    /* EXPERTISE */
+    .expertise-section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; margin-top: 1.5rem; }
+    .expertise-title { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin-bottom: 1rem; }
+    .expertise-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .expertise-item { font-size: 1.05rem; color: #333; padding: 0.7rem 1rem; border-radius: 10px; background: var(--glass); transition: background 0.3s; cursor: pointer; }
+    .expertise-item:hover { background: var(--primary); color: #fff; }
+    /* TIMELINE */
+    .timeline-section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; margin-top: 1.5rem; }
+    .timeline-title { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin-bottom: 1rem; }
+    .timeline { position: relative; margin-left: 1.5rem; }
+    .timeline:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--primary); border-radius: 2px; }
+    .timeline-item { position: relative; margin-bottom: 2.2rem; padding-left: 2.5rem; }
+    .timeline-dot { position: absolute; left: -0.7rem; top: 0.2rem; width: 18px; height: 18px; background: var(--secondary); border-radius: 50%; border: 3px solid #fff; box-shadow: var(--shadow); }
+    .timeline-title { font-weight: 600; color: var(--primary); font-size: 1.1rem; }
+    .timeline-date { font-size: 0.95rem; color: var(--secondary); margin-bottom: 0.2rem; }
+    .timeline-desc { font-size: 0.98rem; opacity: 0.85; }
+    /* CONTACT */
+    .contact-section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; margin-top: 1.5rem; }
+    .contact-title { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin-bottom: 1rem; }
+    .contact-info { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.2rem; }
+    .contact-label { font-weight: 600; color: var(--primary); min-width: 110px; display: inline-block; }
+    .contact-value { color: #333; }
+    .contact-socials { display: flex; gap: 1rem; margin-top: 1rem; }
+    .contact-social { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; transition: background 0.3s, transform 0.3s; text-decoration: none; }
+    .contact-social:hover { background: var(--secondary); transform: translateY(-4px) scale(1.1); }
+    /* FOOTER */
+    footer {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem 0 1rem 0;
+      font-size: 1rem;
+      margin-top: 3rem;
+      border-radius: 0;
+      box-shadow: var(--shadow);
+      width: 100vw;
+      max-width: 100vw;
+      left: 0;
+      right: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .main-content { padding: 0 0.5rem 1.2rem 0.5rem; }
+      .hero-banner { padding: 1.5rem 0.5rem 1.2rem 0.5rem; }
+      .stats-row { flex-wrap: wrap; gap: 1rem; }
+      .skills-carousel-container { max-width: 98vw; }
+    }
+    @media (max-width: 900px) {
+      .sidebar { width: 70px; padding: 1rem 0.2rem; }
+      .sidebar-profile { display: none; }
+      .sidebar-link { justify-content: center; font-size: 1.3rem; padding: 0.7rem 0.5rem; }
+      .sidebar-link span:not(.icon) { display: none; }
+      .main-content { margin-left: 70px; padding: 0 0.5rem 1.2rem 0.5rem; }
+    }
+    @media (max-width: 600px) {
+      body { flex-direction: column; }
+      .sidebar { position: static; width: 100vw; flex-direction: row; justify-content: space-between; align-items: center; border-radius: 0; padding: 0.5rem 0.5rem; min-width: 0; }
+      .sidebar-nav { flex-direction: row; gap: 0.5rem; margin-top: 0; }
+      .sidebar-link { font-size: 1.1rem; padding: 0.5rem 0.7rem; }
+      .main-content { margin-left: 0; padding: 0 0.2rem 0.5rem 0.2rem; }
+      .hero-banner { padding: 1rem 0.2rem 1rem 0.2rem; font-size: 1.1rem; }
+      .hero-title { font-size: 1.2rem; }
+      .hero-welcome { font-size: 1rem; }
+      .stats-row { flex-direction: column; gap: 1rem; }
+      .skills-carousel-container { max-width: 100vw; }
+      .skills-grid { gap: 0.7rem; }
+      .skill-card { min-width: 120px; max-width: 140px; font-size: 0.9rem; }
+      .expertise-section, .timeline-section, .contact-section { padding: 1rem; }
+      footer { font-size: 0.95rem; padding: 1rem 0 0.7rem 0; }
+    }
+    /* --- DARK MODE STYLES --- */
+    body.dark-mode {
+      background: #181824;
+      color: #f4f4fd;
+    }
+    body.dark-mode .sidebar {
+      background: rgba(24,24,36,0.85);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    body.dark-mode .sidebar-name { color: #a9a7ff; }
+    body.dark-mode .sidebar-link { color: #a9a7ff; }
+    body.dark-mode .sidebar-link.active, body.dark-mode .sidebar-link:hover { background: #6C63FF; color: #fff; }
+    body.dark-mode .sidebar-btn { background: #45D9B8; color: #181824; }
+    body.dark-mode .sidebar-btn:hover { background: #FF6584; color: #fff; }
+    body.dark-mode .main-content { background: #23233a; color: #f4f4fd; }
+    body.dark-mode .hero-banner {
+      --light-gradient: radial-gradient(600px circle at var(--light-x) var(--light-y), rgba(255,255,255,0.10) 0%, rgba(255,101,132,0.18) 30%, rgba(69,217,184,0.18) 60%, rgba(108,99,255,0.18) 80%, transparent 100%);
+      background: var(--light-gradient), linear-gradient(135deg, #23233a 60%, #6C63FF 100%);
+      color: #fff;
+    }
+    body.dark-mode .stat-card, body.dark-mode .skills-section, body.dark-mode .expertise-section, body.dark-mode .timeline-section, body.dark-mode .contact-section {
+      background: #23233a;
+      color: #f4f4fd;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    body.dark-mode .skill-card {
+      background: rgba(36,36,56,0.7);
+      color: #a9a7ff;
+    }
+    body.dark-mode .skill-card:hover {
+      background: #6C63FF;
+      color: #fff;
+    }
+    body.dark-mode .expertise-item {
+      background: rgba(36,36,56,0.7);
+      color: #f4f4fd;
+    }
+    body.dark-mode .expertise-item:hover {
+      background: #6C63FF;
+      color: #fff;
+    }
+    body.dark-mode .timeline:before { background: #45D9B8; }
+    body.dark-mode .timeline-dot { background: #FF6584; border: 3px solid #23233a; }
+    body.dark-mode .contact-section { background: #23233a; color: #f4f4fd; }
+    body.dark-mode .contact-label { color: #a9a7ff; }
+    body.dark-mode .contact-social { background: #6C63FF; color: #fff; }
+    body.dark-mode .contact-social:hover { background: #FF6584; color: #fff; }
+    body.dark-mode footer {
+      background: #23233a;
+      color: #f4f4fd;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    body.dark-mode,
+    body.dark-mode * {
+      color: #fff !important;
+      border-color: #fff !important;
+    }
+    /* End dark mode styles */
   </style>
 </head>
 <body>
-  <div class="parallax-bg">
-    <div class="parallax-shape parallax-shape1"></div>
-    <div class="parallax-shape parallax-shape2"></div>
-    <div class="parallax-shape parallax-shape3"></div>
-  </div>
-  <header>
-    <div class="shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
-    <div class="container">
-      <div class="header-content fade-in">
-        <img src="images/vinc.png" alt="VA" class="profile-img" id="profileImg">
-        <h1>Vince Nelmar Alobin</h1>
-        <p class="nickname">You can call me Bin</p>
-        <p class="tagline"><span class="typewriter" id="typewriterTagline"></span></p>
-        <div class="contact-buttons">
-          <button class="btn btn-primary" id="contactBtn">
-            <i>✉️</i> Contact Me
-          </button>
-          <button class="btn btn-secondary" id="specializationBtn">
-            <i>🔧</i> Specialization
-          </button>
-        </div>
-      </div>
-    </div>
-    <svg class="svg-divider" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,30 Q360,60 720,30 T1440,30 V60 H0 Z" fill="#F4F4FD"/>
+  <div id="headerProfilePic" style="position:fixed;top:80px;right:40px;z-index:199;transition:box-shadow 0.3s;display:flex;flex-direction:column;align-items:center;cursor:grab;width:120px;height:120px;">
+    <svg id="profileString" style="position:fixed;top:0;left:0;z-index:198;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
+      <path id="profileStringPath" d="" stroke="#bbb" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>
-  </header>
-  
-  <main class="container">
-    <div class="tabs fade-in delay-1">
-      <button class="tab-btn active" data-tab="about">About Me</button>
-      <button class="tab-btn" data-tab="education">Education</button>
-      <button class="tab-btn" data-tab="specialization">Specialization</button>
-      <button class="tab-btn" data-tab="personal">Personal Info</button>
-    </div>
-    
-    <div id="about" class="tab-content active fade-in delay-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon">👋</div>
-          <h2>About Me</h2>
-        </div>
-        <div class="card-content">
-          <p>Hello! I'm Vince Nelmar Alobin, a dedicated and ambitious 18-year-old student with a passion for learning and personal growth. As a recent Senior High School graduate, I'm excited to explore new opportunities and challenges that will help me develop professionally.</p>
-          <br>
-          <p>I pride myself on my strong work ethic, adaptability, and commitment to excellence in everything I do. Coming from a family with military background, I've developed discipline and respect for structure while maintaining creativity and innovation in my approach to problem-solving.</p>
-          <br>
-          <p>I'm eager to contribute my skills and fresh perspective to meaningful projects and continue my educational journey.</p>
-        </div>
-      </div>
-    </div>
-    
-    <div id="education" class="tab-content fade-in delay-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon">🎓</div>
-          <h2>Educational Background</h2>
-        </div>
-        <div class="card-content">
-          <div class="education-item">
-            <div class="school-name">Pasay City South High School</div>
-            <div class="education-year">2022-2024</div>
-            <div class="school-address">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
-            <div class="school-level">Senior High School</div>
-          </div>
-          
-          <div class="education-item">
-            <div class="school-name">Pasay City South High School</div>
-            <div class="education-year">2018-2022</div>
-            <div class="school-address">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
-            <div class="school-level">Junior High School</div>
-            <div class="achievement">Graduated With Honors</div>
-          </div>
-          
-          <div class="education-item">
-            <div class="school-name">R and O Academy, Inc.</div>
-            <div class="education-year">2012-2018</div>
-            <div class="school-address">P01-22, 4th-3rd St., Barangay 183, Villamor, Pasay City</div>
-            <div class="school-level">Elementary</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div id="specialization" class="tab-content fade-in delay-2 animated-section">
-      <div class="card">
-          <div class="card-header">
-              <div class="card-icon">💻</div>
-              <h2>Technical Skills</h2>
-          </div>
-          <div class="card-content">
-              <div class="skills-container">
-                  <div class="skill-item">
-                      <img src="images/javaa.png" alt="Java" class="skill-icon">
-                      <span class="skill-name">Java</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Java" style="background: linear-gradient(90deg, #6C63FF, #FF6584);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/pythoon.png" alt="Python" class="skill-icon">
-                      <span class="skill-name">Python</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Python" style="background: linear-gradient(90deg, #45D9B8, #6C63FF);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/sqll.png" alt="SQL" class="skill-icon">
-                      <span class="skill-name">SQL</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="SQL" style="background: linear-gradient(90deg, #FF6584, #45D9B8);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/htmml.png" alt="HTML" class="skill-icon">
-                      <span class="skill-name">HTML</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="HTML" style="background: linear-gradient(90deg, #6C63FF, #F4F4FD);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/csss.png" alt="CSS" class="skill-icon">
-                      <span class="skill-name">CSS</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="CSS" style="background: linear-gradient(90deg, #FF6584, #2A2A2A);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/javascript.png" alt="JavaScript" class="skill-icon">
-                      <span class="skill-name">JavaScript</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="JavaScript" style="background: linear-gradient(90deg, #45D9B8, #FF6584);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/php.png" alt="PHP" class="skill-icon">
-                      <span class="skill-name">PHP</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="PHP" style="background: linear-gradient(90deg, #2A2A2A, #6C63FF);"></div></div>
-                  </div>
-                  <div class="skill-item">
-                      <img src="images/Typescript.png" alt="Typescript" class="skill-icon">
-                      <span class="skill-name">Typescript</span>
-                      <div class="skill-bar"><div class="skill-bar-fill" data-skill="Typescript" style="background: linear-gradient(90deg, #6C63FF, #45D9B8);"></div></div>
-                  </div>
-              </div>
-              <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Certifications</h3>
-              <div class="certificate-item">
-                  <div class="certificate-icon">🏆</div>
-                  <div class="certificate-info">
-                      <h3>NC2 in Animation</h3>
-                      <p>Certificate awarded for proficiency in Computer Animation techniques and skills.</p>
-                      <div class="certificate-date">Issued: 2023</div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  
-      <div class="card">
-          <div class="card-header">
-              <div class="card-icon">🎨</div>
-              <h2>Creative Skills</h2>
-          </div>
-          <div class="card-content">
-              <div class="skills-container">
-                  <div class="skill-item">
-                      <span class="skill-name">Web Development</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Computer Programming</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Computer Animation</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Video Editing</span>
-                  </div>
-              </div>
-          </div>
-      </div>
-  
-      
-      <div class="card">
-          <div class="card-header">
-              <div class="card-icon">🏸</div>
-              <h2>Hobbies</h2>
-          </div>
-          <div class="card-content">
-              <div class="skills-container">
-                  <div class="skill-item">
-                      <span class="skill-name">Badminton</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Reading</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Chess</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Wave Board</span>
-                  </div>
-                  <div class="skill-item">
-                      <span class="skill-name">Working Out</span>
-                  </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+    <img src="images/vinc.png" alt="Profile" style="width:120px;height:120px;border-radius:50%;border:4px solid #fff;box-shadow:0 8px 32px #0004;background:#fff;object-fit:cover;">
   </div>
-  </div>
-    <div id="personal" class="tab-content fade-in delay-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon">👤</div>
-          <h2>Personal Information</h2>
-        </div>
-        <div class="card-content">
-          <ul class="info-list">
-            <li>
-              <span class="info-label">Full Name:</span>
-              <span>Vince Nelmar Pega Alobin</span>
-            </li>
-            <li>
-              <span class="info-label">Age:</span>
-              <span id="ageDisplay">18 years old</span> </li>
-            <li>
-              <span class="info-label">Date of Birth:</span>
-              <span>June 28, 2006</span>
-            </li>
-            <li>
-              <span class="info-label">Address:</span>
-              <span>Blk 80 Lot 9, 12th-23rd St., Barangay 183, Villamor, Pasay City</span>
-            </li>
-            <li>
-              <span class="info-label">Email:</span>
-              <span>alobinvince@gmail.com</span>
-            </li>
-            <li>
-              <span class="info-label">Phone:</span>
-              <span>09480914634</span>
-            </li>
-            <li>
-              <span class="info-label">Nationality:</span>
-              <span>Filipino</span>
-            </li>
-          </ul>
-        </div>
+  <aside class="sidebar">
+    <div class="sidebar-profile">
+      <img src="images/vinc.png" alt="Profile" class="sidebar-img">
+      <div class="sidebar-name">Vince Nelmar Alobin</div>
+      <div class="sidebar-nickname">You can call me Bin</div>
+      <div class="sidebar-typewriter" id="typewriterTagline"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#about" class="sidebar-link active"><span class="icon">👤</span><span>About</span></a>
+      <a href="#skills" class="sidebar-link"><span class="icon">💻</span><span>Skills</span></a>
+      <a href="#expertise" class="sidebar-link"><span class="icon">🧠</span><span>Expertise</span></a>
+      <a href="#education" class="sidebar-link"><span class="icon">🎓</span><span>Education</span></a>
+      <a href="#contact" class="sidebar-link"><span class="icon">✉️</span><span>Contact</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="sidebar-btn" id="darkModeBtn">Dark Mode</button>
+    </div>
+  </aside>
+  <main class="main-content">
+    <section class="hero-banner">
+      <div class="hero-date" id="heroDate"></div>
+      <div class="hero-title">Welcome to My Resume</div>
+      <div class="hero-welcome">Hi, I'm Vince Nelmar Alobin</div>
+      <div class="hero-btns">
+        <button class="hero-btn" id="contactBtn"><span>✉️</span> Contact Me</button>
+        <button class="hero-btn secondary" id="specializationBtn"><span>🔧</span> Specialization</button>
+      </div>
+    </section>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value">18</div>
+        <div class="stat-label">Age</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value">1</div>
+        <div class="stat-label">Certificate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎓</div>
+        <div class="stat-value">3</div>
+        <div class="stat-label">Schools</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💻</div>
+        <div class="stat-value">8</div>
+        <div class="stat-label">Tech Skills</div>
       </div>
     </div>
+    <section class="skills-section" id="skills">
+      <div class="skills-title">Technical Skills</div>
+      <div class="skills-carousel-container">
+        <div class="skills-grid" id="skillsGridTop">
+          <div class="skill-card">
+            <img src="images/javaa.png" alt="Java" class="skill-icon">
+            <div class="skill-name">Java</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/sqll.png" alt="SQL" class="skill-icon">
+            <div class="skill-name">SQL</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/csss.png" alt="CSS" class="skill-icon">
+            <div class="skill-name">CSS</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/javascript.png" alt="JavaScript" class="skill-icon">
+            <div class="skill-name">JavaScript</div>
+          </div>
+        </div>
+        <div class="skills-grid" id="skillsGridBottom" style="margin-top: 1.2rem;">
+          <div class="skill-card">
+            <img src="images/pythoon.png" alt="Python" class="skill-icon">
+            <div class="skill-name">Python</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/htmml.png" alt="HTML" class="skill-icon">
+            <div class="skill-name">HTML</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/php.png" alt="PHP" class="skill-icon">
+            <div class="skill-name">PHP</div>
+          </div>
+          <div class="skill-card">
+            <img src="images/Typescript.png" alt="Typescript" class="skill-icon">
+            <div class="skill-name">Typescript</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="expertise-section" id="expertise">
+      <div class="expertise-title">Expertise</div>
+      <div class="expertise-list">
+        <div class="expertise-item">Web Development</div>
+        <div class="expertise-item">Computer Programming</div>
+        <div class="expertise-item">Computer Animation</div>
+        <div class="expertise-item">Video Editing</div>
+      </div>
+    </section>
+    <section class="timeline-section" id="education">
+      <div class="timeline-title">Education</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">Pasay City South High School</div>
+          <div class="timeline-date">2022-2024</div>
+          <div class="timeline-desc">Senior High School<br>Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">Pasay City South High School</div>
+          <div class="timeline-date">2018-2022</div>
+          <div class="timeline-desc">Junior High School<br>Piccio Garden, Barangay 183, Villamor, Pasay City<br><span style="color:var(--secondary);font-style:italic;">Graduated With Honors</span></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">R and O Academy, Inc.</div>
+          <div class="timeline-date">2012-2018</div>
+          <div class="timeline-desc">Elementary<br>P01-22, 4th-3rd St., Barangay 183, Villamor, Pasay City</div>
+        </div>
+      </div>
+    </section>
+    <section class="contact-section" id="contact">
+      <div class="contact-title">Contact & Personal Info</div>
+      <div class="contact-info">
+        <div><span class="contact-label">Full Name:</span> <span class="contact-value">Vince Nelmar Pega Alobin</span></div>
+        <div><span class="contact-label">Age:</span> <span class="contact-value" id="ageDisplay">18 years old</span></div>
+        <div><span class="contact-label">Date of Birth:</span> <span class="contact-value">June 28, 2006</span></div>
+        <div><span class="contact-label">Address:</span> <span class="contact-value">Blk 80 Lot 9, 12th-23rd St., Barangay 183, Villamor, Pasay City</span></div>
+        <div><span class="contact-label">Email:</span> <span class="contact-value">alobinvince@gmail.com</span></div>
+        <div><span class="contact-label">Phone:</span> <span class="contact-value">09480914634</span></div>
+        <div><span class="contact-label">Nationality:</span> <span class="contact-value">Filipino</span></div>
+      </div>
+      <div class="contact-socials">
+        <a href="#" class="contact-social" title="Facebook">FB</a>
+        <a href="#" class="contact-social" title="LinkedIn">IN</a>
+        <a href="#" class="contact-social" title="Twitter">TW</a>
+      </div>
+    </section>
   </main>
-  
-  <footer class="fade-in delay-4">
-    <div class="container">
-      <p class="footer-text">© 2025 Vince Nelmar Alobin. All rights reserved.</p>
-      <p>I hereby certify that the information provided is true and correct to the best of my knowledge and belief.</p>
-      <div class="social-links">
-        <a href="#" class="social-link">FB</a>
-        <a href="#" class="social-link">IN</a>
-        <a href="#" class="social-link">TW</a>
-      </div>
-    </div>
-  </footer>
-  
-  <div class="theme-switch" id="themeSwitch">
-    <span class="theme-icon">🌙</span>
-  </div>
-
-  <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">⬆️</button>
-  
   <script>
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
-        
-        button.classList.add('active');
-        const tabId = button.getAttribute('data-tab');
-        document.getElementById(tabId).classList.add('active');
-      });
-    });
-    
-    document.getElementById('contactBtn').addEventListener('click', () => {
-      const email = 'alobinvince@gmail.com';
-      const phone = '09480914634';
-      
-      alert(`Contact Information:\nEmail: ${email}\nPhone: ${phone}`);
-    });
-    
-    document.getElementById('specializationBtn').addEventListener('click', () => {
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
-      
-      const specializationTab = document.querySelector('[data-tab="specialization"]');
-      specializationTab.classList.add('active');
-      document.getElementById('specialization').classList.add('active');
-    });
-    
-    let darkMode = false;
-    const themeSwitch = document.getElementById('themeSwitch');
-    const themeIcon = document.querySelector('.theme-icon');
-    const body = document.body;
-    
-    themeSwitch.addEventListener('click', () => {
-      darkMode = !darkMode;
-      
-      if (darkMode) {
-        body.classList.add('dark-mode');
-        themeIcon.textContent = '☀️';
-      } else {
-        body.classList.remove('dark-mode');
-        themeIcon.textContent = '🌙';
-      }
-    });
-    
-    const fadeElements = document.querySelectorAll('.fade-in');
-    
-    function checkFade() {
-      fadeElements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (elementTop < windowHeight - 50) {
-          element.style.opacity = '1';
-          element.style.transform = 'translateY(0)';
+    // Sidebar active link
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    window.addEventListener('scroll', () => {
+      let fromTop = window.scrollY + 80;
+      sidebarLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        if (section && section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+          sidebarLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
         }
       });
+    });
+    // Typewriter effect (in and out)
+    const taglineText = "Aspiring Professional | Student Leader";
+    const typewriterTagline = document.getElementById('typewriterTagline');
+    let twIndex = 0;
+    let typingForward = true;
+    function typeTaglineLoop() {
+      if (typingForward) {
+        if (twIndex < taglineText.length) {
+          typewriterTagline.textContent += taglineText.charAt(twIndex);
+          twIndex++;
+          setTimeout(typeTaglineLoop, 60);
+        } else {
+          typingForward = false;
+          setTimeout(typeTaglineLoop, 1200);
+        }
+      } else {
+        if (twIndex > 0) {
+          typewriterTagline.textContent = taglineText.substring(0, twIndex - 1);
+          twIndex--;
+          setTimeout(typeTaglineLoop, 40);
+        } else {
+          typingForward = true;
+          setTimeout(typeTaglineLoop, 600);
+        }
+      }
     }
-    
-    checkFade();
-    
-    window.addEventListener('scroll', checkFade);
-
+    typeTaglineLoop();
+    // --- CONTINUOUS SCROLLING TWO-LAYER SKILLS CAROUSEL ---
+    function setupContinuousCarousel(gridId, speed, reverse) {
+      const grid = document.getElementById(gridId);
+      const cards = Array.from(grid.querySelectorAll('.skill-card'));
+      cards.forEach(card => grid.appendChild(card.cloneNode(true)));
+      let scrollPos = 0;
+      function animate() {
+        scrollPos += speed * (reverse ? -1 : 1);
+        if (scrollPos >= grid.scrollWidth / 2) scrollPos = 0;
+        if (scrollPos < 0) scrollPos = grid.scrollWidth / 2;
+        grid.style.transform = `translateX(-${scrollPos}px)`;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+    setupContinuousCarousel('skillsGridTop', 0.7, false);
+    setupContinuousCarousel('skillsGridBottom', 0.7, true);
     // Dynamic Age Calculation
     const dob = new Date('2006-06-28');
     const today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
     const m = today.getMonth() - dob.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-        age--;
-    }
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) { age--; }
     document.getElementById('ageDisplay').textContent = `${age} years old`;
-
-    // Dynamic Copyright Year
-    document.querySelector('.footer-text').textContent = `© ${new Date().getFullYear()} Vince Nelmar Alobin. All rights reserved.`;
-
-    // Scroll to Top Button Logic
-    let mybutton = document.getElementById("scrollToTopBtn");
-
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        mybutton.style.display = "block";
-      } else {
-        mybutton.style.display = "none";
+    // Dynamic Hero Date
+    document.getElementById('heroDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    // Contact button scroll
+    document.getElementById('contactBtn').addEventListener('click', () => {
+      document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    });
+    // Specialization button scroll
+    document.getElementById('specializationBtn').addEventListener('click', () => {
+      document.getElementById('skills').scrollIntoView({behavior:'smooth'});
+    });
+    // --- DARK MODE TOGGLE ---
+    function setDarkMode(enabled) {
+      document.body.classList.toggle('dark-mode', enabled);
+      localStorage.setItem('darkMode', enabled ? '1' : '0');
+      var btn = document.getElementById('darkModeBtn');
+      if (btn) btn.textContent = enabled ? 'Light Mode' : 'Dark Mode';
+    }
+    (function() {
+      const dark = localStorage.getItem('darkMode') === '1';
+      setDarkMode(dark);
+      var btn = document.getElementById('darkModeBtn');
+      if (btn) btn.addEventListener('click', function() {
+        const enabled = !document.body.classList.contains('dark-mode');
+        setDarkMode(enabled);
+      });
+    })();
+    // --- HERO BANNER LIGHT FOLLOW EFFECT ---
+    const heroBanner = document.querySelector('.hero-banner');
+    function updateHeroLight(e) {
+      const rect = heroBanner.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      heroBanner.style.setProperty('--light-x', `${x}%`);
+      heroBanner.style.setProperty('--light-y', `${y}%`);
+    }
+    if (heroBanner) {
+      heroBanner.addEventListener('mousemove', updateHeroLight);
+      heroBanner.addEventListener('mouseleave', function() {
+        heroBanner.style.setProperty('--light-x', '50%');
+        heroBanner.style.setProperty('--light-y', '50%');
+      });
+      // Also update on dark mode toggle
+      const observer = new MutationObserver(() => {
+        // force background update by resetting the variable
+        heroBanner.style.setProperty('--light-x', '50%');
+        heroBanner.style.setProperty('--light-y', '50%');
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+    // --- INTERACTIVE PROFILE DRAG WITH STRING PHYSICS AND SPRING RETURN ---
+    (function() {
+      const pic = document.getElementById('headerProfilePic');
+      const stringSvg = document.getElementById('profileString');
+      const stringPath = document.getElementById('profileStringPath');
+      const picSize = 120;
+      let dragging = false, startX = 0, startY = 0, startLeft = 0, startTop = 0;
+      let longPressTimeout = null;
+      let isLongPress = false;
+      // Initial and current position
+      const original = { top: 80, left: window.innerWidth - picSize - 40 };
+      let pos = { top: original.top, left: original.left };
+      const anchor = { x: window.innerWidth - 60, y: 0 };
+      function setPicPos(left, top) {
+        pos.left = Math.max(0, Math.min(left, window.innerWidth - picSize));
+        pos.top = Math.max(0, Math.min(top, window.innerHeight - picSize));
+        pic.style.left = pos.left + 'px';
+        pic.style.top = pos.top + 'px';
+        updateString();
       }
-    }
-
-    // When the user clicks on the button, scroll to the top of the document
-    function topFunction() {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    }
-
-    // --- TYPEWRITER EFFECT FOR TAGLINE ---
-    const taglineText = "Aspiring Professional | Student Leader";
-    const typewriterTagline = document.getElementById('typewriterTagline');
-    let twIndex = 0;
-    function typeTagline() {
-      if (twIndex < taglineText.length) {
-        typewriterTagline.textContent += taglineText.charAt(twIndex);
-        twIndex++;
-        setTimeout(typeTagline, 60);
+      function updateString() {
+        const anchorX = anchor.x;
+        const anchorY = anchor.y;
+        const picX = pos.left + picSize/2;
+        const picY = pos.top;
+        stringSvg.setAttribute('width', window.innerWidth);
+        stringSvg.setAttribute('height', window.innerHeight);
+        const midX = (anchorX + picX) / 2;
+        const midY = Math.max(anchorY + 40, (anchorY + picY) / 2 + 60);
+        stringPath.setAttribute('d', `M${anchorX},${anchorY} Q${midX},${midY} ${picX},${picY}`);
       }
-    }
-    typeTagline();
-
-    // --- ANIMATED SKILL BARS ---
-    function animateSkillBars() {
-      document.querySelectorAll('.skill-bar-fill').forEach(bar => {
-        let skill = bar.getAttribute('data-skill');
-        let percent = 0;
-        switch(skill) {
-          case 'Java': percent = 85; break;
-          case 'Python': percent = 80; break;
-          case 'SQL': percent = 75; break;
-          case 'HTML': percent = 90; break;
-          case 'CSS': percent = 85; break;
-          case 'JavaScript': percent = 80; break;
-          case 'PHP': percent = 70; break;
-          case 'Typescript': percent = 65; break;
+      setPicPos(pos.left, pos.top);
+      window.addEventListener('resize', () => {
+        anchor.x = window.innerWidth - 60;
+        setPicPos(pos.left, pos.top);
+      });
+      // Long press logic
+      function onPointerDown(e) {
+        isLongPress = false;
+        longPressTimeout = setTimeout(() => {
+          isLongPress = true;
+          dragging = true;
+          startX = (e.touches ? e.touches[0].clientX : e.clientX);
+          startY = (e.touches ? e.touches[0].clientY : e.clientY);
+          startLeft = pos.left;
+          startTop = pos.top;
+          pic.style.cursor = 'grabbing';
+          document.body.style.userSelect = 'none';
+        }, 300);
+      }
+      function onPointerUp(e) {
+        clearTimeout(longPressTimeout);
+        if (dragging) {
+          dragging = false;
+          pic.style.cursor = 'grab';
+          document.body.style.userSelect = '';
+          springToOriginal();
         }
-        setTimeout(() => { bar.style.width = percent + '%'; }, 500);
-      });
-    }
-    // Animate skill bars when specialization tab is shown
-    document.querySelector('[data-tab="specialization"]').addEventListener('click', animateSkillBars);
-    // Animate on load if already active
-    if(document.getElementById('specialization').classList.contains('active')) animateSkillBars();
-
-    // --- 3D TILT PROFILE IMAGE ---
-    const profileImg = document.getElementById('profileImg');
-    profileImg.addEventListener('mousemove', function(e) {
-      const rect = this.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (centerY - y) / 10;
-      const rotateY = (x - centerX) / 10;
-      this.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-    });
-    profileImg.addEventListener('mouseleave', function() {
-      this.style.transform = '';
-    });
-    // --- PARALLAX BG ON SCROLL ---
-    window.addEventListener('scroll', function() {
-      const scrollY = window.scrollY;
-      document.querySelectorAll('.parallax-shape').forEach((shape, i) => {
-        shape.style.transform = `translateY(${scrollY * (0.1 + i*0.07)}px)`;
-      });
-    });
-    // --- ENHANCED SECTION REVEAL ---
-    function revealSections() {
-      document.querySelectorAll('.animated-section').forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if(rect.top < window.innerHeight - 60) {
-          section.classList.add('visible');
+      }
+      function onPointerMove(e) {
+        if (!dragging) return;
+        let clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+        let clientY = (e.touches ? e.touches[0].clientY : e.clientY);
+        let dx = clientX - startX;
+        let dy = clientY - startY;
+        setPicPos(startLeft + dx, startTop + dy);
+      }
+      // Spring animation with jiggle
+      function springToOriginal() {
+        let vx = 0, vy = 0;
+        let stiffness = 0.12;
+        let damping = 0.75;
+        function animate() {
+          let dx = original.left - pos.left;
+          let dy = original.top - pos.top;
+          vx += dx * stiffness;
+          vy += dy * stiffness;
+          vx *= damping;
+          vy *= damping;
+          if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5 || Math.abs(vx) > 0.5 || Math.abs(vy) > 0.5) {
+            setPicPos(pos.left + vx, pos.top + vy);
+            requestAnimationFrame(animate);
+          } else {
+            setPicPos(original.left, original.top);
+          }
         }
-      });
-    }
-    window.addEventListener('scroll', revealSections);
-    window.addEventListener('load', revealSections);
+        animate();
+      }
+      // Mouse events
+      pic.addEventListener('mousedown', onPointerDown);
+      document.addEventListener('mousemove', onPointerMove);
+      document.addEventListener('mouseup', onPointerUp);
+      // Touch events
+      pic.addEventListener('touchstart', onPointerDown);
+      document.addEventListener('touchmove', onPointerMove);
+      document.addEventListener('touchend', onPointerUp);
+      // Prevent click from triggering after drag
+      pic.addEventListener('click', function(e) {
+        if (dragging) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      }, true);
+    })();
   </script>
 </body>
 </html>
