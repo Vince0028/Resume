@@ -618,33 +618,45 @@ a.expertise-item:hover {
 
 .expertise-icon {
   font-size: 2rem;
-  min-width: 50px;
+  min-width: 80px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .expertise-icon img.project-logo {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3), 
+              0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 3px solid rgba(99, 102, 241, 0.5);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  padding: 4px;
 }
 
 .expertise-icon img.project-logo:hover {
-  transform: scale(1.1) rotate(3deg);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  transform: scale(1.15) rotate(-5deg) translateY(-5px);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5), 
+              0 8px 20px rgba(139, 92, 246, 0.3),
+              0 0 30px rgba(99, 102, 241, 0.2);
   border-color: var(--primary);
+  filter: brightness(1.1) saturate(1.2);
 }
 
 body.light-mode .expertise-icon img.project-logo {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25), 
+              0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(99, 102, 241, 0.6);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
 }
 
 body.light-mode .expertise-icon img.project-logo:hover {
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.35), 
+              0 8px 20px rgba(139, 92, 246, 0.25);
 }
 
 .expertise-text {
@@ -749,6 +761,71 @@ body.light-mode .expertise-icon img.project-logo:hover {
 body.light-mode .badge-not-deployed {
   background: #cbd5e1;
   color: #0f172a;
+}
+
+.badge-deployed {
+  display: inline-block;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+body.light-mode .badge-deployed {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+/* Tech Stack Badges */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--text-primary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tech-badge:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.25));
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.tech-badge img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+body.light-mode .tech-badge {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border-color: rgba(99, 102, 241, 0.4);
+  color: var(--text-primary);
+}
+
+body.light-mode .tech-badge:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
 }
 
 /* Contact Grid */
