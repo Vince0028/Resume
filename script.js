@@ -234,3 +234,34 @@ document.querySelectorAll('.fade-in').forEach(el => {
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
 });
+
+// Mobile right sidebar animation
+const mobileObserverOptions = {
+  threshold: 0.1,
+  rootMargin: '0px'
+};
+
+const mobileObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && window.innerWidth <= 991) {
+      entry.target.classList.add('mobile-visible');
+      console.log('Right sidebar visible on mobile');
+      mobileObserver.unobserve(entry.target);
+    }
+  });
+}, mobileObserverOptions);
+
+// Observe right sidebar on mobile
+const rightSidebar = document.querySelector('.right-sidebar');
+if (rightSidebar) {
+  console.log('Right sidebar found, observing...');
+  mobileObserver.observe(rightSidebar);
+  
+  // Fallback: trigger after a short delay if observer doesn't work
+  setTimeout(() => {
+    if (window.innerWidth <= 991 && !rightSidebar.classList.contains('mobile-visible')) {
+      console.log('Fallback trigger for mobile sidebar');
+      rightSidebar.classList.add('mobile-visible');
+    }
+  }, 1000);
+}
