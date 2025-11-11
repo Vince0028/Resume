@@ -1064,6 +1064,10 @@ footer {
     margin-bottom: 2rem;
   }
 
+  .right-sidebar-section.hide-on-mobile {
+    display: none !important;
+  }
+
   .right-sidebar.mobile-visible .right-sidebar-section {
     animation: mobileFadeInItem 0.5s ease-out forwards;
   }
