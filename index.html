@@ -43,6 +43,10 @@
             <i class="bi bi-kanban-fill"></i>
             <span>Projects</span>
           </a>
+          <a href="#certificates" class="nav-item-custom">
+            <i class="bi bi-award-fill"></i>
+            <span>Certificates</span>
+          </a>
           <a href="#education" class="nav-item-custom">
             <i class="bi bi-mortarboard-fill"></i>
             <span>Education</span>
@@ -270,6 +274,26 @@
         </div>
       </section>
 
+      <section id="certificates" class="section fade-in">
+        <div class="section-card">
+          <h2 class="section-header">
+            <i class="bi bi-award-fill"></i>
+            Professional Certificates
+          </h2>
+          <div class="certificates-grid">
+            <div class="cert-card" id="nc2CertThumb">
+              <div class="cert-thumb-wrap">
+                <img src="Images/NC2 cert.png" alt="NC2 Certificate" class="cert-thumb">
+              </div>
+              <div class="cert-info">
+                <div class="cert-title">NC2 Certificate</div>
+                <div class="cert-meta">Tap to view full certificate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="education" class="section fade-in">
         <div class="section-card">
           <h2 class="section-header">
@@ -278,10 +302,17 @@
           </h2>
           <div class="timeline">
             <div class="timeline-item">
+              <div class="timeline-year">2024 - Present</div>
+              <div class="timeline-title">Asia Pacific College (APC)</div>
+              <div class="timeline-subtitle">Bachelor of Science in Information Technology (BSIT) • Second Year</div>
+              <div class="timeline-desc">3 Humabon Place, Magallanes, Makati City, Philippines</div>
+            </div>
+            <div class="timeline-item">
               <div class="timeline-year">2022 - 2024</div>
               <div class="timeline-title">Pasay City South High School</div>
               <div class="timeline-subtitle">Senior High School</div>
               <div class="timeline-desc">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+              <span class="badge-honor">✨ Graduated With Honors</span>
             </div>
             <div class="timeline-item">
               <div class="timeline-year">2018 - 2022</div>
@@ -367,6 +398,22 @@
           </div>
         </div>
       </section>
+
+      <div id="certOverlay" class="cert-overlay">
+        <div class="cert-content">
+          <div class="cert-toolbar">
+            <button id="certFullscreen" class="cert-fullscreen-btn" aria-label="Toggle full image">⤢</button>
+            <button id="certClose" class="cert-close" aria-label="Close certificate">×</button>
+          </div>
+          <div class="cert-image-frame">
+            <img src="Images/NC2 cert.png" alt="NC2 Certificate Full" class="cert-full" id="certFullImg">
+          </div>
+          <div class="cert-details">
+            <h3 class="cert-full-title">NC2 Certificate</h3>
+            <p class="cert-full-meta">Issued by TESDA • Status: Valid</p>
+          </div>
+        </div>
+      </div>
 
         <footer>
         </footer>
