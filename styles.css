@@ -1070,6 +1070,15 @@ footer {
     }
   }
 
+  /* Reorder and show Expertise above Skill Set on mobile */
+  .right-sidebar {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .right-sidebar .right-sidebar-section { order: 2; }
+  .right-sidebar .right-sidebar-section.hide-on-mobile { display: block !important; order: 1; }
+  .right-sidebar .right-sidebar-section + .right-sidebar-section { margin-top: 1.25rem; }
+
   .sidebar {
     position: fixed;
     left: 0;
