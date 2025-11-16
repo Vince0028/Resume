@@ -1,3 +1,32 @@
+// Move Skill Set section into main content above Expertise on mobile
+(function(){
+	const skillSet=document.getElementById('rightSkillSet');
+	const rightSidebarEl=document.querySelector('.right-sidebar');
+	const expertiseMain=document.getElementById('expertise');
+	if(!skillSet||!rightSidebarEl||!expertiseMain) return;
+	const placeholder=document.createElement('div');
+	placeholder.id='skillSetPlaceholder';
+	skillSet.parentNode.insertBefore(placeholder, skillSet);
+	function placeForViewport(){
+		if(window.innerWidth<=991){
+			if(skillSet.parentNode!==expertiseMain.parentNode){
+				expertiseMain.parentNode.insertBefore(skillSet, expertiseMain);
+			} else {
+				expertiseMain.parentNode.insertBefore(skillSet, expertiseMain);
+			}
+			skillSet.classList.add('as-main-section');
+		} else {
+			if(placeholder.parentNode){
+				placeholder.parentNode.insertBefore(skillSet, placeholder.nextSibling);
+			} else {
+				rightSidebarEl.insertBefore(skillSet, rightSidebarEl.firstChild);
+			}
+			skillSet.classList.remove('as-main-section');
+		}
+	}
+	placeForViewport();
+	let resizeTimer=null;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(placeForViewport,150);});
+})();
 const certThumb=document.getElementById('nc2CertThumb');
 const certOverlay=document.getElementById('certOverlay');
 const certClose=document.getElementById('certClose');

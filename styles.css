@@ -1070,14 +1070,23 @@ footer {
     }
   }
 
-  /* Reorder and show Expertise above Skill Set on mobile */
+  /* Mobile layout adjustments: keep sidebar Expertise hidden */
   .right-sidebar {
     display: flex !important;
     flex-direction: column;
   }
   .right-sidebar .right-sidebar-section { order: 2; }
-  .right-sidebar .right-sidebar-section.hide-on-mobile { display: block !important; order: 1; }
+  .right-sidebar .right-sidebar-section.hide-on-mobile { display: none !important; order: 1; }
   .right-sidebar .right-sidebar-section + .right-sidebar-section { margin-top: 1.25rem; }
+
+  /* Styling when Skill Set is moved into main content */
+  #rightSkillSet.as-main-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
 
   .sidebar {
     position: fixed;
