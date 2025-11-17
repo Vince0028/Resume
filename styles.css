@@ -1117,7 +1117,8 @@ footer {
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
   
   body.light-mode .sidebar {
@@ -1127,6 +1128,18 @@ footer {
   
   body.light-mode .sidebar.active::before {
     background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  body.sidebar-open {
+    overflow: hidden !important;
+  }
+  
+  body.sidebar-open .main-content,
+  body.sidebar-open .right-sidebar {
+    pointer-events: none;
+    user-select: none;
   }
   
   .sidebar .lanyard-mount {
