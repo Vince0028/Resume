@@ -1120,6 +1120,15 @@ footer {
     backdrop-filter: blur(2px);
   }
   
+  body.light-mode .sidebar {
+    background: var(--darker-bg);
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  body.light-mode .sidebar.active::before {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
   .sidebar .lanyard-mount {
     width: 180px;
     height: 280px;
