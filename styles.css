@@ -373,18 +373,25 @@ body.light-mode .btn-hero-outline {
   margin-top: 1.5rem;
   overflow-x: auto;
   overflow-y: hidden;
+  transition: all 0.3s ease;
+}
+
+.github-calendar-wrapper:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
 }
 
 .contrib-header {
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .contrib-calendar {
   position: relative;
-  padding-top: 20px;
+  padding-top: 22px;
 }
 
 .contrib-months {
@@ -392,7 +399,7 @@ body.light-mode .btn-hero-outline {
   top: 0;
   left: 0;
   right: 0;
-  height: 20px;
+  height: 22px;
   display: flex;
 }
 
@@ -401,16 +408,17 @@ body.light-mode .btn-hero-outline {
   font-size: 0.7rem;
   color: var(--text-secondary);
   font-weight: 500;
+  font-family: 'Inter', sans-serif;
 }
 
 .contrib-days {
   position: absolute;
   left: 0;
-  top: 25px;
+  top: 27px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 25px;
+  width: 28px;
 }
 
 .contrib-days span {
@@ -419,6 +427,7 @@ body.light-mode .btn-hero-outline {
   height: 10px;
   line-height: 10px;
   font-weight: 500;
+  font-family: 'Inter', sans-serif;
 }
 
 .contrib-days span:nth-child(1) {
@@ -435,83 +444,99 @@ body.light-mode .btn-hero-outline {
 
 .contrib-grid {
   display: flex;
-  gap: 3px;
-  margin-left: 30px;
+  gap: 3.5px;
+  margin-left: 32px;
   padding: 5px 0;
 }
 
 .contrib-week {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 3.5px;
 }
 
 .contrib-day {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 2px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  border: 1px solid rgba(27, 31, 35, 0.06);
 }
 
 .contrib-day.empty {
   background: transparent;
+  border: none;
 }
 
 .contrib-day.level-0 {
-  background: var(--border-color);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: var(--border-color);
 }
 
 .contrib-day.level-1 {
   background: #0e4429;
+  border-color: #0e4429;
 }
 
 .contrib-day.level-2 {
   background: #006d32;
+  border-color: #006d32;
 }
 
 .contrib-day.level-3 {
   background: #26a641;
+  border-color: #26a641;
 }
 
 .contrib-day.level-4 {
   background: #39d353;
+  border-color: #39d353;
 }
 
 body.light-mode .contrib-day.level-0 {
   background: #ebedf0;
+  border-color: rgba(27, 31, 35, 0.06);
 }
 
 body.light-mode .contrib-day.level-1 {
   background: #9be9a8;
+  border-color: #9be9a8;
 }
 
 body.light-mode .contrib-day.level-2 {
   background: #40c463;
+  border-color: #40c463;
 }
 
 body.light-mode .contrib-day.level-3 {
   background: #30a14e;
+  border-color: #30a14e;
 }
 
 body.light-mode .contrib-day.level-4 {
   background: #216e39;
+  border-color: #216e39;
 }
 
-.contrib-day:hover {
+.contrib-day:hover:not(.empty) {
   outline: 2px solid var(--primary);
-  outline-offset: 0;
-  transform: scale(1.3);
+  outline-offset: 1px;
+  transform: scale(1.25);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .contrib-legend {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 1rem;
-  margin-left: 30px;
+  gap: 5px;
+  margin-top: 1.25rem;
+  margin-left: 32px;
   font-size: 0.7rem;
   color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
 
 .contrib-legend .contrib-day {
@@ -522,20 +547,30 @@ body.light-mode .github-calendar-wrapper {
   background: var(--card-bg);
 }
 
+body.light-mode .github-calendar-wrapper:hover {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
 @media (max-width: 991px) {
   .github-calendar-wrapper {
-    padding: 1rem;
-    border-radius: 12px;
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+  
+  .contrib-header {
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 576px) {
   .github-calendar-wrapper {
-    padding: 0.75rem;
+    padding: 1rem;
+    border-radius: 12px;
   }
   
   .contrib-header {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
   
   .contrib-months span {
@@ -544,6 +579,19 @@ body.light-mode .github-calendar-wrapper {
   
   .contrib-days span {
     font-size: 0.6rem;
+  }
+  
+  .contrib-day {
+    width: 9px;
+    height: 9px;
+  }
+  
+  .contrib-grid {
+    gap: 3px;
+  }
+  
+  .contrib-week {
+    gap: 3px;
   }
 }
 
