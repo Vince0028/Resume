@@ -17,6 +17,24 @@ document.addEventListener('DOMContentLoaded', async function() {
     const contributions = data.contributions;
     const totalContributions = data.total[Object.keys(data.total)[0]];
     
+    // Add future dates to fill the rest of the year
+    const lastDate = new Date(contributions[contributions.length - 1].date);
+    const today = new Date();
+    const endOfYear = new Date(today.getFullYear(), 11, 31); // December 31 of current year
+    
+    // Fill until the end of the current week (Saturday)
+    let currentDate = new Date(lastDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+    
+    while (currentDate <= endOfYear) {
+      contributions.push({
+        date: currentDate.toISOString().split('T')[0],
+        count: 0,
+        level: 0
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
     // Group contributions by week
     const weeks = [];
     let currentWeek = [];
