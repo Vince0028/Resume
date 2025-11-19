@@ -365,6 +365,32 @@ body.light-mode .btn-hero-outline {
   line-height: 1.6;
 }
 
+.github-calendar-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.github-calendar-container .calendar {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+}
+
+.github-calendar-container .calendar text {
+  fill: var(--text-secondary) !important;
+}
+
+.github-calendar-container .calendar rect {
+  rx: 2;
+  ry: 2;
+}
+
+body.light-mode .github-calendar-container .calendar text {
+  fill: var(--text-secondary) !important;
+}
+
 .contact-cta {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
