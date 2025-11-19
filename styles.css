@@ -1024,6 +1024,23 @@ body.light-mode .badge-deployed {
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
+.badge-prototype {
+  display: inline-block;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #ffffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+body.light-mode .badge-prototype {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25);
+}
+
 .tech-stack {
   display: flex;
   flex-wrap: wrap;
