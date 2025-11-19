@@ -25,19 +25,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     const weeks = [];
     let currentWeek = [];
     const monthLabels = [];
-    let lastMonth = -1;
+    const monthPositions = new Map();
     
     contributions.forEach((day, index) => {
       const date = new Date(day.date);
       const dayOfWeek = date.getDay();
-      const month = date.getMonth();
-      
-      // Track month changes at the start of weeks
-      if (dayOfWeek === 0 && month !== lastMonth) {
-        const monthName = date.toLocaleDateString('en-US', { month: 'short' });
-        monthLabels.push({ month: monthName, weekIndex: weeks.length });
-        lastMonth = month;
-      }
+      const monthYear = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
       
       if (dayOfWeek === 0 && currentWeek.length > 0) {
         weeks.push(currentWeek);
@@ -46,10 +39,25 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       currentWeek.push(day);
       
+      // Track the first occurrence of each month
+      if (!monthPositions.has(monthYear) && dayOfWeek === 0) {
+        const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+        monthPositions.set(monthYear, { month: monthName, weekIndex: weeks.length });
+      }
+      
       if (index === contributions.length - 1) {
         weeks.push(currentWeek);
       }
     });
+    
+    // Convert month positions to array
+    monthPositions.forEach(value => {
+      monthLabels.push(value);
+    });
+    
+    // Build the calendar HTML
+    let html = `<div class="contrib-header">${totalContributions.toLocaleString()} contributions in the last year</div>`;
+    html += `<div class="contrib-calendar">`;
     
     // Month labels
     html += `<div class="contrib-months">`;
