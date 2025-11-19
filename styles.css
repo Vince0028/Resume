@@ -1048,6 +1048,13 @@ body.light-mode .badge-prototype {
   margin-top: 0.75rem;
 }
 
+.project-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 .tech-badge {
   display: inline-flex;
   align-items: center;
