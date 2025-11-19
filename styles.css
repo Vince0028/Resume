@@ -365,30 +365,77 @@ body.light-mode .btn-hero-outline {
   line-height: 1.6;
 }
 
-.github-calendar-container {
-  background: var(--card-bg);
+.github-calendar-wrapper {
+  background: var(--darker-bg);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.github-calendar-container .calendar {
-  font-size: 0.75rem;
+.github-calendar-wrapper .calendar {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text-primary);
+  min-width: 100%;
 }
 
-.github-calendar-container .calendar text {
+.github-calendar-wrapper .calendar svg {
+  max-width: 100%;
+  overflow: visible;
+}
+
+.github-calendar-wrapper .calendar text {
+  fill: var(--text-secondary) !important;
+  font-size: 10px !important;
+  font-weight: 500;
+}
+
+.github-calendar-wrapper .calendar .contrib-column {
+  display: inline-block;
+}
+
+.github-calendar-wrapper .calendar rect {
+  rx: 3;
+  ry: 3;
+  transition: all 0.2s ease;
+}
+
+.github-calendar-wrapper .calendar rect:hover {
+  stroke: var(--primary);
+  stroke-width: 1.5px;
+  transform: scale(1.1);
+  transform-origin: center;
+}
+
+body.light-mode .github-calendar-wrapper {
+  background: var(--card-bg);
+}
+
+body.light-mode .github-calendar-wrapper .calendar text {
   fill: var(--text-secondary) !important;
 }
 
-.github-calendar-container .calendar rect {
-  rx: 2;
-  ry: 2;
+@media (max-width: 991px) {
+  .github-calendar-wrapper {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .github-calendar-wrapper .calendar text {
+    font-size: 8px !important;
+  }
 }
 
-body.light-mode .github-calendar-container .calendar text {
-  fill: var(--text-secondary) !important;
+@media (max-width: 576px) {
+  .github-calendar-wrapper {
+    padding: 0.75rem;
+  }
+  
+  .github-calendar-wrapper .calendar {
+    font-size: 0.7rem;
+  }
 }
 
 .contact-cta {
