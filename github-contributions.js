@@ -1,40 +1,104 @@
-// Initialize GitHub contributions calendar
-document.addEventListener('DOMContentLoaded', function() {
+// Fetch and display GitHub contributions
+document.addEventListener('DOMContentLoaded', async function() {
   const username = 'Vince0028';
+  const calendarEl = document.getElementById('github-calendar');
   
-  if (typeof GitHubCalendar !== 'undefined') {
-    try {
-      GitHubCalendar("#github-calendar", username, {
-        responsive: true,
-        tooltips: true
-      });
-      
-      console.log('GitHub calendar loaded successfully');
-      
-      // Theme handling
-      const themeToggle = document.getElementById('themeToggle');
-      if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-          // Reload calendar on theme change for proper color adaptation
-          setTimeout(() => {
-            const calendarEl = document.getElementById('github-calendar');
-            if (calendarEl) {
-              calendarEl.innerHTML = '';
-              GitHubCalendar("#github-calendar", username, {
-                responsive: true,
-                tooltips: true
-              });
-            }
-          }, 150);
-        });
-      }
-      
-    } catch (error) {
-      console.error('Error loading GitHub calendar:', error);
-      const calendarEl = document.getElementById('github-calendar');
-      if (calendarEl) {
-        calendarEl.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 2rem;">Unable to load GitHub contributions.</p>';
-      }
+  if (!calendarEl) return;
+  
+  try {
+    // Fetch contribution data from GitHub API
+    const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
+    const data = await response.json();
+    
+    if (!data || !data.contributions) {
+      throw new Error('No data received');
     }
+    
+    const contributions = data.contributions;
+    const totalContributions = data.total[Object.keys(data.total)[0]];
+    
+    // Build the calendar HTML
+    let html = `<div class="contrib-header">${totalContributions.toLocaleString()} contributions in the last year</div>`;
+    html += `<div class="contrib-calendar">`;
+    
+    // Group contributions by week
+    const weeks = [];
+    let currentWeek = [];
+    let currentMonth = '';
+    const monthLabels = [];
+    
+    contributions.forEach((day, index) => {
+      const date = new Date(day.date);
+      const month = date.toLocaleDateString('en-US', { month: 'short' });
+      const dayOfWeek = date.getDay();
+      
+      // Track month changes for labels
+      if (month !== currentMonth && dayOfWeek === 0) {
+        monthLabels.push({ month, weekIndex: weeks.length });
+        currentMonth = month;
+      }
+      
+      if (dayOfWeek === 0 && currentWeek.length > 0) {
+        weeks.push(currentWeek);
+        currentWeek = [];
+      }
+      
+      currentWeek.push(day);
+      
+      if (index === contributions.length - 1) {
+        weeks.push(currentWeek);
+      }
+    });
+    
+    // Month labels
+    html += `<div class="contrib-months">`;
+    monthLabels.forEach((m, i) => {
+      const left = m.weekIndex * 11 + 30;
+      html += `<span style="left: ${left}px">${m.month}</span>`;
+    });
+    html += `</div>`;
+    
+    // Day labels
+    html += `<div class="contrib-days">`;
+    html += `<span>Mon</span><span>Wed</span><span>Fri</span>`;
+    html += `</div>`;
+    
+    // Contribution grid
+    html += `<div class="contrib-grid">`;
+    weeks.forEach(week => {
+      html += `<div class="contrib-week">`;
+      for (let i = 0; i < 7; i++) {
+        const day = week.find(d => new Date(d.date).getDay() === i);
+        if (day) {
+          const level = day.count === 0 ? 0 : day.count < 3 ? 1 : day.count < 6 ? 2 : day.count < 10 ? 3 : 4;
+          const date = new Date(day.date);
+          const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          html += `<div class="contrib-day level-${level}" data-count="${day.count}" data-date="${dateStr}" title="${day.count} contributions on ${dateStr}"></div>`;
+        } else {
+          html += `<div class="contrib-day empty"></div>`;
+        }
+      }
+      html += `</div>`;
+    });
+    html += `</div>`;
+    
+    // Legend
+    html += `<div class="contrib-legend">`;
+    html += `<span>Less</span>`;
+    html += `<div class="contrib-day level-0"></div>`;
+    html += `<div class="contrib-day level-1"></div>`;
+    html += `<div class="contrib-day level-2"></div>`;
+    html += `<div class="contrib-day level-3"></div>`;
+    html += `<div class="contrib-day level-4"></div>`;
+    html += `<span>More</span>`;
+    html += `</div>`;
+    
+    html += `</div>`;
+    
+    calendarEl.innerHTML = html;
+    
+  } catch (error) {
+    console.error('Error loading GitHub contributions:', error);
+    calendarEl.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Unable to load contributions</p>`;
   }
 });
