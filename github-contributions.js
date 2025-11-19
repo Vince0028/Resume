@@ -24,18 +24,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Group contributions by week
     const weeks = [];
     let currentWeek = [];
-    let currentMonth = '';
     const monthLabels = [];
+    let lastMonth = -1;
     
     contributions.forEach((day, index) => {
       const date = new Date(day.date);
-      const month = date.toLocaleDateString('en-US', { month: 'short' });
       const dayOfWeek = date.getDay();
+      const month = date.getMonth();
       
-      // Track month changes for labels
-      if (month !== currentMonth && dayOfWeek === 0) {
-        monthLabels.push({ month, weekIndex: weeks.length });
-        currentMonth = month;
+      // Track month changes at the start of weeks
+      if (dayOfWeek === 0 && month !== lastMonth) {
+        const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+        monthLabels.push({ month: monthName, weekIndex: weeks.length });
+        lastMonth = month;
       }
       
       if (dayOfWeek === 0 && currentWeek.length > 0) {
@@ -52,28 +53,32 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Month labels
     html += `<div class="contrib-months">`;
-    monthLabels.forEach((m, i) => {
-      const left = m.weekIndex * 11 + 30;
+    monthLabels.forEach((m) => {
+      const left = m.weekIndex * 14.5;
       html += `<span style="left: ${left}px">${m.month}</span>`;
     });
     html += `</div>`;
     
     // Day labels
     html += `<div class="contrib-days">`;
-    html += `<span>Mon</span><span>Wed</span><span>Fri</span>`;
+    html += `<span style="grid-row: 2;">Mon</span>`;
+    html += `<span style="grid-row: 4;">Wed</span>`;
+    html += `<span style="grid-row: 6;">Fri</span>`;
     html += `</div>`;
     
     // Contribution grid
     html += `<div class="contrib-grid">`;
     weeks.forEach(week => {
       html += `<div class="contrib-week">`;
+      
+      // Create all 7 days (Sunday=0 to Saturday=6)
       for (let i = 0; i < 7; i++) {
         const day = week.find(d => new Date(d.date).getDay() === i);
         if (day) {
           const level = day.count === 0 ? 0 : day.count < 3 ? 1 : day.count < 6 ? 2 : day.count < 10 ? 3 : 4;
           const date = new Date(day.date);
           const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          html += `<div class="contrib-day level-${level}" data-count="${day.count}" data-date="${dateStr}" title="${day.count} contributions on ${dateStr}"></div>`;
+          html += `<div class="contrib-day level-${level}" data-count="${day.count}" data-date="${dateStr}" title="${day.count} contribution${day.count !== 1 ? 's' : ''} on ${dateStr}"></div>`;
         } else {
           html += `<div class="contrib-day empty"></div>`;
         }
