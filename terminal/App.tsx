@@ -37,6 +37,7 @@ const App: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [networkLevel, setNetworkLevel] = useState(60);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -53,6 +54,19 @@ const App: React.FC = () => {
         if (index === INITIAL_BOOT_SEQUENCE.length - 1) setIsBooting(false);
       }, delay);
     });
+  }, []);
+
+  // Simulate network level for the Network Status widget
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setNetworkLevel(prev => {
+        // gently vary network level more slowly and with smaller changes
+        const delta = Math.floor(Math.random() * 9) - 4; // -4..4
+        let next = Math.max(5, Math.min(100, prev + delta));
+        return next;
+      });
+    }, 2200);
+    return () => clearInterval(iv);
   }, []);
 
   const handleCommand = async (cmd: string) => {
@@ -121,6 +135,21 @@ const App: React.FC = () => {
       const projSection = (RESUME_DATA.split('PROJECTS:')[1] || '').split('\n').map(l => l.trim()).filter(Boolean);
       const projLines = projSection.slice(0, 12).join('\n');
       setHistory(prev => [...prev, { id:`proj-${Date.now()}`, type: MessageType.SYSTEM, content: projLines || 'No projects found', timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'contact') {
+      // Provide clickable links (rendered as HTML)
+      const html = `
+        <div>
+          <div>Email: <a href="mailto:alobinvince@gmail.com">alobinvince@gmail.com</a></div>
+          <div>GitHub: <a href="https://github.com/Vince0028" target="_blank" rel="noreferrer">github.com/Vince0028</a></div>
+          <div>LinkedIn: <a href="https://linkedin.com" target="_blank" rel="noreferrer">linkedin.com</a></div>
+          <div>Website: <a href="/index.html?resume=1">Portfolio (open)</a></div>
+        </div>
+      `;
+      setHistory(prev => [...prev, { id:`contact-${Date.now()}`, type: MessageType.SYSTEM, content: html, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -206,6 +235,28 @@ const App: React.FC = () => {
     return () => window.removeEventListener('terminal-open-file', handler as EventListener);
   }, []);
 
+  // helper to render terminal content as text or HTML when needed
+  const renderLineContent = (line: TerminalLine) => {
+    const content = line.content || '';
+    // small helper to unescape common HTML entities if the content was escaped
+    const unescapeHtml = (str: string) => {
+      return str.replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&amp;/g, '&')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'");
+    };
+
+    // simple heuristic: if content contains an anchor tag or html block (or escaped html), render as HTML
+    const looksLikeHtml = /<a\s|<div|<span|<br|<strong|<em|&lt;\/?div|&lt;a\s/.test(content);
+    if (looksLikeHtml) {
+      const html = looksLikeHtml && content.indexOf('&lt;') !== -1 ? unescapeHtml(content) : content;
+      return <div className={THEME_COLOR} dangerouslySetInnerHTML={{ __html: html }} />;
+    }
+    // otherwise render preserving newlines
+    return <div className={THEME_COLOR}>{content}</div>;
+  };
+
   return (
     <div className="w-screen h-screen p-2 md:p-6 flex items-center justify-center bg-black overflow-hidden relative">
         {/* Background Network Mesh (Simulated) */}
@@ -249,14 +300,14 @@ const App: React.FC = () => {
                 </div>
                 <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
                     {history.map((line) => (
-                        <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
-                            {line.type === MessageType.USER && (
-                                <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
-                            )}
-                            {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO) && (
-                                <div className={THEME_COLOR}>{line.content}</div>
-                            )}
-                        </div>
+                      <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
+                        {line.type === MessageType.USER && (
+                          <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
+                        )}
+                        {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO) && (
+                          renderLineContent(line)
+                        )}
+                      </div>
                     ))}
                     {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
                     <div ref={terminalEndRef} />
@@ -267,12 +318,80 @@ const App: React.FC = () => {
             {/* RIGHT SIDEBAR (Network/Info) */}
             <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
                  <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
-                 <div className="flex-1 flex items-center justify-center opacity-40">
-                     {/* Decorative Rotating Globe Wireframe placeholder */}
-                     <div className="w-40 h-40 rounded-full border border-indigo-500 flex items-center justify-center animate-[spin_10s_linear_infinite]">
-                       <div className="w-full h-px bg-indigo-500 absolute"></div>
-                       <div className="h-full w-px bg-indigo-500 absolute"></div>
-                       <div className="w-28 h-28 rounded-full border border-indigo-500 opacity-50"></div>
+                 <div className="flex-1 flex items-center justify-center opacity-90">
+                     {/* Dynamic Network Indicator (SVG) */}
+                     <div className="w-40 h-40 md:w-48 md:h-48 relative">
+                       <svg viewBox="0 0 100 100" className="w-full h-full">
+                         <defs>
+                           <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+                             <stop offset="0%" stopColor="#fff9ef" stopOpacity="1" />
+                             <stop offset="35%" stopColor="#ffd59e" stopOpacity="1" />
+                             <stop offset="100%" stopColor="#ff7a4d" stopOpacity="1" />
+                           </radialGradient>
+                           <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                             <stop offset="0%" stopColor="#7fb3ff" />
+                             <stop offset="100%" stopColor="#caa5ff" />
+                           </linearGradient>
+                           <filter id="sunGlow" x="-60%" y="-60%" width="220%" height="220%">
+                             <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+                             <feMerge>
+                               <feMergeNode in="coloredBlur" />
+                               <feMergeNode in="SourceGraphic" />
+                             </feMerge>
+                           </filter>
+                           {/* clip used to keep orbiters inside the visible holder */}
+                           <clipPath id="holderClip">
+                            <circle cx="50" cy="50" r="24" />
+                          </clipPath>
+                        </defs>
+
+                        {/* faint orbit paths (moved further outward) - clipped to holder */}
+                        <g clipPath="url(#holderClip)">
+                         {[20, 22, 24, 24].map((r, i) => (
+                           <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.5" strokeOpacity="0.16" strokeDasharray={i%2?"3 7":"4 6"} />
+                         ))}
+
+                         {/* single larger glowing central sun (bigger) */}
+                         <circle cx="50" cy="50" r="14" fill="url(#sunGrad)" filter="url(#sunGlow)" />
+
+                         {/* many larger orbiting nodes placed outside the sun (all radii bumped) */}
+                         {
+                             [
+                             { r: 20, size: 3.2, dur: 6.8, angle: 10 },
+                             { r: 20, size: 2.4, dur: 8.6, angle: 100 },
+                             { r: 22, size: 2.2, dur: 7.6, angle: 45 },
+                             { r: 22, size: 1.6, dur: 10.2, angle: 210 },
+                             { r: 24, size: 2.6, dur: 11.2, angle: 180 },
+                             { r: 24, size: 1.6, dur: 13.6, angle: 270 },
+                             { r: 24, size: 3.4, dur: 11.9, angle: 60 },
+                             { r: 24, size: 1.8, dur: 15.0, angle: 300 },
+                             { r: 22, size: 2.8, dur: 13.6, angle: 30 },
+                             { r: 22, size: 1.5, dur: 16.4, angle: 150 },
+                             { r: 20, size: 1.2, dur: 10.1, angle: 330 },
+                             { r: 22, size: 2.0, dur: 9.6, angle: 120 },
+                             { r: 22, size: 1.8, dur: 14.0, angle: 250 },
+                             { r: 20, size: 1.4, dur: 11.5, angle: 320 }
+                           ].map((o, i) => (
+                             <g key={`orb-${i}`} transform={`rotate(${o.angle} 50 50)`}> 
+                               <g>
+                                 <circle cx={50 + o.r} cy={50} r={o.size} fill="url(#orbGrad)" opacity="1" />
+                                 {/* stronger glow for larger orbiters */}
+                                 {o.size > 2.6 && (
+                                   <circle cx={50 + o.r} cy={50} r={o.size * 2.4} fill="url(#orbGrad)" opacity={0.12} />
+                                 )}
+                               </g>
+                               <animateTransform attributeName="transform" attributeType="XML" type="rotate" from={`${o.angle} 50 50`} to={`${o.angle + 360} 50 50`} dur={`${o.dur}s`} repeatCount="indefinite" />
+                             </g>
+                           ))
+                         }
+                        </g>
+
+                        {/* outer decorative holder ring (on top) */}
+                        <circle cx="50" cy="50" r="26" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.28" />
+                       </svg>
+                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                         <div className="text-lg md:text-2xl font-mono font-bold text-white bg-black/45 px-3 py-1 rounded-md border border-indigo-600/20">{networkLevel}%</div>
+                       </div>
                      </div>
                  </div>
                  <div className="h-40 shrink-0 border-t border-indigo-500/30 pt-2">
