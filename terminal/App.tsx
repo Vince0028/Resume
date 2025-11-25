@@ -339,38 +339,37 @@ const App: React.FC = () => {
                                <feMergeNode in="SourceGraphic" />
                              </feMerge>
                            </filter>
-                           {/* clip used to keep orbiters inside the visible holder */}
-                           <clipPath id="holderClip">
-                            <circle cx="50" cy="50" r="24" />
-                          </clipPath>
+                          {/* decorative rectangular holder to match card (no circular clipping) */}
+                          
                         </defs>
 
-                        {/* faint orbit paths (moved further outward) - clipped to holder */}
-                        <g clipPath="url(#holderClip)">
-                         {[20, 22, 24, 24].map((r, i) => (
-                           <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.5" strokeOpacity="0.16" strokeDasharray={i%2?"3 7":"4 6"} />
+                        {/* background frame and faint orbit paths (fill card) */}
+                        <rect x="2" y="2" width="96" height="96" rx="8" fill="none" stroke="#07101a" strokeWidth="1" strokeOpacity="0.08" />
+                        <g>
+                         {[22, 32, 40, 46].map((r, i) => (
+                           <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.6" strokeOpacity="0.18" strokeDasharray={i%2?"3 7":"4 6"} />
                          ))}
 
                          {/* single larger glowing central sun (bigger) */}
-                         <circle cx="50" cy="50" r="14" fill="url(#sunGrad)" filter="url(#sunGlow)" />
+                         <circle cx="50" cy="50" r="18" fill="url(#sunGrad)" filter="url(#sunGlow)" />
 
                          {/* many larger orbiting nodes placed outside the sun (all radii bumped) */}
                          {
                              [
-                             { r: 20, size: 3.2, dur: 6.8, angle: 10 },
-                             { r: 20, size: 2.4, dur: 8.6, angle: 100 },
-                             { r: 22, size: 2.2, dur: 7.6, angle: 45 },
-                             { r: 22, size: 1.6, dur: 10.2, angle: 210 },
-                             { r: 24, size: 2.6, dur: 11.2, angle: 180 },
-                             { r: 24, size: 1.6, dur: 13.6, angle: 270 },
-                             { r: 24, size: 3.4, dur: 11.9, angle: 60 },
-                             { r: 24, size: 1.8, dur: 15.0, angle: 300 },
-                             { r: 22, size: 2.8, dur: 13.6, angle: 30 },
-                             { r: 22, size: 1.5, dur: 16.4, angle: 150 },
-                             { r: 20, size: 1.2, dur: 10.1, angle: 330 },
-                             { r: 22, size: 2.0, dur: 9.6, angle: 120 },
-                             { r: 22, size: 1.8, dur: 14.0, angle: 250 },
-                             { r: 20, size: 1.4, dur: 11.5, angle: 320 }
+                             { r: 22, size: 4.2, dur: 6.5, angle: 10 },
+                             { r: 22, size: 2.8, dur: 8.2, angle: 100 },
+                             { r: 30, size: 3.6, dur: 7.2, angle: 45 },
+                             { r: 30, size: 1.8, dur: 9.8, angle: 210 },
+                             { r: 36, size: 3.8, dur: 11.2, angle: 180 },
+                             { r: 36, size: 1.6, dur: 13.6, angle: 270 },
+                             { r: 44, size: 5.2, dur: 11.9, angle: 60 },
+                             { r: 44, size: 2.8, dur: 15.0, angle: 300 },
+                             { r: 40, size: 3.6, dur: 13.6, angle: 30 },
+                             { r: 40, size: 1.9, dur: 16.4, angle: 150 },
+                             { r: 28, size: 2.0, dur: 10.1, angle: 330 },
+                             { r: 32, size: 2.8, dur: 9.6, angle: 120 },
+                             { r: 42, size: 3.2, dur: 14.0, angle: 250 },
+                             { r: 26, size: 1.6, dur: 11.5, angle: 320 }
                            ].map((o, i) => (
                              <g key={`orb-${i}`} transform={`rotate(${o.angle} 50 50)`}> 
                                <g>
@@ -385,9 +384,8 @@ const App: React.FC = () => {
                            ))
                          }
                         </g>
-
-                        {/* outer decorative holder ring (on top) */}
-                        <circle cx="50" cy="50" r="26" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.28" />
+                        {/* subtle rectangular decorative frame (top) to match card */}
+                        <rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.22" />
                        </svg>
                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                          <div className="text-lg md:text-2xl font-mono font-bold text-white bg-black/45 px-3 py-1 rounded-md border border-indigo-600/20">{networkLevel}%</div>
