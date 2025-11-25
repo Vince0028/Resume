@@ -12,9 +12,10 @@ const TrafficGraph = () => {
   const [bars, setBars] = useState<number[]>(new Array(10).fill(20));
 
   useEffect(() => {
+    // slow down the traffic update a bit for a smoother, less frantic look
     const interval = setInterval(() => {
       setBars(prev => prev.map(() => Math.max(10, Math.floor(Math.random() * 90))));
-    }, 150);
+    }, 400);
     return () => clearInterval(interval);
   }, []);
 
@@ -24,7 +25,7 @@ const TrafficGraph = () => {
         <div 
           key={i} 
           style={{ height: `${h}%` }} 
-          className="flex-1 bg-indigo-500/30 border-t border-indigo-500 transition-all duration-150 ease-in-out shadow-[0_0_5px_rgba(99,102,241,0.3)]"
+          className="flex-1 bg-indigo-500/30 border-t border-indigo-500 transition-all duration-300 ease-in-out shadow-[0_0_5px_rgba(99,102,241,0.3)]"
         />
       ))}
     </div>
