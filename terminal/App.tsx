@@ -347,22 +347,23 @@ const App: React.FC = () => {
                         <rect x="2" y="2" width="96" height="96" rx="8" fill="none" stroke="#07101a" strokeWidth="1" strokeOpacity="0.08" />
                         <g>
                          {[22, 32, 40, 46].map((r, i) => (
-                           <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.6" strokeOpacity="0.18" strokeDasharray={i%2?"3 7":"4 6"} />
+                          <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.6" strokeOpacity="0.18" strokeDasharray={i%2?"3 7":"4 6"} />
                          ))}
 
                          {/* single larger glowing central sun (bigger) */}
                          <circle cx="50" cy="50" r="18" fill="url(#sunGrad)" filter="url(#sunGlow)" />
+                         <circle cx="50" cy="50" r="20" fill="url(#sunGrad)" filter="url(#sunGlow)" />
 
-                         {/* many larger orbiting nodes placed outside the sun (all radii bumped) */}
+                         {/* orbiting nodes (with optional moons) */}
                          {
-                             [
-                             { r: 22, size: 4.2, dur: 6.5, angle: 10 },
+                           [
+                             { r: 22, size: 4.2, dur: 6.5, angle: 10, moon: { dist: 6, size: 0.9, dur: 2.2 } },
                              { r: 22, size: 2.8, dur: 8.2, angle: 100 },
-                             { r: 30, size: 3.6, dur: 7.2, angle: 45 },
+                             { r: 30, size: 3.6, dur: 7.2, angle: 45, moon: { dist: 5, size: 0.8, dur: 2.8 } },
                              { r: 30, size: 1.8, dur: 9.8, angle: 210 },
                              { r: 36, size: 3.8, dur: 11.2, angle: 180 },
                              { r: 36, size: 1.6, dur: 13.6, angle: 270 },
-                             { r: 44, size: 5.2, dur: 11.9, angle: 60 },
+                             { r: 44, size: 5.2, dur: 11.9, angle: 60, moon: { dist: 8, size: 1.2, dur: 3.6 } },
                              { r: 44, size: 2.8, dur: 15.0, angle: 300 },
                              { r: 40, size: 3.6, dur: 13.6, angle: 30 },
                              { r: 40, size: 1.9, dur: 16.4, angle: 150 },
@@ -372,11 +373,18 @@ const App: React.FC = () => {
                              { r: 26, size: 1.6, dur: 11.5, angle: 320 }
                            ].map((o, i) => (
                              <g key={`orb-${i}`} transform={`rotate(${o.angle} 50 50)`}> 
-                               <g>
-                                 <circle cx={50 + o.r} cy={50} r={o.size} fill="url(#orbGrad)" opacity="1" />
-                                 {/* stronger glow for larger orbiters */}
+                               <g transform={`translate(${50 + o.r} 50)`}> 
+                                 <circle cx={0} cy={0} r={o.size} fill="url(#orbGrad)" opacity="1" />
                                  {o.size > 2.6 && (
-                                   <circle cx={50 + o.r} cy={50} r={o.size * 2.4} fill="url(#orbGrad)" opacity={0.12} />
+                                   <circle cx={0} cy={0} r={o.size * 2.4} fill="url(#orbGrad)" opacity={0.12} />
+                                 )}
+                                 {o.moon && (
+                                   <g>
+                                     <g>
+                                       <animateTransform attributeName="transform" attributeType="XML" type="rotate" from={`0 0 0`} to={`360 0 0`} dur={`${o.moon.dur}s`} repeatCount="indefinite" />
+                                       <circle cx={o.moon.dist} cy={0} r={o.moon.size} fill="#ffffff" opacity="0.95" />
+                                     </g>
+                                   </g>
                                  )}
                                </g>
                                <animateTransform attributeName="transform" attributeType="XML" type="rotate" from={`${o.angle} 50 50`} to={`${o.angle + 360} 50 50`} dur={`${o.dur}s`} repeatCount="indefinite" />
