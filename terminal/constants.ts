@@ -51,8 +51,10 @@ export const INITIAL_BOOT_SEQUENCE = [
 
 // Fallback resume URLs (same-tab navigation). Update if your resume is served at a specific URL/port.
 export const RESUME_FALLBACK_URLS = [
-  'http://localhost:8000/index.html',
-  '../index.html',
+  // Prefer the site root with the `?resume=1` bypass so the client-side
+  // redirect (which sends `/` to `/terminal/`) is bypassed and the
+  // graphical resume is shown in the same tab on the deployed site.
+  '/index.html?resume=1',
   '/index.html',
-  '/resume/index.html'
+  '../index.html'
 ];
