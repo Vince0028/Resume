@@ -22,7 +22,7 @@ const ClockPanel: React.FC = () => {
       <h1 className={`text-4xl md:text-6xl font-bold ${THEME_COLOR} tracking-widest`}>
         {formatTime(time)}
       </h1>
-      <div className="flex space-x-4 mt-1 text-xs md:text-sm text-orange-800">
+      <div className="flex space-x-4 mt-1 text-xs md:text-sm text-indigo-800">
         <span>{formatDate(time)}</span>
         <span>UPTIME TYPE: POWER</span>
         <span>LINUX WIRED</span>

@@ -24,7 +24,7 @@ const TrafficGraph = () => {
         <div 
           key={i} 
           style={{ height: `${h}%` }} 
-          className="flex-1 bg-orange-500/30 border-t border-orange-500 transition-all duration-150 ease-in-out shadow-[0_0_5px_rgba(234,88,12,0.3)]"
+          className="flex-1 bg-indigo-500/30 border-t border-indigo-500 transition-all duration-150 ease-in-out shadow-[0_0_5px_rgba(99,102,241,0.3)]"
         />
       ))}
     </div>
@@ -218,8 +218,8 @@ const App: React.FC = () => {
             
             {/* TOP BAR / CLOCK */}
             <div className={`col-span-12 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
-                <div className="absolute top-0 left-0 bg-orange-500 text-black text-xs px-2 font-bold">SYSTEM</div>
-                <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-orange-500/30">
+                <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
+                <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30">
                      <span>NET: ONLINE</span>
                      <span>SEC: HIGH</span>
                 </div>
@@ -229,29 +229,29 @@ const App: React.FC = () => {
             {/* LEFT SIDEBAR (STATS) */}
             <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
                  <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
-                    <div className="absolute top-0 left-0 text-[10px] bg-orange-900/40 px-1">HARDWARE MONITOR</div>
+                    <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1">HARDWARE MONITOR</div>
                     <SystemMonitor />
                  </div>
                  {/* Clipboard Access - Responsive Height */}
                  <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center`}>
                     <div className="text-[10px] mb-2 uppercase tracking-wider opacity-80">Clipboard Access</div>
                     <div className="flex gap-2">
-                         <button className={`flex-1 border ${THEME_BORDER} bg-orange-900/10 hover:bg-orange-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Copy</button>
-                         <button className={`flex-1 border ${THEME_BORDER} bg-orange-900/10 hover:bg-orange-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Paste</button>
+                         <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Copy</button>
+                         <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Paste</button>
                     </div>
                  </div>
             </div>
 
             {/* MAIN TERMINAL */}
             <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
-                <div className="absolute top-0 left-0 w-full h-6 bg-orange-900/20 border-b border-orange-500/30 flex items-center px-2">
+                <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
                     <span className="text-xs font-bold">MAIN - bash</span>
                 </div>
                 <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
                     {history.map((line) => (
                         <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
                             {line.type === MessageType.USER && (
-                                <div className="text-orange-300 opacity-90">{`> ${line.content}`}</div>
+                                <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
                             )}
                             {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO) && (
                                 <div className={THEME_COLOR}>{line.content}</div>
@@ -266,16 +266,16 @@ const App: React.FC = () => {
 
             {/* RIGHT SIDEBAR (Network/Info) */}
             <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-                 <div className="absolute top-0 right-0 text-[10px] bg-orange-900/40 px-1">NETWORK STATUS</div>
+                 <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
                  <div className="flex-1 flex items-center justify-center opacity-40">
                      {/* Decorative Rotating Globe Wireframe placeholder */}
-                     <div className="w-40 h-40 rounded-full border border-orange-500 flex items-center justify-center animate-[spin_10s_linear_infinite]">
-                         <div className="w-full h-px bg-orange-500 absolute"></div>
-                         <div className="h-full w-px bg-orange-500 absolute"></div>
-                         <div className="w-28 h-28 rounded-full border border-orange-500 opacity-50"></div>
+                     <div className="w-40 h-40 rounded-full border border-indigo-500 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                       <div className="w-full h-px bg-indigo-500 absolute"></div>
+                       <div className="h-full w-px bg-indigo-500 absolute"></div>
+                       <div className="w-28 h-28 rounded-full border border-indigo-500 opacity-50"></div>
                      </div>
                  </div>
-                 <div className="h-40 shrink-0 border-t border-orange-500/30 pt-2">
+                 <div className="h-40 shrink-0 border-t border-indigo-500/30 pt-2">
                     <div className="text-[10px] mb-1">TRAFFIC ANALYSIS</div>
                     <TrafficGraph />
                  </div>
@@ -306,7 +306,7 @@ const App: React.FC = () => {
                     </p>
                     <button 
                         onClick={() => setPrivacyOpen(false)}
-                        className={`border ${THEME_BORDER} hover:bg-orange-500 hover:text-black px-6 py-2 transition-all uppercase font-bold`}
+                        className={`border ${THEME_BORDER} hover:bg-indigo-500 hover:text-black px-6 py-2 transition-all uppercase font-bold`}
                     >
                         ACKNOWLEDGE
                     </button>

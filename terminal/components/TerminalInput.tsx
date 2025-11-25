@@ -58,7 +58,7 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={disabled}
-        className={`flex-1 bg-transparent border-none outline-none ${THEME_COLOR} font-mono uppercase focus:ring-0 placeholder-orange-900/50`}
+        className={`flex-1 bg-transparent border-none outline-none ${THEME_COLOR} font-mono uppercase focus:ring-0 placeholder-indigo-900/50`}
         autoFocus
         spellCheck={false}
         autoComplete="off"

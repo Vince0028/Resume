@@ -2,13 +2,29 @@
 if(!window.THREE){fail('THREE missing');return}
 const mount=document.getElementById('lanyard-3d-root');if(!mount){fail('mount missing');return}
 document.body.classList.add('has-3d-lanyard');
-const w=mount.clientWidth||160;const h=mount.clientHeight||220;const scene=new THREE.Scene();
+// Guard against zero-size mounts (sometimes CSS hasn't applied yet)
+const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
+const h = (mount.clientHeight && mount.clientHeight > 0) ? mount.clientHeight : 340;
+const scene=new THREE.Scene();
 let camera;try{const aspect=w/h;const viewH=2;const viewW=viewH*aspect;camera=new THREE.OrthographicCamera(-viewW/2,viewW/2,viewH/2,-viewH/2,0.1,10)}catch(e){fail('camera error');return}
 camera.position.set(0,0,5);
 let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(e){fail('webgl unsupported');return}
 try{renderer.setPixelRatio(window.devicePixelRatio);renderer.setSize(w,h);mount.appendChild(renderer.domElement)}catch(e){fail('renderer attach failed');return}
-const texLoader=new THREE.TextureLoader();function load(path){try{const t=texLoader.load(path,()=>{},undefined,()=>{console.error('tex fail',path)});t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t}catch(e){console.error('tex error',path);return null}}
-const frontTex=load('Images/Lanyard_pokemon.png');const backTex=load('Images/Back_pokemon.png');
+const texLoader=new THREE.TextureLoader();
+function load(path){
+	try{
+		const t = texLoader.load(path, ()=>{}, undefined, ()=>{ console.error('tex fail', path); });
+		// Be defensive about texture color/encoding API differences across Three.js versions
+		try{
+			if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
+			else if ('sRGBEncoding' in THREE) t.encoding = THREE.sRGBEncoding;
+		}catch(e){}
+		try{ if ('anisotropy' in t) t.anisotropy = Math.max(1, t.anisotropy||8); }catch(e){}
+		return t;
+	}catch(e){ console.error('tex error', path, e); return null; }
+}
+const frontTex = load('Images/Lanyard_pokemon.png');
+const backTex = load('Images/Back_pokemon.png');
 const cardGroup=new THREE.Group();scene.add(cardGroup);
 const aspect=w/h;const viewH=2;const viewW=viewH*aspect;const cardGeo=new THREE.BoxGeometry(viewW,viewH,0.02);
 const matFront=new THREE.MeshBasicMaterial({map:frontTex});

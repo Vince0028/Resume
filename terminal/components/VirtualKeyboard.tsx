@@ -41,8 +41,8 @@ const VirtualKeyboard: React.FC = () => {
                   relative
                   group
                   border ${THEME_BORDER}
-                  bg-orange-950/20
-                  hover:bg-orange-500 hover:text-black
+                  bg-indigo-950/20
+                  hover:bg-indigo-500 hover:text-black
                   active:scale-95
                   transition-all duration-75
                   flex items-center justify-center
@@ -54,8 +54,8 @@ const VirtualKeyboard: React.FC = () => {
                   {key}
                 </span>
                 {/* Micro interaction decoration */}
-                <div className="absolute top-0 right-0 w-1 h-1 bg-orange-500/30 group-hover:bg-black/30"></div>
-                <div className="absolute bottom-0 left-0 w-1 h-1 bg-orange-500/30 group-hover:bg-black/30"></div>
+                <div className="absolute top-0 right-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
+                <div className="absolute bottom-0 left-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
               </div>
             );
           })}

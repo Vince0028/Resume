@@ -53,8 +53,8 @@ const SystemMonitor: React.FC = () => {
          <h3 className={`${THEME_COLOR} text-sm tracking-widest`}>SYSTEM MONITOR</h3>
        </div>
        
-       <MonitorGraph label="CPU CORE 0" data={cpuData} color="#ea580c" />
-       <MonitorGraph label="MEMORY ALLOC" data={memData} color="#ea580c" />
+      <MonitorGraph label="CPU CORE 0" data={cpuData} color="#6366f1" />
+      <MonitorGraph label="MEMORY ALLOC" data={memData} color="#6366f1" />
        
        <div className={`mt-auto shrink-0 border ${THEME_BORDER} p-2 text-xs ${THEME_COLOR}`}>
           <div className="flex justify-between">

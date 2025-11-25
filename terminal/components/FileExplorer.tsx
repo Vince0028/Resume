@@ -20,7 +20,7 @@ const FileExplorer: React.FC = () => {
     <div className="w-full h-full flex flex-col">
        <div className={`border-b ${THEME_BORDER} mb-2 pb-1 flex justify-between items-end`}>
          <h3 className={`${THEME_COLOR} text-sm tracking-widest`}>FILESYSTEM</h3>
-         <span className="text-[10px] text-orange-700">/home/guest</span>
+         <span className="text-[10px] text-indigo-700">/home/guest</span>
        </div>
        
        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 overflow-y-auto pr-1">
@@ -38,11 +38,11 @@ const FileExplorer: React.FC = () => {
                {file.type === 'FILE' && !file.name.endsWith('.dat') && !file.name.endsWith('.png') && <FileText size={32} strokeWidth={1.5} />}
              </div>
              <span className={`text-[10px] ${THEME_COLOR} text-center truncate w-full`}>{file.name}</span>
-             <span className="text-[8px] text-orange-800">{file.size || 'DIR'}</span>
+             <span className="text-[8px] text-indigo-800">{file.size || 'DIR'}</span>
            </div>
          ))}
        </div>
-       <div className={`mt-auto pt-2 border-t ${THEME_BORDER} text-[10px] text-orange-700 flex justify-between`}>
+      <div className={`mt-auto pt-2 border-t ${THEME_BORDER} text-[10px] text-indigo-700 flex justify-between`}>
           <span>USED: 89%</span>
           <span>FREE: 124GB</span>
        </div>

@@ -1,7 +1,7 @@
-export const THEME_COLOR = "text-orange-500";
-export const THEME_BORDER = "border-orange-500/40";
-export const THEME_BG = "bg-orange-950/20";
-export const THEME_GLOW = "shadow-[0_0_15px_rgba(249,115,22,0.15)]";
+export const THEME_COLOR = "text-indigo-500";
+export const THEME_BORDER = "border-indigo-500/40";
+export const THEME_BG = "bg-indigo-950/20";
+export const THEME_GLOW = "shadow-[0_0_15px_rgba(99,102,241,0.15)]";
 
 export const RESUME_DATA = `
 NAME: Vince Nelmar Pega Alobin
