@@ -42,3 +42,28 @@ Notes
 - If you prefer the resume at `/` and terminal at `/terminal`, remove the `_redirects` creation step in `netlify-build.sh`.
 
 If you want, I can commit these files for you and push, or I can create a second Netlify site for the terminal only instead. Tell me which you prefer.
+
+Troubleshooting: Netlify "Permission denied" / exit code 126
+
+If Netlify logs show `Permission denied` when running `./netlify-build.sh` (exit code 126), the script exists in the repo but isn't executable. Two ways to fix:
+
+1) Preferred — make the script executable and commit it:
+
+	- On macOS / Linux / WSL / Git Bash:
+		```bash
+		chmod +x netlify-build.sh
+		git add netlify-build.sh
+		git commit -m "Make netlify-build.sh executable"
+		git push
+		```
+
+	- On Windows (PowerShell / cmd with Git):
+		```powershell
+		git update-index --add --chmod=+x netlify-build.sh
+		git commit -m "Make netlify-build.sh executable"
+		git push
+		```
+
+2) Quick alternative — run the script through `bash` so the exec bit isn't required. This repo already uses `bash ./netlify-build.sh` in `netlify.toml`, which avoids the permission problem.
+
+After applying either fix, trigger a redeploy in Netlify (Deploys → Trigger deploy → Clear cache and deploy site).

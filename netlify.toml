@@ -1,5 +1,6 @@
 [build]
-  command = "./netlify-build.sh"
+  # Run the build script via bash to avoid permission issues on Netlify
+  command = "bash ./netlify-build.sh"
   publish = "public"
 
 [build.environment]
