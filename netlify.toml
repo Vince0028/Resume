@@ -1,0 +1,10 @@
+[build]
+  command = "./netlify-build.sh"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[context.production.environment]
+  # Add any production environment variables here, e.g. API_KEY
+  # API_KEY = "${API_KEY}"
