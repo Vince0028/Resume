@@ -49,7 +49,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
             <YAxis domain={[0, 100]} hide />
             {/* Base (blue) line */}
             <Line
-              type="step"
+              type="linear"
               dataKey="value"
               stroke={color}
               strokeWidth={2}
@@ -64,7 +64,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
               return (
                 <Line
                   key={`hist-${level}`}
-                  type="step"
+                  type="linear"
                   dataKey={`redHist${level}`}
                   stroke="#f87171"
                   strokeWidth={2}
@@ -83,7 +83,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
               return (
                 <Line
                   key={`red-${level}`}
-                  type="step"
+                  type="linear"
                   dataKey={`redMask${level}`}
                   stroke="#f87171"
                   strokeWidth={2}
@@ -117,17 +117,22 @@ const SystemMonitor: React.FC = () => {
     const interval = setInterval(() => {
       // Update CPU values and mask
       setCpuData(prev => {
-        // Randomly choose between smooth change or sharp spike
+        const prevValue = prev[prev.length - 1].value;
         let newValue;
-        if (Math.random() < 0.3) {
-          // 30% chance: sharp spike (high variation)
-          newValue = Math.floor(Math.random() * 60) + 10; // 10-70%
+
+        const rand = Math.random();
+        if (rand < 0.1) {
+          // 10% chance: keep same value (creates flat horizontal step)
+          newValue = prevValue;
+        } else if (rand < 0.6) {
+          // 50% chance: sharp spike (dramatic change)
+          newValue = Math.floor(Math.random() * 70) + 5; // 5-75%
         } else {
-          // 70% chance: smooth change (stay close to previous value)
-          const prevValue = prev[prev.length - 1].value;
-          const change = Math.floor(Math.random() * 20) - 10; // -10 to +10
-          newValue = Math.max(10, Math.min(70, prevValue + change));
+          // 40% chance: moderate change
+          const change = Math.floor(Math.random() * 30) - 15; // -15 to +15
+          newValue = Math.max(5, Math.min(75, prevValue + change));
         }
+
         const next = [...prev.slice(1), { value: newValue }];
         return next;
       });
@@ -175,17 +180,22 @@ const SystemMonitor: React.FC = () => {
 
       // Update MEM values and mask
       setMemData(prev => {
-        // Randomly choose between smooth change or sharp spike
+        const prevValue = prev[prev.length - 1].value;
         let newValue;
-        if (Math.random() < 0.25) {
-          // 25% chance: sharp spike (high variation)
-          newValue = Math.floor(Math.random() * 40) + 30; // 30-70%
+
+        const rand = Math.random();
+        if (rand < 0.1) {
+          // 10% chance: keep same value (creates flat horizontal step)
+          newValue = prevValue;
+        } else if (rand < 0.55) {
+          // 45% chance: sharp spike (dramatic change)
+          newValue = Math.floor(Math.random() * 50) + 20; // 20-70%
         } else {
-          // 75% chance: smooth change (stay close to previous value)
-          const prevValue = prev[prev.length - 1].value;
-          const change = Math.floor(Math.random() * 16) - 8; // -8 to +8
-          newValue = Math.max(30, Math.min(70, prevValue + change));
+          // 45% chance: moderate change
+          const change = Math.floor(Math.random() * 25) - 12; // -12 to +12
+          newValue = Math.max(20, Math.min(70, prevValue + change));
         }
+
         const next = [...prev.slice(1), { value: newValue }];
         return next;
       });
