@@ -54,7 +54,6 @@ export const RESUME_FALLBACK_URLS = [
   // Prefer the site root with the `?resume=1` bypass so the client-side
   // redirect (which sends `/` to `/terminal/`) is bypassed and the
   // graphical resume is shown in the same tab on the deployed site.
-  '/index.html?resume=1',
-  '/index.html',
+  '../index.html?resume=1',
   '../index.html'
 ];

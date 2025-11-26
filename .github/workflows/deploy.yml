@@ -56,6 +56,9 @@ jobs:
           # Create a 404.html that mirrors index.html for client-side routing support if needed
           cp public/index.html public/404.html
 
+          # Add .nojekyll to ensure files with underscores are served correctly
+          touch public/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

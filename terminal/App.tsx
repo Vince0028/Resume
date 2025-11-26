@@ -163,7 +163,7 @@ const App: React.FC = () => {
         return;
       }
       if (target === 'resume' || target === 'gui') {
-        window.location.href = '/index.html';
+        window.location.href = '../index.html';
         return;
       }
 
