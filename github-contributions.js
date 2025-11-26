@@ -1,5 +1,5 @@
 // GitHub contributions renderer with lightweight skeleton, caching, and timeout
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   const username = 'Vince0028';
   const calendarEl = document.getElementById('github-calendar');
   if (!calendarEl) return;
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (parsed && parsed.ts && Date.now() - parsed.ts < 24*60*60*1000 && parsed.html) {
+      if (parsed && parsed.ts && Date.now() - parsed.ts < 24 * 60 * 60 * 1000 && parsed.html) {
         calendarEl.innerHTML = parsed.html;
         return; // cached render is good enough for now
       }
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // Build html
-    let html = `<div class="contrib-header">${(totalContributions||0).toLocaleString()} contributions in the last year</div>`;
+    let html = `<div class="contrib-header">${(totalContributions || 0).toLocaleString()} contributions in the last year</div>`;
     html += `<div class="contrib-calendar">`;
     html += `<div class="contrib-months">`;
     // naive month labels at week positions
@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     Object.keys(monthPositions).forEach(k => {
       const i = monthPositions[k];
-      const year = parseInt(k.split('-')[0],10);
-      const month = parseInt(k.split('-')[1],10);
+      const year = parseInt(k.split('-')[0], 10);
+      const month = parseInt(k.split('-')[1], 10);
       const label = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'short' });
       const left = i * 14.5;
       html += `<span style="left:${left}px">${label}</span>`;
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const level = c === 0 ? 0 : c < 3 ? 1 : c < 6 ? 2 : c < 10 ? 3 : 4;
         const dt = new Date(day.date);
         const dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        html += `<div class="contrib-day level-${level}" data-count="${c}" data-date="${dateStr}" title="${c} contribution${c!==1?'s':''} on ${dateStr}"></div>`;
+        html += `<div class="contrib-day level-${level}" data-count="${c}" data-date="${dateStr}" title="${c} contribution${c !== 1 ? 's' : ''} on ${dateStr}"></div>`;
       }
       html += `</div>`;
     });
@@ -147,12 +147,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     calendarEl.innerHTML = html;
 
     // Cache rendered HTML for 24 hours
-    try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), html })); } catch(e){}
+    try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), html })); } catch (e) { }
 
   } catch (err) {
     clearTimeout(timeout);
     console.error('Error loading GitHub contributions:', err);
     // Keep skeleton but show a subtle message
-    calendarEl.querySelector('.contrib-header').textContent = 'Contributions unavailable';
+    const header = calendarEl.querySelector('.contrib-header');
+    if (header) {
+      header.textContent = 'Contributions unavailable (Network/API Error)';
+      header.style.color = '#ff6b6b';
+    }
   }
 });

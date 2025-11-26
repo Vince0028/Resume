@@ -1,41 +1,133 @@
-(()=>{function fail(msg){console.error(msg);const m=document.getElementById('lanyard-3d-root');if(m){m.innerHTML='<div style="color:#f33;font-size:12px;text-align:center;padding:4px">'+msg+'</div>'}}
-if(!window.THREE){fail('THREE missing');return}
-const mount=document.getElementById('lanyard-3d-root');if(!mount){fail('mount missing');return}
-document.body.classList.add('has-3d-lanyard');
-// Guard against zero-size mounts (sometimes CSS hasn't applied yet)
-const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
-const h = (mount.clientHeight && mount.clientHeight > 0) ? mount.clientHeight : 340;
-const scene=new THREE.Scene();
-let camera;try{const aspect=w/h;const viewH=2;const viewW=viewH*aspect;camera=new THREE.OrthographicCamera(-viewW/2,viewW/2,viewH/2,-viewH/2,0.1,10)}catch(e){fail('camera error');return}
-camera.position.set(0,0,5);
-let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(e){fail('webgl unsupported');return}
-try{renderer.setPixelRatio(window.devicePixelRatio);renderer.setSize(w,h);mount.appendChild(renderer.domElement)}catch(e){fail('renderer attach failed');return}
-const texLoader=new THREE.TextureLoader();
-function load(path){
-	try{
-		const t = texLoader.load(path, ()=>{}, undefined, ()=>{ console.error('tex fail', path); });
-		// Be defensive about texture color/encoding API differences across Three.js versions
-		try{
-			if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
-			else if ('sRGBEncoding' in THREE) t.encoding = THREE.sRGBEncoding;
-		}catch(e){}
-		try{ if ('anisotropy' in t) t.anisotropy = Math.max(1, t.anisotropy||8); }catch(e){}
-		return t;
-	}catch(e){ console.error('tex error', path, e); return null; }
-}
-const frontTex = load('Images/Lanyard_pokemon.png');
-const backTex = load('Images/Back_pokemon.png');
-const cardGroup=new THREE.Group();scene.add(cardGroup);
-const aspect=w/h;const viewH=2;const viewW=viewH*aspect;const cardGeo=new THREE.BoxGeometry(viewW,viewH,0.02);
-const matFront=new THREE.MeshBasicMaterial({map:frontTex});
-const matBack=new THREE.MeshBasicMaterial({map:backTex});
-const matSide=new THREE.MeshBasicMaterial({color:0x22263d});
-const cardMesh=new THREE.Mesh(cardGeo,[matSide,matSide,matSide,matSide,matFront,matBack]);cardGroup.add(cardMesh);
-scene.add(new THREE.AmbientLight(0xffffff,0.7));const dir=new THREE.DirectionalLight(0xffffff,0.6);dir.position.set(2,3,4);scene.add(dir);
-let spinRemaining=0;const spinSpeed=4;mount.addEventListener('click',()=>{if(spinRemaining<=0)spinRemaining=2*Math.PI});
-window.addEventListener('resize',()=>{const nw=mount.clientWidth||160,nh=mount.clientHeight||220;const aspect=nw/nh;const vH=2;const vW=vH*aspect;camera.left=-vW/2;camera.right=vW/2;camera.top=vH/2;camera.bottom=-vH/2;camera.updateProjectionMatrix();renderer.setSize(nw,nh)});
-let last=performance.now();
-function loop(now){const dt=(now-last)/1000;last=now;if(spinRemaining>0){const step=Math.min(spinSpeed*dt,spinRemaining);cardGroup.rotation.y+=step;spinRemaining-=step;}renderer.render(scene,camera);requestAnimationFrame(loop)}
-requestAnimationFrame(loop);
-console.log('lanyard init done');
+(() => {
+	function fail(msg) {
+		console.error(msg);
+		const m = document.getElementById('lanyard-3d-root');
+		if (m) {
+			m.innerHTML = '<div style="color:#f33;font-size:12px;text-align:center;padding:4px;border:1px solid #f33;border-radius:4px;background:rgba(255,0,0,0.1)">' + msg + '</div>';
+		}
+	}
+
+	function init() {
+		if (!window.THREE) {
+			// Retry once after 500ms if THREE is not yet loaded
+			setTimeout(() => {
+				if (!window.THREE) { fail('THREE.js failed to load'); return; }
+				init();
+			}, 500);
+			return;
+		}
+
+		const mount = document.getElementById('lanyard-3d-root');
+		if (!mount) { fail('mount missing'); return }
+
+		document.body.classList.add('has-3d-lanyard');
+
+		// Guard against zero-size mounts
+		const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
+		const h = (mount.clientHeight && mount.clientHeight > 0) ? mount.clientHeight : 340;
+
+		const scene = new THREE.Scene();
+		let camera;
+		try {
+			const aspect = w / h;
+			const viewH = 2;
+			const viewW = viewH * aspect;
+			camera = new THREE.OrthographicCamera(-viewW / 2, viewW / 2, viewH / 2, -viewH / 2, 0.1, 10);
+			camera.position.set(0, 0, 5);
+		} catch (e) { fail('camera error'); return }
+
+		let renderer;
+		try {
+			renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(w, h);
+			mount.appendChild(renderer.domElement);
+		} catch (e) { fail('WebGL unsupported'); return }
+
+		const texLoader = new THREE.TextureLoader();
+		function load(path) {
+			return texLoader.load(
+				path,
+				() => { },
+				undefined,
+				(err) => {
+					console.error('Texture load failed:', path, err);
+					// Don't fail the whole app, but maybe show a placeholder or log it visible if critical
+				}
+			);
+		}
+
+		// Use relative paths that work both locally and on Netlify
+		const frontTex = load('Images/Lanyard_pokemon.png');
+		const backTex = load('Images/Back_pokemon.png');
+
+		// Fix color space if needed
+		[frontTex, backTex].forEach(t => {
+			if (t) {
+				if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
+				else if ('sRGBEncoding' in THREE) t.encoding = THREE.sRGBEncoding;
+				t.anisotropy = 8;
+			}
+		});
+
+		const cardGroup = new THREE.Group();
+		scene.add(cardGroup);
+
+		const aspectR = w / h;
+		const viewH2 = 2;
+		const viewW2 = viewH2 * aspectR;
+		const cardGeo = new THREE.BoxGeometry(viewW2, viewH2, 0.02);
+
+		const matFront = new THREE.MeshBasicMaterial({ map: frontTex, color: 0xffffff });
+		const matBack = new THREE.MeshBasicMaterial({ map: backTex, color: 0xffffff });
+		const matSide = new THREE.MeshBasicMaterial({ color: 0x22263d });
+
+		const cardMesh = new THREE.Mesh(cardGeo, [matSide, matSide, matSide, matSide, matFront, matBack]);
+		cardGroup.add(cardMesh);
+
+		scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+		const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+		dir.position.set(2, 3, 4);
+		scene.add(dir);
+
+		let spinRemaining = 0;
+		const spinSpeed = 4;
+		mount.addEventListener('click', () => { if (spinRemaining <= 0) spinRemaining = 2 * Math.PI });
+
+		window.addEventListener('resize', () => {
+			const nw = mount.clientWidth || 220;
+			const nh = mount.clientHeight || 340;
+			const aspect = nw / nh;
+			const vH = 2;
+			const vW = vH * aspect;
+			camera.left = -vW / 2;
+			camera.right = vW / 2;
+			camera.top = vH / 2;
+			camera.bottom = -vH / 2;
+			camera.updateProjectionMatrix();
+			renderer.setSize(nw, nh);
+		});
+
+		let last = performance.now();
+		function loop(now) {
+			const dt = (now - last) / 1000;
+			last = now;
+			if (spinRemaining > 0) {
+				const step = Math.min(spinSpeed * dt, spinRemaining);
+				cardGroup.rotation.y += step;
+				spinRemaining -= step;
+			}
+			renderer.render(scene, camera);
+			requestAnimationFrame(loop);
+		}
+		requestAnimationFrame(loop);
+		console.log('lanyard init done');
+	}
+
+	// Start initialization
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
 })();
