@@ -7,6 +7,7 @@ import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
 import ClockPanel from './components/ClockPanel';
 import VirtualKeyboard from './components/VirtualKeyboard';
+import OctahedronNetwork from './components/OctahedronNetwork';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -383,82 +384,9 @@ const App: React.FC = () => {
         <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
           <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
           <div className="flex-1 flex items-center justify-center opacity-90">
-            <div className="w-40 h-40 md:w-48 md:h-48 relative">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <defs>
-                  <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#fff9ef" stopOpacity="1" />
-                    <stop offset="35%" stopColor="#ffd59e" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#ff7a4d" stopOpacity="1" />
-                  </radialGradient>
-                  <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#7fb3ff" />
-                    <stop offset="100%" stopColor="#caa5ff" />
-                  </linearGradient>
-                  <filter id="sunGlow" x="-60%" y="-60%" width="220%" height="220%">
-                    <feGaussianBlur stdDeviation="5" result="coloredBlur" />
-                    <feMerge>
-                      <feMergeNode in="coloredBlur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-
-                </defs>
-
-                <rect x="2" y="2" width="96" height="96" rx="8" fill="none" stroke="#07101a" strokeWidth="1" strokeOpacity="0.08" />
-                <g>
-                  {[22, 32, 40, 46].map((r, i) => (
-                    <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.6" strokeOpacity="0.18" strokeDasharray={i % 2 ? "3 7" : "4 6"} />
-                  ))}
-
-                  <circle cx="50" cy="50" r="18" fill="url(#sunGrad)" filter="url(#sunGlow)" />
-                  <circle cx="50" cy="50" r="20" fill="url(#sunGrad)" filter="url(#sunGlow)" />
-
-                  {
-                    [
-                      { r: 22, size: 4.2, dur: 6.5, angle: 10, moon: { dist: 6, size: 0.9, dur: 2.2 } },
-                      { r: 22, size: 2.8, dur: 8.2, angle: 100 },
-                      { r: 30, size: 3.6, dur: 7.2, angle: 45, moon: { dist: 5, size: 0.8, dur: 2.8 } },
-                      { r: 30, size: 1.8, dur: 9.8, angle: 210 },
-                      { r: 36, size: 3.8, dur: 11.2, angle: 180 },
-                      { r: 36, size: 1.6, dur: 13.6, angle: 270 },
-                      { r: 44, size: 5.2, dur: 11.9, angle: 60, moon: { dist: 8, size: 1.2, dur: 3.6 } },
-                      { r: 44, size: 2.8, dur: 15.0, angle: 300 },
-                      { r: 40, size: 3.6, dur: 13.6, angle: 30 },
-                      { r: 40, size: 1.9, dur: 16.4, angle: 150 },
-                      { r: 28, size: 2.0, dur: 10.1, angle: 330 },
-                      { r: 32, size: 2.8, dur: 9.6, angle: 120 },
-                      { r: 42, size: 3.2, dur: 14.0, angle: 250 },
-                      { r: 26, size: 1.6, dur: 11.5, angle: 320 }
-                    ].map((o, i) => (
-                      <g key={`orb-${i}`} transform={`rotate(${o.angle} 50 50)`}>
-                        <g transform={`translate(${50 + o.r} 50)`}>
-                          <circle cx={0} cy={0} r={o.size} fill="url(#orbGrad)" opacity="1" />
-                          {o.size > 2.6 && (
-                            <circle cx={0} cy={0} r={o.size * 2.4} fill="url(#orbGrad)" opacity={0.12} />
-                          )}
-                          {o.moon && (
-                            <g>
-                              <g>
-                                <animateTransform attributeName="transform" attributeType="XML" type="rotate" from={`0 0 0`} to={`360 0 0`} dur={`${o.moon.dur}s`} repeatCount="indefinite" />
-                                <circle cx={o.moon.dist} cy={0} r={o.moon.size} fill="#ffffff" opacity="0.95" />
-                              </g>
-                            </g>
-                          )}
-                        </g>
-                        <animateTransform attributeName="transform" attributeType="XML" type="rotate" from={`${o.angle} 50 50`} to={`${o.angle + 360} 50 50`} dur={`${o.dur}s`} repeatCount="indefinite" />
-                      </g>
-                    ))
-                  }
-                </g>
-                <rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.22" />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-lg md:text-2xl font-mono font-bold text-white bg-black/45 px-3 py-1 rounded-md border border-indigo-600/20"><Flicker>{networkLevel}%</Flicker></div>
-              </div>
-            </div>
+            <OctahedronNetwork networkLevel={networkLevel} />
           </div>
-          <div className="h-40 shrink-0 border-t border-indigo-500/30 pt-2">
+          <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
             <div className="text-[10px] mb-1">TRAFFIC ANALYSIS</div>
             <TrafficGraph />
           </div>
