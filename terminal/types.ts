@@ -3,7 +3,8 @@ export enum MessageType {
   SYSTEM = 'SYSTEM',
   INFO = 'INFO',
   ERROR = 'ERROR',
-  SUCCESS = 'SUCCESS'
+  SUCCESS = 'SUCCESS',
+  CODE = 'CODE'
 }
 
 export interface TerminalLine {

@@ -1,0 +1,9 @@
+PRIVACY POLICY
+
+This terminal does not collect personal data.
+All commands entered are processed locally or sent anonymously to the AI core for response generation.
+
+Cookies are only used for session persistence.
+No tracking pixels detected.
+
+System Integrity: SECURE.
