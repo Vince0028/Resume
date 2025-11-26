@@ -4,10 +4,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  // Use a different base for production so the built app works when served
-  // from a subpath (we publish the terminal app to `/terminal/`). Keep
-  // `/` as the dev base so `vite` dev server behaves normally.
-  const base = mode === 'production' ? '/terminal/' : '/';
+  // Use relative base for production so it works in any subdirectory (e.g. GitHub Pages)
+  const base = mode === 'production' ? './' : '/';
   return {
     base,
     server: {
