@@ -9,7 +9,6 @@
 
 	function init() {
 		if (!window.THREE) {
-			// Retry once after 500ms if THREE is not yet loaded
 			setTimeout(() => {
 				if (!window.THREE) { fail('THREE.js failed to load'); return; }
 				init();
@@ -22,7 +21,6 @@
 
 		document.body.classList.add('has-3d-lanyard');
 
-		// Guard against zero-size mounts
 		const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
 		const h = (mount.clientHeight && mount.clientHeight > 0) ? mount.clientHeight : 340;
 
@@ -52,16 +50,13 @@
 				undefined,
 				(err) => {
 					console.error('Texture load failed:', path, err);
-					// Don't fail the whole app, but maybe show a placeholder or log it visible if critical
 				}
 			);
 		}
 
-		// Use relative paths that work both locally and on Netlify
 		const frontTex = load('Images/Lanyard_pokemon.png');
 		const backTex = load('Images/Back_pokemon.png');
 
-		// Fix color space if needed
 		[frontTex, backTex].forEach(t => {
 			if (t) {
 				if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
@@ -124,7 +119,6 @@
 		console.log('lanyard init done');
 	}
 
-	// Start initialization
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', init);
 	} else {

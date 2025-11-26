@@ -16,17 +16,14 @@
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    // Redirect root to terminal UI so terminal is the main landing page.
-    // Append ?resume=1 to the URL to bypass this redirect and show the resume instead.
     (function () {
       try {
         const path = location.pathname || '/';
         const query = location.search || '';
         if (!path.includes('/terminal') && !query.includes('resume=1')) {
-          // Use replace so history isn't polluted. Use relative path for GitHub Pages support.
           location.replace('terminal/index.html');
         }
-      } catch (e) { /* ignore */ }
+      } catch (e) { }
     })();
   </script>
 </head>

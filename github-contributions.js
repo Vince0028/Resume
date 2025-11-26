@@ -1,10 +1,8 @@
-// GitHub contributions renderer with lightweight skeleton, caching, and timeout
 document.addEventListener('DOMContentLoaded', async function () {
   const username = 'Vince0028';
   const calendarEl = document.getElementById('github-calendar');
   if (!calendarEl) return;
 
-  // Fast skeleton so UI feels instant
   function renderSkeleton() {
     const skeleton = `
       <div class="contrib-header">Loading contributions...</div>
@@ -30,7 +28,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     calendarEl.innerHTML = skeleton;
   }
 
-  // Try to load from cache (valid for 24 hours)
   const cacheKey = 'gh_contribs_' + username;
   try {
     const cached = localStorage.getItem(cacheKey);
@@ -38,14 +35,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       const parsed = JSON.parse(cached);
       if (parsed && parsed.ts && Date.now() - parsed.ts < 24 * 60 * 60 * 1000 && parsed.html) {
         calendarEl.innerHTML = parsed.html;
-        return; // cached render is good enough for now
+        return;
       }
     }
-  } catch (e) { /* ignore storage errors */ }
+  } catch (e) { }
 
   renderSkeleton();
 
-  // Fetch with timeout and cache result
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
 
@@ -59,7 +55,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const contributions = data.contributions.slice();
     const totalContributions = data.total ? data.total[Object.keys(data.total)[0]] : 0;
 
-    // Append future empty days until end of year to keep grid full
     const lastDate = new Date(contributions[contributions.length - 1].date);
     const today = new Date();
     const endOfYear = new Date(today.getFullYear(), 11, 31);
@@ -70,25 +65,21 @@ document.addEventListener('DOMContentLoaded', async function () {
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    // Build weeks (each week is an array of days starting Sunday)
     const weeks = [];
     let week = [];
     contributions.forEach((d, idx) => {
       const dt = new Date(d.date);
       const dow = dt.getDay();
-      week[dow] = d; // place by day index
+      week[dow] = d;
       if (dow === 6 || idx === contributions.length - 1) {
-        // finalize week
         weeks.push(week.slice());
         week = [];
       }
     });
 
-    // Build html
     let html = `<div class="contrib-header">${(totalContributions || 0).toLocaleString()} contributions in the last year</div>`;
     html += `<div class="contrib-calendar">`;
     html += `<div class="contrib-months">`;
-    // naive month labels at week positions
     const monthPositions = {};
     weeks.forEach((w, i) => {
       for (let j = 0; j < 7; j++) {
@@ -146,13 +137,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     calendarEl.innerHTML = html;
 
-    // Cache rendered HTML for 24 hours
     try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), html })); } catch (e) { }
 
   } catch (err) {
     clearTimeout(timeout);
     console.error('Error loading GitHub contributions:', err);
-    // Keep skeleton but show a subtle message
     const header = calendarEl.querySelector('.contrib-header');
     if (header) {
       header.textContent = 'Contributions unavailable (Network/API Error)';

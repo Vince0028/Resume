@@ -49,11 +49,7 @@ export const INITIAL_BOOT_SEQUENCE = [
   "TYPE 'help' FOR AVAILABLE COMMANDS OR ASK A QUESTION."
 ];
 
-// Fallback resume URLs (same-tab navigation). Update if your resume is served at a specific URL/port.
 export const RESUME_FALLBACK_URLS = [
-  // Prefer the site root with the `?resume=1` bypass so the client-side
-  // redirect (which sends `/` to `/terminal/`) is bypassed and the
-  // graphical resume is shown in the same tab on the deployed site.
   '../index.html?resume=1',
   '../index.html'
 ];
@@ -62,7 +58,7 @@ export interface FileSystemNode {
   name: string;
   type: 'file' | 'dir';
   content?: string;
-  path?: string; // Real path to fetch
+  path?: string;
   restricted?: boolean;
   children?: FileSystemNode[];
 }

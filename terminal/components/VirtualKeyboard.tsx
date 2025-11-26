@@ -19,7 +19,6 @@ const VirtualKeyboard: React.FC = () => {
       {KEYS.map((row, rIdx) => (
         <div key={rIdx} className="flex flex-1 w-full gap-1 mb-1 last:mb-0">
           {row.map((key, kIdx) => {
-            // Determine width classes based on key type
             let widthClass = 'flex-1';
             if (key === 'SPACE') widthClass = 'flex-[6]';
             else if (key === 'ENTER' || key === 'SHIFT' || key === 'CAPS' || key === 'BACK') widthClass = 'flex-[1.5]';
@@ -33,7 +32,7 @@ const VirtualKeyboard: React.FC = () => {
             })();
 
             return (
-              <div 
+              <div
                 key={kIdx}
                 onClick={() => sendKey(sendVal)}
                 className={`
@@ -53,7 +52,6 @@ const VirtualKeyboard: React.FC = () => {
                 <span className={`text-xs xl:text-sm font-bold ${THEME_COLOR} group-hover:text-black`}>
                   {key}
                 </span>
-                {/* Micro interaction decoration */}
                 <div className="absolute top-0 right-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
                 <div className="absolute bottom-0 left-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
               </div>

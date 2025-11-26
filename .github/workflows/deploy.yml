@@ -32,15 +32,12 @@ jobs:
         working-directory: ./terminal
         run: |
           npm ci
-          # Set base path for GitHub Pages if needed, but relative paths usually work better
-          # For now, we assume the app handles relative paths or we set base in vite config
           npm run build
 
       - name: Assemble Site
         run: |
           mkdir -p public
           
-          # Copy root files
           cp index.html public/
           cp styles.css public/
           cp script.js public/
@@ -49,14 +46,11 @@ jobs:
           cp skillset-order.js public/
           cp -r Images public/
           
-          # Copy terminal build
           mkdir -p public/terminal
           cp -r terminal/dist/* public/terminal/
           
-          # Create a 404.html that mirrors index.html for client-side routing support if needed
           cp public/index.html public/404.html
 
-          # Add .nojekyll to ensure files with underscores are served correctly
           touch public/.nojekyll
 
       - name: Upload artifact

@@ -36,11 +36,10 @@ const MatrixRain: React.FC = () => {
 
             lastDrawTime = timestamp - (elapsed % interval);
 
-            // Semi-transparent black to create trail effect
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#6366f1'; // Indigo-500
+            ctx.fillStyle = '#6366f1';
             ctx.font = `${fontSize}px monospace`;
 
             for (let i = 0; i < drops.length; i++) {

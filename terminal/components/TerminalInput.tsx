@@ -17,14 +17,12 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
     setValue('');
   };
 
-  // Keep focus
   useEffect(() => {
     const handleClick = () => inputRef.current?.focus();
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
   }, []);
 
-  // Listen for virtual keyboard events
   useEffect(() => {
     const handler = (e: any) => {
       const k = e?.detail?.key;
@@ -39,9 +37,7 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
         setValue(v => v.slice(0, -1));
         return;
       }
-      // Tab -> 2 spaces
       if (k === '\t') { setValue(v => v + '  '); return; }
-      // Space or single character
       setValue(v => v + k);
       inputRef.current?.focus();
     };

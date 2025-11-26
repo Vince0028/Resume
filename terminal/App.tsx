@@ -8,7 +8,6 @@ import FileExplorer from './components/FileExplorer';
 import ClockPanel from './components/ClockPanel';
 import VirtualKeyboard from './components/VirtualKeyboard';
 
-// Helper to find node in file system
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
     if (node.name === name) return node;
@@ -20,7 +19,6 @@ const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSyst
   return null;
 };
 
-// Helper to generate tree string
 const generateTree = (nodes: FileSystemNode[], prefix = ''): string => {
   let output = '';
   nodes.forEach((node, index) => {
@@ -38,7 +36,6 @@ const TrafficGraph = () => {
   const [bars, setBars] = useState<number[]>(new Array(10).fill(20));
 
   useEffect(() => {
-    // slow down the traffic update a bit for a smoother, less frantic look
     const interval = setInterval(() => {
       setBars(prev => prev.map(() => Math.max(10, Math.floor(Math.random() * 90))));
     }, 400);
@@ -68,12 +65,10 @@ const App: React.FC = () => {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [networkLevel, setNetworkLevel] = useState(60);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history, isBooting]);
 
-  // Boot sequence effect
   useEffect(() => {
     let delay = 0;
     INITIAL_BOOT_SEQUENCE.forEach((line, index) => {
@@ -85,12 +80,10 @@ const App: React.FC = () => {
     });
   }, []);
 
-  // Simulate network level for the Network Status widget
   useEffect(() => {
     const iv = setInterval(() => {
       setNetworkLevel(prev => {
-        // gently vary network level more slowly and with smaller changes
-        const delta = Math.floor(Math.random() * 9) - 4; // -4..4
+        const delta = Math.floor(Math.random() * 9) - 4;
         let next = Math.max(5, Math.min(100, prev + delta));
         return next;
       });
@@ -105,7 +98,6 @@ const App: React.FC = () => {
 
     const lowerCmd = cmd.toLowerCase().trim();
 
-    // Local commands
     if (lowerCmd === 'clear' || lowerCmd === 'cls') {
       setHistory([]);
       setIsProcessing(false);
@@ -133,7 +125,6 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'open gui' || lowerCmd === 'open resume') {
-      // Use user-configured resume URL if present
       const userUrl = localStorage.getItem('resumeUrl');
       const candidate = userUrl && userUrl.trim() ? userUrl.trim() : (RESUME_FALLBACK_URLS && RESUME_FALLBACK_URLS.length ? RESUME_FALLBACK_URLS[0] : '../index.html');
       setHistory(prev => [...prev, { id: `open-${Date.now()}`, type: MessageType.INFO, content: `Redirecting to ${candidate} ...`, timestamp: Date.now() }]);
@@ -175,7 +166,6 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'contact') {
-      // Provide clickable links (rendered as HTML)
       const html = `
         <div>
           <div>Email: <a href="mailto:alobinvince@gmail.com">alobinvince@gmail.com</a></div>
@@ -189,7 +179,6 @@ const App: React.FC = () => {
       return;
     }
 
-    // open <file>
     if (lowerCmd.startsWith('open ')) {
       const target = cmd.slice(5).trim();
       if (!target) {
@@ -236,7 +225,6 @@ const App: React.FC = () => {
       return;
     }
 
-    // cat <file> (alias for open)
     if (lowerCmd.startsWith('cat ')) {
       const target = cmd.slice(4).trim();
       if (!target) {
@@ -277,7 +265,6 @@ const App: React.FC = () => {
       return;
     }
 
-    // AI Query
     try {
       const response = await sendMessageToGemini(cmd);
       setHistory(prev => [...prev, { id: `ai-${Date.now()}`, type: MessageType.SYSTEM, content: response, timestamp: Date.now() }]);
@@ -287,7 +274,6 @@ const App: React.FC = () => {
     setIsProcessing(false);
   };
 
-  // Listen for FileExplorer open-file events
   useEffect(() => {
     const handler = async (e: any) => {
       const filename = e?.detail?.filename;
@@ -312,10 +298,8 @@ const App: React.FC = () => {
     return () => window.removeEventListener('terminal-open-file', handler as EventListener);
   }, []);
 
-  // helper to render terminal content as text or HTML when needed
   const renderLineContent = (line: TerminalLine) => {
     const content = line.content || '';
-    // small helper to unescape common HTML entities if the content was escaped
     const unescapeHtml = (str: string) => {
       return str.replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
@@ -324,7 +308,6 @@ const App: React.FC = () => {
         .replace(/&#39;/g, "'");
     };
 
-    // simple heuristic: if content contains an anchor tag or html block (or escaped html), render as HTML
     const looksLikeHtml = /<a\s|<div|<span|<br|<strong|<em|&lt;\/?div|&lt;a\s/.test(content);
     if (looksLikeHtml && line.type !== MessageType.CODE) {
       const html = looksLikeHtml && content.indexOf('&lt;') !== -1 ? unescapeHtml(content) : content;
@@ -335,13 +318,11 @@ const App: React.FC = () => {
       return <pre className={`${THEME_COLOR} whitespace-pre-wrap font-mono text-xs md:text-sm`}>{content || ' '}</pre>;
     }
 
-    // otherwise render preserving newlines
     return <div className={THEME_COLOR}>{content}</div>;
   };
 
   return (
     <div className="w-screen h-screen p-2 md:p-6 flex items-center justify-center bg-black overflow-hidden relative">
-      {/* Background Network Mesh (Simulated) */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
         backgroundImage: `radial-gradient(${THEME_COLOR.replace('text-', '')} 1px, transparent 1px)`,
         backgroundSize: '30px 30px'
@@ -349,7 +330,6 @@ const App: React.FC = () => {
 
       <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
 
-        {/* HEADER - LEFT (CLOCK) */}
         <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
           <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
           <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
@@ -359,19 +339,16 @@ const App: React.FC = () => {
           <ClockPanel />
         </div>
 
-        {/* HEADER - RIGHT (MATRIX RAIN) */}
         <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
           <div className="absolute top-0 right-0 bg-indigo-500 text-black text-xs px-2 font-bold">DATA STREAM</div>
           <MatrixRain />
         </div>
 
-        {/* LEFT SIDEBAR (STATS) */}
         <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
           <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
             <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1">HARDWARE MONITOR</div>
             <SystemMonitor />
           </div>
-          {/* Clipboard Access - Responsive Height */}
           <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center`}>
             <div className="text-[10px] mb-2 uppercase tracking-wider opacity-80">Clipboard Access</div>
             <div className="flex gap-2">
@@ -381,7 +358,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* MAIN TERMINAL */}
         <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
           <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
             <span className="text-xs font-bold">MAIN - bash</span>
@@ -403,11 +379,9 @@ const App: React.FC = () => {
           {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
         </div>
 
-        {/* RIGHT SIDEBAR (Network/Info) */}
         <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
           <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
           <div className="flex-1 flex items-center justify-center opacity-90">
-            {/* Dynamic Network Indicator (SVG) */}
             <div className="w-40 h-40 md:w-48 md:h-48 relative">
               <svg viewBox="0 0 100 100" className="w-full h-full">
                 <defs>
@@ -427,22 +401,18 @@ const App: React.FC = () => {
                       <feMergeNode in="SourceGraphic" />
                     </feMerge>
                   </filter>
-                  {/* decorative rectangular holder to match card (no circular clipping) */}
 
                 </defs>
 
-                {/* background frame and faint orbit paths (fill card) */}
                 <rect x="2" y="2" width="96" height="96" rx="8" fill="none" stroke="#07101a" strokeWidth="1" strokeOpacity="0.08" />
                 <g>
                   {[22, 32, 40, 46].map((r, i) => (
                     <circle key={`orbit-${i}`} cx="50" cy="50" r={r} fill="none" stroke="#081020" strokeWidth="0.6" strokeOpacity="0.18" strokeDasharray={i % 2 ? "3 7" : "4 6"} />
                   ))}
 
-                  {/* single larger glowing central sun (bigger) */}
                   <circle cx="50" cy="50" r="18" fill="url(#sunGrad)" filter="url(#sunGlow)" />
                   <circle cx="50" cy="50" r="20" fill="url(#sunGrad)" filter="url(#sunGlow)" />
 
-                  {/* orbiting nodes (with optional moons) */}
                   {
                     [
                       { r: 22, size: 4.2, dur: 6.5, angle: 10, moon: { dist: 6, size: 0.9, dur: 2.2 } },
@@ -480,7 +450,6 @@ const App: React.FC = () => {
                     ))
                   }
                 </g>
-                {/* subtle rectangular decorative frame (top) to match card */}
                 <rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.22" />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -494,7 +463,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* BOTTOM PANELS */}
         <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
           <FileExplorer />
         </div>
@@ -505,7 +473,6 @@ const App: React.FC = () => {
 
       </div>
 
-      {/* PRIVACY MODAL */}
       {privacyOpen && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
           <div className={`w-full max-w-lg border-2 ${THEME_BORDER} bg-black p-8 relative ${THEME_GLOW}`}>
