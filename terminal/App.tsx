@@ -64,8 +64,75 @@ const App: React.FC = () => {
   const [isBooting, setIsBooting] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
+
+  // Signature Pad State
+  const signatureRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [hasSigned, setHasSigned] = useState(false);
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = signatureRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    setIsDrawing(true);
+    const { offsetX, offsetY } = getCoordinates(e, canvas);
+    ctx.beginPath();
+    ctx.moveTo(offsetX, offsetY);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = signatureRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const { offsetX, offsetY } = getCoordinates(e, canvas);
+    ctx.lineTo(offsetX, offsetY);
+    ctx.strokeStyle = '#6366f1'; // Indigo-500
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    setHasSigned(true);
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    const canvas = signatureRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx?.closePath();
+    }
+  };
+
+  const clearSignature = () => {
+    const canvas = signatureRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setHasSigned(false);
+  };
+
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = (e as React.MouseEvent).clientX;
+      clientY = (e as React.MouseEvent).clientY;
+    }
+    const rect = canvas.getBoundingClientRect();
+    return {
+      offsetX: clientX - rect.left,
+      offsetY: clientY - rect.top
+    };
+  };
 
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -405,19 +472,49 @@ const App: React.FC = () => {
       {privacyOpen && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
           <div className={`w-full max-w-lg border-2 ${THEME_BORDER} bg-black p-8 relative ${THEME_GLOW}`}>
-            <h2 className="text-2xl font-bold mb-4">PRIVACY_POLICY.TXT</h2>
-            <p className="text-sm mb-4 leading-relaxed opacity-80">
-              This terminal does not collect personal data. All commands entered are processed locally or sent anonymously to the AI core for response generation.
-              <br /><br />
-              Cookies are only used for session persistence. No tracking pixels detected.
-              <br /><br />
-              System Integrity: SECURE.
-            </p>
+            <h2 className="text-2xl font-bold mb-4 text-center">WELCOME TO VINCES RESUME</h2>
+            <div className="border-t border-b border-indigo-500/30 py-4 mb-4">
+              <h3 className="text-lg font-bold mb-2">PRIVACY_POLICY.TXT</h3>
+              <p className="text-sm leading-relaxed opacity-80">
+                This terminal does not collect personal data. All commands entered are processed locally or sent anonymously to the AI core for response generation.
+                <br /><br />
+                Cookies are only used for session persistence. No tracking pixels detected.
+                <br /><br />
+                System Integrity: SECURE.
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <div className="text-xs mb-1 opacity-70 uppercase">Sign here to acknowledge:</div>
+              <div className={`border ${THEME_BORDER} bg-black/50 relative h-32 w-full cursor-crosshair`}>
+                <canvas
+                  ref={signatureRef}
+                  width={450}
+                  height={128}
+                  className="w-full h-full"
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                />
+                <button
+                  onClick={clearSignature}
+                  className="absolute top-2 right-2 text-[10px] border border-red-500/50 text-red-400 px-2 py-1 hover:bg-red-900/30"
+                >
+                  CLEAR
+                </button>
+              </div>
+            </div>
+
             <button
               onClick={() => setPrivacyOpen(false)}
-              className={`border ${THEME_BORDER} hover:bg-indigo-500 hover:text-black px-6 py-2 transition-all uppercase font-bold`}
+              disabled={!hasSigned}
+              className={`w-full border ${THEME_BORDER} ${hasSigned ? 'hover:bg-indigo-500 hover:text-black cursor-pointer' : 'opacity-50 cursor-not-allowed'} px-6 py-2 transition-all uppercase font-bold`}
             >
-              ACKNOWLEDGE
+              {hasSigned ? 'ACKNOWLEDGE & ENTER' : 'SIGNATURE REQUIRED'}
             </button>
           </div>
         </div>
