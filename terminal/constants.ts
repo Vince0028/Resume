@@ -57,3 +57,46 @@ export const RESUME_FALLBACK_URLS = [
   '../index.html?resume=1',
   '../index.html'
 ];
+
+export interface FileSystemNode {
+  name: string;
+  type: 'file' | 'dir';
+  content?: string;
+  path?: string; // Real path to fetch
+  restricted?: boolean;
+  children?: FileSystemNode[];
+}
+
+export const FILE_SYSTEM: FileSystemNode[] = [
+  {
+    name: '.github',
+    type: 'dir',
+    restricted: true,
+    children: [
+      { name: 'workflows', type: 'dir', children: [{ name: 'deploy.yml', type: 'file' }] }
+    ]
+  },
+  {
+    name: 'src',
+    type: 'dir',
+    restricted: true,
+    children: [
+      { name: 'components', type: 'dir', children: [{ name: 'Terminal.tsx', type: 'file' }] },
+      { name: 'utils', type: 'dir', children: [{ name: 'helpers.ts', type: 'file' }] }
+    ]
+  },
+  { name: '.env', type: 'file', restricted: true },
+  { name: '.gitignore', type: 'file', restricted: true },
+  { name: 'LICENSE', type: 'file', restricted: true },
+  { name: 'README.md', type: 'file', restricted: true },
+  { name: 'privacy_policy.txt', type: 'file', restricted: true },
+  { name: 'package.json', type: 'file', restricted: true },
+  { name: 'tsconfig.json', type: 'file', restricted: true },
+  { name: 'vite.config.ts', type: 'file', restricted: true },
+  { name: 'index.html', type: 'file', path: '../index.html', restricted: false },
+  { name: 'styles.css', type: 'file', path: '../styles.css', restricted: false },
+  { name: 'script.js', type: 'file', path: '../script.js', restricted: false },
+  { name: 'lanyard-3d.js', type: 'file', path: '../lanyard-3d.js', restricted: false },
+  { name: 'github-contributions.js', type: 'file', path: '../github-contributions.js', restricted: false },
+  { name: 'skillset-order.js', type: 'file', path: '../skillset-order.js', restricted: false },
+];

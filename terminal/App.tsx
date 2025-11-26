@@ -1,12 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TerminalLine, MessageType } from './types';
 import { sendMessageToGemini } from './services/geminiService';
-import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS } from './constants';
+import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
 import TerminalInput from './components/TerminalInput';
 import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
 import ClockPanel from './components/ClockPanel';
 import VirtualKeyboard from './components/VirtualKeyboard';
+
+// Helper to find node in file system
+const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
+  for (const node of nodes) {
+    if (node.name === name) return node;
+    if (node.children) {
+      const found = findNode(name, node.children);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
+// Helper to generate tree string
+const generateTree = (nodes: FileSystemNode[], prefix = ''): string => {
+  let output = '';
+  nodes.forEach((node, index) => {
+    const isLast = index === nodes.length - 1;
+    const connector = isLast ? '└── ' : '├── ';
+    output += `${prefix}${connector}${node.name}${node.type === 'dir' ? '/' : ''}\n`;
+    if (node.children) {
+      output += generateTree(node.children, prefix + (isLast ? '    ' : '│   '));
+    }
+  });
+  return output;
+};
 
 const TrafficGraph = () => {
   const [bars, setBars] = useState<number[]>(new Array(10).fill(20));
@@ -87,8 +113,15 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\n[QUERY]            - Ask the AI system anything about the user\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n[QUERY]            - Ask the AI system anything about the user\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'file tree' || lowerCmd === 'tree') {
+      const treeStr = generateTree(FILE_SYSTEM);
+      setHistory(prev => [...prev, { id: `tree-${Date.now()}`, type: MessageType.CODE, content: treeStr, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -169,15 +202,27 @@ const App: React.FC = () => {
         return;
       }
 
-      const ALLOWED_FILES = ['privacy_policy.txt', 'README.md', 'LICENSE', 'index.html'];
-      if (!ALLOWED_FILES.includes(target)) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: access denied to ${target}`, timestamp: Date.now() }]);
+      const node = findNode(target);
+      if (!node) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: file not found: ${target}`, timestamp: Date.now() }]);
+        setIsProcessing(false);
+        return;
+      }
+
+      if (node.restricted) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `ACCESS DENIED: ${target} is restricted`, timestamp: Date.now() }]);
+        setIsProcessing(false);
+        return;
+      }
+
+      if (node.type === 'dir') {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: ${target} is a directory`, timestamp: Date.now() }]);
         setIsProcessing(false);
         return;
       }
 
       try {
-        const fetchPath = target === 'index.html' ? '../index.html' : '/' + target;
+        const fetchPath = node.path || (target === 'index.html' ? '../index.html' : '/' + target);
         const res = await fetch(fetchPath);
         if (!res.ok) {
           throw new Error('File not found');
@@ -199,15 +244,28 @@ const App: React.FC = () => {
         setIsProcessing(false);
         return;
       }
-      // Re-use open logic or just copy-paste
-      const ALLOWED_FILES = ['privacy_policy.txt', 'README.md', 'LICENSE', 'index.html'];
-      if (!ALLOWED_FILES.includes(target)) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: access denied to ${target}`, timestamp: Date.now() }]);
+
+      const node = findNode(target);
+      if (!node) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: file not found: ${target}`, timestamp: Date.now() }]);
         setIsProcessing(false);
         return;
       }
+
+      if (node.restricted) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `ACCESS DENIED: ${target} is restricted`, timestamp: Date.now() }]);
+        setIsProcessing(false);
+        return;
+      }
+
+      if (node.type === 'dir') {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: ${target} is a directory`, timestamp: Date.now() }]);
+        setIsProcessing(false);
+        return;
+      }
+
       try {
-        const fetchPath = target === 'index.html' ? '../index.html' : '/' + target;
+        const fetchPath = node.path || (target === 'index.html' ? '../index.html' : '/' + target);
         const res = await fetch(fetchPath);
         if (!res.ok) throw new Error('File not found');
         const text = await res.text();
