@@ -32,6 +32,8 @@ const TrafficGraph = () => {
   );
 };
 
+import MatrixRain from './components/MatrixRain';
+
 const App: React.FC = () => {
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [isBooting, setIsBooting] = useState(true);
@@ -178,58 +180,51 @@ const App: React.FC = () => {
         const fetchPath = target === 'index.html' ? '../index.html' : '/' + target;
         const res = await fetch(fetchPath);
         if (!res.ok) {
-          setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: cannot open ${target} (${res.status})`, timestamp: Date.now() }]);
-          setIsProcessing(false);
-          return;
+          throw new Error('File not found');
         }
         const text = await res.text();
-        setHistory(prev => [...prev, { id: `file-${Date.now()}`, type: MessageType.CODE, content: `----- ${target} -----\n${text || '[EMPTY FILE]'}\n----- end -----`, timestamp: Date.now() }]);
-      } catch (err) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: error reading ${target}`, timestamp: Date.now() }]);
+        setHistory(prev => [...prev, { id: `file-${Date.now()}`, type: MessageType.CODE, content: text, timestamp: Date.now() }]);
+      } catch (e) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: failed to read ${target}`, timestamp: Date.now() }]);
       }
       setIsProcessing(false);
       return;
     }
 
-    // cat <file>
+    // cat <file> (alias for open)
     if (lowerCmd.startsWith('cat ')) {
       const target = cmd.slice(4).trim();
       if (!target) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: 'cat: missing file', timestamp: Date.now() }]);
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: 'cat: missing target', timestamp: Date.now() }]);
         setIsProcessing(false);
         return;
       }
-
+      // Re-use open logic or just copy-paste
       const ALLOWED_FILES = ['privacy_policy.txt', 'README.md', 'LICENSE', 'index.html'];
       if (!ALLOWED_FILES.includes(target)) {
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: access denied to ${target}`, timestamp: Date.now() }]);
         setIsProcessing(false);
         return;
       }
-
       try {
         const fetchPath = target === 'index.html' ? '../index.html' : '/' + target;
         const res = await fetch(fetchPath);
-        if (!res.ok) {
-          setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: cannot read ${target} (${res.status})`, timestamp: Date.now() }]);
-          setIsProcessing(false);
-          return;
-        }
+        if (!res.ok) throw new Error('File not found');
         const text = await res.text();
-        setHistory(prev => [...prev, { id: `cat-${Date.now()}`, type: MessageType.CODE, content: `----- ${target} -----\n${text || '[EMPTY FILE]'}\n----- end -----`, timestamp: Date.now() }]);
-      } catch (err) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: error reading ${target}`, timestamp: Date.now() }]);
+        setHistory(prev => [...prev, { id: `file-${Date.now()}`, type: MessageType.CODE, content: text, timestamp: Date.now() }]);
+      } catch (e) {
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `cat: failed to read ${target}`, timestamp: Date.now() }]);
       }
       setIsProcessing(false);
       return;
     }
 
-    // AI Command (fallback)
+    // AI Query
     try {
       const response = await sendMessageToGemini(cmd);
       setHistory(prev => [...prev, { id: `ai-${Date.now()}`, type: MessageType.SYSTEM, content: response, timestamp: Date.now() }]);
-    } catch (err) {
-      setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: 'SYSTEM ERROR: AI unavailable', timestamp: Date.now() }]);
+    } catch (error) {
+      setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: 'Error connecting to AI core.', timestamp: Date.now() }]);
     }
     setIsProcessing(false);
   };
@@ -296,14 +291,20 @@ const App: React.FC = () => {
 
       <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
 
-        {/* TOP BAR / CLOCK */}
-        <div className={`col-span-12 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
+        {/* HEADER - LEFT (CLOCK) */}
+        <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
           <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
-          <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30">
+          <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
             <span>NET: ONLINE</span>
             <span>SEC: HIGH</span>
           </div>
           <ClockPanel />
+        </div>
+
+        {/* HEADER - RIGHT (MATRIX RAIN) */}
+        <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
+          <div className="absolute top-0 right-0 bg-indigo-500 text-black text-xs px-2 font-bold">DATA STREAM</div>
+          <MatrixRain />
         </div>
 
         {/* LEFT SIDEBAR (STATS) */}
