@@ -27,6 +27,9 @@ echo "Copying resume root files..."
 cp -f index.html public/ || true
 cp -f styles.css public/ || true
 cp -f script.js public/ || true
+cp -f lanyard-3d.js public/ || true
+cp -f github-contributions.js public/ || true
+cp -f skillset-order.js public/ || true
 cp -f serve.ps1 public/ || true
 cp -r Images public/ || true
 
