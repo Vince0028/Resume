@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { THEME_COLOR } from '../constants';
+import Flicker from './Flicker';
 
 const ClockPanel: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -20,7 +21,7 @@ const ClockPanel: React.FC = () => {
   return (
     <div className="flex flex-col items-start justify-center h-full pl-2">
       <h1 className={`text-4xl md:text-6xl font-bold ${THEME_COLOR} tracking-widest`}>
-        {formatTime(time)}
+        <Flicker>{formatTime(time)}</Flicker>
       </h1>
       <div className="flex space-x-4 mt-1 text-xs md:text-sm text-indigo-800">
         <span>{formatDate(time)}</span>

@@ -56,6 +56,7 @@ const TrafficGraph = () => {
 };
 
 import MatrixRain from './components/MatrixRain';
+import Flicker from './components/Flicker';
 
 const App: React.FC = () => {
   const [history, setHistory] = useState<TerminalLine[]>([]);
@@ -453,7 +454,7 @@ const App: React.FC = () => {
                 <rect x="3" y="3" width="94" height="94" rx="8" fill="none" stroke="#0b1220" strokeWidth="1" strokeOpacity="0.22" />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-lg md:text-2xl font-mono font-bold text-white bg-black/45 px-3 py-1 rounded-md border border-indigo-600/20">{networkLevel}%</div>
+                <div className="text-lg md:text-2xl font-mono font-bold text-white bg-black/45 px-3 py-1 rounded-md border border-indigo-600/20"><Flicker>{networkLevel}%</Flicker></div>
               </div>
             </div>
           </div>
