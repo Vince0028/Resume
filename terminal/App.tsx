@@ -198,6 +198,27 @@ const App: React.FC = () => {
       return;
     }
 
+    // Easter Egg!
+    if (lowerCmd === 'is vince gay' || lowerCmd === 'is vince gay?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "No, Vince isn't... but Rick is", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // Easter Egg #2!
+    if (lowerCmd === 'is vince handsome' || lowerCmd === 'is vince handsome?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Most definitely", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // Easter Egg #3!
+    if (lowerCmd === 'is vince ugly' || lowerCmd === 'is vince ugly?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Definitely not", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
     if (lowerCmd.startsWith('open ')) {
       const target = cmd.slice(5).trim();
       if (!target) {
@@ -373,7 +394,7 @@ const App: React.FC = () => {
           </div>
 
           <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-            <div className="absolute top-0 right-0 bg-indigo-500 text-black text-xs px-2 font-bold">DATA STREAM</div>
+            <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
             <MatrixRain />
           </div>
 
