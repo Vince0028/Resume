@@ -8,6 +8,9 @@ import FileExplorer from './components/FileExplorer';
 import ClockPanel from './components/ClockPanel';
 import VirtualKeyboard from './components/VirtualKeyboard';
 import OctahedronNetwork from './components/OctahedronNetwork';
+import FingerprintScanner from './components/FingerprintScanner';
+import MatrixRain from './components/MatrixRain';
+import Flicker from './components/Flicker';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -56,9 +59,6 @@ const TrafficGraph = () => {
   );
 };
 
-import MatrixRain from './components/MatrixRain';
-import Flicker from './components/Flicker';
-
 const App: React.FC = () => {
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [isBooting, setIsBooting] = useState(true);
@@ -67,10 +67,17 @@ const App: React.FC = () => {
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
 
+  // Verification State
+  const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
+  const [isSignatureVerified, setIsSignatureVerified] = useState(false);
+
   // Signature Pad State
   const signatureRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [hasSigned, setHasSigned] = useState(false);
+
+  const handleScanComplete = () => {
+    setIsFingerprintVerified(true);
+  };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = signatureRef.current;
@@ -97,7 +104,7 @@ const App: React.FC = () => {
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.stroke();
-    setHasSigned(true);
+    setIsSignatureVerified(true);
   };
 
   const stopDrawing = () => {
@@ -115,7 +122,7 @@ const App: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setHasSigned(false);
+    setIsSignatureVerified(false);
   };
 
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
@@ -134,20 +141,29 @@ const App: React.FC = () => {
     };
   };
 
+  const handleAcknowledge = () => {
+    setPrivacyOpen(false);
+    setHistory([]);
+    setIsBooting(true);
+    setNetworkLevel(60);
+  };
+
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history, isBooting]);
 
   useEffect(() => {
-    let delay = 0;
-    INITIAL_BOOT_SEQUENCE.forEach((line, index) => {
-      delay += Math.random() * 300 + 100;
-      setTimeout(() => {
-        setHistory(prev => [...prev, { id: `boot-${index}`, type: MessageType.INFO, content: line, timestamp: Date.now() }]);
-        if (index === INITIAL_BOOT_SEQUENCE.length - 1) setIsBooting(false);
-      }, delay);
-    });
-  }, []);
+    if (isBooting) {
+      let delay = 0;
+      INITIAL_BOOT_SEQUENCE.forEach((line, index) => {
+        delay += Math.random() * 300 + 100;
+        setTimeout(() => {
+          setHistory(prev => [...prev, { id: `boot-${index}-${Date.now()}`, type: MessageType.INFO, content: line, timestamp: Date.now() }]);
+          if (index === INITIAL_BOOT_SEQUENCE.length - 1) setIsBooting(false);
+        }, delay);
+      });
+    }
+  }, [isBooting]);
 
   useEffect(() => {
     const iv = setInterval(() => {
@@ -348,13 +364,26 @@ const App: React.FC = () => {
       const filename = e?.detail?.filename;
       if (!filename) return;
 
-      const ALLOWED_FILES = ['privacy_policy.txt', 'README.md', 'LICENSE', 'index.html'];
+      const ALLOWED_FILES = [
+        'privacy_policy.txt',
+        'README.md',
+        'LICENSE',
+        'index.html',
+        'script.js',
+        'styles.css',
+        'lanyard-3d.js',
+        'skillset-order.js',
+        'github-contributions.js'
+      ];
       if (!ALLOWED_FILES.includes(filename)) {
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: access denied to ${filename}`, timestamp: Date.now() }]);
         return;
       }
       try {
-        const fetchPath = filename === 'index.html' ? '../index.html' : '/' + filename;
+        // Most files are in the parent directory
+        const fetchPath = filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
+          ? '/' + filename
+          : '../' + filename;
         const res = await fetch(fetchPath);
         if (!res.ok) { setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: cannot open ${filename} (${res.status})`, timestamp: Date.now() }]); return; }
         const text = await res.text();
@@ -470,8 +499,30 @@ const App: React.FC = () => {
       </div>
 
       {privacyOpen && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-          <div className={`w-full max-w-lg border-2 ${THEME_BORDER} bg-black p-8 relative ${THEME_GLOW}`}>
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm overflow-hidden">
+          {/* Background Matrix Rain */}
+          <div className="absolute inset-0 z-0 opacity-30">
+            <MatrixRain />
+          </div>
+
+          {/* ASCII Art Background */}
+          <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-32 opacity-40 text-indigo-500 font-mono text-xs md:text-sm leading-none whitespace-pre select-none origin-center">
+            <div className="hidden md:block">
+              {`__      __  ___   _   _    ___   _____ 
+\\ \\    / / |_ _| | \\ | |  / __| | ____|
+ \\ \\  / /   | |  |  \\| | | |    |  _|  
+  \\ \\/ /    | |  | |\\  | | |___ | |___ 
+   \\__/    |___| |_| \\_|  \\___| |_____|`}
+            </div>
+            <div className="hidden md:block text-right scale-110 origin-right">
+              {`   _      _       ___    ___   ___   _   _ 
+  /_\\    | |     / _ \\  | _ ) |_ _| | \\ | |
+ / _ \\   | |__  | (_) | | _ \\  | |  |  \\| |
+/_/ \\_\\  |____|  \\___/  |___/ |___| |_| \\_|`}
+            </div>
+          </div>
+
+          <div className={`w-full max-w-lg border-2 ${THEME_BORDER} bg-black/80 p-8 relative ${THEME_GLOW} z-10 backdrop-blur-md`}>
             <h2 className="text-2xl font-bold mb-4 text-center">WELCOME TO VINCES RESUME</h2>
             <div className="border-t border-b border-indigo-500/30 py-4 mb-4">
               <h3 className="text-lg font-bold mb-2">PRIVACY_POLICY.TXT</h3>
@@ -484,42 +535,55 @@ const App: React.FC = () => {
               </p>
             </div>
 
-            <div className="mb-4">
-              <div className="text-xs mb-1 opacity-70 uppercase">Sign here to acknowledge:</div>
-              <div className={`border ${THEME_BORDER} bg-black/50 relative h-32 w-full cursor-crosshair`}>
-                <canvas
-                  ref={signatureRef}
-                  width={450}
-                  height={128}
-                  className="w-full h-full"
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                />
-                <button
-                  onClick={clearSignature}
-                  className="absolute top-2 right-2 text-[10px] border border-red-500/50 text-red-400 px-2 py-1 hover:bg-red-900/30"
-                >
-                  CLEAR
-                </button>
+            <div className="mb-6 flex flex-col items-center justify-center space-y-8">
+              <div className="flex flex-col items-center relative">
+                <div className="text-xs mb-2 opacity-70 uppercase tracking-widest">Biometric Scan</div>
+                <FingerprintScanner onScanComplete={handleScanComplete} isComplete={isFingerprintVerified} />
+              </div>
+
+              <div className="w-full flex items-center justify-center space-x-4 opacity-50">
+                <div className="h-px bg-indigo-500 w-1/3"></div>
+                <span className="text-xs font-bold text-indigo-400">AND</span>
+                <div className="h-px bg-indigo-500 w-1/3"></div>
+              </div>
+
+              <div className="w-full">
+                <div className="text-xs mb-2 opacity-70 uppercase tracking-widest text-center">Manual Signature</div>
+                <div className={`border ${THEME_BORDER} bg-black/50 relative h-24 w-full cursor-crosshair`}>
+                  <canvas
+                    ref={signatureRef}
+                    width={450}
+                    height={96}
+                    className="w-full h-full"
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={stopDrawing}
+                    onMouseLeave={stopDrawing}
+                    onTouchStart={startDrawing}
+                    onTouchMove={draw}
+                    onTouchEnd={stopDrawing}
+                  />
+                  <button
+                    onClick={clearSignature}
+                    className="absolute top-2 right-2 text-[10px] border border-red-500/50 text-red-400 px-2 py-1 hover:bg-red-900/30 transition-colors"
+                  >
+                    CLEAR
+                  </button>
+                </div>
               </div>
             </div>
 
             <button
-              onClick={() => setPrivacyOpen(false)}
-              disabled={!hasSigned}
-              className={`w-full border ${THEME_BORDER} ${hasSigned ? 'hover:bg-indigo-500 hover:text-black cursor-pointer' : 'opacity-50 cursor-not-allowed'} px-6 py-2 transition-all uppercase font-bold`}
+              onClick={handleAcknowledge}
+              disabled={!isFingerprintVerified || !isSignatureVerified}
+              className={`w-full border ${THEME_BORDER} ${isFingerprintVerified && isSignatureVerified ? 'bg-indigo-500/20 hover:bg-indigo-500 hover:text-black cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'opacity-50 cursor-not-allowed'} px-6 py-3 transition-all uppercase font-bold tracking-wider`}
             >
-              {hasSigned ? 'ACKNOWLEDGE & ENTER' : 'SIGNATURE REQUIRED'}
+              {isFingerprintVerified && isSignatureVerified ? 'ACKNOWLEDGE & ENTER SYSTEM' : 'VERIFICATION REQUIRED'}
             </button>
           </div>
         </div>
       )}
-    </div>
+    </div >
   );
 };
 

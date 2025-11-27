@@ -1989,3 +1989,14 @@ body.light-mode .cert-content { background:var(--card-bg); }
 @keyframes certZoom { 0% { transform:scale(.85) translateY(25px); opacity:0; } 55% { transform:scale(1.02) translateY(-6px); } 100% { transform:scale(1) translateY(0); opacity:1; } }
 @media (max-width: 768px){ .cert-content { width:95vw; padding:1.6rem 1.1rem 1.1rem; border-radius:26px; } .cert-image-frame { height:60vh; max-height:60vh; } .cert-full { border-radius:18px; } .cert-close { width:40px; height:40px; font-size:1.25rem; } }
 @media (max-width: 480px){ .cert-content { padding:1.25rem 1rem .85rem; } .cert-full-title { font-size:1.1rem; } .cert-full-meta { font-size:.75rem; } .cert-full { padding:.5rem; } }
+
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scan {
+  animation: scan 1.5s linear infinite;
+}
