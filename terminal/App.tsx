@@ -70,76 +70,9 @@ const App: React.FC = () => {
 
   // Verification State
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
-  const [isSignatureVerified, setIsSignatureVerified] = useState(false);
-
-  // Signature Pad State
-  const signatureRef = useRef<HTMLCanvasElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
 
   const handleScanComplete = () => {
     setIsFingerprintVerified(true);
-  };
-
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    const canvas = signatureRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    setIsDrawing(true);
-    const { offsetX, offsetY } = getCoordinates(e, canvas);
-    ctx.beginPath();
-    ctx.moveTo(offsetX, offsetY);
-  };
-
-  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
-    const canvas = signatureRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const { offsetX, offsetY } = getCoordinates(e, canvas);
-    ctx.lineTo(offsetX, offsetY);
-    ctx.strokeStyle = '#6366f1'; // Indigo-500
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-    setIsSignatureVerified(true);
-  };
-
-  const stopDrawing = () => {
-    setIsDrawing(false);
-    const canvas = signatureRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      ctx?.closePath();
-    }
-  };
-
-  const clearSignature = () => {
-    const canvas = signatureRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setIsSignatureVerified(false);
-  };
-
-  const getCoordinates = (e: React.MouseEvent | React.TouchEvent, canvas: HTMLCanvasElement) => {
-    let clientX, clientY;
-    if ('touches' in e) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = (e as React.MouseEvent).clientX;
-      clientY = (e as React.MouseEvent).clientY;
-    }
-    const rect = canvas.getBoundingClientRect();
-    return {
-      offsetX: clientX - rect.left,
-      offsetY: clientY - rect.top
-    };
   };
 
   const handleAcknowledge = () => {
@@ -558,50 +491,19 @@ const App: React.FC = () => {
               </p>
             </div>
 
-            <div className="mb-6 flex flex-col items-center justify-center space-y-8">
+            <div className="mb-12 flex flex-col items-center justify-center">
               <div className="flex flex-col items-center relative">
                 <div className="text-xs mb-2 opacity-70 uppercase tracking-widest">Biometric Scan</div>
                 <FingerprintScanner onScanComplete={handleScanComplete} isComplete={isFingerprintVerified} />
-              </div>
-
-              <div className="w-full flex items-center justify-center space-x-4 opacity-50">
-                <div className="h-px bg-indigo-500 w-1/3"></div>
-                <span className="text-xs font-bold text-indigo-400">AND</span>
-                <div className="h-px bg-indigo-500 w-1/3"></div>
-              </div>
-
-              <div className="w-full">
-                <div className="text-xs mb-2 opacity-70 uppercase tracking-widest text-center">Manual Signature</div>
-                <div className={`border ${THEME_BORDER} bg-black/50 relative h-24 w-full cursor-crosshair`}>
-                  <canvas
-                    ref={signatureRef}
-                    width={450}
-                    height={96}
-                    className="w-full h-full"
-                    onMouseDown={startDrawing}
-                    onMouseMove={draw}
-                    onMouseUp={stopDrawing}
-                    onMouseLeave={stopDrawing}
-                    onTouchStart={startDrawing}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDrawing}
-                  />
-                  <button
-                    onClick={clearSignature}
-                    className="absolute top-2 right-2 text-[10px] border border-red-500/50 text-red-400 px-2 py-1 hover:bg-red-900/30 transition-colors"
-                  >
-                    CLEAR
-                  </button>
-                </div>
               </div>
             </div>
 
             <button
               onClick={handleAcknowledge}
-              disabled={!isFingerprintVerified || !isSignatureVerified}
-              className={`w-full border ${THEME_BORDER} ${isFingerprintVerified && isSignatureVerified ? 'bg-indigo-500/20 hover:bg-indigo-500 hover:text-black cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'opacity-50 cursor-not-allowed'} px-6 py-3 transition-all uppercase font-bold tracking-wider`}
+              disabled={!isFingerprintVerified}
+              className={`w-full border ${THEME_BORDER} ${isFingerprintVerified ? 'bg-indigo-500/20 hover:bg-indigo-500 hover:text-black cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'opacity-50 cursor-not-allowed'} px-6 py-3 transition-all uppercase font-bold tracking-wider`}
             >
-              {isFingerprintVerified && isSignatureVerified ? 'ACKNOWLEDGE & ENTER SYSTEM' : 'VERIFICATION REQUIRED'}
+              {isFingerprintVerified ? 'ACKNOWLEDGE & ENTER SYSTEM' : 'VERIFICATION REQUIRED'}
             </button>
           </div>
         </div>
