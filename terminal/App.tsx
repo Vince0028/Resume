@@ -190,7 +190,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n[QUERY]            - Ask the AI system anything about the user\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -426,77 +426,79 @@ const App: React.FC = () => {
         backgroundSize: '30px 30px'
       }}></div>
 
-      <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
+      {!privacyOpen && (
+        <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
 
-        <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
-          <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
-          <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
-            <span>NET: ONLINE</span>
-            <span>SEC: HIGH</span>
+          <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
+            <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
+            <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
+              <span>NET: ONLINE</span>
+              <span>SEC: HIGH</span>
+            </div>
+            <ClockPanel />
           </div>
-          <ClockPanel />
-        </div>
 
-        <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-          <div className="absolute top-0 right-0 bg-indigo-500 text-black text-xs px-2 font-bold">DATA STREAM</div>
-          <MatrixRain />
-        </div>
-
-        <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
-          <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
-            <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1">HARDWARE MONITOR</div>
-            <SystemMonitor />
+          <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
+            <div className="absolute top-0 right-0 bg-indigo-500 text-black text-xs px-2 font-bold">DATA STREAM</div>
+            <MatrixRain />
           </div>
-          <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center`}>
-            <div className="text-[10px] mb-2 uppercase tracking-wider opacity-80">Clipboard Access</div>
-            <div className="flex gap-2">
-              <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Copy</button>
-              <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Paste</button>
+
+          <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
+            <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
+              <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1">HARDWARE MONITOR</div>
+              <SystemMonitor />
+            </div>
+            <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center`}>
+              <div className="text-[10px] mb-2 uppercase tracking-wider opacity-80">Clipboard Access</div>
+              <div className="flex gap-2">
+                <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Copy</button>
+                <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Paste</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
-          <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
-            <span className="text-xs font-bold">MAIN - bash</span>
+          <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
+            <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
+              <span className="text-xs font-bold">MAIN - bash</span>
+            </div>
+            <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
+              {history.map((line) => (
+                <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
+                  {line.type === MessageType.USER && (
+                    <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
+                  )}
+                  {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE) && (
+                    renderLineContent(line)
+                  )}
+                </div>
+              ))}
+              {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
+              <div ref={terminalEndRef} />
+            </div>
+            {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
           </div>
-          <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
-            {history.map((line) => (
-              <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
-                {line.type === MessageType.USER && (
-                  <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
-                )}
-                {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE) && (
-                  renderLineContent(line)
-                )}
-              </div>
-            ))}
-            {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
-            <div ref={terminalEndRef} />
+
+          <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
+            <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
+            <div className="flex-1 flex items-center justify-center opacity-90">
+              <OctahedronNetwork networkLevel={networkLevel} />
+            </div>
+            <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
+              <div className="text-[10px] mb-1">TRAFFIC ANALYSIS</div>
+              <TrafficGraph />
+            </div>
           </div>
-          {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
-        </div>
 
-        <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-          <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
-          <div className="flex-1 flex items-center justify-center opacity-90">
-            <OctahedronNetwork networkLevel={networkLevel} />
+          <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
+            <FileExplorer />
           </div>
-          <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
-            <div className="text-[10px] mb-1">TRAFFIC ANALYSIS</div>
-            <TrafficGraph />
+
+          <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
+            <VirtualKeyboard />
           </div>
-        </div>
 
-        <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
-          <FileExplorer />
         </div>
-
-        <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
-          <VirtualKeyboard />
-        </div>
-
-      </div>
+      )}
 
       {privacyOpen && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm overflow-hidden">
