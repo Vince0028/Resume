@@ -11,6 +11,7 @@ import OctahedronNetwork from './components/OctahedronNetwork';
 import FingerprintScanner from './components/FingerprintScanner';
 import MatrixRain from './components/MatrixRain';
 import Flicker from './components/Flicker';
+import MemoryBlock from './components/MemoryBlock';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -445,15 +446,11 @@ const App: React.FC = () => {
 
           <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
             <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
-              <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1">HARDWARE MONITOR</div>
+              <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
               <SystemMonitor />
             </div>
-            <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center`}>
-              <div className="text-[10px] mb-2 uppercase tracking-wider opacity-80">Clipboard Access</div>
-              <div className="flex gap-2">
-                <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Copy</button>
-                <button className={`flex-1 border ${THEME_BORDER} bg-indigo-900/10 hover:bg-indigo-500 hover:text-black transition-colors text-xs py-2 uppercase tracking-widest font-bold`}>Paste</button>
-              </div>
+            <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
+              <MemoryBlock />
             </div>
           </div>
 
@@ -475,16 +472,40 @@ const App: React.FC = () => {
               {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
               <div ref={terminalEndRef} />
             </div>
+
+            {/* Arch Linux Logo Watermark */}
+            <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
+              {`                   -\`
+                  .o+\`
+                 \`ooo/
+                \`+oooo:
+               \`+oooooo:
+               -+oooooo+:
+             \`/-:-++oooo+:
+            \`/++++/+++++++:
+           \`/++++++++++++++:
+          \`/+++ooooooooooooo/\`
+         ./ooosssso++osssssso+\`
+        .oossssso-\`\`\`\`/ossssss+\`
+       -osssssso.      :ssssssso.
+      :osssssss/        osssso+++.
+     /ossssssss/        +ssssooo/-
+   \`/ossssso+/:-        -:/+osssso+-
+  \`+sso+:-                 \`.-/+oso:
+ \`++:.                           \`-/+/
+ .\`                                 \`/-`}
+            </div>
+
             {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
           </div>
 
           <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-            <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1">NETWORK STATUS</div>
+            <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">NETWORK STATUS</div>
             <div className="flex-1 flex items-center justify-center opacity-90">
               <OctahedronNetwork networkLevel={networkLevel} />
             </div>
             <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
-              <div className="text-[10px] mb-1">TRAFFIC ANALYSIS</div>
+              <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
               <TrafficGraph />
             </div>
           </div>
