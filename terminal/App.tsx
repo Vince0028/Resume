@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TerminalLine, MessageType } from './types';
-import { sendMessageToGemini } from './services/geminiService';
 import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
 import TerminalInput from './components/TerminalInput';
 import SystemMonitor from './components/SystemMonitor';
@@ -124,7 +123,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -305,12 +304,63 @@ const App: React.FC = () => {
       return;
     }
 
-    try {
-      const response = await sendMessageToGemini(cmd);
-      setHistory(prev => [...prev, { id: `ai-${Date.now()}`, type: MessageType.SYSTEM, content: response, timestamp: Date.now() }]);
-    } catch (error) {
-      setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: 'Error connecting to AI core.', timestamp: Date.now() }]);
-    }
+    // Random sarcastic responses for unrecognized commands
+    const sarcasticResponses = [
+      "Type better.",
+      "Wrong answer.",
+      "Almost!",
+      "Almost close??",
+      "Nope. Try again.",
+      "Command not found. Did you even try?",
+      "Error 404: Brain not found.",
+      "That's not even close.",
+      "Are you just mashing keys?",
+      "Invalid. Please use your brain.",
+      "System says: No.",
+      "Nice try, but no.",
+      "Command rejected. Skill issue.",
+      "Syntax error: You.",
+      "Permission denied: Common sense required.",
+      "Fatal error: User incompetence.",
+      "Segmentation fault: Your typing.",
+      "Access denied: Learn to type first.",
+      "Command unclear. Are you okay?",
+      "System overload: Too much nonsense.",
+      "Error: Command too dumb to process.",
+      "Nah.",
+      "Absolutely not.",
+      "Keep trying, maybe?",
+      "So close! (Not really)",
+      "You're getting warmer! (You're not)",
+      "One more try! (Give up)",
+      "Type 'help' if you're lost.",
+      "This isn't it, chief.",
+      "Bruh.",
+      "Really?",
+      "Yikes.",
+      "Oof.",
+      "Big oof.",
+      "L command.",
+      "Ratio.",
+      "Touch grass, then try again.",
+      "Command failed successfully.",
+      "Task failed: You.",
+      "System status: Disappointed.",
+      "CPU usage: 100% cringe.",
+      "Memory leak detected: Your brain.",
+      "Stack overflow: Your mistakes.",
+      "Null pointer exception: Your logic.",
+      "Undefined behavior: This command.",
+      "Compiler error: You need debugging.",
+      "Runtime error: Existence.",
+      "404: Skill not found.",
+      "403: Forbidden. Too silly.",
+      "500: Internal server error. It's you.",
+      "503: Service unavailable. Try later. Or never."
+    ];
+
+    const randomResponse = sarcasticResponses[Math.floor(Math.random() * sarcasticResponses.length)];
+    setHistory(prev => [...prev, { id: `sarcasm-${Date.now()}`, type: MessageType.ERROR, content: randomResponse, timestamp: Date.now() }]);
     setIsProcessing(false);
   };
 
@@ -418,7 +468,7 @@ const App: React.FC = () => {
                   {line.type === MessageType.USER && (
                     <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
                   )}
-                  {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE) && (
+                  {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
                     renderLineContent(line)
                   )}
                 </div>

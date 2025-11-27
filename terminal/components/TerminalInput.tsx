@@ -47,7 +47,7 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
 
   return (
     <form onSubmit={handleSubmit} className="flex items-center w-full mt-2">
-      <span className={`${THEME_COLOR} mr-2 font-bold select-none`}>guest@cipher-os:~$</span>
+      <span className={`${THEME_COLOR} mr-2 font-bold select-none`}>guest@benben-os:~$</span>
       <input
         ref={inputRef}
         type="text"
