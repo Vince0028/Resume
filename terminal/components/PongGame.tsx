@@ -240,8 +240,10 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                 </div>
 
                 {trashTalk && (
-                    <div className="absolute top-20 left-1/2 -translate-x-1/2 text-indigo-400 font-mono text-lg animate-bounce z-20 bg-black/80 px-4 py-2 border border-indigo-500/50 rounded whitespace-nowrap">
-                        AI: "{trashTalk}"
+                    <div className="absolute top-20 w-full flex justify-center z-20 pointer-events-none">
+                        <div className="text-indigo-400 font-mono text-lg animate-bounce bg-black/80 px-4 py-2 border border-indigo-500/50 rounded whitespace-nowrap">
+                            AI: "{trashTalk}"
+                        </div>
                     </div>
                 )}
 
@@ -252,40 +254,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                 </div>
             </div>
 
-            {/* Controller UI */}
-            <div className="w-32 h-full border-l border-indigo-500/30 bg-black/80 flex flex-col items-center justify-center gap-8 p-4 z-30 select-none">
-                <div className="text-indigo-500 font-bold text-sm tracking-widest mb-4 rotate-90 md:rotate-0">CTRL</div>
 
-                <button
-                    className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_10px_rgba(99,102,241,0.5)]"
-                    onMouseDown={() => { gameState.current.keys.up = true; }}
-                    onMouseUp={() => { gameState.current.keys.up = false; }}
-                    onMouseLeave={() => { gameState.current.keys.up = false; }}
-                    onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.up = true; }}
-                    onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.up = false; }}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
-                </button>
-
-                <button
-                    className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_10px_rgba(99,102,241,0.5)]"
-                    onMouseDown={() => { gameState.current.keys.down = true; }}
-                    onMouseUp={() => { gameState.current.keys.down = false; }}
-                    onMouseLeave={() => { gameState.current.keys.down = false; }}
-                    onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.down = true; }}
-                    onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.down = false; }}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-
-                <div className="mt-auto text-[10px] text-indigo-500/50 text-center">
-                    TACTILE<br />INTERFACE
-                </div>
-            </div>
         </div>
     );
 };

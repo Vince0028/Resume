@@ -142,7 +142,7 @@ const App: React.FC = () => {
       return;
     }
 
-    if (lowerCmd === 'play pong') {
+    if (lowerCmd === 'play pong' || lowerCmd === 'pong' || lowerCmd.replace(/\s+/g, ' ') === 'play pong') {
       setGameMode('pong');
       setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Pong...', timestamp: Date.now() }]);
       setIsProcessing(false);
