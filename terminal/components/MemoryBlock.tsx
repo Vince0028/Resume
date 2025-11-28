@@ -76,10 +76,10 @@ const MemoryBlock: React.FC = () => {
                     <div
                         key={i}
                         className={`w-full h-full rounded-[1px] transition-all duration-500 ${block.warning
-                                ? 'bg-red-500 opacity-90 shadow-[0_0_4px_rgba(239,68,68,0.9)]'
-                                : block.active
-                                    ? 'bg-indigo-500 opacity-90 shadow-[0_0_2px_rgba(99,102,241,0.8)]'
-                                    : 'bg-indigo-900/20 opacity-30'
+                            ? 'bg-red-500 opacity-90 shadow-[0_0_4px_rgba(239,68,68,0.9)]'
+                            : block.active
+                                ? 'bg-indigo-500 opacity-90 shadow-[0_0_2px_rgba(99,102,241,0.8)]'
+                                : 'bg-indigo-900/20 opacity-30'
                             }`}
                     />
                 ))}

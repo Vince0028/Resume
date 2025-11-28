@@ -23,7 +23,7 @@ const MatrixRain: React.FC = () => {
 
         window.addEventListener('resize', resize);
 
-        const fontSize = 18;
+        const fontSize = 20;
         const columns = Math.floor(canvas.width / fontSize);
         const drops: number[] = new Array(columns).fill(1);
 

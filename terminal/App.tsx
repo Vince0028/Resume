@@ -832,13 +832,13 @@ const App: React.FC = () => {
           </div>
 
           {/* ASCII Art Background */}
-          <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-32 opacity-40 text-indigo-500 font-mono text-xs md:text-sm leading-none whitespace-pre select-none origin-center">
+          <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-12 opacity-40 text-indigo-500 font-mono text-xs md:text-xl leading-none whitespace-pre select-none origin-center">
             <div className="hidden md:block">
               {`__      __  ___   _   _    ___   _____ 
-\\ \\    / / |_ _| | \\ | |  / __| | ____|
- \\ \\  / /   | |  |  \\| | | |    |  _|  
-  \\ \\/ /    | |  | |\\  | | |___ | |___ 
-   \\__/    |___| |_| \\_|  \\___| |_____|`}
+ \\ \\    / / |_ _| | \\ | |  / __| | ____|
+  \\ \\  / /   | |  |  \\| | | |    |  _|  
+   \\ \\/ /    | |  | |\\  | | |___ | |___ 
+    \\__/    |___| |_| \\_|  \\___| |_____|`}
             </div>
             <div className="hidden md:block text-right scale-110 origin-right">
               {`   _      _       ___    ___   ___   _   _ 
@@ -848,7 +848,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className={`w-full max-w-lg border-2 ${THEME_BORDER} bg-black/80 p-8 relative ${THEME_GLOW} z-10 backdrop-blur-md`}>
+          <div className={`w-full max-w-2xl min-h-[60vh] flex flex-col justify-between border-2 ${THEME_BORDER} bg-black/80 p-8 relative ${THEME_GLOW} z-10 backdrop-blur-md`}>
             <h2 className="text-2xl font-bold mb-4 text-center">WELCOME TO VINCES RESUME</h2>
             <div className="border-t border-b border-indigo-500/30 py-4 mb-4">
               <h3 className="text-lg font-bold mb-2">PRIVACY_POLICY.TXT</h3>
@@ -878,7 +878,7 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
-    </div >
+    </div>
   );
 };
 
