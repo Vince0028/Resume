@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TerminalLine, MessageType } from './types';
 import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
 import TerminalInput from './components/TerminalInput';
@@ -9,9 +9,9 @@ import VirtualKeyboard from './components/VirtualKeyboard';
 import OctahedronNetwork from './components/OctahedronNetwork';
 import FingerprintScanner from './components/FingerprintScanner';
 import MatrixRain from './components/MatrixRain';
-import Flicker from './components/Flicker';
 import MemoryBlock from './components/MemoryBlock';
 import TetrisGame from './components/TetrisGame';
+import PongGame from './components/PongGame';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -111,6 +111,10 @@ const App: React.FC = () => {
     return () => clearInterval(iv);
   }, []);
 
+  const handleGameExit = useCallback(() => {
+    setGameMode('none');
+  }, []);
+
   const handleCommand = async (cmd: string) => {
     const userLine: TerminalLine = { id: `user-${Date.now()}`, type: MessageType.USER, content: cmd, timestamp: Date.now() };
     setHistory(prev => [...prev, userLine]);
@@ -125,7 +129,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nPLAY TETRIS        - Play Tetris game\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nPLAY TETRIS        - Play Tetris game\nPLAY PONG          - Play Pong game\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -134,6 +138,13 @@ const App: React.FC = () => {
     if (lowerCmd === 'play tetris') {
       setGameMode('tetris');
       setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Tetris...', timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'play pong') {
+      setGameMode('pong');
+      setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Pong...', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -321,6 +332,202 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'is vince perfect' || lowerCmd === 'is vince perfect?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Nobody's perfect, but his code is pretty close.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'does vince exercise' || lowerCmd === 'does vince exercise?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Does typing 100 WPM count as cardio?", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'what is vince doing right now' || lowerCmd === 'what is vince doing right now?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Probably coding, debugging, or adding more easter eggs.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'hire vince' || lowerCmd === 'hire vince!') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Great choice! Check the 'contact' section to reach out.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'vince is the best' || lowerCmd === 'vince is the best!') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "I couldn't agree more! You have excellent taste.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'i love vince' || lowerCmd === 'i love vince!') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Vince appreciates the love! Feel free to connect via the contact section.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // Friendly Greetings
+    if (lowerCmd === 'hello' || lowerCmd === 'hi' || lowerCmd === 'hey') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hello! Welcome to BENBEN OS. Type 'help' to see available commands.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'hello vince' || lowerCmd === 'hi vince' || lowerCmd === 'hey vince') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hey there! Thanks for visiting my portfolio!", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'good morning' || lowerCmd === 'good afternoon' || lowerCmd === 'good evening') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Good day to you too! Hope you're having a great time.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // General Knowledge & Fun Facts
+    if (lowerCmd === 'what is the meaning of life' || lowerCmd === 'what is the meaning of life?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "42. Obviously.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'who created you' || lowerCmd === 'who created you?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Vince did! He's pretty cool, right?", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'what is your name' || lowerCmd === 'what is your name?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "I'm BENBEN OS v9.0, your friendly neighborhood terminal.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'how are you' || lowerCmd === 'how are you?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Running at optimal performance! Thanks for asking.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'tell me a joke' || lowerCmd === 'joke') {
+      const jokes = [
+        "Why do programmers prefer dark mode? Because light attracts bugs!",
+        "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+        "Why did the programmer quit his job? He didn't get arrays.",
+        "What's a programmer's favorite hangout? The Foo Bar.",
+        "Why do Java developers wear glasses? Because they can't C#.",
+        "A SQL query walks into a bar, walks up to two tables and asks: Can I join you?",
+        "Why did the developer go broke? Because he used up all his cache.",
+        "What do you call a programmer from Finland? Nerdic.",
+        "How do you comfort a JavaScript bug? You console it.",
+        "Why did the programmer get stuck in the shower? The shampoo bottle said: Lather, Rinse, Repeat.",
+        "What's the object-oriented way to become wealthy? Inheritance.",
+        "Why do programmers always mix up Halloween and Christmas? Because Oct 31 equals Dec 25.",
+        "A programmer's wife tells him: Go to the store and pick up a loaf of bread. If they have eggs, get a dozen. He returns with 12 loaves of bread.",
+        "Why don't programmers like nature? It has too many bugs.",
+        "What did the router say to the doctor? It hurts when IP.",
+        "Why was the JavaScript developer sad? Because he didn't Node how to Express himself.",
+        "What's a programmer's favorite place to hang out? The Git Hub.",
+        "Why did the functions stop calling each other? Because they had constant arguments.",
+        "What do you call 8 hobbits? A hobbyte.",
+        "Why do programmers hate the outdoors? The sunlight causes too many reflections.",
+        "How does a programmer fix a broken pizza? With a pizza debugger.",
+        "Why did the developer stay calm during the crisis? He had exception handling.",
+        "What's the best thing about a Boolean? Even if you're wrong, you're only off by a bit.",
+        "Why did the programmer use the entire bottle of shampoo? Because the instructions said: Apply shampoo, rinse, repeat.",
+        "What do you call a programmer who doesn't comment their code? A monster.",
+        "Why did the programmer always carry a ladder? To reach the cloud.",
+        "How do you tell HTML from HTML5? Try it out in Internet Explorer. Did it work? No? It's HTML5.",
+        "Why did the database administrator leave his wife? She had one-to-many relationships.",
+        "What's the difference between a programmer and a user? A programmer thinks a kilobyte is 1024 bytes, a user thinks it's 1000.",
+        "Why do Python programmers prefer snakes? Because they're not into Java.",
+        "What did the computer do at lunchtime? Had a byte.",
+        "Why was the computer cold? It left its Windows open.",
+        "What do you call a computer that sings? A Dell.",
+        "Why did the PowerPoint presentation cross the road? To get to the other slide.",
+        "What's a computer's favorite snack? Microchips."
+      ];
+      const joke = jokes[Math.floor(Math.random() * jokes.length)];
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: joke, timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'tell me a fun fact' || lowerCmd === 'fun fact') {
+      const facts = [
+        "The first computer bug was an actual bug - a moth found in a computer in 1947.",
+        "The first 1GB hard drive weighed over 500 pounds and cost $40,000.",
+        "The average person blinks 15-20 times per minute, but only 7 times while using a computer.",
+        "The first computer mouse was made of wood.",
+        "Email existed before the World Wide Web."
+      ];
+      const fact = facts[Math.floor(Math.random() * facts.length)];
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: fact, timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // Pop Culture References
+    if (lowerCmd === 'sudo make me a sandwich') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Okay. *makes you a sandwich*", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'make me a sandwich') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.ERROR, content: "Permission denied. Try 'sudo make me a sandwich'.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'hello there') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "General Kenobi! You are a bold one.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'the cake is a lie') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "This was a triumph. I'm making a note here: huge success.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'do a barrel roll') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "*spins terminal 360 degrees* Done!", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    // More Interactive Responses
+    if (lowerCmd === 'thank you' || lowerCmd === 'thanks') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "You're welcome! Happy to help.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'bye' || lowerCmd === 'goodbye' || lowerCmd === 'exit' || lowerCmd === 'quit') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Goodbye! Thanks for visiting. Come back soon!", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'who is vince' || lowerCmd === 'who is vince?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Vince is an IT student at Asia Pacific College, passionate about web development and creative coding. Type 'about' to learn more!", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'what can you do' || lowerCmd === 'what can you do?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "I can show you Vince's portfolio, tell jokes, share fun facts, and more! Type 'help' to see all commands.", timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'are you real' || lowerCmd === 'are you real?') {
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "As real as any code can be. I exist in the digital realm!", timestamp: Date.now() }]);
+
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Nobody's perfect, but his code is pretty close.", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -771,24 +978,31 @@ const App: React.FC = () => {
               <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
                 <span className="text-xs font-bold">MAIN - bash</span>
               </div>
-              <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
-                {history.map((line) => (
-                  <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
-                    {line.type === MessageType.USER && (
-                      <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
-                    )}
-                    {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
-                      renderLineContent(line)
-                    )}
-                  </div>
-                ))}
-                {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
-                <div ref={terminalEndRef} />
-              </div>
 
-              {/* Arch Linux Logo Watermark */}
-              <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
-                {`                   -\`
+              {gameMode === 'pong' ? (
+                <div className="flex-1 w-full h-full mt-6">
+                  <PongGame onExit={handleGameExit} />
+                </div>
+              ) : (
+                <>
+                  <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
+                    {history.map((line) => (
+                      <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
+                        {line.type === MessageType.USER && (
+                          <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
+                        )}
+                        {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
+                          renderLineContent(line)
+                        )}
+                      </div>
+                    ))}
+                    {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
+                    <div ref={terminalEndRef} />
+                  </div>
+
+                  {/* Arch Linux Logo Watermark */}
+                  <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
+                    {`                   -\`
                   .o+\`
                  \`ooo/
                 \`+oooo:
@@ -807,9 +1021,11 @@ const App: React.FC = () => {
   \`+sso+:-                 \`.-/+oso:
  \`++:.                           \`-/+/
  .\`                                 \`/-`}
-              </div>
+                  </div>
 
-              {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
+                  {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
+                </>
+              )}
             </div>
 
             <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>

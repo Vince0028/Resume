@@ -33,6 +33,12 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     const [score, setScore] = useState(0);
     const [dropTime, setDropTime] = useState<number | null>(null);
 
+    // Ref to access latest player state in callbacks/intervals without stale closures
+    const playerRef = useRef(player);
+    useEffect(() => {
+        playerRef.current = player;
+    }, [player]);
+
     const checkCollision = (player: any, stage: any, { x: moveX, y: moveY }: { x: number, y: number }) => {
         for (let y = 0; y < player.tetromino.length; y += 1) {
             for (let x = 0; x < player.tetromino[y].length; x += 1) {
@@ -51,8 +57,8 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     };
 
     const movePlayer = (dir: number) => {
-        if (!checkCollision(player, lockedBoard, { x: dir, y: 0 })) {
-            setPlayer({ ...player, pos: { x: player.pos.x + dir, y: player.pos.y } });
+        if (!checkCollision(playerRef.current, lockedBoard, { x: dir, y: 0 })) {
+            setPlayer(prev => ({ ...prev, pos: { ...prev.pos, x: prev.pos.x + dir } }));
         }
     };
 
@@ -84,7 +90,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     };
 
     const playerRotate = (stage: any, dir: number) => {
-        const clonedPlayer = JSON.parse(JSON.stringify(player));
+        const clonedPlayer = JSON.parse(JSON.stringify(playerRef.current));
         clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, dir);
         const pos = clonedPlayer.pos.x;
         let offset = 1;
@@ -101,11 +107,13 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     };
 
     const handleDrop = () => {
-        if (!checkCollision(player, lockedBoard, { x: 0, y: 1 })) {
-            setPlayer({ ...player, pos: { x: player.pos.x, y: player.pos.y + 1 } });
+        // Use ref for collision check to ensure we don't miss a collision due to stale state
+        if (!checkCollision(playerRef.current, lockedBoard, { x: 0, y: 1 })) {
+            // Use functional update to preserve any horizontal movement that happened in the same tick
+            setPlayer(prev => ({ ...prev, pos: { ...prev.pos, y: prev.pos.y + 1 } }));
         } else {
             // Lock
-            if (player.pos.y < 1) {
+            if (playerRef.current.pos.y < 1) {
                 setGameOver(true);
                 setDropTime(null);
                 return;
@@ -113,10 +121,10 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
 
             // Add to locked board
             const newBoard = JSON.parse(JSON.stringify(lockedBoard));
-            player.tetromino.forEach((row: any[], y: number) => {
+            playerRef.current.tetromino.forEach((row: any[], y: number) => {
                 row.forEach((value: number, x: number) => {
                     if (value !== 0) {
-                        newBoard[y + player.pos.y][x + player.pos.x] = [value, player.color];
+                        newBoard[y + playerRef.current.pos.y][x + playerRef.current.pos.x] = [value, playerRef.current.color];
                     }
                 });
             });
@@ -222,7 +230,65 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     }, []);
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center font-mono relative p-2">
+        <div className="w-full h-full flex flex-row items-center justify-center font-mono relative p-2 gap-6">
+            {/* Controller UI - Left Side */}
+            <div className="h-full max-h-[90vh] w-56 border border-indigo-500/30 bg-black/80 flex flex-col items-center p-4 select-none rounded-lg relative">
+                <div className="text-indigo-500 font-bold text-xs tracking-widest absolute top-6">CONTROLS</div>
+
+                <div className="flex flex-col items-center gap-3 mt-auto mb-24">
+                    {/* Rotate (Refresh Icon) */}
+                    <button
+                        className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 mb-2"
+                        onMouseDown={() => playerRotate(lockedBoard, 1)}
+                        onTouchStart={(e) => { e.preventDefault(); playerRotate(lockedBoard, 1); }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+
+                    <div className="flex gap-4">
+                        {/* Left */}
+                        <button
+                            className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
+                            onMouseDown={() => movePlayer(-1)}
+                            onTouchStart={(e) => { e.preventDefault(); movePlayer(-1); }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        {/* Right */}
+                        <button
+                            className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
+                            onMouseDown={() => movePlayer(1)}
+                            onTouchStart={(e) => { e.preventDefault(); movePlayer(1); }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Down */}
+                    <button
+                        className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 mt-2"
+                        onMouseDown={() => dropPlayer()}
+                        onTouchStart={(e) => { e.preventDefault(); dropPlayer(); }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div className="text-[10px] text-indigo-500/50 text-center absolute bottom-4">
+                    TAP CONTROLS
+                </div>
+            </div>
+
+            {/* Game Board */}
             <div className={`border-2 ${THEME_BORDER} p-4 bg-black/90 relative flex flex-col items-center h-full max-h-[90vh] w-auto aspect-[10/22]`}>
                 <div className="flex justify-between w-full mb-2 text-indigo-400 text-xs md:text-sm">
                     <span>TETRIS_TERM_V1</span>
