@@ -12,6 +12,7 @@ import MatrixRain from './components/MatrixRain';
 import MemoryBlock from './components/MemoryBlock';
 import TetrisGame from './components/TetrisGame';
 import PongGame from './components/PongGame';
+import SnakeGame from './components/SnakeGame';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -67,7 +68,7 @@ const App: React.FC = () => {
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
-  const [gameMode, setGameMode] = useState<'none' | 'tetris'>('none');
+  const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake'>('none');
 
   // Verification State
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -129,8 +130,15 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nPLAY TETRIS        - Play Tetris game\nPLAY PONG          - Play Pong game\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nSHOW ME GAMES      - List available terminal games\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'show me games' || lowerCmd === 'games' || lowerCmd === 'list games') {
+      const gamesText = `\nAVAILABLE GAMES:\n----------------\nTETRIS  - Code: PLAY TETRIS\nPONG    - Code: PLAY PONG\nSNAKE   - Code: PLAY SNAKE\n`;
+      setHistory(prev => [...prev, { id: `games-${Date.now()}`, type: MessageType.SYSTEM, content: gamesText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -145,6 +153,13 @@ const App: React.FC = () => {
     if (lowerCmd === 'play pong' || lowerCmd === 'pong' || lowerCmd.replace(/\s+/g, ' ') === 'play pong') {
       setGameMode('pong');
       setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Pong...', timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'play snake' || lowerCmd === 'snake' || lowerCmd.replace(/\s+/g, ' ') === 'play snake') {
+      setGameMode('snake');
+      setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Snake...', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -982,6 +997,10 @@ const App: React.FC = () => {
               {gameMode === 'pong' ? (
                 <div className="flex-1 w-full h-full mt-6">
                   <PongGame onExit={handleGameExit} />
+                </div>
+              ) : gameMode === 'snake' ? (
+                <div className="flex-1 w-full h-full mt-6">
+                  <SnakeGame onExit={handleGameExit} />
                 </div>
               ) : (
                 <>
