@@ -11,6 +11,7 @@ import FingerprintScanner from './components/FingerprintScanner';
 import MatrixRain from './components/MatrixRain';
 import Flicker from './components/Flicker';
 import MemoryBlock from './components/MemoryBlock';
+import TetrisGame from './components/TetrisGame';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -66,6 +67,7 @@ const App: React.FC = () => {
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
+  const [gameMode, setGameMode] = useState<'none' | 'tetris'>('none');
 
   // Verification State
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -123,8 +125,15 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nSET RESUME-URL <u> - Set resume URL used by OPEN GUI\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nPLAY TETRIS        - Play Tetris game\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'play tetris') {
+      setGameMode('tetris');
+      setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Tetris...', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -731,54 +740,55 @@ const App: React.FC = () => {
       }}></div>
 
       {!privacyOpen && (
-        <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
+        <>
+          <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
 
-          <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
-            <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
-            <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
-              <span>NET: ONLINE</span>
-              <span>SEC: HIGH</span>
-            </div>
-            <ClockPanel />
-          </div>
-
-          <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-            <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
-            <MatrixRain />
-          </div>
-
-          <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
-            <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
-              <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
-              <SystemMonitor />
-            </div>
-            <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
-              <MemoryBlock />
-            </div>
-          </div>
-
-          <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
-            <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
-              <span className="text-xs font-bold">MAIN - bash</span>
-            </div>
-            <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
-              {history.map((line) => (
-                <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
-                  {line.type === MessageType.USER && (
-                    <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
-                  )}
-                  {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
-                    renderLineContent(line)
-                  )}
-                </div>
-              ))}
-              {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
-              <div ref={terminalEndRef} />
+            <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
+              <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
+              <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
+                <span>NET: ONLINE</span>
+                <span>SEC: HIGH</span>
+              </div>
+              <ClockPanel />
             </div>
 
-            {/* Arch Linux Logo Watermark */}
-            <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
-              {`                   -\`
+            <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
+              <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
+              <MatrixRain />
+            </div>
+
+            <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
+              <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
+                <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
+                <SystemMonitor />
+              </div>
+              <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
+                <MemoryBlock />
+              </div>
+            </div>
+
+            <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
+              <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
+                <span className="text-xs font-bold">MAIN - bash</span>
+              </div>
+              <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
+                {history.map((line) => (
+                  <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
+                    {line.type === MessageType.USER && (
+                      <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
+                    )}
+                    {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
+                      renderLineContent(line)
+                    )}
+                  </div>
+                ))}
+                {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
+                <div ref={terminalEndRef} />
+              </div>
+
+              {/* Arch Linux Logo Watermark */}
+              <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
+                {`                   -\`
                   .o+\`
                  \`ooo/
                 \`+oooo:
@@ -797,31 +807,38 @@ const App: React.FC = () => {
   \`+sso+:-                 \`.-/+oso:
  \`++:.                           \`-/+/
  .\`                                 \`/-`}
+              </div>
+
+              {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
             </div>
 
-            {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
-          </div>
-
-          <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-            <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">NETWORK STATUS</div>
-            <div className="flex-1 flex items-center justify-center opacity-90">
-              <OctahedronNetwork networkLevel={networkLevel} />
+            <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
+              <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">NETWORK STATUS</div>
+              <div className="flex-1 flex items-center justify-center opacity-90">
+                <OctahedronNetwork networkLevel={networkLevel} />
+              </div>
+              <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
+                <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
+                <TrafficGraph />
+              </div>
             </div>
-            <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
-              <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
-              <TrafficGraph />
+
+            <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
+              <FileExplorer />
             </div>
+
+            <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
+              <VirtualKeyboard />
+            </div>
+
           </div>
 
-          <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
-            <FileExplorer />
-          </div>
-
-          <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
-            <VirtualKeyboard />
-          </div>
-
-        </div>
+          {gameMode === 'tetris' && (
+            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+              <TetrisGame onExit={() => setGameMode('none')} />
+            </div>
+          )}
+        </>
       )}
 
       {privacyOpen && (
