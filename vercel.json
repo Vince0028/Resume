@@ -1,19 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "cd terminal && npm install && npm run build",
-  "outputDirectory": ".",
+  "buildCommand": "bash vercel-build.sh",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/",
-      "destination": "/terminal/dist/index.html"
+      "destination": "/terminal/index.html"
     },
     {
       "source": "/resume",
       "destination": "/index.html?resume=1"
-    },
-    {
-      "source": "/terminal/(.*)",
-      "destination": "/terminal/dist/$1"
     }
   ]
 }
