@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   // Use /terminal/ base for production so assets are routed correctly via Vercel rewrites
-  const base = mode === 'production' ? '/terminal/' : '/';
+  // Force base to root for now to debug
+  const base = '/';
   return {
     base,
     server: {
@@ -13,13 +14,19 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0',
       fs: {
         allow: ['..']
+      },
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+          secure: false,
+        }
       }
     },
     plugins: [react()],
-    define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-    },
+    // Avoid inlining secret API keys into the client bundle. Server-side functions
+    // should access secrets via environment variables at runtime (Vercel/Netlify dashboard).
+    define: {},
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

@@ -2,3 +2,7 @@
 .env
 .vercel
 .env*.local
+.env.vercel
+
+# Local Vercel env files
+.vercel/*.env

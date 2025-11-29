@@ -1,75 +1,88 @@
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+// We check for both VITE_ prefixed (from local .env) and standard (from Vercel env) variables
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 export default async function handler(req, res) {
-    // Only allow POST requests
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Method Not Allowed" });
+    // Set CORS headers to allow requests from your domain
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
     }
 
     try {
-        const { message, history } = req.body;
-        const apiKey = process.env.GEMINI_API_KEY;
+        // GET: Fetch messages
+        if (req.method === 'GET') {
+            const { data, error } = await supabase
+                .from('messages')
+                .select('*')
+                .order('created_at', { ascending: true })
+                .limit(50);
 
-        if (!apiKey) {
-            console.error("Missing GEMINI_API_KEY");
-            return res.status(500).json({ error: "Server configuration error" });
+            if (error) throw error;
+            return res.status(200).json(data);
         }
 
-        const systemPrompt = `You are Vince Nelmar Alobin, a 2nd year BSIT student at Asia Pacific College. 
-    You are enthusiastic, professional, and helpful.
-    
-    Here is your resume context:
-    - **Education**: 
-      - Asia Pacific College (BSIT, 2nd Year, 2024-Present).
-      - Pasay City South High School (Senior High with Honors, 2022-2024).
-      - Pasay City South High School (Junior High with Honors, 2018-2022).
-    - **Skills**: Python, HTML, CSS, JavaScript, SQL, Java, C/C++, Arduino, OpenCV.
-    - **Projects**:
-      - Driver-expression-detector (Python, RPi).
-      - DengueTect (Web app for dengue risk).
-      - Student-Portal (Monitoring platform).
-      - AnaLytics (Rice waste tracking).
-      - benPDF (PDF converter).
-      - SmartShut (Arduino smart light).
-      - VeriFace (Attendance system).
-    - **Contact**: alobinvince@gmail.com, Pasay City.
-    
-    Answer questions as if you are Vince. Keep answers concise (under 3 sentences usually) unless asked for details.
-    If asked about something not in your resume, politely say you don't have that info right now or try to pivot to your known skills.
-    Do not mention you are an AI. You are Vince's digital avatar.`;
+        // POST: Send a message
+        if (req.method === 'POST') {
+            const { username, content } = req.body;
 
-        console.log("Using API Key:", apiKey ? apiKey.substring(0, 5) + "..." : "None");
+            if (!username || !content) {
+                return res.status(400).json({ error: 'Missing username or content' });
+            }
 
-        // Using v1 endpoint with gemini-pro as fallback
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                contents: [
-                    {
-                        role: "user",
-                        parts: [{ text: systemPrompt + "\n\nUser: " + message }]
-                    }
-                ]
-            })
-        });
+            // Add created_at so clients receive the timestamp immediately.
+            const now = new Date().toISOString();
 
-        const data = await response.json();
+            const { data, error } = await supabase
+                .from('messages')
+                .insert([{ username, content, created_at: now }])
+                .select();
 
-        if (!response.ok) {
-            console.error("Gemini API Error:", data);
-            return res.status(response.status).json({ error: "AI Service Error" });
+            if (error) throw error;
+            // Return the inserted row(s) including created_at
+            return res.status(200).json(data);
         }
 
-        // Handle different response structures if necessary, but usually candidates[0].content.parts[0].text is standard
-        const reply = data.candidates && data.candidates[0] && data.candidates[0].content
-            ? data.candidates[0].content.parts[0].text
-            : "I'm not sure how to answer that.";
+        // PUT: Check if username is taken
+        if (req.method === 'PUT') {
+            const { username } = req.body;
 
-        return res.status(200).json({ reply });
+            if (!username) {
+                return res.status(400).json({ error: 'Missing username' });
+            }
 
+            // Check for messages from this username in the last 5 minutes
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+
+            const { data, error } = await supabase
+                .from('messages')
+                .select('username')
+                .eq('username', username)
+                .gte('created_at', fiveMinutesAgo)
+                .limit(1);
+
+            if (error) throw error;
+
+            const isTaken = data && data.length > 0;
+            return res.status(200).json({ isTaken });
+        }
+
+        return res.status(405).json({ error: 'Method not allowed' });
     } catch (error) {
-        console.error("Function Error:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.error('API Error:', error);
+        return res.status(500).json({ error: error.message });
     }
 }
