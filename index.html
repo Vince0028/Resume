@@ -584,7 +584,35 @@
           </div>
         </div>
       </div>
+      <div class="right-sidebar-section messenger-section hide-on-mobile">
+        <div class="messenger-cta">
+          <button id="openMessengerBtn" class="messenger-btn" aria-label="Chat with Vince">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span class="messenger-text">Chat with Vince Alobin now!</span>
+          </button>
+        </div>
+      </div>
     </aside>
+  </div>
+
+  <!-- Messenger Popup -->
+  <div id="messengerPopup" class="messenger-popup" aria-hidden="true">
+    <div class="messenger-window">
+      <div class="messenger-header">
+        <div class="messenger-title">
+          <i class="bi bi-person-circle"></i>
+          <div class="messenger-name">Chat with Vince Alobin</div>
+        </div>
+        <button id="closeMessengerBtn" class="messenger-close" aria-label="Close chat">×</button>
+      </div>
+      <div class="messenger-body">
+        <div id="messages" class="messages"></div>
+      </div>
+      <form id="messengerForm" class="messenger-input" autocomplete="off">
+        <input id="messageInput" type="text" placeholder="Type a message..." aria-label="Message input">
+        <button type="submit" id="sendBtn" class="send-btn"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

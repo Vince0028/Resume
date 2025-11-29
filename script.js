@@ -193,17 +193,50 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}
 	}
 
+	// autoplay controls
+	const AUTOPLAY_INTERVAL = 3000; // 3 seconds
+	let autoplayTimer = null;
+
+	function startAutoplay() {
+		stopAutoplay();
+		autoplayTimer = setInterval(() => {
+			if (!slides.length) return;
+			currentIndex++;
+			updateCarousel();
+		}, AUTOPLAY_INTERVAL);
+	}
+
+	function stopAutoplay() {
+		if (autoplayTimer) {
+			clearInterval(autoplayTimer);
+			autoplayTimer = null;
+		}
+	}
+
 	nextBtn.addEventListener('click', () => {
 		if (!slides.length) return;
 		currentIndex++;
 		updateCarousel();
+		// reset autoplay so user interaction delays next auto move
+		startAutoplay();
 	});
 
 	prevBtn.addEventListener('click', () => {
 		if (!slides.length) return;
 		currentIndex--;
 		updateCarousel();
+		startAutoplay();
 	});
+
+	// pause autoplay while the user hovers the carousel container
+	const projectsContainer = document.querySelector('.projects-carousel-track-container');
+	if (projectsContainer) {
+		projectsContainer.addEventListener('mouseenter', stopAutoplay);
+		projectsContainer.addEventListener('mouseleave', () => startAutoplay());
+	}
+
+	// start autoplay after initial build
+	startAutoplay();
 
 	track.addEventListener('transitionend', onTransitionEnd);
 
@@ -222,85 +255,212 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 })();
 
-	// Education carousel initialization
-	(function () {
-		const track = document.getElementById('educationTrack');
-		const prevBtn = document.getElementById('eduPrevBtn');
-		const nextBtn = document.getElementById('eduNextBtn');
-		const dotsWrap = document.getElementById('eduDots');
-		if (!track || !prevBtn || !nextBtn) return;
+// Education carousel initialization
+(function () {
+	const track = document.getElementById('educationTrack');
+	const prevBtn = document.getElementById('eduPrevBtn');
+	const nextBtn = document.getElementById('eduNextBtn');
+	const dotsWrap = document.getElementById('eduDots');
+	if (!track || !prevBtn || !nextBtn) return;
 
-		const slides = Array.from(track.children);
-		let current = 0;
-		let autoplayTimer = null;
-		let visibleCount = 1;
+	const slides = Array.from(track.children);
+	let current = 0;
+	let autoplayTimer = null;
+	let visibleCount = 1;
 
-		function getGap() {
-			const style = window.getComputedStyle(track);
-			return parseFloat(style.gap) || 0;
+	function getGap() {
+		const style = window.getComputedStyle(track);
+		return parseFloat(style.gap) || 0;
+	}
+
+	function calcSizes() {
+		const container = document.querySelector('.education-track-container');
+		const containerWidth = container ? container.getBoundingClientRect().width : track.offsetWidth;
+		const slideWidth = slides[0] ? slides[0].getBoundingClientRect().width : containerWidth;
+		const gap = getGap();
+		visibleCount = Math.max(1, Math.floor((containerWidth + gap) / (slideWidth + gap)));
+		return { containerWidth, slideWidth, gap };
+	}
+
+	function buildDots() {
+		if (!dotsWrap) return;
+		dotsWrap.innerHTML = '';
+		const pages = Math.max(1, slides.length - visibleCount + 1);
+		for (let i = 0; i < pages; i++) {
+			const d = document.createElement('button');
+			d.type = 'button';
+			d.className = 'edu-dot';
+			d.setAttribute('aria-label', 'Go to page ' + (i + 1));
+			d.addEventListener('click', () => { goTo(i); });
+			dotsWrap.appendChild(d);
 		}
+	}
 
-		function calcSizes() {
-			const container = document.querySelector('.education-track-container');
-			const containerWidth = container ? container.getBoundingClientRect().width : track.offsetWidth;
-			const slideWidth = slides[0] ? slides[0].getBoundingClientRect().width : containerWidth;
-			const gap = getGap();
-			visibleCount = Math.max(1, Math.floor((containerWidth + gap) / (slideWidth + gap)));
-			return { containerWidth, slideWidth, gap };
-		}
+	function update() {
+		if (!slides.length) return;
+		const { slideWidth, gap } = calcSizes();
+		const move = (slideWidth + gap) * current;
+		track.style.transform = `translateX(-${move}px)`;
+		// update dots
+		const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+		dots.forEach((d, i) => d.classList.toggle('active', i === current));
+		// mark center active slide similar to projects carousel
+		slides.forEach(s => s.classList.remove('active'));
+		const centerOffset = Math.floor(visibleCount / 2);
+		const centerIndex = Math.min(slides.length - 1, current + centerOffset);
+		if (slides[centerIndex]) slides[centerIndex].classList.add('active');
+	}
 
-		function buildDots() {
-			if (!dotsWrap) return;
-			dotsWrap.innerHTML = '';
-			const pages = Math.max(1, slides.length - visibleCount + 1);
-			for (let i = 0; i < pages; i++) {
-				const d = document.createElement('button');
-				d.type = 'button';
-				d.className = 'edu-dot';
-				d.setAttribute('aria-label', 'Go to page ' + (i + 1));
-				d.addEventListener('click', () => { goTo(i); });
-				dotsWrap.appendChild(d);
-			}
-		}
-
-		function update() {
-			if (!slides.length) return;
-			const { slideWidth, gap } = calcSizes();
-			const move = (slideWidth + gap) * current;
-			track.style.transform = `translateX(-${move}px)`;
-			// update dots
-			const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
-			dots.forEach((d, i) => d.classList.toggle('active', i === current));
-			// mark center active slide similar to projects carousel
-			slides.forEach(s => s.classList.remove('active'));
-			const centerOffset = Math.floor(visibleCount / 2);
-			const centerIndex = Math.min(slides.length - 1, current + centerOffset);
-			if (slides[centerIndex]) slides[centerIndex].classList.add('active');
-		}
-
-		function goTo(i) {
-			const pages = Math.max(1, slides.length - visibleCount + 1);
-			current = Math.max(0, Math.min(pages - 1, i));
-			update();
-			resetAutoplay();
-		}
-
-		function next() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current + 1) % pages); }
-		function prev() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current - 1 + pages) % pages); }
-
-		prevBtn.addEventListener('click', prev);
-		nextBtn.addEventListener('click', next);
-		window.addEventListener('resize', () => { setTimeout(() => { calcSizes(); buildDots(); update(); }, 120); });
-		document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
-
-		function resetAutoplay() {
-			if (autoplayTimer) clearInterval(autoplayTimer);
-			autoplayTimer = setInterval(next, 6000);
-		}
-
-		// initial build
-		calcSizes();
-		buildDots();
+	function goTo(i) {
+		const pages = Math.max(1, slides.length - visibleCount + 1);
+		current = Math.max(0, Math.min(pages - 1, i));
 		update();
 		resetAutoplay();
-	})();
+	}
+
+	function next() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current + 1) % pages); }
+	function prev() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current - 1 + pages) % pages); }
+
+	prevBtn.addEventListener('click', prev);
+	nextBtn.addEventListener('click', next);
+	window.addEventListener('resize', () => { setTimeout(() => { calcSizes(); buildDots(); update(); }, 120); });
+	document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
+
+	function resetAutoplay() {
+		if (autoplayTimer) clearInterval(autoplayTimer);
+		autoplayTimer = setInterval(next, 6000);
+	}
+
+	// initial build
+	calcSizes();
+	buildDots();
+	update();
+	resetAutoplay();
+})();
+
+// Messenger UI
+(function () {
+	const openBtn = document.getElementById('openMessengerBtn');
+	const closeBtn = document.getElementById('closeMessengerBtn');
+	const popup = document.getElementById('messengerPopup');
+	const form = document.getElementById('messengerForm');
+	const input = document.getElementById('messageInput');
+	const messagesEl = document.getElementById('messages');
+
+	if (!openBtn || !popup || !form || !input || !messagesEl) return;
+
+	let isWaitingForResponse = false;
+	let lastMessageTime = 0;
+	const RATE_LIMIT_MS = 3000; // 3 seconds cooldown
+
+	function openPopup() {
+		popup.classList.add('open');
+		popup.setAttribute('aria-hidden', 'false');
+		input.focus();
+	}
+
+	function closePopup() {
+		popup.classList.remove('open');
+		popup.setAttribute('aria-hidden', 'true');
+	}
+
+	openBtn.addEventListener('click', openPopup);
+	closeBtn && closeBtn.addEventListener('click', closePopup);
+
+	// close on escape
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			closePopup();
+		}
+	});
+
+	function appendMessage(text, who = 'user') {
+		const msg = document.createElement('div');
+		msg.className = 'message ' + (who === 'user' ? 'user' : 'bot');
+		// Simple text content to prevent XSS, but allow basic formatting if needed later
+		msg.textContent = text;
+		messagesEl.appendChild(msg);
+		messagesEl.scrollTop = messagesEl.scrollHeight;
+	}
+
+	function showTypingIndicator() {
+		const indicator = document.createElement('div');
+		indicator.className = 'typing-indicator';
+		indicator.id = 'typingIndicator';
+		indicator.innerHTML = `
+				<div class="typing-dot"></div>
+				<div class="typing-dot"></div>
+				<div class="typing-dot"></div>
+			`;
+		messagesEl.appendChild(indicator);
+		messagesEl.scrollTop = messagesEl.scrollHeight;
+	}
+
+	function removeTypingIndicator() {
+		const indicator = document.getElementById('typingIndicator');
+		if (indicator) {
+			indicator.remove();
+		}
+	}
+
+	async function callChatAPI(message) {
+		try {
+			const response = await fetch('/.netlify/functions/chat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ message })
+			});
+
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+
+			const data = await response.json();
+			return data.reply;
+		} catch (error) {
+			console.error('Chat API Error:', error);
+			return "Sorry, I'm having trouble connecting right now. Please try again later.";
+		}
+	}
+
+	form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const val = input.value && input.value.trim();
+		if (!val) return;
+
+		// Rate Limiting
+		const now = Date.now();
+		if (now - lastMessageTime < RATE_LIMIT_MS) {
+			appendMessage("Please wait a moment before sending another message.", 'bot');
+			return;
+		}
+
+		if (isWaitingForResponse) return;
+
+		// Send User Message
+		appendMessage(val, 'user');
+		input.value = '';
+		lastMessageTime = Date.now();
+		isWaitingForResponse = true;
+
+		// Show Typing Indicator
+		showTypingIndicator();
+
+		// Call API
+		const reply = await callChatAPI(val);
+
+		// Remove Indicator and Show Reply
+		removeTypingIndicator();
+		appendMessage(reply, 'bot');
+		isWaitingForResponse = false;
+	});
+})();
+
+// Add attention pulse on load so the CTA is noticeable
+(function () {
+	const openBtn = document.getElementById('openMessengerBtn');
+	if (!openBtn) return;
+	// add attention class briefly to draw user's eye
+	openBtn.classList.add('attention');
+	setTimeout(() => openBtn.classList.remove('attention'), 7000);
+})();
