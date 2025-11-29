@@ -405,7 +405,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	async function callChatAPI(message) {
 		try {
-			const response = await fetch('/.netlify/functions/chat', {
+			const response = await fetch('/api/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message })
