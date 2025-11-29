@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  // Use relative base for production so it works in any subdirectory (e.g. GitHub Pages)
-  const base = mode === 'production' ? './' : '/';
+  // Use /terminal/ base for production so assets are routed correctly via Vercel rewrites
+  const base = mode === 'production' ? '/terminal/' : '/';
   return {
     base,
     server: {
