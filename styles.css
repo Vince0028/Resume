@@ -993,6 +993,97 @@ body.light-mode .expertise-icon img.project-logo:hover {
   line-height: 1.6;
 }
 
+/* Education carousel styled as tile cards (full-bleed background + centered logo) */
+.education-carousel {
+  display: block;
+  margin-top: 0.75rem;
+}
+.education-track-container {
+  overflow: hidden; /* ensure cards stay inside the rounded container */
+  border-radius: 14px;
+  padding: 1rem 0.5rem;
+}
+.education-track {
+  display: flex;
+  gap: 22px;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+  padding: 0 10px;
+  align-items: stretch;
+  justify-content: center; /* center the three cards */
+}
+.edu-slide {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  flex: 0 0 calc((100% - 44px) / 3); /* 3 cards across, account for gaps */
+  max-width: calc((100% - 44px) / 3);
+  height: 520px; /* increased height so content fits */
+  background: linear-gradient(180deg, rgba(10,12,25,0.22), rgba(10,12,25,0.28));
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+.edu-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 70%);
+  z-index: 1;
+}
+.edu-slide { opacity: 1; transform: none; -webkit-filter: none; filter: none; transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.edu-slide.active { transform: scale(1.02); z-index: 10; box-shadow: 0 12px 34px rgba(2,6,23,0.45); }
+.edu-slide:hover { transform: translateY(-6px) scale(1.02); z-index: 15; }
+.edu-logo {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  padding: 8px;
+  position: absolute; /* move logo to top center */
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+.edu-content {
+  position: absolute;
+  z-index: 2;
+  bottom: 20px;
+  left: 18px;
+  right: 18px;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 48px; /* ensure content doesn't overlap the logo area on very small cards */
+}
+.edu-year { color: var(--primary); font-weight:700; margin-bottom:6px; }
+.edu-title { font-size:1.18rem; font-weight:800; color:#ffffff; margin-bottom:6px; text-shadow:0 6px 18px rgba(0,0,0,0.6); }
+.edu-subtitle { color:rgba(255,255,255,0.9); margin-bottom:6px; font-weight:600; }
+.edu-desc { color:rgba(255,255,255,0.85); font-size:0.9rem; }
+.edu-controls { display:flex; align-items:center; justify-content:flex-end; gap:0.5rem; margin-bottom:0.5rem; }
+.edu-btn { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text-primary); padding:6px 10px; border-radius:8px; cursor:pointer; font-size:1.25rem; }
+.edu-controls .edu-btn { display: none; /* hide arrow buttons */ }
+.edu-btn:active { transform:translateY(1px); }
+.edu-dots { flex:1; display:flex; gap:6px; justify-content:center; align-items:center; }
+.edu-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.08); }
+.edu-dot.active { background:var(--primary); box-shadow:0 0 6px rgba(99,102,241,0.18); }
+
+@media (min-width: 900px) {
+  .education-track-container { padding: 1.5rem; }
+  .edu-slide { flex: 0 0 calc((100% - 44px) / 3); }
+}
+
+@media (min-width: 1200px) {
+  .edu-slide { flex: 0 0 calc((100% - 44px) / 3); }
+}
+
 .badge-honor {
   display: inline-block;
   background: #fbbf24;
@@ -2121,6 +2212,12 @@ body.light-mode .cert-content { background:var(--card-bg); }
 }
 
 @media (max-width: 991px) {
+  .education-track-container { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 20px; -webkit-mask-image: none; mask-image: none; }
+  .education-track { gap: 16px; }
+  .edu-slide { min-width: 280px !important; max-width: 280px !important; scroll-snap-align: center; flex: 0 0 auto !important; width: auto !important; opacity: 1; transform: none; -webkit-filter: none; filter: none; }
+  .edu-slide.active { transform: none; }
+  .edu-slide { height: auto !important; min-height: 420px; }
+  .edu-controls .edu-btn { display: none; }
   .projects-carousel-container {
     padding: 0;
   }

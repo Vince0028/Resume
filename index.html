@@ -367,32 +367,53 @@
             <i class="bi bi-mortarboard-fill"></i>
             Education
           </h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-year">2024 - Present</div>
-              <div class="timeline-title">Asia Pacific College (APC)</div>
-              <div class="timeline-subtitle">Bachelor of Science in Information Technology (BSIT) • Second Year</div>
-              <div class="timeline-desc">3 Humabon Place, Magallanes, Makati City, Philippines</div>
+          <div class="education-carousel">
+            <div class="edu-controls">
+              <button id="eduPrevBtn" class="edu-btn" aria-label="Previous school">‹</button>
+              <div class="edu-dots" id="eduDots" aria-hidden="true"></div>
+              <button id="eduNextBtn" class="edu-btn" aria-label="Next school">›</button>
             </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2022 - 2024</div>
-              <div class="timeline-title">Pasay City South High School</div>
-              <div class="timeline-subtitle">Senior High School</div>
-              <div class="timeline-desc">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
-              <span class="badge-honor"><i class="bi bi-star-fill"></i> Graduated With Honors</span>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2018 - 2022</div>
-              <div class="timeline-title">Pasay City South High School</div>
-              <div class="timeline-subtitle">Junior High School</div>
-              <div class="timeline-desc">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
-              <span class="badge-honor"><i class="bi bi-star-fill"></i> Graduated With Honors</span>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2012 - 2018</div>
-              <div class="timeline-title">R and O Academy, Inc.</div>
-              <div class="timeline-subtitle">Elementary</div>
-              <div class="timeline-desc">P01-22, 4th-3rd St., Barangay 183, Villamor, Pasay City</div>
+            <div class="education-track-container">
+              <div class="education-track" id="educationTrack">
+                <div class="edu-slide" data-index="0" style="background-image: url('Images/apc_bg.png');">
+                  <img class="edu-logo" src="Images/apc_logo.png" alt="Asia Pacific College logo">
+                  <div class="edu-content">
+                    <div class="edu-year">2024 - Present</div>
+                    <div class="edu-title">Asia Pacific College (APC)</div>
+                    <div class="edu-subtitle">Bachelor of Science in Information Technology (BSIT) • Second Year</div>
+                    <div class="edu-desc">3 Humabon Place, Magallanes, Makati City, Philippines</div>
+                  </div>
+                </div>
+
+                <!-- Combined Pasay City South High School: Junior & Senior entries in one slide -->
+                <div class="edu-slide" data-index="1" style="background-image: url('Images/south_bg.png');">
+                  <img class="edu-logo" src="Images/south_logo.png" alt="Pasay City South High School logo">
+                  <div class="edu-content">
+                    <div class="edu-year">2022 - 2024</div>
+                    <div class="edu-title">Pasay City South High School</div>
+                    <div class="edu-subtitle">Senior High School</div>
+                    <div class="edu-desc">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+                    <span class="badge-honor"><i class="bi bi-star-fill"></i> Graduated With Honors</span>
+
+                    <hr style="opacity:.06; margin:12px 0;">
+
+                    <div class="edu-year" style="margin-top:6px;">2018 - 2022</div>
+                    <div class="edu-subtitle">Junior High School</div>
+                    <div class="edu-desc">Piccio Garden, Barangay 183, Villamor, Pasay City</div>
+                    <span class="badge-honor"><i class="bi bi-star-fill"></i> Graduated With Honors</span>
+                  </div>
+                </div>
+
+                <div class="edu-slide" data-index="2" style="background-image: url('Images/rno_bg.png');">
+                  <img class="edu-logo" src="Images/RnO_logo.png" alt="R and O Academy logo">
+                  <div class="edu-content">
+                    <div class="edu-year">2012 - 2018</div>
+                    <div class="edu-title">R and O Academy, Inc.</div>
+                    <div class="edu-subtitle">Elementary</div>
+                    <div class="edu-desc">P01-22, 4th-3rd St., Barangay 183, Villamor, Pasay City</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

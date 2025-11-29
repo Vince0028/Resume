@@ -221,3 +221,86 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	buildLoop();
 
 })();
+
+	// Education carousel initialization
+	(function () {
+		const track = document.getElementById('educationTrack');
+		const prevBtn = document.getElementById('eduPrevBtn');
+		const nextBtn = document.getElementById('eduNextBtn');
+		const dotsWrap = document.getElementById('eduDots');
+		if (!track || !prevBtn || !nextBtn) return;
+
+		const slides = Array.from(track.children);
+		let current = 0;
+		let autoplayTimer = null;
+		let visibleCount = 1;
+
+		function getGap() {
+			const style = window.getComputedStyle(track);
+			return parseFloat(style.gap) || 0;
+		}
+
+		function calcSizes() {
+			const container = document.querySelector('.education-track-container');
+			const containerWidth = container ? container.getBoundingClientRect().width : track.offsetWidth;
+			const slideWidth = slides[0] ? slides[0].getBoundingClientRect().width : containerWidth;
+			const gap = getGap();
+			visibleCount = Math.max(1, Math.floor((containerWidth + gap) / (slideWidth + gap)));
+			return { containerWidth, slideWidth, gap };
+		}
+
+		function buildDots() {
+			if (!dotsWrap) return;
+			dotsWrap.innerHTML = '';
+			const pages = Math.max(1, slides.length - visibleCount + 1);
+			for (let i = 0; i < pages; i++) {
+				const d = document.createElement('button');
+				d.type = 'button';
+				d.className = 'edu-dot';
+				d.setAttribute('aria-label', 'Go to page ' + (i + 1));
+				d.addEventListener('click', () => { goTo(i); });
+				dotsWrap.appendChild(d);
+			}
+		}
+
+		function update() {
+			if (!slides.length) return;
+			const { slideWidth, gap } = calcSizes();
+			const move = (slideWidth + gap) * current;
+			track.style.transform = `translateX(-${move}px)`;
+			// update dots
+			const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+			dots.forEach((d, i) => d.classList.toggle('active', i === current));
+			// mark center active slide similar to projects carousel
+			slides.forEach(s => s.classList.remove('active'));
+			const centerOffset = Math.floor(visibleCount / 2);
+			const centerIndex = Math.min(slides.length - 1, current + centerOffset);
+			if (slides[centerIndex]) slides[centerIndex].classList.add('active');
+		}
+
+		function goTo(i) {
+			const pages = Math.max(1, slides.length - visibleCount + 1);
+			current = Math.max(0, Math.min(pages - 1, i));
+			update();
+			resetAutoplay();
+		}
+
+		function next() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current + 1) % pages); }
+		function prev() { const pages = Math.max(1, slides.length - visibleCount + 1); goTo((current - 1 + pages) % pages); }
+
+		prevBtn.addEventListener('click', prev);
+		nextBtn.addEventListener('click', next);
+		window.addEventListener('resize', () => { setTimeout(() => { calcSizes(); buildDots(); update(); }, 120); });
+		document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
+
+		function resetAutoplay() {
+			if (autoplayTimer) clearInterval(autoplayTimer);
+			autoplayTimer = setInterval(next, 6000);
+		}
+
+		// initial build
+		calcSizes();
+		buildDots();
+		update();
+		resetAutoplay();
+	})();
