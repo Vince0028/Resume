@@ -76,7 +76,8 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	// store original slides (to rebuild on resize)
 	const originalSlides = Array.from(track.children).map(n => n.cloneNode(true));
 	let slides = [];
-	let visibleCount = 1;
+	let visibleCount = 1; // slides visible on screen
+	let bufferSize = 1;   // number of clones on each side
 	let currentIndex = 0; // index into `slides`
 
 	function buildLoop() {
@@ -101,10 +102,23 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
 		visibleCount = Math.max(1, Math.floor(containerWidth / (slideWidth + gap)));
 
-		// clones: prepend last `visibleCount`, then originals, then first `visibleCount`
-		const prefix = originalSlides.slice(-visibleCount).map(n => n.cloneNode(true));
+		// Create a larger buffer to prevent running out of slides during rapid navigation
+		// Use at least visibleCount * 3 or a minimum safe number
+		bufferSize = Math.max(visibleCount * 3, 5);
+
+		// clones: prepend last `bufferSize`, then originals, then first `bufferSize`
+		// Note: we need to handle the case where bufferSize > originalSlides.length by repeating
+		const prefix = [];
+		for (let i = 0; i < bufferSize; i++) {
+			prefix.unshift(originalSlides[originalSlides.length - 1 - (i % originalSlides.length)].cloneNode(true));
+		}
+
 		const middle = originalSlides.map(n => n.cloneNode(true));
-		const suffix = originalSlides.slice(0, visibleCount).map(n => n.cloneNode(true));
+
+		const suffix = [];
+		for (let i = 0; i < bufferSize; i++) {
+			suffix.push(originalSlides[i % originalSlides.length].cloneNode(true));
+		}
 
 		prefix.forEach(n => track.appendChild(n));
 		middle.forEach(n => track.appendChild(n));
@@ -113,7 +127,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		slides = Array.from(track.children);
 
 		// start at the first original (after prefix)
-		currentIndex = visibleCount;
+		currentIndex = bufferSize;
 		// jump to position without transition
 		track.style.transition = 'none';
 		updateCarousel();
@@ -127,22 +141,15 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
 		const slideWidth = slides[0].offsetWidth; // Use offsetWidth
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
+
 		// Calculate translate so that the center visible slide is centered in the container
+		// We use visibleCount (screen capacity) for centering logic
 		const centerOffset = Math.floor(visibleCount / 2);
 		const centerIndex = currentIndex + centerOffset;
 		const translateForCenter = (slideWidth + gap) * centerIndex - (containerWidth - slideWidth) / 2;
 		track.style.transform = `translateX(-${translateForCenter}px)`;
 
 		// highlight center active slide (directly target the visible slide)
-		// We calculate the center based on the viewport, which corresponds to centerIndex
-		// However, we need to be careful if visibleCount is different from what's actually visible on screen
-		// But assuming visibleCount is calculated based on container width, centerIndex should be the middle one.
-
-		const visibleSlidesOnScreen = Math.floor(containerWidth / (slideWidth + gap));
-		// We want the slide that is physically in the middle of the screen
-		// The translation aligns `slides[centerIndex]` to the center.
-		// So `slides[centerIndex]` is the one we want to highlight.
-
 		slides.forEach(s => s.classList.remove('active'));
 		if (slides[centerIndex]) {
 			slides[centerIndex].classList.add('active');
@@ -151,18 +158,36 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	function onTransitionEnd() {
 		// if we've moved into suffix clones, jump back to the matching original
-		if (currentIndex >= slides.length - visibleCount) {
+		if (currentIndex >= slides.length - bufferSize) {
 			track.style.transition = 'none';
+			// Force reflow
+			void track.offsetWidth;
 			// Preserve the offset into the suffix
+			// We moved N steps into suffix. Suffix starts at bufferSize + originalLen.
+			// currentIndex = bufferSize + originalLen + k.
+			// We want to go to bufferSize + k.
+			// So subtract originalLen.
 			currentIndex -= originalSlides.length;
+			// Ensure we wrap correctly if buffer is huge
+			while (currentIndex >= slides.length - bufferSize) {
+				currentIndex -= originalSlides.length;
+			}
+
 			updateCarousel();
 			requestAnimationFrame(() => { track.style.transition = ''; });
 		}
 		// if we've moved into prefix clones at the start, jump to the matching original at the end
-		if (currentIndex < visibleCount) {
+		if (currentIndex < bufferSize) {
 			track.style.transition = 'none';
+			// Force reflow
+			void track.offsetWidth;
 			// Preserve the offset into the prefix
 			currentIndex += originalSlides.length;
+			// Ensure we wrap correctly
+			while (currentIndex < bufferSize) {
+				currentIndex += originalSlides.length;
+			}
+
 			updateCarousel();
 			requestAnimationFrame(() => { track.style.transition = ''; });
 		}
