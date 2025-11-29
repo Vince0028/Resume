@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   // Use /terminal/ base for production so assets are routed correctly via Vercel rewrites
-  // Force base to root for now to debug
-  const base = '/';
+  // Use root (`/`) during local dev so Vite dev server works at localhost:3000
+  const base = mode === 'production' ? '/terminal/' : '/';
   return {
     base,
     server: {
