@@ -21,7 +21,8 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     const [tempPassword, setTempPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const messageRef = useRef<HTMLInputElement>(null);
 
     // Polling for messages
     useEffect(() => {
@@ -55,7 +56,13 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     }, [messages]);
 
     useEffect(() => {
-        inputRef.current?.focus();
+        if (username) {
+            // focus the message input when logged in
+            messageRef.current?.focus();
+        } else {
+            // focus the username input when not logged in
+            usernameRef.current?.focus();
+        }
     }, [username]);
 
     const handleUsernameSubmit = async (e: React.FormEvent) => {
@@ -148,24 +155,32 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                         ⚠ {usernameError}
                     </div>
                 )}
-                <form onSubmit={handleUsernameSubmit} className="flex items-center space-x-2">
-                    <span className={`${THEME_COLOR} mr-2`}>Code Name:</span>
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={tempUsername}
-                        onChange={(e) => setTempUsername(e.target.value)}
-                        className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 flex-1`}
-                        autoFocus
-                        placeholder="choose a code name"
-                    />
-                    <input
-                        type="password"
-                        value={tempPassword}
-                        onChange={(e) => setTempPassword(e.target.value)}
-                        className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-44`}
-                        placeholder="password (min 6)"
-                    />
+                <form onSubmit={handleUsernameSubmit} className="flex flex-col w-full max-w-2xl space-y-2">
+                    <label className="flex flex-col">
+                        <span className={`${THEME_COLOR} mr-2`}>Code Name:</span>
+                        <input
+                            ref={usernameRef}
+                            type="text"
+                            value={tempUsername}
+                            onChange={(e) => setTempUsername(e.target.value)}
+                            className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-full`}
+                            placeholder="choose a code name"
+                        />
+                    </label>
+
+                    <label className="flex flex-col">
+                        <span className={`${THEME_COLOR} mr-2`}>Password:</span>
+                        <input
+                            ref={null}
+                            type="password"
+                            value={tempPassword}
+                            onChange={(e) => setTempPassword(e.target.value)}
+                            className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-full`}
+                            placeholder="password (min 6)"
+                        />
+                    </label>
+
+                    <button type="submit" className="sr-only">Submit</button>
                 </form>
             </div>
         );
@@ -189,10 +204,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleMessageSubmit} className="flex items-center border-t border-indigo-500/30 pt-2">
+            <form onSubmit={handleMessageSubmit} className="flex items-center border-t border-indigo-500/30 pt-2 space-x-2">
                 <span className={`${THEME_COLOR} mr-2`}>[{username}]:~$</span>
                 <input
-                    ref={inputRef}
+                    ref={messageRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -200,6 +215,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                     autoFocus
                     placeholder="Type a message... (/exit to leave)"
                 />
+                <button type="submit" className="bg-indigo-600 text-white px-3 py-1 rounded">Join / Send</button>
             </form>
         </div>
     );
