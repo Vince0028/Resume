@@ -4,9 +4,9 @@
 .env*.local
 .env.vercel
 
-# Local Vercel env files
+
 .env
 .env.vercel
-# Log files
+
 *.log
 server.log
