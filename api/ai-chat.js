@@ -37,6 +37,15 @@ export default async function handler(req, res) {
             });
         }
 
+        // Validate API key format (should start with AIza)
+        if (!apiKey.startsWith('AIza')) {
+            console.error('Invalid API key format. Gemini API keys should start with "AIza"');
+            return res.status(500).json({
+                error: 'Invalid API key format',
+                reply: "Sorry, the API key is not configured correctly. Please contact the administrator."
+            });
+        }
+
         // Initialize Gemini AI
         const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -77,9 +86,9 @@ Projects:
 
 Keep responses concise, friendly, and informative. If asked about topics not related to Vince or his work, politely redirect the conversation back to his portfolio.`;
 
-        // Create chat with system prompt
+        // Create chat with system prompt - using gemini-pro which is most stable
         const model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
+            model: 'gemini-pro',
             systemInstruction: systemPrompt,
         });
 
