@@ -2,14 +2,23 @@
   "version": 2,
   "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "public",
-  "rewrites": [
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "routes": [
     {
-      "source": "/",
-      "destination": "/terminal/index.html"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
-      "source": "/resume",
-      "destination": "/index.html?resume=1"
+      "src": "/resume",
+      "dest": "/index.html?resume=1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/terminal/index.html"
     }
   ]
 }
