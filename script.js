@@ -73,41 +73,41 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	const nextBtn = document.getElementById('projectsNextBtn');
 	if (!track || !prevBtn || !nextBtn) return;
 
-	
+
 	const originalSlides = Array.from(track.children).map(n => n.cloneNode(true));
 	let slides = [];
-	let visibleCount = 1; 
-	let bufferSize = 1;   
-	let currentIndex = 0; 
+	let visibleCount = 1;
+	let bufferSize = 1;
+	let currentIndex = 0;
 
 	function buildLoop() {
-		
+
 		track.innerHTML = '';
-		
+
 		const container = document.querySelector('.projects-carousel-track-container');
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
 
-		
+
 		if (!originalSlides.length) return;
 
-		
+
 		const temp = originalSlides[0].cloneNode(true);
 		temp.style.visibility = 'hidden';
 		temp.style.position = 'absolute';
-		
+
 		document.body.appendChild(temp);
-		const slideWidth = temp.offsetWidth; 
+		const slideWidth = temp.offsetWidth;
 		document.body.removeChild(temp);
 
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
 		visibleCount = Math.max(1, Math.floor(containerWidth / (slideWidth + gap)));
 
-		
-		
+
+
 		bufferSize = Math.max(visibleCount * 3, 5);
 
-		
-		
+
+
 		const prefix = [];
 		for (let i = 0; i < bufferSize; i++) {
 			prefix.unshift(originalSlides[originalSlides.length - 1 - (i % originalSlides.length)].cloneNode(true));
@@ -126,12 +126,12 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		slides = Array.from(track.children);
 
-		
+
 		currentIndex = bufferSize;
-		
+
 		track.style.transition = 'none';
 		updateCarousel();
-		
+
 		requestAnimationFrame(() => { track.style.transition = ''; });
 	}
 
@@ -139,17 +139,17 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		if (!slides.length) return;
 		const container = document.querySelector('.projects-carousel-track-container');
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
-		const slideWidth = slides[0].offsetWidth; 
+		const slideWidth = slides[0].offsetWidth;
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
 
-		
-		
+
+
 		const centerOffset = Math.floor(visibleCount / 2);
 		const centerIndex = currentIndex + centerOffset;
 		const translateForCenter = (slideWidth + gap) * centerIndex - (containerWidth - slideWidth) / 2;
 		track.style.transform = `translateX(-${translateForCenter}px)`;
 
-		
+
 		slides.forEach(s => s.classList.remove('active'));
 		if (slides[centerIndex]) {
 			slides[centerIndex].classList.add('active');
@@ -157,18 +157,18 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	}
 
 	function onTransitionEnd() {
-		
+
 		if (currentIndex >= slides.length - bufferSize) {
 			track.style.transition = 'none';
-			
+
 			void track.offsetWidth;
-			
-			
-			
-			
-			
+
+
+
+
+
 			currentIndex -= originalSlides.length;
-			
+
 			while (currentIndex >= slides.length - bufferSize) {
 				currentIndex -= originalSlides.length;
 			}
@@ -176,14 +176,14 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			updateCarousel();
 			requestAnimationFrame(() => { track.style.transition = ''; });
 		}
-		
+
 		if (currentIndex < bufferSize) {
 			track.style.transition = 'none';
-			
+
 			void track.offsetWidth;
-			
+
 			currentIndex += originalSlides.length;
-			
+
 			while (currentIndex < bufferSize) {
 				currentIndex += originalSlides.length;
 			}
@@ -193,8 +193,8 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}
 	}
 
-	
-	const AUTOPLAY_INTERVAL = 3000; 
+
+	const AUTOPLAY_INTERVAL = 3000;
 	let autoplayTimer = null;
 
 	function startAutoplay() {
@@ -217,7 +217,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		if (!slides.length) return;
 		currentIndex++;
 		updateCarousel();
-		
+
 		startAutoplay();
 	});
 
@@ -228,19 +228,19 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		startAutoplay();
 	});
 
-	
+
 	const projectsContainer = document.querySelector('.projects-carousel-track-container');
 	if (projectsContainer) {
 		projectsContainer.addEventListener('mouseenter', stopAutoplay);
 		projectsContainer.addEventListener('mouseleave', () => startAutoplay());
 	}
 
-	
+
 	startAutoplay();
 
 	track.addEventListener('transitionend', onTransitionEnd);
 
-	
+
 	let resizeTimer;
 	window.addEventListener('resize', () => {
 		clearTimeout(resizeTimer);
@@ -249,7 +249,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}, 120);
 	});
 
-	
+
 	window.addEventListener('load', () => { setTimeout(buildLoop, 80); });
 	buildLoop();
 
@@ -301,10 +301,10 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const { slideWidth, gap } = calcSizes();
 		const move = (slideWidth + gap) * current;
 		track.style.transform = `translateX(-${move}px)`;
-		
+
 		const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
 		dots.forEach((d, i) => d.classList.toggle('active', i === current));
-		
+
 		slides.forEach(s => s.classList.remove('active'));
 		const centerOffset = Math.floor(visibleCount / 2);
 		const centerIndex = Math.min(slides.length - 1, current + centerOffset);
@@ -331,7 +331,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		autoplayTimer = setInterval(next, 6000);
 	}
 
-	
+
 	calcSizes();
 	buildDots();
 	update();
@@ -351,7 +351,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	let isWaitingForResponse = false;
 	let lastMessageTime = 0;
-	const RATE_LIMIT_MS = 3000; 
+	const RATE_LIMIT_MS = 3000;
 
 	function openPopup() {
 		popup.classList.add('open');
@@ -367,7 +367,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	openBtn.addEventListener('click', openPopup);
 	closeBtn && closeBtn.addEventListener('click', closePopup);
 
-	
+
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
 			closePopup();
@@ -377,7 +377,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function appendMessage(text, who = 'user') {
 		const msg = document.createElement('div');
 		msg.className = 'message ' + (who === 'user' ? 'user' : 'bot');
-		
+
 		msg.textContent = text;
 		messagesEl.appendChild(msg);
 		messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -405,7 +405,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	async function callChatAPI(message) {
 		try {
-			const response = await fetch('/api/chat', {
+			const response = await fetch('/api/ai-chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message })
@@ -428,7 +428,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const val = input.value && input.value.trim();
 		if (!val) return;
 
-		
+
 		const now = Date.now();
 		if (now - lastMessageTime < RATE_LIMIT_MS) {
 			appendMessage("Please wait a moment before sending another message.", 'bot');
@@ -437,19 +437,19 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		if (isWaitingForResponse) return;
 
-		
+
 		appendMessage(val, 'user');
 		input.value = '';
 		lastMessageTime = Date.now();
 		isWaitingForResponse = true;
 
-		
+
 		showTypingIndicator();
 
-		
+
 		const reply = await callChatAPI(val);
 
-		
+
 		removeTypingIndicator();
 		appendMessage(reply, 'bot');
 		isWaitingForResponse = false;
@@ -460,7 +460,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 (function () {
 	const openBtn = document.getElementById('openMessengerBtn');
 	if (!openBtn) return;
-	
+
 	openBtn.classList.add('attention');
 	setTimeout(() => openBtn.classList.remove('attention'), 7000);
 })();
