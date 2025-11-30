@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import chatHandler from './api/chat.js';
+import chatHandler from '../api/chat.js';
 
 const app = express();
 const port = 3001; // Run API on port 3001
