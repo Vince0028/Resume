@@ -5,6 +5,9 @@ require('dotenv').config();
 
 const PORT = 8080;
 const API_KEY = process.env.GEMINI_API_KEY;
+const GROQ_KEY = process.env.GROQ_API_KEY;
+const GROQ_URL = process.env.GROQ_API_URL;
+const GROQ_ENDPOINT = GROQ_URL || 'https://api.groq.ai/v1';
 
 const MIMES = {
     '.html': 'text/html',
@@ -24,9 +27,9 @@ const server = http.createServer(async (req, res) => {
 
     
     if (req.url === '/api/chat' && req.method === 'POST') {
-        if (!API_KEY) {
+        if (!API_KEY && !(GROQ_KEY && GROQ_URL)) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'API Key not configured' }));
+            res.end(JSON.stringify({ error: 'API Key not configured for any provider' }));
             return;
         }
 
@@ -49,25 +52,48 @@ const server = http.createServer(async (req, res) => {
         - Contact: alobinvince@gmail.com, 09480914634.
         `;
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            role: "user",
-                            parts: [{ text: systemPrompt + "\n\nUser Question: " + message }]
-                        }]
-                    })
-                });
+                let reply = "I couldn't generate a response.";
 
-                const data = await response.json();
+                if (GROQ_KEY) {
+                    try {
+                        const groqResp = await fetch(GROQ_ENDPOINT, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${GROQ_KEY}`
+                            },
+                            body: JSON.stringify({ model: 'groq-1', input: systemPrompt + "\n\nUser: " + message })
+                        });
 
-                if (data.error) {
-                    console.error('Gemini API Error:', data.error);
-                    throw new Error(data.error.message);
+                        const groqData = await groqResp.json();
+                        reply = groqData.reply || groqData.output?.[0]?.content || groqData.output?.text || groqData.output || groqData.result || (groqData.choices && groqData.choices[0] && (groqData.choices[0].message?.content || groqData.choices[0].text)) || reply;
+                    } catch (err) {
+                        console.error('GROQ API error:', err);
+                    }
                 }
 
-                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response.";
+                // If reply still default and Gemini is configured, try Gemini as fallback
+                if ((reply === "I couldn't generate a response.") && API_KEY) {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                role: "user",
+                                parts: [{ text: systemPrompt + "\n\nUser Question: " + message }]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        console.error('Gemini API Error:', data.error);
+                        throw new Error(data.error.message);
+                    }
+
+                    reply = data.candidates?.[0]?.content?.parts?.[0]?.text || reply;
+                }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ reply }));

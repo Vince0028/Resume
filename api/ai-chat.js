@@ -26,28 +26,10 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // Get API key from environment
-        const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-
-        if (!apiKey) {
-            console.error('GEMINI_API_KEY not found in environment variables');
-            return res.status(500).json({
-                error: 'API key not configured',
-                reply: "Sorry, I'm having trouble connecting right now. Please try again later."
-            });
-        }
-
-        // Validate API key format (should start with AIza)
-        if (!apiKey.startsWith('AIza')) {
-            console.error('Invalid API key format. Gemini API keys should start with "AIza"');
-            return res.status(500).json({
-                error: 'Invalid API key format',
-                reply: "Sorry, the API key is not configured correctly. Please contact the administrator."
-            });
-        }
-
-        // Initialize Gemini AI
-        const genAI = new GoogleGenerativeAI(apiKey);
+        // Determine provider configuration (GROQ preferred if configured)
+        const groqKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
+        const groqUrl = process.env.GROQ_API_URL || process.env.VITE_GROQ_API_URL;
+        const groqEndpoint = groqUrl || 'https://api.groq.ai/v1';
 
         // System prompt to define the AI's personality
         const systemPrompt = `You are Vince Alobin's AI assistant on his portfolio website. 
@@ -85,6 +67,45 @@ Projects:
 8. VeriFace - Automated attendance system using facial recognition
 
 Keep responses concise, friendly, and informative. If asked about topics not related to Vince or his work, politely redirect the conversation back to his portfolio.`;
+
+        // If GROQ key is present, proxy the message to the GROQ API endpoint
+        if (groqKey) {
+            try {
+                const groqResp = await fetch(groqEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${groqKey}`
+                    },
+                    // Send a generic payload: most GROQ-like endpoints accept a model and input
+                    body: JSON.stringify({ model: 'groq-1', input: systemPrompt + "\n\nUser: " + message })
+                });
+
+                const groqData = await groqResp.json();
+
+                // Try a few common response shapes from different providers
+                const reply = groqData.reply || groqData.output?.[0]?.content || groqData.output?.text || groqData.output || groqData.result || (groqData.choices && groqData.choices[0] && (groqData.choices[0].message?.content || groqData.choices[0].text)) || (typeof groqData === 'string' ? groqData : JSON.stringify(groqData));
+
+                return res.status(200).json({ reply });
+            } catch (err) {
+                console.error('GROQ provider error:', err);
+                // fall through to try Gemini if available
+            }
+        }
+
+        // Fallback: use Google Generative AI (Gemini) if configured
+        const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+
+        if (!apiKey) {
+            console.error('No AI provider configured (GROQ or GEMINI API key missing)');
+            return res.status(500).json({
+                error: 'API key not configured',
+                reply: "Sorry, I'm having trouble connecting right now. Please try again later."
+            });
+        }
+
+        // Initialize Gemini AI
+        const genAI = new GoogleGenerativeAI(apiKey);
 
         // Create chat with system prompt - using gemini-pro which is most stable
         const model = genAI.getGenerativeModel({
