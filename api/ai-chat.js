@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default async function handler(req, res) {
     // CORS headers
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         }
 
         // Initialize Gemini AI
-        const ai = new GoogleGenAI({ apiKey });
+        const genAI = new GoogleGenerativeAI(apiKey);
 
         // System prompt to define the AI's personality
         const systemPrompt = `You are Vince Alobin's AI assistant on his portfolio website. 
@@ -78,7 +78,8 @@ Projects:
 Keep responses concise, friendly, and informative. If asked about topics not related to Vince or his work, politely redirect the conversation back to his portfolio.`;
 
         // Create chat with system prompt
-        const chat = ai.models.get('gemini-2.0-flash-exp').startChat({
+        const model = genAI.getGenerativeModel({
+            model: 'gemini-2.0-flash-exp',
             systemInstruction: systemPrompt,
             generationConfig: {
                 maxOutputTokens: 500,
@@ -87,8 +88,8 @@ Keep responses concise, friendly, and informative. If asked about topics not rel
         });
 
         // Send message and get response
-        const result = await chat.sendMessage(message);
-        const reply = result.text();
+        const result = await model.generateContent(message);
+        const reply = result.response.text();
 
         return res.status(200).json({ reply });
 
