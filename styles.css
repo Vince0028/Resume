@@ -594,6 +594,8 @@ body.light-mode .github-calendar-wrapper:hover {
 
 .messenger-cta {
   display: flex;
+  gap: 0.75rem;
+  align-items: center;
   justify-content: center;
 }
 
@@ -3100,5 +3102,24 @@ body.light-mode .cert-content {
 
   .projects-carousel-btn {
     display: none;
+  }
+}
+
+.messenger-cta .messenger-btn {
+  flex: 1 1 0;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 991px) {
+  .messenger-cta {
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: stretch;
+  }
+
+  .messenger-cta .messenger-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
