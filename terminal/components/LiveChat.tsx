@@ -19,10 +19,12 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [tempUsername, setTempUsername] = useState('');
     const [tempPassword, setTempPassword] = useState('');
+    const [authPending, setAuthPending] = useState(false);
     const [usernameError, setUsernameError] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const usernameRef = useRef<HTMLInputElement>(null);
     const messageRef = useRef<HTMLInputElement>(null);
+    const pendingQueueRef = useRef<string[]>([]);
 
     // Polling for messages
     useEffect(() => {
@@ -44,8 +46,8 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             // Initial fetch
             fetchMessages();
 
-            // Poll every 3 seconds
-            const interval = setInterval(fetchMessages, 3000);
+            // Poll every 1 second for snappier updates
+            const interval = setInterval(fetchMessages, 1000);
 
             return () => clearInterval(interval);
         }
@@ -84,24 +86,46 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
+        // Optimistically enter the chat so the UI feels instant.
+        const chosen = tempUsername.trim();
+        setUsername(chosen);
+        setTempPassword('');
+        setTempUsername('');
+        setAuthPending(true);
+
         try {
             const res = await fetch('/api/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: tempUsername.trim(), password: tempPassword }),
+                body: JSON.stringify({ username: chosen, password: tempPassword }),
             });
 
             const body = await res.json();
             if (res.ok && body.success) {
-                setUsername(tempUsername.trim());
-                setTempPassword('');
-                setTempUsername('');
+                // Flush any queued messages that were typed while auth was pending.
+                const queued = pendingQueueRef.current.splice(0);
+                for (const content of queued) {
+                    try {
+                        await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username: chosen, content }),
+                        });
+                    } catch (err) {
+                        console.error('Failed to flush queued message:', err);
+                    }
+                }
             } else {
+                // Revert optimistic join on failure
+                setUsername('');
                 setUsernameError(body.error || 'Authentication failed');
             }
         } catch (error) {
             console.error('Error authenticating:', error);
+            setUsername('');
             setUsernameError('Connection error. Please try again.');
+        } finally {
+            setAuthPending(false);
         }
     };
 
@@ -114,6 +138,17 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
 
         if (content.toLowerCase() === '/exit' || content.toLowerCase() === '/quit') {
             onExit();
+            return;
+        }
+
+        // Optimistic UI: add message locally immediately
+        const now = new Date().toISOString();
+        const tempMsg: Message = { id: `temp-${Date.now()}`, username, content, created_at: now };
+        setMessages((L) => [...L, tempMsg]);
+
+        // If auth is still pending, queue the message to be flushed after auth
+        if (authPending) {
+            pendingQueueRef.current.push(content);
             return;
         }
 
@@ -215,7 +250,6 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                     autoFocus
                     placeholder="Type a message... (/exit to leave)"
                 />
-                <button type="submit" className="bg-indigo-600 text-white px-3 py-1 rounded">Join / Send</button>
             </form>
         </div>
     );
