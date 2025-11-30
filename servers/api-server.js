@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import chatHandler from '../api/chat.js';
+import authHandler from '../api/auth.js';
 
 const app = express();
 const port = 3001; // Run API on port 3001
@@ -14,6 +15,10 @@ app.all('/api/chat', async (req, res) => {
     // Add helper methods that Vercel provides but Express might not have exactly the same
     // But our handler uses standard res.status().json() which Express supports
     await chatHandler(req, res);
+});
+
+app.all('/api/auth', async (req, res) => {
+    await authHandler(req, res);
 });
 
 app.listen(port, () => {

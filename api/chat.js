@@ -75,6 +75,18 @@ export default async function handler(req, res) {
             const now = new Date().toISOString();
 
             if (supabase) {
+                // If Supabase is configured, require the username to be a registered chat user.
+                const { data: userRows, error: userError } = await supabase
+                    .from('chat_users')
+                    .select('id')
+                    .eq('username', username)
+                    .limit(1);
+
+                if (userError) throw userError;
+                if (!userRows || userRows.length === 0) {
+                    return res.status(401).json({ error: 'Unknown user. Please register/login first.' });
+                }
+
                 const { data, error } = await supabase
                     .from('messages')
                     .insert([{ username, content, created_at: now }])

@@ -18,6 +18,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isConnected, setIsConnected] = useState(false);
     const [tempUsername, setTempUsername] = useState('');
+    const [tempPassword, setTempPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -66,28 +67,34 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
+        if (!tempPassword.trim()) {
+            setUsernameError('Password cannot be empty');
+            return;
+        }
+
+        if (tempPassword.length < 6) {
+            setUsernameError('Password must be at least 6 characters');
+            return;
+        }
+
         try {
-            const res = await fetch('/api/chat', {
-                method: 'PUT',
+            const res = await fetch('/api/auth', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: tempUsername.trim() }),
+                body: JSON.stringify({ username: tempUsername.trim(), password: tempPassword }),
             });
 
-            if (res.ok) {
-                const { isTaken } = await res.json();
-                if (isTaken) {
-                    setUsernameError(`Code name "${tempUsername.trim()}" is already in use. Choose another.`);
-                    setTempUsername('');
-                    return;
-                }
+            const body = await res.json();
+            if (res.ok && body.success) {
                 setUsername(tempUsername.trim());
+                setTempPassword('');
+                setTempUsername('');
             } else {
-                // Fallback if API fails
-                setUsername(tempUsername.trim());
+                setUsernameError(body.error || 'Authentication failed');
             }
         } catch (error) {
-            console.error('Error validating username:', error);
-            setUsername(tempUsername.trim());
+            console.error('Error authenticating:', error);
+            setUsernameError('Connection error. Please try again.');
         }
     };
 
@@ -141,8 +148,8 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                         ⚠ {usernameError}
                     </div>
                 )}
-                <form onSubmit={handleUsernameSubmit} className="flex items-center">
-                    <span className={`${THEME_COLOR} mr-2`}>Enter Code Name:</span>
+                <form onSubmit={handleUsernameSubmit} className="flex items-center space-x-2">
+                    <span className={`${THEME_COLOR} mr-2`}>Code Name:</span>
                     <input
                         ref={inputRef}
                         type="text"
@@ -150,6 +157,14 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                         onChange={(e) => setTempUsername(e.target.value)}
                         className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 flex-1`}
                         autoFocus
+                        placeholder="choose a code name"
+                    />
+                    <input
+                        type="password"
+                        value={tempPassword}
+                        onChange={(e) => setTempPassword(e.target.value)}
+                        className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-44`}
+                        placeholder="password (min 6)"
                     />
                 </form>
             </div>
