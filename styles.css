@@ -594,6 +594,7 @@ body.light-mode .github-calendar-wrapper:hover {
 
 .messenger-cta {
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
   align-items: center;
   justify-content: center;
