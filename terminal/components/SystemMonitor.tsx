@@ -4,11 +4,11 @@ import { THEME_BORDER, THEME_COLOR, THEME_BG } from '../constants';
 import Flicker from './Flicker';
 
 const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { label: string, data: any[], color: string, error?: boolean, redMask?: number[], redHistory?: number[] }) => {
-  // Augment data with red overlay values
+  
   const chartData = data.map((d, i) => {
     const point: any = { ...d };
 
-    // Add history red values
+    
     if (redHistory && redHistory.length === data.length) {
       const maxHist = Math.max(0, ...redHistory);
       for (let level = 1; level <= maxHist; level++) {
@@ -16,7 +16,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
       }
     }
 
-    // Add current red mask values
+    
     if (redMask && redMask.length === data.length) {
       const maxLife = Math.max(0, ...redMask);
       for (let level = 1; level <= maxLife; level++) {
@@ -47,7 +47,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <YAxis domain={[0, 100]} hide />
-            {/* Base (blue) line */}
+            {}
             <Line
               type="linear"
               dataKey="value"
@@ -58,7 +58,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
               strokeLinecap="square"
               strokeLinejoin="miter"
             />
-            {/* Draw faded history first (older, lower opacity) */}
+            {}
             {Array.from({ length: maxHist }, (_, i) => i + 1).map(level => {
               const opacity = (level / (maxHist + 3)) * 0.45;
               return (
@@ -77,7 +77,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
                 />
               );
             })}
-            {/* Draw current strong red mask on top */}
+            {}
             {Array.from({ length: maxLife }, (_, i) => i + 1).map(level => {
               const opacity = 0.6 + (level / (maxLife + 1)) * 0.4;
               return (
@@ -115,21 +115,21 @@ const SystemMonitor: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Update CPU values and mask
+      
       setCpuData(prev => {
         const prevValue = prev[prev.length - 1].value;
         let newValue;
 
         const rand = Math.random();
         if (rand < 0.1) {
-          // 10% chance: keep same value (creates flat horizontal step)
+          
           newValue = prevValue;
         } else if (rand < 0.6) {
-          // 50% chance: sharp spike (dramatic change)
-          newValue = Math.floor(Math.random() * 70) + 5; // 5-75%
+          
+          newValue = Math.floor(Math.random() * 70) + 5; 
         } else {
-          // 40% chance: moderate change
-          const change = Math.floor(Math.random() * 30) - 15; // -15 to +15
+          
+          const change = Math.floor(Math.random() * 30) - 15; 
           newValue = Math.max(5, Math.min(75, prevValue + change));
         }
 
@@ -137,17 +137,17 @@ const SystemMonitor: React.FC = () => {
         return next;
       });
       setCpuMask(prev => {
-        // shift left, decrement life, push 0 at end
+        
         const shifted = prev.slice(1).map(v => Math.max(v - 1, 0));
         shifted.push(0);
-        // small chance to trigger a transient cpu error visual
+        
         let cpuEvent = false;
         let cpuLen = 0;
         let cpuLife = 0;
         if (Math.random() < 0.08) {
           cpuEvent = true;
-          cpuLen = Math.floor(Math.random() * 4) + 2; // 2..5 points width
-          cpuLife = Math.floor(Math.random() * 3) + 2; // 2..4 life levels
+          cpuLen = Math.floor(Math.random() * 4) + 2; 
+          cpuLife = Math.floor(Math.random() * 3) + 2; 
           for (let i = 0; i < cpuLen; i++) {
             const idx = shifted.length - 1 - i;
             if (idx >= 0) shifted[idx] = cpuLife;
@@ -157,19 +157,19 @@ const SystemMonitor: React.FC = () => {
         return shifted;
       });
 
-      // Update history separately - it just shifts left, no decay
+      
       setCpuHistory(prevHist => {
-        const s = prevHist.slice(1); // shift left
+        const s = prevHist.slice(1); 
         s.push(0);
-        // If there's a new CPU event, add it to history
+        
         setCpuMask(currentMask => {
           const hasNewEvent = currentMask[currentMask.length - 1] > 0;
           if (hasNewEvent) {
-            // Mark this position as having a red event (use a constant high value)
+            
             for (let i = 0; i < 5; i++) {
               const idx = s.length - 1 - i;
               if (idx >= 0 && currentMask[currentMask.length - 1 - i] > 0) {
-                s[idx] = 10; // constant value, won't decay
+                s[idx] = 10; 
               }
             }
           }
@@ -178,21 +178,21 @@ const SystemMonitor: React.FC = () => {
         return s;
       });
 
-      // Update MEM values and mask
+      
       setMemData(prev => {
         const prevValue = prev[prev.length - 1].value;
         let newValue;
 
         const rand = Math.random();
         if (rand < 0.1) {
-          // 10% chance: keep same value (creates flat horizontal step)
+          
           newValue = prevValue;
         } else if (rand < 0.55) {
-          // 45% chance: sharp spike (dramatic change)
-          newValue = Math.floor(Math.random() * 50) + 20; // 20-70%
+          
+          newValue = Math.floor(Math.random() * 50) + 20; 
         } else {
-          // 45% chance: moderate change
-          const change = Math.floor(Math.random() * 25) - 12; // -12 to +12
+          
+          const change = Math.floor(Math.random() * 25) - 12; 
           newValue = Math.max(20, Math.min(70, prevValue + change));
         }
 
@@ -202,14 +202,14 @@ const SystemMonitor: React.FC = () => {
       setMemMask(prev => {
         const shifted = prev.slice(1).map(v => Math.max(v - 1, 0));
         shifted.push(0);
-        // small chance to trigger a transient memory error visual
+        
         let memEvent = false;
         let memLen = 0;
         let memLife = 0;
         if (Math.random() < 0.06) {
           memEvent = true;
-          memLen = Math.floor(Math.random() * 4) + 2; // 2..5 points width
-          memLife = Math.floor(Math.random() * 3) + 2; // 2..4 life levels
+          memLen = Math.floor(Math.random() * 4) + 2; 
+          memLife = Math.floor(Math.random() * 3) + 2; 
           for (let i = 0; i < memLen; i++) {
             const idx = shifted.length - 1 - i;
             if (idx >= 0) shifted[idx] = memLife;
@@ -219,19 +219,19 @@ const SystemMonitor: React.FC = () => {
         return shifted;
       });
 
-      // Update history separately - it just shifts left, no decay
+      
       setMemHistory(prevHist => {
-        const s = prevHist.slice(1); // shift left
+        const s = prevHist.slice(1); 
         s.push(0);
-        // If there's a new MEM event, add it to history
+        
         setMemMask(currentMask => {
           const hasNewEvent = currentMask[currentMask.length - 1] > 0;
           if (hasNewEvent) {
-            // Mark this position as having a red event (use a constant high value)
+            
             for (let i = 0; i < 5; i++) {
               const idx = s.length - 1 - i;
               if (idx >= 0 && currentMask[currentMask.length - 1 - i] > 0) {
-                s[idx] = 10; // constant value, won't decay
+                s[idx] = 10; 
               }
             }
           }

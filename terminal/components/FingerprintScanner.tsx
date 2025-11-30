@@ -33,7 +33,7 @@ const FingerprintScanner: React.FC<FingerprintScannerProps> = ({ onScanComplete,
                         onScanComplete();
                         return 100;
                     }
-                    return prev + 1; // Adjust speed here
+                    return prev + 1; 
                 });
                 requestRef.current = requestAnimationFrame(animate);
             };
@@ -60,7 +60,7 @@ const FingerprintScanner: React.FC<FingerprintScannerProps> = ({ onScanComplete,
             onTouchStart={startScan}
             onTouchEnd={stopScan}
         >
-            {/* Fingerprint SVG */}
+            {}
             <svg
                 viewBox="0 0 100 100"
                 className={`w-full h-full fill-current transition-colors duration-500 ${isComplete
@@ -74,7 +74,7 @@ const FingerprintScanner: React.FC<FingerprintScannerProps> = ({ onScanComplete,
                 <path d="M50,90 C30,90 15,75 15,55 C15,52 18,52 18,55 C18,72 32,84 50,84 C68,84 82,72 82,55 C82,52 85,52 85,55 C85,75 70,90 50,90 Z" />
             </svg>
 
-            {/* Scanning Beam */}
+            {}
             {scanning && !isComplete && (
                 <div
                     className="absolute left-0 w-full h-1 bg-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.8)] animate-scan"
@@ -85,7 +85,7 @@ const FingerprintScanner: React.FC<FingerprintScannerProps> = ({ onScanComplete,
                 />
             )}
 
-            {/* Progress Ring or Indicator */}
+            {}
             <div className="absolute -bottom-8 left-0 w-full text-center">
                 <div className={`h-1 w-full rounded overflow-hidden ${isComplete ? 'bg-green-900/30' : 'bg-indigo-900/30'}`}>
                     <div

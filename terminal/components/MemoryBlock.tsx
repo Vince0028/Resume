@@ -16,13 +16,13 @@ const MemoryBlock: React.FC = () => {
     );
 
     useEffect(() => {
-        // Randomly initialize some blocks
+        
         setBlocks(prev => prev.map(() => ({
             active: Math.random() > 0.5,
             warning: false
         })));
 
-        // Regular activity updates
+        
         const activityInterval = setInterval(() => {
             setBlocks(prev => prev.map(block => ({
                 ...block,
@@ -30,11 +30,11 @@ const MemoryBlock: React.FC = () => {
             })));
         }, 100);
 
-        // Random warning states
+        
         const warningInterval = setInterval(() => {
             setBlocks(prev => {
                 const newBlocks = [...prev];
-                // Randomly select 1-6 blocks to turn red
+                
                 const numWarnings = Math.floor(Math.random() * 6) + 1;
 
                 for (let i = 0; i < numWarnings; i++) {
@@ -42,7 +42,7 @@ const MemoryBlock: React.FC = () => {
                     if (newBlocks[randomIndex].active && !newBlocks[randomIndex].warning) {
                         newBlocks[randomIndex] = { ...newBlocks[randomIndex], warning: true };
 
-                        // Clear warning after 2-4 seconds
+                        
                         const duration = Math.random() * 2000 + 2000;
                         setTimeout(() => {
                             setBlocks(current => {

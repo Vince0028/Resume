@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+
 set -euo pipefail
 
 
@@ -6,7 +6,7 @@ set -euo pipefail
 echo "Building terminal (Vite)..."
 if [ -d "terminal" ]; then
   cd terminal
-  # install dependencies and build
+  
   if [ -f package-lock.json ]; then
     npm ci
   else
@@ -23,7 +23,7 @@ rm -rf public
 mkdir -p public
 
 echo "Copying resume root files..."
-# Copy common static files; add anything else your index.html references
+
 cp -f index.html public/ || true
 cp -f styles.css public/ || true
 cp -f script.js public/ || true

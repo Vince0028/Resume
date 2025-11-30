@@ -1,5 +1,5 @@
-# Simple PowerShell health check for local API
-# Usage: .\scripts\check_api.ps1 -Url http://localhost:3001/api/chat
+
+
 param(
     [string]$Url = 'http://localhost:3001/api/chat'
 )

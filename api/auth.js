@@ -11,7 +11,7 @@ if (supabaseUrl && supabaseKey) {
     console.warn('Supabase not configured — using in-memory user store for local testing.');
 }
 
-// Simple in-memory user store for local testing: { username: passwordHash }
+
 const inMemoryUsers = new Map();
 
 function hashPassword(password, salt = null) {
@@ -35,7 +35,7 @@ function verifyPassword(password, stored) {
 }
 
 export default async function handler(req, res) {
-    // Minimal CORS headers
+    
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: 'Missing username or password' });
             }
 
-            // Very light-weight auth: if user exists, verify password; otherwise create user.
+            
             if (supabase) {
                 const { data: rows, error: selectError } = await supabase
                     .from('chat_users')
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ success: true, isNewUser: false });
                 }
 
-                // Create new user
+                
                 const password_hash = hashPassword(password);
                 const { data: insertData, error: insertError } = await supabase
                     .from('chat_users')
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
                 if (insertError) throw insertError;
                 return res.status(200).json({ success: true, isNewUser: true });
             } else {
-                // In-memory fallback
+                
                 if (inMemoryUsers.has(username)) {
                     const stored = inMemoryUsers.get(username);
                     if (!verifyPassword(password, stored)) {

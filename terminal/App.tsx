@@ -71,7 +71,7 @@ const App: React.FC = () => {
   const [networkLevel, setNetworkLevel] = useState(60);
   const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake' | 'chat'>('none');
 
-  // Verification State
+  
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
 
   const handleScanComplete = () => {
@@ -172,7 +172,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Easter Egg List Command
+    
     if (lowerCmd === 'please master') {
       const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nTry them all!\n`;
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: easterEggList, timestamp: Date.now() }]);
@@ -248,28 +248,28 @@ const App: React.FC = () => {
       return;
     }
 
-    // Easter Egg!
+    
     if (lowerCmd === 'is vince gay' || lowerCmd === 'is vince gay?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "No, Vince isn't... but Rick is", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    // Easter Egg #2!
+    
     if (lowerCmd === 'is vince handsome' || lowerCmd === 'is vince handsome?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Most definitely", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    // Easter Egg #3!
+    
     if (lowerCmd === 'is vince ugly' || lowerCmd === 'is vince ugly?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Definitely not", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    // More Vince Easter Eggs!
+    
     if (lowerCmd === 'is vince smart' || lowerCmd === 'is vince smart?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Smart enough to build this terminal. You decide.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -390,7 +390,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Friendly Greetings
+    
     if (lowerCmd === 'hello' || lowerCmd === 'hi' || lowerCmd === 'hey') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hello! Welcome to BENBEN OS. Type 'help' to see available commands.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -492,7 +492,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Pop Culture References
+    
     if (lowerCmd === 'sudo make me a sandwich') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Okay. *makes you a sandwich*", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -523,7 +523,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // More Interactive Responses
+    
     if (lowerCmd === 'thank you' || lowerCmd === 'thanks') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "You're welcome! Happy to help.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -586,7 +586,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Friendly Greetings
+    
     if (lowerCmd === 'hello' || lowerCmd === 'hi' || lowerCmd === 'hey') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hello! Welcome to BENBEN OS. Type 'help' to see available commands.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -605,7 +605,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // General Knowledge & Fun Facts
+    
     if (lowerCmd === 'what is the meaning of life' || lowerCmd === 'what is the meaning of life?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "42. Obviously.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -688,7 +688,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Pop Culture References
+    
     if (lowerCmd === 'sudo make me a sandwich') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Okay. *makes you a sandwich*", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -719,7 +719,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // More Interactive Responses
+    
     if (lowerCmd === 'thank you' || lowerCmd === 'thanks') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "You're welcome! Happy to help.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -842,7 +842,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // Random sarcastic responses for unrecognized commands
+    
     const sarcasticResponses = [
       "Type better.",
       "Wrong answer.",
@@ -923,7 +923,7 @@ const App: React.FC = () => {
         return;
       }
       try {
-        // Most files are in the parent directory
+        
         const fetchPath = filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
           ? '/' + filename
           : '../' + filename;
@@ -1031,7 +1031,7 @@ const App: React.FC = () => {
                     <div ref={terminalEndRef} />
                   </div>
 
-                  {/* Arch Linux Logo Watermark */}
+                  {}
                   <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
                     {`                   -\`
                   .o+\`
@@ -1090,12 +1090,12 @@ const App: React.FC = () => {
 
       {privacyOpen && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm overflow-hidden">
-          {/* Background Matrix Rain */}
+          {}
           <div className="absolute inset-0 z-0 opacity-30">
             <MatrixRain />
           </div>
 
-          {/* ASCII Art Background */}
+          {}
           <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-12 opacity-40 text-indigo-500 font-mono text-xs md:text-xl leading-none whitespace-pre select-none origin-center">
             <div className="hidden md:block">
               {`__      __  ___   _   _    ___   _____ 

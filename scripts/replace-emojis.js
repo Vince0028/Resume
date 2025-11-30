@@ -2,7 +2,7 @@ const fs = require('fs');
 
 let content = fs.readFileSync('index.html', 'utf8');
 
-// Replace emojis with Bootstrap Icons
+
 const replacements = {
     '🏆': '<i class="bi bi-trophy-fill"></i>',
     '💻': '<i class="bi bi-terminal-fill"></i>',

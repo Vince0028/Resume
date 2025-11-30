@@ -11,9 +11,9 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
     const [nodes, setNodes] = useState(0);
 
     useEffect(() => {
-        // Update network metrics based on networkLevel
+        
         const interval = setInterval(() => {
-            // Higher network level = more packets, lower latency
+            
             setPackets(Math.floor(networkLevel * 100 + Math.random() * 500));
             setLatency(Math.floor((100 - networkLevel) * 0.8 + Math.random() * 20));
             setNodes(Math.floor(networkLevel * 2 + Math.random() * 50));
@@ -34,16 +34,16 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
         const centerX = width / 2;
         const centerY = height / 2;
 
-        // Random starting rotation for variety
+        
         let rotation = Math.random() * Math.PI * 2;
 
         const octahedronVertices = [
-            [0, 1.8, 0],    // top (scaled 1.8x - bigger shape!)
-            [1.8, 0, 0],    // right
-            [0, 0, 1.8],    // front
-            [-1.8, 0, 0],   // left
-            [0, 0, -1.8],   // back
-            [0, -1.8, 0]    // bottom
+            [0, 1.8, 0],    
+            [1.8, 0, 0],    
+            [0, 0, 1.8],    
+            [-1.8, 0, 0],   
+            [0, 0, -1.8],   
+            [0, -1.8, 0]    
         ];
 
         const edges = [
@@ -73,7 +73,7 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
         };
 
         const project = (point: number[]): [number, number] => {
-            const scale = 65; // Bigger projection
+            const scale = 65; 
             const distance = 3;
             const z = point[2] + distance;
             const factor = scale / z;
@@ -88,14 +88,14 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
 
             rotation += 0.01;
 
-            // Rotate vertices
+            
             const rotated = octahedronVertices.map(v => {
                 let p = rotateY(v, rotation);
                 p = rotateX(p, rotation * 0.7);
                 return p;
             });
 
-            // Draw edges with glow effect
+            
             ctx.shadowBlur = 8;
             ctx.shadowColor = '#6366f1';
             ctx.strokeStyle = '#6366f1';
@@ -111,7 +111,7 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
             });
             ctx.shadowBlur = 0;
 
-            // Draw vertices with glow
+            
             rotated.forEach((point, i) => {
                 const [x, y] = project(point);
                 ctx.beginPath();
@@ -126,13 +126,13 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
             });
             ctx.shadowBlur = 0;
 
-            // Draw schematic lines and network status data
+            
             ctx.strokeStyle = '#4f46e5';
             ctx.fillStyle = '#a5b4fc';
-            ctx.font = '9px monospace'; // Even smaller text
+            ctx.font = '9px monospace'; 
             ctx.lineWidth = 1;
 
-            // Network status annotations - very compact
+            
             const annotations = [
                 { x: 8, y: 18, text: `PKT/s: ${packets}`, line: true },
                 { x: width - 75, y: 18, text: `LAT: ${latency}ms`, line: true },
@@ -151,43 +151,43 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
                     ctx.setLineDash([]);
                 }
 
-                // Draw very small text background
+                
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
                 const textWidth = ctx.measureText(ann.text).width;
                 ctx.fillRect(ann.x - 1, ann.y - 9, textWidth + 2, 11);
 
-                // Draw text
+                
                 ctx.fillStyle = '#a5b4fc';
                 ctx.fillText(ann.text, ann.x, ann.y);
             });
 
-            // Draw smaller corner brackets
+            
             const bracketSize = 12;
             ctx.strokeStyle = '#4338ca';
             ctx.lineWidth = 1.5;
 
-            // Top-left
+            
             ctx.beginPath();
             ctx.moveTo(6, 6 + bracketSize);
             ctx.lineTo(6, 6);
             ctx.lineTo(6 + bracketSize, 6);
             ctx.stroke();
 
-            // Top-right
+            
             ctx.beginPath();
             ctx.moveTo(width - 6 - bracketSize, 6);
             ctx.lineTo(width - 6, 6);
             ctx.lineTo(width - 6, 6 + bracketSize);
             ctx.stroke();
 
-            // Bottom-left
+            
             ctx.beginPath();
             ctx.moveTo(6, height - 6 - bracketSize);
             ctx.lineTo(6, height - 6);
             ctx.lineTo(6 + bracketSize, height - 6);
             ctx.stroke();
 
-            // Bottom-right
+            
             ctx.beginPath();
             ctx.moveTo(width - 6 - bracketSize, height - 6);
             ctx.lineTo(width - 6, height - 6);

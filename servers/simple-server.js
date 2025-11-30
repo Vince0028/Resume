@@ -22,7 +22,7 @@ const MIMES = {
 const server = http.createServer(async (req, res) => {
     console.log(`${req.method} ${req.url}`);
 
-    // Handle API Chat
+    
     if (req.url === '/api/chat' && req.method === 'POST') {
         if (!API_KEY) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -36,7 +36,7 @@ const server = http.createServer(async (req, res) => {
             try {
                 const { message } = JSON.parse(body);
 
-                // System prompt to guide the AI
+                
                 const systemPrompt = `You are an AI assistant for Vince Nelmar Alobin's portfolio website. 
         Your role is to answer questions about Vince based on his resume and portfolio content. 
         Be professional, friendly, and concise. 
@@ -80,11 +80,11 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Serve Static Files
+    
     let filePath = '.' + req.url;
     if (filePath === './') filePath = './index.html';
 
-    // Handle query parameters by stripping them for file lookup
+    
     const queryIndex = filePath.indexOf('?');
     if (queryIndex !== -1) {
         filePath = filePath.substring(0, queryIndex);

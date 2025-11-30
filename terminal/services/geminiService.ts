@@ -68,7 +68,7 @@ IMPORTANT: Review your response and ensure no errors
 `;
 
 export const initializeChat = async () => {
-  // Check both process.env and import.meta.env for flexibility
+  
   const apiKey = process.env.API_KEY || (import.meta.env && import.meta.env.VITE_GEMINI_API_KEY);
 
   if (!apiKey) {

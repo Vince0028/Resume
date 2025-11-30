@@ -12,16 +12,16 @@ const ClockPanel: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Random glitch effect - happens every 10-30 seconds
+    
     const scheduleGlitch = () => {
-      const delay = Math.random() * 20000 + 10000; // 10-30 seconds
+      const delay = Math.random() * 20000 + 10000; 
       setTimeout(() => {
         setIsGlitching(true);
-        // Glitch lasts for 200-500ms
+        
         const glitchDuration = Math.random() * 300 + 200;
         setTimeout(() => {
           setIsGlitching(false);
-          scheduleGlitch(); // Schedule next glitch
+          scheduleGlitch(); 
         }, glitchDuration);
       }, delay);
     };

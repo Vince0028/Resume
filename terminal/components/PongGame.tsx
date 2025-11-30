@@ -11,7 +11,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
     const [trashTalk, setTrashTalk] = useState<string | null>(null);
     const requestRef = useRef<number>();
 
-    // Game State
+    
     const gameState = useRef({
         ball: { x: 50, y: 50, dx: 0, dy: 0, size: 10 },
         paddleLeft: { y: 40, height: 80, width: 10, score: 0 },
@@ -78,7 +78,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Handle Resize
+        
         const handleResize = () => {
             const parent = canvas.parentElement;
             if (parent) {
@@ -89,11 +89,11 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
 
                 gameState.current.board = { width: newWidth, height: newHeight };
 
-                // Clamp Ball
+                
                 gameState.current.ball.x = Math.min(Math.max(0, gameState.current.ball.x), newWidth - gameState.current.ball.size);
                 gameState.current.ball.y = Math.min(Math.max(0, gameState.current.ball.y), newHeight - gameState.current.ball.size);
 
-                // Clamp Paddles
+                
                 gameState.current.paddleLeft.y = Math.min(Math.max(0, gameState.current.paddleLeft.y), newHeight - gameState.current.paddleLeft.height);
                 gameState.current.paddleRight.y = Math.min(Math.max(0, gameState.current.paddleRight.y), newHeight - gameState.current.paddleRight.height);
             }
@@ -102,7 +102,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('resize', handleResize);
         handleResize();
 
-        // Input Handling
+        
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') gameState.current.keys.up = true;
             if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') gameState.current.keys.down = true;
@@ -117,59 +117,59 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
 
-        // Game Loop
+        
         const update = () => {
             const state = gameState.current;
             const { width, height } = state.board;
 
-            // Move Player Paddle
+            
             if (state.keys.up) state.paddleLeft.y = Math.max(0, state.paddleLeft.y - 6);
             if (state.keys.down) state.paddleLeft.y = Math.min(height - state.paddleLeft.height, state.paddleLeft.y + 6);
 
-            // Move AI Paddle (Simple tracking)
+            
             const aiCenter = state.paddleRight.y + state.paddleRight.height / 2;
             if (aiCenter < state.ball.y - 10) state.paddleRight.y += 4.5;
             if (aiCenter > state.ball.y + 10) state.paddleRight.y -= 4.5;
             state.paddleRight.y = Math.max(0, Math.min(height - state.paddleRight.height, state.paddleRight.y));
 
-            // Move Ball
+            
             state.ball.x += state.ball.dx;
             state.ball.y += state.ball.dy;
 
-            // Ball Collision (Top/Bottom)
+            
             if (state.ball.y <= 0 || state.ball.y + state.ball.size >= height) {
                 state.ball.dy *= -1;
             }
 
-            // Ball Collision (Paddles)
-            // Left Paddle
+            
+            
             if (
                 state.ball.x <= state.paddleLeft.width &&
                 state.ball.y + state.ball.size >= state.paddleLeft.y &&
                 state.ball.y <= state.paddleLeft.y + state.paddleLeft.height
             ) {
-                state.ball.dx = Math.abs(state.ball.dx) + 0.1; // Reduced acceleration
+                state.ball.dx = Math.abs(state.ball.dx) + 0.1; 
                 state.ball.x = state.paddleLeft.width;
             }
 
-            // Right Paddle
+            
             if (
                 state.ball.x + state.ball.size >= width - state.paddleRight.width &&
                 state.ball.y + state.ball.size >= state.paddleRight.y &&
                 state.ball.y <= state.paddleRight.y + state.paddleRight.height
             ) {
-                state.ball.dx = -Math.abs(state.ball.dx) - 0.1; // Reduced acceleration
+                state.ball.dx = -Math.abs(state.ball.dx) - 0.1; 
                 state.ball.x = width - state.paddleRight.width - state.ball.size;
             }
 
-            // Scoring
+            
             if (state.ball.x < 0) {
-                // AI Scored
+                
                 setScores(prev => ({ ...prev, ai: prev.ai + 1 }));
                 setTrashTalk(TRASH_TALK_MESSAGES[Math.floor(Math.random() * TRASH_TALK_MESSAGES.length)]);
                 resetBall(state);
             } else if (state.ball.x > width) {
-                // Player Scored
+                
                 setScores(prev => ({ ...prev, player: prev.player + 1 }));
                 resetBall(state);
             }
@@ -185,7 +185,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             state.ball.dy = 0;
 
             setTimeout(() => {
-                // Slower speed (2.5 instead of 3)
+                
                 state.ball.dx = (Math.random() > 0.5 ? 2.5 : -2.5);
                 state.ball.dy = (Math.random() > 0.5 ? 2.5 : -2.5);
             }, 1000);
@@ -196,21 +196,21 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             const { width, height } = canvas;
             const state = gameState.current;
 
-            // Clear
+            
             ctx.clearRect(0, 0, width, height);
 
-            // Set Style
-            ctx.fillStyle = '#6366f1'; // Indigo-500
+            
+            ctx.fillStyle = '#6366f1'; 
             ctx.strokeStyle = '#6366f1';
 
-            // Draw Paddles
+            
             ctx.fillRect(0, state.paddleLeft.y, state.paddleLeft.width, state.paddleLeft.height);
             ctx.fillRect(width - state.paddleRight.width, state.paddleRight.y, state.paddleRight.width, state.paddleRight.height);
 
-            // Draw Ball
+            
             ctx.fillRect(state.ball.x, state.ball.y, state.ball.size, state.ball.size);
 
-            // Draw Center Line
+            
             ctx.beginPath();
             ctx.setLineDash([10, 10]);
             ctx.moveTo(width / 2, 0);
@@ -218,7 +218,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             ctx.stroke();
         };
 
-        // Start Game
+        
         resetBall(gameState.current);
         requestRef.current = requestAnimationFrame(update);
 
@@ -232,7 +232,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
 
     return (
         <div className="w-full h-full flex flex-row bg-black/50 relative overflow-hidden">
-            {/* Game Area */}
+            {}
             <div className="flex-1 h-full relative">
                 <div className="absolute top-4 w-full flex justify-center gap-12 text-2xl font-bold font-mono text-indigo-500 z-10 pointer-events-none">
                     <div>PLAYER: {scores.player}</div>

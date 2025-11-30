@@ -3,18 +3,18 @@ import React, { useState, useEffect } from 'react';
 type FlickerProps = {
     children: React.ReactNode;
     className?: string;
-    // chance (0-1) that an "error" will occur during a flicker cycle
+    
     errorChance?: number;
-    // label to show when error occurs
+    
     errorLabel?: string;
-    // whether this flicker should attempt to show error replacement of numeric stats
+    
     replaceWithError?: boolean;
 };
 
 const Flicker: React.FC<FlickerProps> = ({
     children,
     className = '',
-    errorChance = 0, // disabled by default; enable only when explicitly needed
+    errorChance = 0, 
     errorLabel = 'error',
     replaceWithError = false
 }) => {
@@ -28,12 +28,12 @@ const Flicker: React.FC<FlickerProps> = ({
         const runFlickerSequence = () => {
             if (!mounted) return;
 
-            // More frequent: flicker count 1-4 times
+            
             const flickerCount = Math.floor(Math.random() * 4) + 1;
             let toggles = 0;
             const totalToggles = flickerCount * 2;
 
-            // Decide if this sequence will include an error
+            
             const willError = Math.random() < errorChance;
 
             const toggle = () => {
@@ -41,9 +41,9 @@ const Flicker: React.FC<FlickerProps> = ({
 
                 if (toggles >= totalToggles) {
                     setOpacity(1);
-                    // If we set an error state, clear it after a brief moment
+                    
                     if (willError && isError) {
-                        // leave error for a short random time then clear
+                        
                         timeout = setTimeout(() => { if (mounted) setIsError(false); }, Math.random() * 1000 + 300);
                     }
                     scheduleNext();
@@ -54,9 +54,9 @@ const Flicker: React.FC<FlickerProps> = ({
                 setOpacity(newOpacity);
                 toggles++;
 
-                // Random duration for this state (20ms to 120ms)
+                
                 const duration = Math.random() * 100 + 20;
-                // On the first down toggle, if this sequence will error, activate error
+                
                 if (willError && toggles === 1) {
                     setIsError(true);
                 }
@@ -69,12 +69,12 @@ const Flicker: React.FC<FlickerProps> = ({
 
         const scheduleNext = () => {
             if (!mounted) return;
-            // More frequent overall: delay 300ms to 2500ms
+            
             const delay = Math.random() * 2200 + 300;
             timeout = setTimeout(runFlickerSequence, delay);
         };
 
-        // Initial start with small random delay
+        
         timeout = setTimeout(scheduleNext, Math.random() * 800);
 
         return () => {
@@ -83,13 +83,13 @@ const Flicker: React.FC<FlickerProps> = ({
         };
     }, [errorChance, isError]);
 
-    // Helper to render children or an "error" replacement when active
+    
     const renderContent = () => {
         if (isError && replaceWithError) {
             return <span style={{ color: 'var(--red, #f87171)' }}>{errorLabel}</span>;
         }
 
-        // If not replacing with error, we still tint the text when error state active
+        
         if (isError) {
             return <span style={{ color: 'var(--red, #f87171)' }}>{children}</span>;
         }

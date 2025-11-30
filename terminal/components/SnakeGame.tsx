@@ -10,15 +10,15 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
     const [gameOver, setGameOver] = useState(false);
     const requestRef = useRef<number>();
 
-    // Game Constants
+    
     const GRID_SIZE = 20;
-    const SPEED = 100; // ms per frame
+    const SPEED = 100; 
 
-    // Game State
+    
     const gameState = useRef({
         snake: [{ x: 10, y: 10 }],
         food: { x: 15, y: 15 },
-        direction: { x: 1, y: 0 }, // Moving right initially
+        direction: { x: 1, y: 0 }, 
         nextDirection: { x: 1, y: 0 },
         gridWidth: 0,
         gridHeight: 0,
@@ -32,18 +32,18 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Handle Resize
+        
         const handleResize = () => {
             const parent = canvas.parentElement;
             if (parent) {
                 canvas.width = parent.clientWidth;
                 canvas.height = parent.clientHeight;
 
-                // Calculate grid dimensions
+                
                 gameState.current.gridWidth = Math.floor(canvas.width / GRID_SIZE);
                 gameState.current.gridHeight = Math.floor(canvas.height / GRID_SIZE);
 
-                // Ensure food is within bounds after resize
+                
                 const { food, gridWidth, gridHeight } = gameState.current;
                 if (food.x >= gridWidth) food.x = gridWidth - 1;
                 if (food.y >= gridHeight) food.y = gridHeight - 1;
@@ -53,7 +53,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
         window.addEventListener('resize', handleResize);
         handleResize();
 
-        // Input Handling
+        
         const handleKeyDown = (e: KeyboardEvent) => {
             if (gameOver) {
                 if (e.key === 'Enter' || e.key === ' ') restartGame();
@@ -120,13 +120,13 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             spawnFood();
         };
 
-        // Initialize food
+        
         spawnFood();
 
-        // Game Loop
+        
         const update = (time: number) => {
             if (gameOver) {
-                draw(); // Keep drawing game over state
+                draw(); 
                 requestRef.current = requestAnimationFrame(update);
                 return;
             }
@@ -134,15 +134,15 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             if (time - gameState.current.lastUpdate > SPEED) {
                 const state = gameState.current;
 
-                // Update direction
+                
                 state.direction = state.nextDirection;
 
-                // Move Snake
+                
                 const head = { ...state.snake[0] };
                 head.x += state.direction.x;
                 head.y += state.direction.y;
 
-                // Check Wall Collision
+                
                 if (
                     head.x < 0 ||
                     head.x >= state.gridWidth ||
@@ -153,20 +153,20 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                     return;
                 }
 
-                // Check Self Collision
+                
                 if (state.snake.some(segment => segment.x === head.x && segment.y === head.y)) {
                     setGameOver(true);
                     return;
                 }
 
-                // Move Head
+                
                 state.snake.unshift(head);
 
-                // Check Food Collision
+                
                 if (head.x === state.food.x && head.y === state.food.y) {
                     setScore(prev => prev + 10);
                     spawnFood();
-                    // Don't pop tail, so snake grows
+                    
                 } else {
                     state.snake.pop();
                 }
@@ -183,30 +183,17 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             const { width, height } = canvas;
             const state = gameState.current;
 
-            // Clear
+            
             ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
             ctx.fillRect(0, 0, width, height);
 
-            // Draw Grid (Optional, subtle)
-            ctx.strokeStyle = '#1e1b4b'; // Very dark indigo
+            
+            ctx.strokeStyle = '#1e1b4b'; 
             ctx.lineWidth = 1;
-            /*
-            for (let x = 0; x <= width; x += GRID_SIZE) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, height);
-                ctx.stroke();
-            }
-            for (let y = 0; y <= height; y += GRID_SIZE) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.stroke();
-            }
-            */
+            
 
-            // Draw Food
-            ctx.fillStyle = '#ef4444'; // Red-500
+            
+            ctx.fillStyle = '#ef4444'; 
             ctx.shadowColor = '#ef4444';
             ctx.shadowBlur = 10;
             ctx.fillRect(
@@ -217,16 +204,16 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             );
             ctx.shadowBlur = 0;
 
-            // Draw Snake
-            ctx.fillStyle = '#6366f1'; // Indigo-500
+            
+            ctx.fillStyle = '#6366f1'; 
             state.snake.forEach((segment, index) => {
-                // Head is slightly brighter or different
+                
                 if (index === 0) {
-                    ctx.fillStyle = '#818cf8'; // Indigo-400
+                    ctx.fillStyle = '#818cf8'; 
                     ctx.shadowColor = '#6366f1';
                     ctx.shadowBlur = 10;
                 } else {
-                    ctx.fillStyle = '#6366f1'; // Indigo-500
+                    ctx.fillStyle = '#6366f1'; 
                     ctx.shadowBlur = 0;
                 }
 
@@ -250,12 +237,12 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
 
     return (
         <div className="w-full h-full flex flex-col relative overflow-hidden bg-black/50">
-            {/* HUD */}
+            {}
             <div className="absolute top-4 w-full flex justify-center gap-12 text-2xl font-bold font-mono text-indigo-500 z-10 pointer-events-none">
                 <div>SCORE: {score}</div>
             </div>
 
-            {/* Game Over Screen */}
+            {}
             {gameOver && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 backdrop-blur-sm">
                     <h2 className="text-4xl font-bold text-red-500 mb-4 font-mono animate-pulse">GAME OVER</h2>

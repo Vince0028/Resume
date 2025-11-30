@@ -98,16 +98,16 @@ body.light-mode .btn-hero-outline {
   z-index: 1000;
 }
 
-/* Hide the native scrollbar for the sidebar but keep scrolling functional */
+
 .sidebar {
   -ms-overflow-style: none;
-  /* IE and Edge */
+  
   scrollbar-width: none;
-  /* Firefox */
+  
 }
 
 .sidebar::-webkit-scrollbar {
-  /* WebKit browsers */
+  
   width: 0;
   height: 0;
   display: none;
@@ -591,7 +591,7 @@ body.light-mode .github-calendar-wrapper:hover {
   }
 }
 
-/* Messenger styles */
+
 .messenger-cta {
   display: flex;
   justify-content: center;
@@ -796,7 +796,7 @@ body.light-mode .github-calendar-wrapper:hover {
   }
 }
 
-/* Typing Indicator */
+
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -1102,7 +1102,7 @@ body.light-mode .github-calendar-wrapper:hover {
   z-index: 1;
 }
 
-/* Make sure the GitHub contributions section clears any preceding floats/overlays */
+
 #github-contributions {
   clear: both;
   padding-top: 2rem;
@@ -1284,7 +1284,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   line-height: 1.6;
 }
 
-/* Education carousel styled as tile cards (full-bleed background + centered logo) */
+
 .education-carousel {
   display: block;
   margin-top: 0.75rem;
@@ -1292,7 +1292,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
 
 .education-track-container {
   overflow: hidden;
-  /* ensure cards stay inside the rounded container */
+  
   border-radius: 14px;
   padding: 1rem 0.5rem;
 }
@@ -1305,7 +1305,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   padding: 0 10px;
   align-items: stretch;
   justify-content: center;
-  /* center the three cards */
+  
 }
 
 .edu-slide {
@@ -1316,10 +1316,10 @@ body.light-mode .expertise-icon img.project-logo:hover {
   justify-content: flex-end;
   padding: 0;
   flex: 0 0 calc((100% - 44px) / 3);
-  /* 3 cards across, account for gaps */
+  
   max-width: calc((100% - 44px) / 3);
   height: 520px;
-  /* increased height so content fits */
+  
   background: linear-gradient(180deg, rgba(10, 12, 25, 0.22), rgba(10, 12, 25, 0.28));
   border-radius: 14px;
   overflow: hidden;
@@ -1363,7 +1363,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   background: rgba(255, 255, 255, 0.06);
   padding: 8px;
   position: absolute;
-  /* move logo to top center */
+  
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
@@ -1380,7 +1380,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   text-align: center;
   color: #ffffff;
   padding-top: 48px;
-  /* ensure content doesn't overlap the logo area on very small cards */
+  
 }
 
 .edu-year {
@@ -1428,7 +1428,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
 
 .edu-controls .edu-btn {
   display: none;
-  /* hide arrow buttons */
+  
 }
 
 .edu-btn:active {
@@ -1848,7 +1848,7 @@ footer {
     }
   }
 
-  /* Mobile layout adjustments: keep sidebar Expertise hidden */
+  
   .right-sidebar {
     display: flex !important;
     flex-direction: column;
@@ -1867,7 +1867,7 @@ footer {
     margin-top: 1.25rem;
   }
 
-  /* Styling when Skill Set is moved into main content */
+  
   #rightSkillSet.as-main-section {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -2608,7 +2608,7 @@ body.light-mode .cert-thumb-wrap {
   cursor: default;
 }
 
-/* optional scrollbar styling */
+
 .cert-image-frame.scroll-enabled::-webkit-scrollbar {
   width: 12px;
 }
@@ -2921,7 +2921,7 @@ body.light-mode .cert-content {
   animation: scan 1.5s linear infinite;
 }
 
-/* Projects Carousel Styles */
+
 .projects-carousel-container {
   position: relative;
   width: 100%;
@@ -3018,7 +3018,7 @@ body.light-mode .cert-content {
 .projects-carousel-btn.next-btn {
   right: 0;
   z-index: 200;
-  /* ensure it's above any masked/overlay elements */
+  
 }
 
 .projects-carousel-btn:disabled {

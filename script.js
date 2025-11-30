@@ -65,7 +65,7 @@ if (certImg && imgFrame) {
 }
 let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = localStorage.getItem('theme'); const isLightMode = savedTheme === 'light'; const initialBgColor = isLightMode ? 0xf8fafc : 0x0a0e27; document.addEventListener('DOMContentLoaded', function () { if (window.VANTA && window.VANTA.NET) { vantaNetEffect = VANTA.NET({ el: "#vanta-bg", mouseControls: true, touchControls: true, gyroControls: false, minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00, color: 0x6366f1, backgroundColor: initialBgColor, points: 10, maxDistance: 20, spacing: 15, showDots: true }); } if (window.VANTA && window.VANTA.RINGS) { vantaRingsEffect = VANTA.RINGS({ el: "#hero-vanta-bg", mouseControls: true, touchControls: true, gyroControls: false, minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00, color: 0x6366f1, backgroundColor: initialBgColor, backgroundAlpha: 1 }); } }); const skills = [{ name: 'JavaScript', src: 'Images/javascript.png' }, { name: 'Python', src: 'Images/python.png' }, { name: 'HTML', src: 'Images/html.png' }, { name: 'Java', src: 'Images/java.png' }, { name: 'SQL', src: 'Images/sql.png' }, { name: 'CSS', src: 'Images/css.png' }]; console.log('Skills array loaded', skills.length); function populateRightCarousel(elementId, skillsArray) { const carousel = document.getElementById(elementId); if (!carousel) { console.error('Carousel element not found:', elementId); return; } const multiplied = []; for (let i = 0; i < 6; i++) { multiplied.push(...skillsArray); } console.log('Populating carousel', elementId, 'with', multiplied.length, 'items'); multiplied.forEach(skill => { const card = document.createElement('div'); card.className = 'skill-card-right'; const img = document.createElement('img'); img.src = skill.src; img.alt = skill.name; img.className = 'skill-icon-right'; img.onload = function () { console.log('Loaded:', skill.name); }; img.onerror = function () { console.error('Failed to load image:', skill.src); }; const nameDiv = document.createElement('div'); nameDiv.className = 'skill-name-right'; nameDiv.textContent = skill.name; card.appendChild(img); card.appendChild(nameDiv); carousel.appendChild(card); }); console.log('Total cards in', elementId, ':', carousel.children.length); } populateRightCarousel('carouselRight1', skills); populateRightCarousel('carouselRight2', skills); const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; const currentDateElement = document.getElementById('currentDate'); if (currentDateElement) { currentDateElement.textContent = new Date().toLocaleDateString('en-US', options); } const themeToggle = document.getElementById('themeToggle'); const body = document.body; if (isLightMode) { body.classList.add('light-mode'); themeToggle.innerHTML = '<i class="bi bi-moon-stars-fill"></i><span>Dark Mode</span>'; } themeToggle.addEventListener('click', () => { body.classList.toggle('light-mode'); if (body.classList.contains('light-mode')) { themeToggle.innerHTML = '<i class="bi bi-moon-stars-fill"></i><span>Dark Mode</span>'; localStorage.setItem('theme', 'light'); if (vantaNetEffect) { vantaNetEffect.setOptions({ color: 0x6366f1, backgroundColor: 0xf8fafc }); } if (vantaRingsEffect) { vantaRingsEffect.setOptions({ color: 0x6366f1, backgroundColor: 0xf8fafc }); } } else { themeToggle.innerHTML = '<i class="bi bi-sun-fill"></i><span>Light Mode</span>'; localStorage.setItem('theme', 'dark'); if (vantaNetEffect) { vantaNetEffect.setOptions({ color: 0x6366f1, backgroundColor: 0x0a0e27 }); } if (vantaRingsEffect) { vantaRingsEffect.setOptions({ color: 0x6366f1, backgroundColor: 0x0a0e27 }); } } }); const mobileToggle = document.getElementById('mobileToggle'); const sidebar = document.getElementById('sidebar'); mobileToggle.addEventListener('click', () => { sidebar.classList.toggle('active'); if (sidebar.classList.contains('active')) { document.body.style.overflow = 'hidden'; document.body.classList.add('sidebar-open'); } else { document.body.style.overflow = ''; document.body.classList.remove('sidebar-open'); } }); const navLinks = document.querySelectorAll('.nav-item-custom'); navLinks.forEach(link => { link.addEventListener('click', () => { if (window.innerWidth <= 991) { sidebar.classList.remove('active'); document.body.style.overflow = ''; document.body.classList.remove('sidebar-open'); } }); }); document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); }); document.querySelectorAll('.expertise-header').forEach(header => { header.addEventListener('click', function () { const dropdown = this.parentElement; const wasOpen = dropdown.classList.contains('open'); document.querySelectorAll('.expertise-dropdown').forEach(d => { d.classList.remove('open'); }); if (!wasOpen) { dropdown.classList.add('open'); } }); }); const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }; const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } }); }, observerOptions); document.querySelectorAll('.fade-in').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(el); }); const mobileObserverOptions = { threshold: 0.1, rootMargin: '0px' }; const mobileObserver = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting && window.innerWidth <= 991) { entry.target.classList.add('mobile-visible'); console.log('Right sidebar visible on mobile'); mobileObserver.unobserve(entry.target); } }); }, mobileObserverOptions); const rightSidebar = document.querySelector('.right-sidebar'); if (rightSidebar) { console.log('Right sidebar found, observing...'); mobileObserver.observe(rightSidebar); setTimeout(() => { if (window.innerWidth <= 991 && !rightSidebar.classList.contains('mobile-visible')) { console.log('Fallback trigger for mobile sidebar'); rightSidebar.classList.add('mobile-visible'); } }, 1000); } const projectObserver = new IntersectionObserver((entries) => { entries.forEach((entry, index) => { if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('project-visible'); }, index * 150); projectObserver.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' }); document.querySelectorAll('.expertise-item').forEach(item => { projectObserver.observe(item); });
 
-// Projects Carousel Logic (infinite loop via cloning)
+
 
 (function () {
 	const track = document.getElementById('projectsTrack');
@@ -73,41 +73,41 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	const nextBtn = document.getElementById('projectsNextBtn');
 	if (!track || !prevBtn || !nextBtn) return;
 
-	// store original slides (to rebuild on resize)
+	
 	const originalSlides = Array.from(track.children).map(n => n.cloneNode(true));
 	let slides = [];
-	let visibleCount = 1; // slides visible on screen
-	let bufferSize = 1;   // number of clones on each side
-	let currentIndex = 0; // index into `slides`
+	let visibleCount = 1; 
+	let bufferSize = 1;   
+	let currentIndex = 0; 
 
 	function buildLoop() {
-		// clear track
+		
 		track.innerHTML = '';
-		// measure using a temporary clone appended to body to get widths if necessary
+		
 		const container = document.querySelector('.projects-carousel-track-container');
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
 
 		
 		if (!originalSlides.length) return;
 
-		// append originals temporarily to measure slide width
+		
 		const temp = originalSlides[0].cloneNode(true);
 		temp.style.visibility = 'hidden';
 		temp.style.position = 'absolute';
-		// Ensure it's not scaled for measurement, or use offsetWidth
+		
 		document.body.appendChild(temp);
-		const slideWidth = temp.offsetWidth; // Use offsetWidth for unscaled width
+		const slideWidth = temp.offsetWidth; 
 		document.body.removeChild(temp);
 
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
 		visibleCount = Math.max(1, Math.floor(containerWidth / (slideWidth + gap)));
 
-		// Create a larger buffer to prevent running out of slides during rapid navigation
-		// Use at least visibleCount * 3 or a minimum safe number
+		
+		
 		bufferSize = Math.max(visibleCount * 3, 5);
 
-		// clones: prepend last `bufferSize`, then originals, then first `bufferSize`
-		// Note: we need to handle the case where bufferSize > originalSlides.length by repeating
+		
+		
 		const prefix = [];
 		for (let i = 0; i < bufferSize; i++) {
 			prefix.unshift(originalSlides[originalSlides.length - 1 - (i % originalSlides.length)].cloneNode(true));
@@ -126,12 +126,12 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		slides = Array.from(track.children);
 
-		// start at the first original (after prefix)
+		
 		currentIndex = bufferSize;
-		// jump to position without transition
+		
 		track.style.transition = 'none';
 		updateCarousel();
-		// allow transition for subsequent moves
+		
 		requestAnimationFrame(() => { track.style.transition = ''; });
 	}
 
@@ -139,17 +139,17 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		if (!slides.length) return;
 		const container = document.querySelector('.projects-carousel-track-container');
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
-		const slideWidth = slides[0].offsetWidth; // Use offsetWidth
+		const slideWidth = slides[0].offsetWidth; 
 		const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
 
-		// Calculate translate so that the center visible slide is centered in the container
-		// We use visibleCount (screen capacity) for centering logic
+		
+		
 		const centerOffset = Math.floor(visibleCount / 2);
 		const centerIndex = currentIndex + centerOffset;
 		const translateForCenter = (slideWidth + gap) * centerIndex - (containerWidth - slideWidth) / 2;
 		track.style.transform = `translateX(-${translateForCenter}px)`;
 
-		// highlight center active slide (directly target the visible slide)
+		
 		slides.forEach(s => s.classList.remove('active'));
 		if (slides[centerIndex]) {
 			slides[centerIndex].classList.add('active');
@@ -157,18 +157,18 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	}
 
 	function onTransitionEnd() {
-		// if we've moved into suffix clones, jump back to the matching original
+		
 		if (currentIndex >= slides.length - bufferSize) {
 			track.style.transition = 'none';
-			// Force reflow
+			
 			void track.offsetWidth;
-			// Preserve the offset into the suffix
-			// We moved N steps into suffix. Suffix starts at bufferSize + originalLen.
-			// currentIndex = bufferSize + originalLen + k.
-			// We want to go to bufferSize + k.
-			// So subtract originalLen.
+			
+			
+			
+			
+			
 			currentIndex -= originalSlides.length;
-			// Ensure we wrap correctly if buffer is huge
+			
 			while (currentIndex >= slides.length - bufferSize) {
 				currentIndex -= originalSlides.length;
 			}
@@ -176,14 +176,14 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			updateCarousel();
 			requestAnimationFrame(() => { track.style.transition = ''; });
 		}
-		// if we've moved into prefix clones at the start, jump to the matching original at the end
+		
 		if (currentIndex < bufferSize) {
 			track.style.transition = 'none';
-			// Force reflow
+			
 			void track.offsetWidth;
-			// Preserve the offset into the prefix
+			
 			currentIndex += originalSlides.length;
-			// Ensure we wrap correctly
+			
 			while (currentIndex < bufferSize) {
 				currentIndex += originalSlides.length;
 			}
@@ -193,8 +193,8 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}
 	}
 
-	// autoplay controls
-	const AUTOPLAY_INTERVAL = 3000; // 3 seconds
+	
+	const AUTOPLAY_INTERVAL = 3000; 
 	let autoplayTimer = null;
 
 	function startAutoplay() {
@@ -217,7 +217,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		if (!slides.length) return;
 		currentIndex++;
 		updateCarousel();
-		// reset autoplay so user interaction delays next auto move
+		
 		startAutoplay();
 	});
 
@@ -228,19 +228,19 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		startAutoplay();
 	});
 
-	// pause autoplay while the user hovers the carousel container
+	
 	const projectsContainer = document.querySelector('.projects-carousel-track-container');
 	if (projectsContainer) {
 		projectsContainer.addEventListener('mouseenter', stopAutoplay);
 		projectsContainer.addEventListener('mouseleave', () => startAutoplay());
 	}
 
-	// start autoplay after initial build
+	
 	startAutoplay();
 
 	track.addEventListener('transitionend', onTransitionEnd);
 
-	// rebuild on resize to recalculate visibleCount and clones
+	
 	let resizeTimer;
 	window.addEventListener('resize', () => {
 		clearTimeout(resizeTimer);
@@ -249,13 +249,13 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}, 120);
 	});
 
-	// initial build
+	
 	window.addEventListener('load', () => { setTimeout(buildLoop, 80); });
 	buildLoop();
 
 })();
 
-// Education carousel initialization
+
 (function () {
 	const track = document.getElementById('educationTrack');
 	const prevBtn = document.getElementById('eduPrevBtn');
@@ -301,10 +301,10 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const { slideWidth, gap } = calcSizes();
 		const move = (slideWidth + gap) * current;
 		track.style.transform = `translateX(-${move}px)`;
-		// update dots
+		
 		const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
 		dots.forEach((d, i) => d.classList.toggle('active', i === current));
-		// mark center active slide similar to projects carousel
+		
 		slides.forEach(s => s.classList.remove('active'));
 		const centerOffset = Math.floor(visibleCount / 2);
 		const centerIndex = Math.min(slides.length - 1, current + centerOffset);
@@ -331,14 +331,14 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		autoplayTimer = setInterval(next, 6000);
 	}
 
-	// initial build
+	
 	calcSizes();
 	buildDots();
 	update();
 	resetAutoplay();
 })();
 
-// Messenger UI
+
 (function () {
 	const openBtn = document.getElementById('openMessengerBtn');
 	const closeBtn = document.getElementById('closeMessengerBtn');
@@ -351,7 +351,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	let isWaitingForResponse = false;
 	let lastMessageTime = 0;
-	const RATE_LIMIT_MS = 3000; // 3 seconds cooldown
+	const RATE_LIMIT_MS = 3000; 
 
 	function openPopup() {
 		popup.classList.add('open');
@@ -367,7 +367,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	openBtn.addEventListener('click', openPopup);
 	closeBtn && closeBtn.addEventListener('click', closePopup);
 
-	// close on escape
+	
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
 			closePopup();
@@ -377,7 +377,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function appendMessage(text, who = 'user') {
 		const msg = document.createElement('div');
 		msg.className = 'message ' + (who === 'user' ? 'user' : 'bot');
-		// Simple text content to prevent XSS, but allow basic formatting if needed later
+		
 		msg.textContent = text;
 		messagesEl.appendChild(msg);
 		messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -428,7 +428,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const val = input.value && input.value.trim();
 		if (!val) return;
 
-		// Rate Limiting
+		
 		const now = Date.now();
 		if (now - lastMessageTime < RATE_LIMIT_MS) {
 			appendMessage("Please wait a moment before sending another message.", 'bot');
@@ -437,30 +437,30 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		if (isWaitingForResponse) return;
 
-		// Send User Message
+		
 		appendMessage(val, 'user');
 		input.value = '';
 		lastMessageTime = Date.now();
 		isWaitingForResponse = true;
 
-		// Show Typing Indicator
+		
 		showTypingIndicator();
 
-		// Call API
+		
 		const reply = await callChatAPI(val);
 
-		// Remove Indicator and Show Reply
+		
 		removeTypingIndicator();
 		appendMessage(reply, 'bot');
 		isWaitingForResponse = false;
 	});
 })();
 
-// Add attention pulse on load so the CTA is noticeable
+
 (function () {
 	const openBtn = document.getElementById('openMessengerBtn');
 	if (!openBtn) return;
-	// add attention class briefly to draw user's eye
+	
 	openBtn.classList.add('attention');
 	setTimeout(() => openBtn.classList.remove('attention'), 7000);
 })();

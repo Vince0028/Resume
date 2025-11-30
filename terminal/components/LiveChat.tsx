@@ -26,7 +26,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     const messageRef = useRef<HTMLInputElement>(null);
     const pendingQueueRef = useRef<string[]>([]);
 
-    // Polling for messages
+    
     useEffect(() => {
         if (username) {
             const fetchMessages = async () => {
@@ -43,10 +43,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                 }
             };
 
-            // Initial fetch
+            
             fetchMessages();
 
-            // Poll every 1 second for snappier updates
+            
             const interval = setInterval(fetchMessages, 1000);
 
             return () => clearInterval(interval);
@@ -59,10 +59,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
 
     useEffect(() => {
         if (username) {
-            // focus the message input when logged in
+            
             messageRef.current?.focus();
         } else {
-            // focus the username input when not logged in
+            
             usernameRef.current?.focus();
         }
     }, [username]);
@@ -86,7 +86,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
-        // Optimistically enter the chat so the UI feels instant.
+        
         const chosen = tempUsername.trim();
         setUsername(chosen);
         setTempPassword('');
@@ -102,7 +102,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
 
             const body = await res.json();
             if (res.ok && body.success) {
-                // Flush any queued messages that were typed while auth was pending.
+                
                 const queued = pendingQueueRef.current.splice(0);
                 for (const content of queued) {
                     try {
@@ -116,7 +116,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                     }
                 }
             } else {
-                // Revert optimistic join on failure
+                
                 setUsername('');
                 setUsernameError(body.error || 'Authentication failed');
             }
@@ -141,12 +141,12 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
-        // Optimistic UI: add message locally immediately
+        
         const now = new Date().toISOString();
         const tempMsg: Message = { id: `temp-${Date.now()}`, username, content, created_at: now };
         setMessages((L) => [...L, tempMsg]);
 
-        // If auth is still pending, queue the message to be flushed after auth
+        
         if (authPending) {
             pendingQueueRef.current.push(content);
             return;
