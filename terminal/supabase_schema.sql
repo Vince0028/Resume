@@ -1,4 +1,4 @@
--- Run this in your Supabase SQL Editor (https://supabase.com/dashboard/project/_/sql)
+
 
 -- 1. Create the messages table
 CREATE TABLE public.messages (
@@ -8,7 +8,7 @@ CREATE TABLE public.messages (
     content TEXT NOT NULL
 );
 
--- 2. Enable Row Level Security (RLS)
+
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 
 -- 3. Create a policy to allow anyone (anonymous) to read and write messages

@@ -1095,7 +1095,7 @@ body.light-mode .github-calendar-wrapper:hover {
   padding: 2rem;
 }
 
-/* Ensure certificates area leaves enough space below when expanded/previewed */
+
 .section#certificates .section-card {
   margin-bottom: 4rem;
   position: relative;

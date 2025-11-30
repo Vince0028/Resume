@@ -87,7 +87,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const container = document.querySelector('.projects-carousel-track-container');
 		const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
 
-		// ensure we have at least one original slide
+		
 		if (!originalSlides.length) return;
 
 		// append originals temporarily to measure slide width

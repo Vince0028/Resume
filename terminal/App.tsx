@@ -409,7 +409,7 @@ const App: React.FC = () => {
       return;
     }
 
-    // General Knowledge & Fun Facts
+  
     if (lowerCmd === 'what is the meaning of life' || lowerCmd === 'what is the meaning of life?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "42. Obviously.", timestamp: Date.now() }]);
       setIsProcessing(false);

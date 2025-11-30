@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build the terminal app (Vite) and prepare a unified public/ folder
+
 
 echo "Building terminal (Vite)..."
 if [ -d "terminal" ]; then
