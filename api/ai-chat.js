@@ -79,12 +79,8 @@ Keep responses concise, friendly, and informative. If asked about topics not rel
 
         // Create chat with system prompt
         const model = genAI.getGenerativeModel({
-            model: 'gemini-2.0-flash-exp',
+            model: 'gemini-1.5-flash',
             systemInstruction: systemPrompt,
-            generationConfig: {
-                maxOutputTokens: 500,
-                temperature: 0.7,
-            }
         });
 
         // Send message and get response
@@ -95,6 +91,11 @@ Keep responses concise, friendly, and informative. If asked about topics not rel
 
     } catch (error) {
         console.error('AI Chat API Error:', error);
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
         return res.status(500).json({
             error: error.message,
             reply: "Sorry, I'm having trouble connecting right now. Please try again later."
