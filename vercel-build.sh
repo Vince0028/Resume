@@ -15,7 +15,7 @@ if [ -d "terminal" ]; then
   npm run build
   cd ..
 else
-  echo "No terminal folder found — skipping terminal build"
+  echo "No terminal folder found â€” skipping terminal build"
 fi
 
 echo "Preparing public folder..."
