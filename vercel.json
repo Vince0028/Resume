@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "bash config/vercel-build.sh",
+  "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "public",
   "rewrites": [
     {
