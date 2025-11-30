@@ -26,7 +26,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
     const messageRef = useRef<HTMLInputElement>(null);
     const pendingQueueRef = useRef<string[]>([]);
 
-    
+
+    const [activeField, setActiveField] = useState<'username' | 'password' | 'message'>('username');
+
+
     useEffect(() => {
         if (username) {
             const fetchMessages = async () => {
@@ -43,10 +46,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                 }
             };
 
-            
+
             fetchMessages();
 
-            
+
             const interval = setInterval(fetchMessages, 1000);
 
             return () => clearInterval(interval);
@@ -59,13 +62,53 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
 
     useEffect(() => {
         if (username) {
-            
+
             messageRef.current?.focus();
+            setActiveField('message');
         } else {
-            
+
             usernameRef.current?.focus();
+            setActiveField('username');
         }
     }, [username]);
+
+
+    useEffect(() => {
+        const handleVirtualKey = (e: any) => {
+            const key = e.detail?.key;
+            if (!key) return;
+
+            if (key === 'Enter') {
+                if (activeField === 'message') {
+
+                    const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
+                    handleMessageSubmit(fakeEvent);
+                } else {
+
+                    const fakeEvent = { preventDefault: () => { } } as React.FormEvent;
+                    handleUsernameSubmit(fakeEvent);
+                }
+                return;
+            }
+
+            if (key === 'Backspace') {
+                if (activeField === 'username') setTempUsername(prev => prev.slice(0, -1));
+                else if (activeField === 'password') setTempPassword(prev => prev.slice(0, -1));
+                else if (activeField === 'message') setInput(prev => prev.slice(0, -1));
+                return;
+            }
+
+            const char = key === 'Space' ? ' ' : (key.length === 1 ? key : '');
+            if (!char && key !== 'Space') return;
+
+            if (activeField === 'username') setTempUsername(prev => prev + char);
+            else if (activeField === 'password') setTempPassword(prev => prev + char);
+            else if (activeField === 'message') setInput(prev => prev + char);
+        };
+
+        window.addEventListener('terminal-virtual-key', handleVirtualKey);
+        return () => window.removeEventListener('terminal-virtual-key', handleVirtualKey);
+    }, [activeField, input, tempUsername, tempPassword, username]);
 
     const handleUsernameSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -86,7 +129,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
-        
+
         const chosen = tempUsername.trim();
         setUsername(chosen);
         setTempPassword('');
@@ -102,7 +145,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
 
             const body = await res.json();
             if (res.ok && body.success) {
-                
+
                 const queued = pendingQueueRef.current.splice(0);
                 for (const content of queued) {
                     try {
@@ -116,7 +159,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                     }
                 }
             } else {
-                
+
                 setUsername('');
                 setUsernameError(body.error || 'Authentication failed');
             }
@@ -141,12 +184,12 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
             return;
         }
 
-        
+
         const now = new Date().toISOString();
         const tempMsg: Message = { id: `temp-${Date.now()}`, username, content, created_at: now };
         setMessages((L) => [...L, tempMsg]);
 
-        
+
         if (authPending) {
             pendingQueueRef.current.push(content);
             return;
@@ -198,6 +241,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                             type="text"
                             value={tempUsername}
                             onChange={(e) => setTempUsername(e.target.value)}
+                            onFocus={() => setActiveField('username')}
                             className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-full`}
                             placeholder="choose a code name"
                         />
@@ -210,6 +254,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                             type="password"
                             value={tempPassword}
                             onChange={(e) => setTempPassword(e.target.value)}
+                            onFocus={() => setActiveField('password')}
                             className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 w-full`}
                             placeholder="password (min 6)"
                         />
@@ -246,6 +291,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
+                    onFocus={() => setActiveField('message')}
                     className={`bg-transparent border-none outline-none ${THEME_COLOR} font-mono focus:ring-0 flex-1`}
                     autoFocus
                     placeholder="Type a message... (/exit to leave)"
