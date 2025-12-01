@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         // Providers configuration
         const groqKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
         const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-        const useProvider = (provider && typeof provider === 'string') ? provider.toLowerCase() : (geminiKey ? 'gemini' : (groqKey ? 'groq' : 'none'));
+        const useProvider = (provider && typeof provider === 'string') ? provider.toLowerCase() : (groqKey ? 'groq' : (geminiKey ? 'gemini' : 'none'));
         const groq = groqKey ? new Groq({ apiKey: groqKey }) : null;
         const genAI = geminiKey ? new GoogleGenerativeAI(geminiKey) : null;
 
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
 
         if (useProvider === 'groq' && groq) {
             // Groq path
-            const model = process.env.GROQ_MODEL || 'openai/gpt-oss-20b';
+            const model = process.env.GROQ_MODEL || 'llama-3.1-8b-instant';
             const messages = [
                 { role: 'system', content: systemPrompt },
                 ...prior,
@@ -95,7 +95,7 @@ export default async function handler(req, res) {
             ];
             const completion = await groq.chat.completions.create({
                 model,
-                temperature: 0.6,
+                temperature: 0.4,
                 max_completion_tokens: 512,
                 top_p: 1,
                 messages

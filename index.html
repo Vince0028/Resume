@@ -607,7 +607,10 @@
         <div class="messenger-title">
           <i class="bi bi-person-circle"></i>
           <div class="messenger-name">Vince Nelmar Alobin</div>
-          <div class="messenger-status">Online</div>
+          <div class="messenger-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="status-text">Online</span>
+          </div>
         </div>
         <button id="closeMessengerBtn" class="messenger-close" aria-label="Close chat">×</button>
       </div>
@@ -626,6 +629,13 @@
   <script src="skillset-order.js"></script>
   <script src="lanyard-3d.js"></script>
   <script src="github-contributions.js"></script>
+  <style>
+    .messenger-title { display: flex; align-items: center; gap: 10px; }
+    .messenger-name { font-weight: 600; }
+    .messenger-status { display: flex; align-items: center; gap: 6px; margin-left: 32px; font-size: 0.9rem; color: #10b981; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #10b981; display: inline-block; }
+    .status-text { color: #a3a3a3; }
+  </style>
 </body>
 
 </html>

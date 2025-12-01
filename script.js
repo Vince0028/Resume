@@ -418,7 +418,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			const response = await fetch('/api/ai-chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message, history, provider: 'gemini' })
+				body: JSON.stringify({ message, history, provider: 'groq' })
 			});
 
 			if (!response.ok) {
