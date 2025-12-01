@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 
 export default async function handler(req, res) {
     // CORS headers
@@ -26,10 +26,15 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // Determine provider configuration (GROQ preferred if configured)
+        // Configure Groq SDK
         const groqKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
-        const groqUrl = process.env.GROQ_API_URL || process.env.VITE_GROQ_API_URL;
-        const groqEndpoint = groqUrl || 'https://api.groq.ai/v1';
+        if (!groqKey) {
+            return res.status(500).json({
+                error: 'Missing GROQ_API_KEY',
+                reply: "Groq API key not set on server."
+            });
+        }
+        const groq = new Groq({ apiKey: groqKey });
 
         // System prompt to define the AI's personality
         const systemPrompt = `You are Vince Alobin's AI assistant on his portfolio website. 
@@ -68,56 +73,31 @@ Projects:
 
 Keep responses concise, friendly, and informative. If asked about topics not related to Vince or his work, politely redirect the conversation back to his portfolio.`;
 
-        // If GROQ key is present, proxy the message to the GROQ API endpoint
-        if (groqKey) {
-            try {
-                const groqResp = await fetch(groqEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${groqKey}`
-                    },
-                    // Send a generic payload: most GROQ-like endpoints accept a model and input
-                    body: JSON.stringify({ model: 'groq-1', input: systemPrompt + "\n\nUser: " + message })
-                });
-
-                const groqData = await groqResp.json();
-
-                // Try a few common response shapes from different providers
-                const reply = groqData.reply || groqData.output?.[0]?.content || groqData.output?.text || groqData.output || groqData.result || (groqData.choices && groqData.choices[0] && (groqData.choices[0].message?.content || groqData.choices[0].text)) || (typeof groqData === 'string' ? groqData : JSON.stringify(groqData));
-
-                return res.status(200).json({ reply });
-            } catch (err) {
-                console.error('GROQ provider error:', err);
-                // fall through to try Gemini if available
-            }
-        }
-
-        // Fallback: use Google Generative AI (Gemini) if configured
-        const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-
-        if (!apiKey) {
-            console.error('No AI provider configured (GROQ or GEMINI API key missing)');
-            return res.status(500).json({
-                error: 'API key not configured',
-                reply: "Sorry, I'm having trouble connecting right now. Please try again later."
-            });
-        }
-
-        // Initialize Gemini AI
-        const genAI = new GoogleGenerativeAI(apiKey);
-
-        // Create chat with system prompt - using gemini-pro which is most stable
-        const model = genAI.getGenerativeModel({
-            model: 'gemini-pro',
-            systemInstruction: systemPrompt,
+        // Create a non-streaming chat completion (simpler for API response)
+        const model = process.env.GROQ_MODEL || 'openai/gpt-oss-20b';
+        const completion = await groq.chat.completions.create({
+            model,
+            temperature: 0.7,
+            max_completion_tokens: 1024,
+            top_p: 1,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: message }
+            ]
         });
 
-        // Send message and get response
-        const result = await model.generateContent(message);
-        const reply = result.response.text();
+        const reply = completion.choices?.[0]?.message?.content || '';
+        if (!reply) {
+            throw new Error('Groq response missing content');
+        }
 
         return res.status(200).json({ reply });
+
+        // Final catch-all
+        return res.status(500).json({
+            error: 'Unexpected server error',
+            reply: "Sorry, I'm having trouble connecting right now."
+        });
 
     } catch (error) {
         console.error('AI Chat API Error:', error);

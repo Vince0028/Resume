@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import chatHandler from '../api/chat.js';
 import authHandler from '../api/auth.js';
+import aiChatHandler from '../api/ai-chat.js';
 
 const app = express();
 const port = 3001; 
@@ -19,6 +20,10 @@ app.all('/api/chat', async (req, res) => {
 
 app.all('/api/auth', async (req, res) => {
     await authHandler(req, res);
+});
+
+app.all('/api/ai-chat', async (req, res) => {
+    await aiChatHandler(req, res);
 });
 
 app.listen(port, () => {
