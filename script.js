@@ -480,11 +480,17 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		startCooldown();
 
 
+		// Show typing indicator immediately
 		showTypingIndicator();
 
+		// Random delay between 2-5 seconds (2000-5000ms)
+		const randomDelay = Math.floor(Math.random() * 3000) + 2000;
 
-		const reply = await callChatAPI(val);
-
+		// Call API and wait for both the response and the minimum delay
+		const [reply] = await Promise.all([
+			callChatAPI(val),
+			new Promise(resolve => setTimeout(resolve, randomDelay))
+		]);
 
 		removeTypingIndicator();
 		appendMessage(reply, 'bot');
