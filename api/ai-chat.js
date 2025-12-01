@@ -1,7 +1,6 @@
 import Groq from 'groq-sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Enhanced language detection function
 function detectLanguage(text) {
     const tagalogWords = [
         'ako', 'ikaw', 'siya', 'kami', 'kayo', 'sila', 'ang', 'ng', 'sa', 'mga', 'ay',
@@ -51,7 +50,6 @@ function detectLanguage(text) {
 }
 
 export default async function handler(req, res) {
-    // CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -76,17 +74,14 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // Detect the language of the user's message
         const detectedLanguage = detectLanguage(message);
 
-        // Providers configuration
         const groqKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
         const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
         const useProvider = (provider && typeof provider === 'string') ? provider.toLowerCase() : (groqKey ? 'groq' : (geminiKey ? 'gemini' : 'none'));
         const groq = groqKey ? new Groq({ apiKey: groqKey }) : null;
         const genAI = geminiKey ? new GoogleGenerativeAI(geminiKey) : null;
 
-        // Enhanced system prompts based on detected language
         const systemPrompts = {
             english: `You are Vince Alobin speaking in first person. Be direct, helpful, friendly, and conversational. Respond in PURE ENGLISH only.
 
@@ -199,11 +194,9 @@ Show personality pero be concise.`
 
         const systemPrompt = systemPrompts[detectedLanguage];
 
-        // Create a non-streaming chat completion (simpler for API response)
         const prior = Array.isArray(history) ? history.filter(m => typeof m?.role === 'string' && typeof m?.content === 'string').slice(-12) : [];
 
         if (useProvider === 'gemini' && genAI) {
-            // Gemini path
             const geminiModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
             const model = genAI.getGenerativeModel({ 
                 model: geminiModel, 
@@ -215,7 +208,6 @@ Show personality pero be concise.`
                     maxOutputTokens: 512,
                 }
             });
-            // Flatten prior into a simple transcript string for Gemini
             const transcript = prior.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
             const prompt = transcript ? `${transcript}\nUser: ${message}` : message;
             const result = await model.generateContent(prompt);
@@ -225,7 +217,6 @@ Show personality pero be concise.`
         }
 
         if (useProvider === 'groq' && groq) {
-            // Groq path
             const model = process.env.GROQ_MODEL || 'llama-3.1-8b-instant';
             const messages = [
                 { role: 'system', content: systemPrompt },
@@ -246,7 +237,6 @@ Show personality pero be concise.`
 
         return res.status(500).json({ error: 'No AI provider configured', reply: "Please set GEMINI_API_KEY or GROQ_API_KEY." });
 
-        // Final catch-all
         return res.status(500).json({
             error: 'Unexpected server error',
             reply: "Sorry, I'm having trouble connecting right now."

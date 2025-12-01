@@ -1,5 +1,3 @@
-// Programming jokes and tech fun facts for the terminal
-
 export const JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs!",
   "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
