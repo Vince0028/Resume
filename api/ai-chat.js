@@ -1,4 +1,5 @@
 import Groq from 'groq-sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default async function handler(req, res) {
     // CORS headers
@@ -20,21 +21,18 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { message, history } = req.body;
+        const { message, history, provider } = req.body;
 
         if (!message || typeof message !== 'string') {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // Configure Groq SDK
+        // Providers configuration
         const groqKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
-        if (!groqKey) {
-            return res.status(500).json({
-                error: 'Missing GROQ_API_KEY',
-                reply: "Groq API key not set on server."
-            });
-        }
-        const groq = new Groq({ apiKey: groqKey });
+        const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+        const useProvider = (provider && typeof provider === 'string') ? provider.toLowerCase() : (geminiKey ? 'gemini' : (groqKey ? 'groq' : 'none'));
+        const groq = groqKey ? new Groq({ apiKey: groqKey }) : null;
+        const genAI = geminiKey ? new GoogleGenerativeAI(geminiKey) : null;
 
         // System prompt to define the AI's personality
         const systemPrompt = `You are Vince Alobin speaking in first person. Be direct, helpful, and honest.
@@ -72,27 +70,42 @@ export default async function handler(req, res) {
     If unsure, ask a clarifying question.`;
 
         // Create a non-streaming chat completion (simpler for API response)
-        const model = process.env.GROQ_MODEL || 'openai/gpt-oss-20b';
         const prior = Array.isArray(history) ? history.filter(m => typeof m?.role === 'string' && typeof m?.content === 'string').slice(-12) : [];
-        const messages = [
-            { role: 'system', content: systemPrompt },
-            ...prior,
-            { role: 'user', content: message }
-        ];
-        const completion = await groq.chat.completions.create({
-            model,
-            temperature: 0.6,
-            max_completion_tokens: 512,
-            top_p: 1,
-            messages
-        });
 
-        const reply = completion.choices?.[0]?.message?.content || '';
-        if (!reply) {
-            throw new Error('Groq response missing content');
+        if (useProvider === 'gemini' && genAI) {
+            // Gemini path
+            const geminiModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+            const model = genAI.getGenerativeModel({ model: geminiModel, systemInstruction: systemPrompt });
+            // Flatten prior into a simple transcript string for Gemini
+            const transcript = prior.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
+            const prompt = transcript ? `${transcript}\nUser: ${message}` : message;
+            const result = await model.generateContent(prompt);
+            const reply = result.response?.text?.() || result.response?.text || '';
+            if (!reply) throw new Error('Gemini response missing content');
+            return res.status(200).json({ reply });
         }
 
-        return res.status(200).json({ reply });
+        if (useProvider === 'groq' && groq) {
+            // Groq path
+            const model = process.env.GROQ_MODEL || 'openai/gpt-oss-20b';
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...prior,
+                { role: 'user', content: message }
+            ];
+            const completion = await groq.chat.completions.create({
+                model,
+                temperature: 0.6,
+                max_completion_tokens: 512,
+                top_p: 1,
+                messages
+            });
+            const reply = completion.choices?.[0]?.message?.content || '';
+            if (!reply) throw new Error('Groq response missing content');
+            return res.status(200).json({ reply });
+        }
+
+        return res.status(500).json({ error: 'No AI provider configured', reply: "Please set GEMINI_API_KEY or GROQ_API_KEY." });
 
         // Final catch-all
         return res.status(500).json({

@@ -403,12 +403,22 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		}
 	}
 
+	function collectHistory(max = 12) {
+		const items = Array.from(messagesEl.querySelectorAll('.message'));
+		const history = items.slice(-max).map(el => ({
+			role: el.classList.contains('user') ? 'user' : 'assistant',
+			content: el.textContent || ''
+		}));
+		return history;
+	}
+
 	async function callChatAPI(message) {
 		try {
+			const history = collectHistory(12);
 			const response = await fetch('/api/ai-chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message })
+				body: JSON.stringify({ message, history, provider: 'gemini' })
 			});
 
 			if (!response.ok) {
