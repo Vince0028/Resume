@@ -353,11 +353,18 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	let lastMessageTime = 0;
 	const RATE_LIMIT_MS = 3000;
 	let cooldownTimer = null;
+	let hasGreeted = false;
 
 	function openPopup() {
 		popup.classList.add('open');
 		popup.setAttribute('aria-hidden', 'false');
 		input.focus();
+		
+		// Show formal greeting on first open
+		if (!hasGreeted) {
+			hasGreeted = true;
+			appendMessage("Kamusta? I'm Vince Alobin, a second-year BSIT student at Asia Pacific College. Thank you for visiting my portfolio. How may I assist you today?", 'bot');
+		}
 	}
 
 	function closePopup() {
