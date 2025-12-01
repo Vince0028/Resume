@@ -352,6 +352,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	let isWaitingForResponse = false;
 	let lastMessageTime = 0;
 	const RATE_LIMIT_MS = 3000;
+	let cooldownTimer = null;
 
 	function openPopup() {
 		popup.classList.add('open');
@@ -381,6 +382,24 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		msg.textContent = text;
 		messagesEl.appendChild(msg);
 		messagesEl.scrollTop = messagesEl.scrollHeight;
+	}
+
+	function startCooldown() {
+		const endAt = Date.now() + RATE_LIMIT_MS;
+		input.disabled = true;
+		input.placeholder = 'Please wait 3s...';
+		if (cooldownTimer) clearInterval(cooldownTimer);
+		cooldownTimer = setInterval(() => {
+			const diff = Math.max(0, endAt - Date.now());
+			const secs = Math.ceil(diff / 1000);
+			input.placeholder = `Please wait ${secs}s...`;
+			if (diff <= 0) {
+				clearInterval(cooldownTimer);
+				cooldownTimer = null;
+				input.disabled = false;
+				input.placeholder = 'Type a message...';
+			}
+		}, 200);
 	}
 
 	function showTypingIndicator() {
@@ -441,8 +460,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		const now = Date.now();
 		if (now - lastMessageTime < RATE_LIMIT_MS) {
-			appendMessage("Please wait a moment before sending another message.", 'bot');
-			return;
+			return; // cooldown UI already running
 		}
 
 		if (isWaitingForResponse) return;
@@ -452,6 +470,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		input.value = '';
 		lastMessageTime = Date.now();
 		isWaitingForResponse = true;
+		startCooldown();
 
 
 		showTypingIndicator();
