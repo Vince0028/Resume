@@ -263,12 +263,12 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	function touchMove(event) {
 		if (!initialTouch) return;
-		
+
 		const currentX = getPositionX(event);
 		const currentY = getPositionY(event);
 		const diffX = Math.abs(currentX - initialTouch.x);
 		const diffY = Math.abs(currentY - initialTouch.y);
-		
+
 		// Only start dragging if horizontal movement is greater than vertical
 		if (diffX > diffY && diffX > 5) {
 			if (!isDragging) {
@@ -278,7 +278,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			event.preventDefault();
 			const currentPosition = getPositionX(event);
 			currentTranslate = currentPosition - startX;
-			
+
 			const container = document.querySelector('.projects-carousel-track-container');
 			const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
 			const slideWidth = slides[0]?.offsetWidth || 0;
@@ -286,7 +286,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			const centerOffset = Math.floor(visibleCount / 2);
 			const centerIndex = currentIndex + centerOffset;
 			const baseTranslate = (slideWidth + gap) * centerIndex - (containerWidth - slideWidth) / 2;
-			
+
 			track.style.transition = 'none';
 			track.style.transform = `translateX(-${baseTranslate - currentTranslate}px)`;
 		}
@@ -294,13 +294,13 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	function touchEnd() {
 		if (!initialTouch) return;
-		
+
 		if (isDragging) {
 			isDragging = false;
 			track.style.cursor = 'grab';
 
 			const movedBy = currentTranslate;
-			
+
 			// If moved enough, change slide
 			if (movedBy < -50) {
 				currentIndex++;
@@ -311,11 +311,11 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 			track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
 			updateCarousel();
 		}
-		
+
 		prevTranslate = 0;
 		currentTranslate = 0;
 		initialTouch = null;
-		
+
 		setTimeout(() => startAutoplay(), 100);
 	}
 
@@ -325,7 +325,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		projectsContainer.addEventListener('touchmove', touchMove, { passive: false });
 		projectsContainer.addEventListener('touchend', touchEnd);
 		projectsContainer.addEventListener('touchcancel', touchEnd);
-		
+
 		// Mouse drag for desktop
 		projectsContainer.addEventListener('mousedown', touchStart);
 		projectsContainer.addEventListener('mousemove', touchMove);
@@ -376,7 +376,14 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const containerWidth = container ? container.getBoundingClientRect().width : track.offsetWidth;
 		const slideWidth = slides[0] ? slides[0].getBoundingClientRect().width : containerWidth;
 		const gap = getGap();
-		visibleCount = Math.max(1, Math.floor((containerWidth + gap) / (slideWidth + gap)));
+
+		// Force visibleCount to 1 on mobile to show one slide at a time
+		if (window.innerWidth <= 991) {
+			visibleCount = 1;
+		} else {
+			visibleCount = Math.max(1, Math.floor((containerWidth + gap) / (slideWidth + gap)));
+		}
+
 		return { containerWidth, slideWidth, gap };
 	}
 
@@ -429,9 +436,51 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		autoplayTimer = setInterval(next, 6000);
 	}
 
+	// Touch/Swipe support for mobile
+	const eduContainer = document.querySelector('.education-track-container');
+	let touchStartX = 0;
+	let touchEndX = 0;
+	let isDragging = false;
+
+	const handleSwipe = () => {
+		const swipeThreshold = 50;
+		const diff = touchStartX - touchEndX;
+
+		if (Math.abs(diff) > swipeThreshold) {
+			if (diff > 0) {
+				// Swiped left - go to next
+				next();
+			} else {
+				// Swiped right - go to previous
+				prev();
+			}
+		}
+	};
+
+	if (eduContainer) {
+		eduContainer.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].screenX;
+			isDragging = true;
+			if (autoplayTimer) clearInterval(autoplayTimer);
+		}, { passive: true });
+
+		eduContainer.addEventListener('touchmove', (e) => {
+			if (!isDragging) return;
+			touchEndX = e.changedTouches[0].screenX;
+		}, { passive: true });
+
+		eduContainer.addEventListener('touchend', () => {
+			if (isDragging) {
+				handleSwipe();
+				isDragging = false;
+				resetAutoplay();
+			}
+		}, { passive: true });
+	}
 
 	calcSizes();
 	buildDots();
+	current = 0; // Ensure we start at the first slide (APC)
 	update();
 	resetAutoplay();
 })();

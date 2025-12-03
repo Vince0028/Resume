@@ -3181,36 +3181,36 @@ body.light-mode .cert-content {
 
 @media (max-width: 991px) {
   .education-track-container {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 20px;
+    overflow: hidden;
+    padding: 20px 0;
     -webkit-mask-image: none;
     mask-image: none;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .education-track {
     gap: 16px;
+    justify-content: flex-start;
   }
 
   .edu-slide {
-    min-width: 280px !important;
-    max-width: 280px !important;
-    scroll-snap-align: center;
+    min-width: calc(100vw - 40px) !important;
+    max-width: calc(100vw - 40px) !important;
     flex: 0 0 auto !important;
     width: auto !important;
     opacity: 1;
     transform: none;
     -webkit-filter: none;
     filter: none;
+    height: auto !important;
+    min-height: 420px;
   }
 
   .edu-slide.active {
     transform: none;
-  }
-
-  .edu-slide {
-    height: auto !important;
-    min-height: 420px;
   }
 
   .edu-controls .edu-btn {
