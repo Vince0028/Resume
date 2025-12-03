@@ -1784,6 +1784,11 @@ footer {
   cursor: pointer;
 }
 
+/* Hide mobile actions on desktop */
+.mobile-actions {
+  display: none !important;
+}
+
 @media (max-width: 1400px) {
   .layout-container {
     grid-template-columns: 280px minmax(500px, 1fr) 320px;
@@ -2040,6 +2045,54 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  /* Mobile Actions Buttons */
+  @media (max-width: 991px) {
+    .mobile-actions {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .mobile-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .mobile-action-btn i {
+    font-size: 1.2rem;
+  }
+
+  .mobile-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  .mobile-action-btn:active {
+    transform: translateY(0);
+  }
+
+  body.light-mode .mobile-action-btn {
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+
+  body.light-mode .mobile-action-btn:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
   }
 
   .hero-card {

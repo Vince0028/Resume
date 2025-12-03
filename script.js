@@ -359,7 +359,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		popup.classList.add('open');
 		popup.setAttribute('aria-hidden', 'false');
 		input.focus();
-		
+
 		if (!hasGreeted) {
 			hasGreeted = true;
 			appendMessage("Kamusta? I'm Vince Alobin, a second-year BSIT student at Asia Pacific College. Thank you for visiting my portfolio. How may I assist you today?", 'bot');
@@ -372,6 +372,22 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	}
 
 	openBtn.addEventListener('click', openPopup);
+
+	// Mobile Ask Vince button
+	const openBtnMobile = document.getElementById('openMessengerBtnMobile');
+	if (openBtnMobile) {
+		openBtnMobile.addEventListener('click', () => {
+			openPopup();
+			// Close the mobile sidebar when opening messenger
+			const sidebar = document.getElementById('sidebar');
+			if (sidebar && sidebar.classList.contains('active')) {
+				sidebar.classList.remove('active');
+				document.body.style.overflow = '';
+				document.body.classList.remove('sidebar-open');
+			}
+		});
+	}
+
 	closeBtn && closeBtn.addEventListener('click', closePopup);
 
 
