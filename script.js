@@ -236,6 +236,104 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	}
 
 
+	// Touch/Drag support for mobile infinite loop
+	let isDragging = false;
+	let startX = 0;
+	let startY = 0;
+	let currentTranslate = 0;
+	let prevTranslate = 0;
+	let animationID = 0;
+	let initialTouch = null;
+
+	function getPositionX(event) {
+		return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+	}
+
+	function getPositionY(event) {
+		return event.type.includes('mouse') ? event.pageY : event.touches[0].clientY;
+	}
+
+	function touchStart(event) {
+		initialTouch = { x: getPositionX(event), y: getPositionY(event) };
+		startX = getPositionX(event);
+		startY = getPositionY(event);
+		isDragging = false;
+		stopAutoplay();
+	}
+
+	function touchMove(event) {
+		if (!initialTouch) return;
+		
+		const currentX = getPositionX(event);
+		const currentY = getPositionY(event);
+		const diffX = Math.abs(currentX - initialTouch.x);
+		const diffY = Math.abs(currentY - initialTouch.y);
+		
+		// Only start dragging if horizontal movement is greater than vertical
+		if (diffX > diffY && diffX > 5) {
+			if (!isDragging) {
+				isDragging = true;
+				track.style.cursor = 'grabbing';
+			}
+			event.preventDefault();
+			const currentPosition = getPositionX(event);
+			currentTranslate = currentPosition - startX;
+			
+			const container = document.querySelector('.projects-carousel-track-container');
+			const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
+			const slideWidth = slides[0]?.offsetWidth || 0;
+			const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
+			const centerOffset = Math.floor(visibleCount / 2);
+			const centerIndex = currentIndex + centerOffset;
+			const baseTranslate = (slideWidth + gap) * centerIndex - (containerWidth - slideWidth) / 2;
+			
+			track.style.transition = 'none';
+			track.style.transform = `translateX(-${baseTranslate - currentTranslate}px)`;
+		}
+	}
+
+	function touchEnd() {
+		if (!initialTouch) return;
+		
+		if (isDragging) {
+			isDragging = false;
+			track.style.cursor = 'grab';
+
+			const movedBy = currentTranslate;
+			
+			// If moved enough, change slide
+			if (movedBy < -50) {
+				currentIndex++;
+			} else if (movedBy > 50) {
+				currentIndex--;
+			}
+
+			track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+			updateCarousel();
+		}
+		
+		prevTranslate = 0;
+		currentTranslate = 0;
+		initialTouch = null;
+		
+		setTimeout(() => startAutoplay(), 100);
+	}
+
+	// Add touch event listeners to container for better touch handling
+	if (projectsContainer) {
+		projectsContainer.addEventListener('touchstart', touchStart, { passive: false });
+		projectsContainer.addEventListener('touchmove', touchMove, { passive: false });
+		projectsContainer.addEventListener('touchend', touchEnd);
+		projectsContainer.addEventListener('touchcancel', touchEnd);
+		
+		// Mouse drag for desktop
+		projectsContainer.addEventListener('mousedown', touchStart);
+		projectsContainer.addEventListener('mousemove', touchMove);
+		projectsContainer.addEventListener('mouseup', touchEnd);
+		projectsContainer.addEventListener('mouseleave', touchEnd);
+	}
+
+
 	startAutoplay();
 
 	track.addEventListener('transitionend', onTransitionEnd);
