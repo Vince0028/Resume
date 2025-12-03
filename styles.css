@@ -1151,12 +1151,7 @@ body.light-mode .github-calendar-wrapper:hover {
   transform: translateY(0) rotateX(0);
 }
 
-.expertise-item:hover {
-  border-color: var(--primary);
-  transform: translateX(10px) translateY(-8px) scale(1.03);
-  background: var(--card-hover);
-  box-shadow: 0 15px 45px rgba(99, 102, 241, 0.4);
-}
+/* Hover styles moved to @media (hover: hover) section at bottom of file */
 
 a.expertise-item {
   text-decoration: none;
@@ -1164,9 +1159,7 @@ a.expertise-item {
   cursor: pointer;
 }
 
-a.expertise-item:hover {
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-}
+/* Hover styles moved to @media (hover: hover) section at bottom of file */
 
 .expertise-icon {
   font-size: 2rem;
@@ -1190,14 +1183,7 @@ a.expertise-item:hover {
   padding: 4px;
 }
 
-.expertise-icon img.project-logo:hover {
-  transform: scale(1.15) rotate(-5deg) translateY(-5px);
-  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5),
-    0 8px 20px rgba(139, 92, 246, 0.3),
-    0 0 30px rgba(99, 102, 241, 0.2);
-  border-color: var(--primary);
-  filter: brightness(1.1) saturate(1.2);
-}
+/* Hover styles moved to @media (hover: hover) section at bottom of file */
 
 body.light-mode .expertise-icon img.project-logo {
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25),
@@ -1353,10 +1339,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   box-shadow: 0 12px 34px rgba(2, 6, 23, 0.45);
 }
 
-.edu-slide:hover {
-  transform: translateY(-6px) scale(1.02);
-  z-index: 15;
-}
+/* Hover styles moved to @media (hover: hover) section at bottom of file */
 
 .edu-logo {
   width: 96px;
@@ -3277,6 +3260,50 @@ body.light-mode .cert-content {
 
   .projects-carousel-btn.next-btn {
     right: 5px;
+  }
+}
+
+/* Only enable hover effects on devices that support hovering (desktop with mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .expertise-item:hover {
+    border-color: var(--primary);
+    transform: translateX(10px) translateY(-8px) scale(1.03);
+    background: var(--card-hover);
+    box-shadow: 0 15px 45px rgba(99, 102, 241, 0.4);
+  }
+
+  a.expertise-item:hover {
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+  }
+
+  .expertise-icon img.project-logo:hover {
+    transform: scale(1.15) rotate(-5deg) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5),
+      0 8px 20px rgba(139, 92, 246, 0.3),
+      0 0 30px rgba(99, 102, 241, 0.2);
+    border-color: var(--primary);
+    filter: brightness(1.1) saturate(1.2);
+  }
+
+  .edu-slide:hover {
+    transform: translateY(-6px) scale(1.02);
+    z-index: 15;
+  }
+}
+
+/* Disable all hover effects on touch devices */
+@media (hover: none) {
+
+  .expertise-item:hover,
+  a.expertise-item:hover,
+  .expertise-icon img.project-logo:hover,
+  .edu-slide:hover,
+  .project-slide:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
+    filter: none !important;
+    z-index: auto !important;
   }
 }
 
