@@ -387,7 +387,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		msg.textContent = text;
 		messagesEl.appendChild(msg);
-		messagesEl.scrollTop = messagesEl.scrollHeight;
+		msg.scrollIntoView({ behavior: 'smooth', block: 'end' });
 	}
 
 	function startCooldown() {
@@ -418,7 +418,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 				<div class="typing-dot"></div>
 			`;
 		messagesEl.appendChild(indicator);
-		messagesEl.scrollTop = messagesEl.scrollHeight;
+		indicator.scrollIntoView({ behavior: 'smooth', block: 'end' });
 	}
 
 	function removeTypingIndicator() {

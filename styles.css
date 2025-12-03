@@ -91,7 +91,7 @@ body.light-mode .btn-hero-outline {
   background: var(--darker-bg);
   border-right: 1px solid var(--border-color);
   padding: 2rem 1.5rem;
-  overflow-y: auto;
+  overflow-y: hidden;
   position: sticky;
   top: 0;
   height: 100vh;
