@@ -3075,6 +3075,7 @@ body.light-mode .cert-content {
   width: 100%;
   padding: 0 60px;
   margin: 2rem 0;
+  background: transparent;
 }
 
 .projects-carousel-track-container {
@@ -3083,6 +3084,7 @@ body.light-mode .cert-content {
   padding: 60px 5px;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  background: transparent;
 }
 
 .projects-carousel-track {
@@ -3217,21 +3219,27 @@ body.light-mode .cert-content {
 
   .projects-carousel-container {
     padding: 0 50px;
+    overflow: visible;
   }
 
   .projects-carousel-track-container {
-    overflow: hidden;
-    padding: 40px 5px;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding: 20px 5px;
+    -webkit-mask-image: none;
+    mask-image: none;
     touch-action: pan-y;
     cursor: grab;
     user-select: none;
     -webkit-user-select: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
   }
 
   .projects-carousel-track {
     gap: 16px;
+    align-items: center;
   }
 
   .project-slide {
@@ -3239,6 +3247,7 @@ body.light-mode .cert-content {
     max-width: 280px !important;
     flex: 0 0 auto !important;
     width: auto !important;
+    height: auto !important;
     opacity: 0.7;
     transform: scale(0.85);
     -webkit-filter: blur(2px);
@@ -3249,7 +3258,7 @@ body.light-mode .cert-content {
 
   .project-slide.active {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1);
     -webkit-filter: blur(0px);
     filter: blur(0px);
     z-index: 10;
