@@ -101,13 +101,13 @@ body.light-mode .btn-hero-outline {
 
 .sidebar {
   -ms-overflow-style: none;
-  
+
   scrollbar-width: none;
-  
+
 }
 
 .sidebar::-webkit-scrollbar {
-  
+
   width: 0;
   height: 0;
   display: none;
@@ -1295,7 +1295,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
 
 .education-track-container {
   overflow: hidden;
-  
+
   border-radius: 14px;
   padding: 1rem 0.5rem;
 }
@@ -1308,7 +1308,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   padding: 0 10px;
   align-items: stretch;
   justify-content: center;
-  
+
 }
 
 .edu-slide {
@@ -1319,10 +1319,10 @@ body.light-mode .expertise-icon img.project-logo:hover {
   justify-content: flex-end;
   padding: 0;
   flex: 0 0 calc((100% - 44px) / 3);
-  
+
   max-width: calc((100% - 44px) / 3);
   height: 520px;
-  
+
   background: linear-gradient(180deg, rgba(10, 12, 25, 0.22), rgba(10, 12, 25, 0.28));
   border-radius: 14px;
   overflow: hidden;
@@ -1366,7 +1366,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   background: rgba(255, 255, 255, 0.06);
   padding: 8px;
   position: absolute;
-  
+
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
@@ -1383,7 +1383,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
   text-align: center;
   color: #ffffff;
   padding-top: 48px;
-  
+
 }
 
 .edu-year {
@@ -1431,7 +1431,7 @@ body.light-mode .expertise-icon img.project-logo:hover {
 
 .edu-controls .edu-btn {
   display: none;
-  
+
 }
 
 .edu-btn:active {
@@ -1499,6 +1499,98 @@ body.light-mode .expertise-icon img.project-logo:hover {
 body.light-mode .badge-not-deployed {
   background: #cbd5e1;
   color: #0f172a;
+}
+
+/* Movies Section */
+.movies-carousel {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.movies-track-container {
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 1rem 0.5rem;
+}
+
+.movies-track {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  width: 100%;
+  padding: 0 10px;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.movie-slide {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 520px;
+  background: linear-gradient(180deg, rgba(10, 12, 25, 0.22), rgba(10, 12, 25, 0.28));
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.movie-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.55) 70%);
+  z-index: 1;
+}
+
+.movie-slide:hover {
+  transform: translateY(-6px) scale(1.02);
+  z-index: 15;
+  box-shadow: 0 12px 34px rgba(2, 6, 23, 0.45);
+}
+
+.movie-content {
+  position: absolute;
+  z-index: 2;
+  bottom: 20px;
+  left: 18px;
+  right: 18px;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 48px;
+}
+
+.movie-year {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.movie-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+.movie-desc {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+}
+
+@media (min-width: 900px) {
+  .movies-track-container {
+    padding: 1.5rem;
+  }
 }
 
 .badge-deployed {
@@ -1851,7 +1943,7 @@ footer {
     }
   }
 
-  
+
   .right-sidebar {
     display: flex !important;
     flex-direction: column;
@@ -1870,7 +1962,7 @@ footer {
     margin-top: 1.25rem;
   }
 
-  
+
   #rightSkillSet.as-main-section {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -3021,7 +3113,7 @@ body.light-mode .cert-content {
 .projects-carousel-btn.next-btn {
   right: 0;
   z-index: 200;
-  
+
 }
 
 .projects-carousel-btn:disabled {
