@@ -55,9 +55,10 @@
 		}
 
 		const frontTex = load('Images/Lanyard_pokemon.png');
+		const frontTexShy = load('Images/lanyard_shy.png');
 		const backTex = load('Images/Back_pokemon.png');
 
-		[frontTex, backTex].forEach(t => {
+		[frontTex, frontTexShy, backTex].forEach(t => {
 			if (t) {
 				if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
 				else if ('sRGBEncoding' in THREE) t.encoding = THREE.sRGBEncoding;
@@ -88,6 +89,33 @@
 		let spinRemaining = 0;
 		const spinSpeed = 4;
 		mount.addEventListener('click', () => { if (spinRemaining <= 0) spinRemaining = 2 * Math.PI });
+
+		renderer.domElement.style.cursor = 'pointer';
+
+		renderer.domElement.addEventListener('mouseenter', () => {
+			console.log('Mouse entered lanyard - changing to shy');
+			matFront.map = frontTexShy;
+			matFront.needsUpdate = true;
+		});
+
+		renderer.domElement.addEventListener('mouseleave', () => {
+			console.log('Mouse left lanyard - changing to normal');
+			matFront.map = frontTex;
+			matFront.needsUpdate = true;
+		});
+
+		renderer.domElement.addEventListener('mouseover', () => {
+			console.log('Mouse over lanyard (Opera fallback) - changing to shy');
+			matFront.map = frontTexShy;
+			matFront.needsUpdate = true;
+		});
+
+		renderer.domElement.addEventListener('mouseout', () => {
+			console.log('Mouse out lanyard (Opera fallback) - changing to normal');
+			matFront.map = frontTex;
+			matFront.needsUpdate = true;
+		});
+
 
 		window.addEventListener('resize', () => {
 			const nw = mount.clientWidth || 220;
