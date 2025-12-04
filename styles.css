@@ -1141,13 +1141,13 @@ body.light-mode .github-calendar-wrapper:hover {
 .section#certificates .section-card {
   margin-bottom: 4rem;
   position: relative;
-  z-index: 1;
+    margin-bottom: 1rem;
 }
 
 
 #github-contributions {
   clear: both;
-  padding-top: 2rem;
+  padding-top: 0.4rem;
 }
 
 .section-header {
@@ -2304,7 +2304,7 @@ footer {
   }
 
   .nav-item-custom i {
-    font-size: 1rem;
+      margin-bottom: 1.5rem;
     width: 20px;
   }
 
