@@ -2570,6 +2570,62 @@ footer {
   margin: 0 auto 0.5rem;
   position: relative;
   z-index: 1500;
+  overflow: visible;
+}
+
+.lanyard-warning-msg {
+  position: fixed;
+  top: 55px;
+  left: 160px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation: float 2.5s ease-in-out infinite;
+  z-index: 2500;
+  border: 2px solid #333;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lanyard-warning-msg::before,
+.lanyard-warning-msg::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #333;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.lanyard-warning-msg::before {
+  width: 12px;
+  height: 12px;
+  bottom: -18px;
+  left: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.lanyard-warning-msg::after {
+  width: 7px;
+  height: 7px;
+  bottom: -26px;
+  left: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0px);
+  }
+  50% {
+    transform: translateY(-50%) translateX(4px);
+  }
 }
 
 body.has-3d-lanyard .profile-avatar,

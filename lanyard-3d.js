@@ -21,6 +21,12 @@
 
 		document.body.classList.add('has-3d-lanyard');
 
+		// Add floating warning message to body so it can float across entire screen
+		const warningMsg = document.createElement('div');
+		warningMsg.className = 'lanyard-warning-msg';
+		warningMsg.textContent = "don't press me";
+		document.body.appendChild(warningMsg);
+
 		const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
 		const h = (mount.clientHeight && mount.clientHeight > 0) ? mount.clientHeight : 340;
 
@@ -56,9 +62,10 @@
 
 		const frontTex = load('Images/Lanyard_pokemon.png');
 		const frontTexShy = load('Images/lanyard_shy.png');
+		const frontTexDizzy = load('Images/Lanyard_dizzy.png');
 		const backTex = load('Images/Back_pokemon.png');
 
-		[frontTex, frontTexShy, backTex].forEach(t => {
+		[frontTex, frontTexShy, frontTexDizzy, backTex].forEach(t => {
 			if (t) {
 				if ('SRGBColorSpace' in THREE) t.colorSpace = THREE.SRGBColorSpace;
 				else if ('sRGBEncoding' in THREE) t.encoding = THREE.sRGBEncoding;
@@ -88,20 +95,25 @@
 
 		let spinRemaining = 0;
 		const spinSpeed = 4;
-		mount.addEventListener('click', () => { if (spinRemaining <= 0) spinRemaining = 2 * Math.PI });
+		let dizzyDuration = 0;
+		mount.addEventListener('click', () => { if (spinRemaining <= 0) { spinRemaining = 2 * Math.PI; dizzyDuration = 2.5; } });
 
 		renderer.domElement.style.cursor = 'pointer';
 
 		renderer.domElement.addEventListener('mouseenter', () => {
 			console.log('Mouse entered lanyard - changing to shy');
-			matFront.map = frontTexShy;
-			matFront.needsUpdate = true;
+			if (dizzyDuration <= 0) {
+				matFront.map = frontTexShy;
+				matFront.needsUpdate = true;
+			}
 		});
 
 		renderer.domElement.addEventListener('mouseleave', () => {
 			console.log('Mouse left lanyard - changing to normal');
-			matFront.map = frontTex;
-			matFront.needsUpdate = true;
+			if (dizzyDuration <= 0) {
+				matFront.map = frontTex;
+				matFront.needsUpdate = true;
+			}
 		});
 
 		renderer.domElement.addEventListener('mouseover', () => {
@@ -140,6 +152,18 @@
 				cardGroup.rotation.y += step;
 				spinRemaining -= step;
 			}
+			
+			if (dizzyDuration > 0) {
+				dizzyDuration -= dt;
+				if (dizzyDuration > 0) {
+					matFront.map = frontTexDizzy;
+					matFront.needsUpdate = true;
+				} else {
+					matFront.map = frontTex;
+					matFront.needsUpdate = true;
+				}
+			}
+			
 			renderer.render(scene, camera);
 			requestAnimationFrame(loop);
 		}
