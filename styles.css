@@ -87,16 +87,38 @@ body.light-mode .btn-hero-outline {
   overflow-x: hidden;
 }
 
+
 .sidebar {
   background: var(--darker-bg);
   border-right: 1px solid var(--border-color);
   padding: 2rem 1.5rem;
   overflow-y: auto;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  z-index: 1000;
   flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 1000;
+  }
+  
+  .layout-container {
+    margin-left: 280px;
+    margin-right: 350px;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    position: static;
+    height: auto;
+    z-index: 1000;
+  }
 }
 
 
@@ -223,11 +245,26 @@ body.light-mode .btn-hero-outline {
   border-left: 1px solid var(--border-color);
   padding: 2rem 1.5rem;
   overflow-y: auto;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  z-index: 1000;
   flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+  .right-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 350px;
+    z-index: 1000;
+  }
+}
+
+@media (max-width: 991px) {
+  .right-sidebar {
+    position: static;
+    height: auto;
+    z-index: 1000;
+  }
 }
 
 .right-sidebar-section {
