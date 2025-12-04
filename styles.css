@@ -78,24 +78,25 @@ body.light-mode .btn-hero-outline {
 }
 
 .layout-container {
-  display: grid;
-  grid-template-columns: 280px minmax(600px, 1fr) 350px;
+  display: block;
   min-height: 100vh;
-  gap: 0;
-  max-width: 100%;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
 .sidebar {
   background: var(--darker-bg);
   border-right: 1px solid var(--border-color);
   padding: 2rem 1.5rem;
-  overflow-y: hidden;
-  position: sticky;
+  overflow-y: auto;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 280px;
   height: 100vh;
   z-index: 1000;
+  flex-shrink: 0;
 }
 
 
@@ -214,7 +215,10 @@ body.light-mode .btn-hero-outline {
 .main-content {
   padding: 2rem;
   overflow-y: auto;
-  max-width: 1200px;
+  width: calc(100% - 280px - 350px);
+  margin-left: 280px;
+  margin-right: 350px;
+  max-width: calc(100vw - 280px - 350px);
 }
 
 .right-sidebar {
@@ -222,10 +226,13 @@ body.light-mode .btn-hero-outline {
   border-left: 1px solid var(--border-color);
   padding: 2rem 1.5rem;
   overflow-y: auto;
-  position: sticky;
+  position: fixed;
   top: 0;
+  right: 0;
+  width: 350px;
   height: 100vh;
   z-index: 1000;
+  flex-shrink: 0;
 }
 
 .right-sidebar-section {
@@ -1773,26 +1780,51 @@ footer {
 }
 
 @media (max-width: 1400px) {
-  .layout-container {
-    grid-template-columns: 280px minmax(500px, 1fr) 320px;
+  .sidebar {
+    width: 260px;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .main-content {
+    margin-left: 260px;
+    margin-right: 300px;
+  }
+
+  .right-sidebar {
+    width: 300px;
+    padding: 2rem 1rem !important;
+  }
+}
+
+@media (max-width: 1300px) {
+  .sidebar {
+    width: 240px;
+    padding: 1.5rem 1rem;
+  }
+
+  .main-content {
+    margin-left: 240px;
+    margin-right: 280px;
+  }
+
+  .right-sidebar {
+    width: 280px;
+    padding: 2rem 0.75rem !important;
   }
 }
 
 @media (max-width: 1200px) {
-  .layout-container {
-    grid-template-columns: 280px 1fr;
+  .sidebar {
+    width: 280px;
+  }
+
+  .main-content {
+    margin-left: 280px;
+    margin-right: 0;
   }
 
   .right-sidebar {
-    display: block;
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    padding: 2rem 1rem;
-    margin-top: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: none;
+    display: none;
   }
 
   .right-sidebar.mobile-visible {
