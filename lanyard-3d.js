@@ -21,7 +21,7 @@
 
 		document.body.classList.add('has-3d-lanyard');
 
-		// Add floating warning message to body so it can float across entire screen
+		
 		const warningMsg = document.createElement('div');
 		const warningBaseText = "don't press me";
 		let warningResetTimer = null;
@@ -105,7 +105,7 @@
 				spinRemaining = 2 * Math.PI;
 				dizzyDuration = 2.5;
 
-				// Temporary dizzy text on the speech cloud
+				
 				console.log('Changing text to dizzy message');
 				warningMsg.textContent = 'Nakaka-hilo talaga pag pina ikot-ikot ka lang nya';
 				if (warningResetTimer) { clearTimeout(warningResetTimer); }
