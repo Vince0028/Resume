@@ -87,6 +87,29 @@
       overflow: visible;
     }
 
+    .envelope-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #d1b07a;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+      border-radius: 10px;
+      padding: 18px 22px;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: #6b4a26;
+      letter-spacing: 0.3px;
+      font-size: 18px;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .envelope-label .label-line {
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+
     .envelope-body,
     .envelope-flap,
     .envelope-front,
@@ -119,7 +142,7 @@
       border: 2px solid #9c6d39;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
       inset: 44px 14px 18px 14px;
-      z-index: 11;
+      z-index: 8;
       transition: z-index 0s 0.1s;
     }
 
@@ -609,6 +632,11 @@
       <div class="envelope-shadow"></div>
       <div class="envelope-body"></div>
       <div class="envelope-liner"></div>
+      <div class="envelope-label" aria-label="Applicant details on envelope">
+        <div class="label-line">Applicant No. 028</div>
+        <div class="label-line">Vince Nelmar Alobin</div>
+        <div class="label-line">Applying for: Software Engineer</div>
+      </div>
       <main class="page resume-card" aria-label="Simple portfolio" id="resumeCard">
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
       <div class="top-actions">
