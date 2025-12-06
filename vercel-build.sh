@@ -25,6 +25,7 @@ mkdir -p public
 echo "Copying resume root files..."
 
 cp -f index.html public/ || true
+cp -f simple_portfolio.html public/ || true
 cp -f styles.css public/ || true
 cp -f script.js public/ || true
 cp -f lanyard-3d.js public/ || true

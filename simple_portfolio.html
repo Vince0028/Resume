@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vince Nelmar Alobin – Simple Portfolio</title>
+  <link rel="icon" type="image/png" href="Images/web_logo.png">
+  <style>
+    :root {
+      --ink: #1f2937;
+      --muted: #4b5563;
+      --paper: #ffffff;
+      --border: #e5e7eb;
+      --accent: #111827;
+      --accent-light: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      background: #f7f7f7;
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      padding: 32px 12px 64px;
+    }
+
+    .page {
+      background: var(--paper);
+      width: 100%;
+      max-width: 880px;
+      padding: 48px 52px;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    .name {
+      font-size: 32px;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .role {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .contact-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section h2 {
+      font-size: 18px;
+      letter-spacing: 0.2px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .section p {
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      background: var(--accent-light);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 0;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .list-item {
+      margin-bottom: 12px;
+    }
+
+    .list-item strong {
+      display: inline-block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px 24px;
+    }
+
+    .card {
+      background: var(--accent-light);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 14px 16px;
+    }
+
+    .card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-link {
+      text-decoration: none;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 0;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-link.secondary {
+      background: #374151;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 36px 24px;
+      }
+
+      .name {
+        font-size: 26px;
+      }
+
+      .contact-line {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .footer-actions {
+        flex-direction: column;
+      }
+
+      .btn-link {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Simple portfolio">
+    <header class="header">
+      <div class="name">Vince Nelmar Alobin</div>
+      <div class="role">BSIT Student • Web & App Projects</div>
+      <div class="contact-line">
+        <span>📧 alobinvince@gmail.com</span>
+        <span>📱 09480914634</span>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="summary-title">
+      <h2 id="summary-title">Summary</h2>
+      <p>Passionate IT student building practical web, app, and embedded projects. Focused on clear solutions, reliable execution, and continuous learning.</p>
+    </section>
+
+    <section class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="two-column">
+        <a class="card card-link" href="#">
+          <div class="list-item">
+            <strong>Driver Expression Detector</strong>
+            <p>Detects yawns or lost focus and triggers a buzzer for safety.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">Raspberry Pi</span>
+          </div>
+        </a>
+        <a class="card card-link" href="https://denguetect.onrender.com" target="_blank" rel="noopener noreferrer">
+          <div class="list-item">
+            <strong>DengueTect</strong>
+            <p>Assesses dengue risk from symptoms and shares news updates.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">HTML/CSS/JS</span>
+            <span class="pill">SQL</span>
+          </div>
+        </a>
+        <a class="card card-link" href="https://student-monitor-student-portal.onrender.com" target="_blank" rel="noopener noreferrer">
+          <div class="list-item">
+            <strong>Student Portal</strong>
+            <p>Classroom portal combining assignments, monitoring, and forms.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">HTML/CSS/JS</span>
+            <span class="pill">SQL</span>
+          </div>
+        </a>
+        <a class="card card-link" href="https://anilytics-rice-app.onrender.com" target="_blank" rel="noopener noreferrer">
+          <div class="list-item">
+            <strong>AnaLytics</strong>
+            <p>Rice retailer app for waste tracking and online storefronts.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">HTML/CSS/JS</span>
+            <span class="pill">SQL</span>
+          </div>
+        </a>
+        <a class="card card-link" href="https://benpdf.onrender.com" target="_blank" rel="noopener noreferrer">
+          <div class="list-item">
+            <strong>benPDF</strong>
+            <p>Multi-tool converter for QR codes, binaries, and document formats.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Python</span>
+            <span class="pill">HTML/CSS/JS</span>
+            <span class="pill">Docker</span>
+          </div>
+        </a>
+        <a class="card card-link" href="#">
+          <div class="list-item">
+            <strong>SmartShut</strong>
+            <p>Arduino-based motion-aware lighting with warning buzzer.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill">Arduino</span>
+            <span class="pill">C/C++</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+      <div class="pill-row">
+        <span class="pill">Web Development</span>
+        <span class="pill">Computer Programming</span>
+        <span class="pill">Computer Animation</span>
+        <span class="pill">Video Editing</span>
+        <span class="pill">Embedded Prototyping</span>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="education-title">
+      <h2 id="education-title">Education</h2>
+      <div class="list-item">
+        <strong>Asia Pacific College (APC)</strong>
+        <p>BS Information Technology • 2024 - Present • Makati City, Philippines</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="cert-title">
+      <h2 id="cert-title">Certificate</h2>
+      <p>NC2 Certificate (TESDA)</p>
+    </section>
+
+    <section class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p>Email: alobinvince@gmail.com · Phone: 09480914634</p>
+    </section>
+
+    <div class="footer-actions">
+      <a class="btn-link" href="terminal/index.html">Press to go to terminal resume</a>
+      <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
+    </div>
+  </main>
+</body>
+</html>

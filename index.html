@@ -22,7 +22,7 @@
         const path = location.pathname || '/';
         const query = location.search || '';
         if (!path.includes('/terminal') && !query.includes('resume=1')) {
-          location.replace('terminal/index.html');
+          location.replace('simple_portfolio.html');
         }
       } catch (e) { }
     })();
@@ -78,10 +78,10 @@
           <i class="bi bi-chat-dots-fill"></i>
           <span>Ask Vince</span>
         </button>
-        <button id="goBackTerminalBtnMobile" class="mobile-action-btn" aria-label="Go back to terminal"
-          onclick="window.location.href='terminal/index.html'">
-          <i class="bi bi-terminal-fill"></i>
-          <span>Go back to terminal</span>
+          <button id="goBackTerminalBtnMobile" class="mobile-action-btn" aria-label="Go back to simple portfolio"
+            onclick="window.location.href='simple_portfolio.html'">
+            <i class="bi bi-terminal-fill"></i>
+            <span>Go back to simple portfolio</span>
         </button>
       </div>
 
@@ -642,9 +642,9 @@
             <span class="messenger-text">Online, Chat with Vince</span>
           </button>
           <button id="goBackTerminalBtn" class="messenger-btn go-back-btn" aria-label="Go back to terminal"
-            onclick="window.location.href='terminal/index.html'">
+            onclick="window.location.href='simple_portfolio.html'">
             <i class="bi bi-terminal-fill"></i>
-            <span class="messenger-text">Go back to terminal</span>
+            <span class="messenger-text">Go back to simple portfolio</span>
           </button>
         </div>
       </div>
