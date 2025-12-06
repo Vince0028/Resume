@@ -38,12 +38,32 @@
       border: 1px solid var(--border);
       border-radius: 0;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      position: relative;
     }
 
     .header {
       border-bottom: 2px solid var(--border);
       padding-bottom: 20px;
       margin-bottom: 28px;
+    }
+
+    .header-main {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      background: var(--accent-light) url('Images/web_logo.png') center/cover no-repeat;
+      transition: background-image 0.2s ease;
+    }
+
+    .avatar:hover {
+      background-image: url('Images/web_shy.png');
     }
 
     .name {
@@ -153,6 +173,24 @@
       background: #374151;
     }
 
+    .top-actions {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .top-actions .btn-link {
+      padding: 10px 14px;
+      font-size: 13px;
+      letter-spacing: 0.15px;
+      width: 220px;
+      text-align: center;
+    }
+
     @media (max-width: 640px) {
       .page {
         padding: 36px 24px;
@@ -175,17 +213,43 @@
         width: 100%;
         text-align: center;
       }
+
+      .header-main {
+        align-items: flex-start;
+      }
+
+      .top-actions {
+        position: static;
+        margin-bottom: 16px;
+        width: 100%;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .top-actions .btn-link {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page" aria-label="Simple portfolio">
+    <div class="top-actions">
+      <a class="btn-link" href="terminal/index.html">Press to go to terminal resume</a>
+      <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
+    </div>
     <header class="header">
-      <div class="name">Vince Nelmar Alobin</div>
-      <div class="role">BSIT Student • Web & App Projects</div>
-      <div class="contact-line">
-        <span>📧 alobinvince@gmail.com</span>
-        <span>📱 09480914634</span>
+      <div class="header-main">
+        <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
+        <div>
+          <div class="name">Vince Nelmar Alobin</div>
+          <div class="role">BSIT Student • Web & App Projects</div>
+          <div class="contact-line">
+            <span>📧 alobinvince@gmail.com</span>
+            <span>📱 09480914634</span>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -275,6 +339,19 @@
       </div>
     </section>
 
+    <section class="section" aria-labelledby="languages-title">
+      <h2 id="languages-title">Programming Languages</h2>
+      <div class="pill-row">
+        <span class="pill">Python</span>
+        <span class="pill">JavaScript</span>
+        <span class="pill">TypeScript</span>
+        <span class="pill">HTML/CSS</span>
+        <span class="pill">SQL</span>
+        <span class="pill">C/C++</span>
+        <span class="pill">Arduino</span>
+      </div>
+    </section>
+
     <section class="section" aria-labelledby="education-title">
       <h2 id="education-title">Education</h2>
       <div class="list-item">
@@ -293,10 +370,6 @@
       <p>Email: alobinvince@gmail.com · Phone: 09480914634</p>
     </section>
 
-    <div class="footer-actions">
-      <a class="btn-link" href="terminal/index.html">Press to go to terminal resume</a>
-      <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
-    </div>
   </main>
 </body>
 </html>
