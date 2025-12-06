@@ -14,6 +14,13 @@
       --border: #e5e7eb;
       --accent: #111827;
       --accent-light: #f3f4f6;
+      /* Envelope resume sizing */
+      --resume-scale-start: 0.60;
+      --resume-scale-15: 0.68;
+      --resume-scale-35: 0.76;
+      --resume-scale-65: 1.08;
+      --resume-scale-end: 1.35;
+      --resume-translate-end: -12%;
     }
 
     body.dark-mode {
@@ -160,7 +167,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(0.32);
+      transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(var(--resume-scale-start));
       transform-origin: center center;
       pointer-events: none;
       z-index: 10;
@@ -178,21 +185,21 @@
 
     @keyframes paper-slide {
       0% {
-        transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(0.32);
+        transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(var(--resume-scale-start));
         opacity: 0;
         z-index: 1;
       }
 
       /* Start becoming visible as it slides up */
       15% {
-        transform: translateX(-50%) translateY(-60%) rotate(90deg) scale(0.35);
+        transform: translateX(-50%) translateY(-60%) rotate(90deg) scale(var(--resume-scale-15));
         opacity: 1;
         z-index: 1;
       }
 
       /* Still behind envelope front while coming up */
       35% {
-        transform: translateX(-50%) translateY(-70%) rotate(90deg) scale(0.38);
+        transform: translateX(-50%) translateY(-70%) rotate(90deg) scale(var(--resume-scale-35));
         z-index: 1;
       }
 
@@ -203,13 +210,13 @@
 
       /* Coming out and starting to straighten */
       65% {
-        transform: translateX(-50%) translateY(-70%) rotate(30deg) scale(0.70);
+        transform: translateX(-50%) translateY(-70%) rotate(30deg) scale(var(--resume-scale-65));
         z-index: 12;
       }
 
       /* Fully out, centered and bigger - moved down so top is visible */
       100% {
-        transform: translateX(-50%) translateY(-20%) rotate(0deg) scale(1.1);
+        transform: translateX(-50%) translateY(var(--resume-translate-end)) rotate(0deg) scale(var(--resume-scale-end));
         opacity: 1;
         z-index: 12;
       }
@@ -267,9 +274,13 @@
         height: 280px;
       }
 
-      .resume-card {
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(0.16);
+      :root {
+        --resume-scale-start: 0.36;
+        --resume-scale-15: 0.42;
+        --resume-scale-35: 0.50;
+        --resume-scale-65: 0.96;
+        --resume-scale-end: 1.18;
+        --resume-translate-end: -7%;
       }
     }
 
