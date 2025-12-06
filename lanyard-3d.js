@@ -107,7 +107,7 @@
 
 				// Temporary dizzy text on the speech cloud
 				console.log('Changing text to dizzy message');
-				warningMsg.textContent = 'Nakaka-hilo talaga pag pina ikot-ikot ka nya';
+				warningMsg.textContent = 'Nakaka-hilo talaga pag pina ikot-ikot ka lang nya';
 				if (warningResetTimer) { clearTimeout(warningResetTimer); }
 				warningResetTimer = setTimeout(() => {
 					console.log('Resetting text back to default');
