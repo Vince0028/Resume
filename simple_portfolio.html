@@ -288,6 +288,46 @@
         --resume-scale-end: 1.18;
         --resume-translate-end: -7%;
       }
+
+      /* Mobile: start upright and use vertical-only animation */
+      .resume-card {
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(var(--resume-scale-start));
+      }
+
+      .envelope-stage.opened .resume-card {
+        animation: paper-slide-mobile 0.9s ease-out forwards;
+      }
+
+      @keyframes paper-slide-mobile {
+        0% {
+          transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(var(--resume-scale-start));
+          opacity: 0;
+          z-index: 12;
+        }
+
+        20% {
+          transform: translateX(-50%) translateY(-62%) rotate(0deg) scale(var(--resume-scale-15));
+          opacity: 1;
+          z-index: 12;
+        }
+
+        45% {
+          transform: translateX(-50%) translateY(-72%) rotate(0deg) scale(var(--resume-scale-35));
+          z-index: 12;
+        }
+
+        70% {
+          transform: translateX(-50%) translateY(-68%) rotate(0deg) scale(var(--resume-scale-65));
+          z-index: 12;
+        }
+
+        100% {
+          transform: translateX(-50%) translateY(var(--resume-translate-end)) rotate(0deg) scale(var(--resume-scale-end));
+          opacity: 1;
+          z-index: 12;
+        }
+      }
     }
 
     .header {
@@ -451,6 +491,28 @@
       align-items: flex-end;
     }
 
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #111827;
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      z-index: 20;
+    }
+
+    body.dark-mode .menu-toggle {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
     .top-actions .btn-link {
       padding: 10px 14px;
       font-size: 13px;
@@ -508,19 +570,33 @@
         align-items: flex-start;
       }
 
+      .menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .top-actions {
         position: static;
+        margin-top: 10px;
         margin-bottom: 16px;
         width: 100%;
         justify-content: flex-start;
         flex-direction: column;
         align-items: flex-start;
+        background: var(--paper);
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        display: none;
       }
 
-      .top-actions .btn-link {
-        width: 100%;
+      .top-actions.show {
+        display: flex;
       }
 
+      .top-actions .btn-link,
       .theme-btn {
         width: 100%;
       }
@@ -535,6 +611,7 @@
       <div class="envelope-body"></div>
       <div class="envelope-liner"></div>
       <main class="page resume-card" aria-label="Simple portfolio" id="resumeCard">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
       <div class="top-actions">
         <a class="btn-link" href="terminal/index.html">Press to go to terminal resume</a>
         <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
@@ -692,6 +769,8 @@
     const envelope = document.getElementById('envelope');
     const envelopeBtn = document.getElementById('openEnvelopeBtn');
     const stage = document.getElementById('envelopeStage');
+    const menuToggle = document.getElementById('menuToggle');
+    const topActions = document.querySelector('.top-actions');
     let envelopeOpened = false;
 
     if (savedTheme === 'dark') {
@@ -711,6 +790,11 @@
       envelopeOpened = true;
       stage.classList.add('opened');
     };
+
+    menuToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      topActions?.classList.toggle('show');
+    });
 
     envelope.addEventListener('click', openEnvelope);
     envelopeBtn.addEventListener('click', openEnvelope);
