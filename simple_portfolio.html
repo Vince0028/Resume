@@ -120,12 +120,12 @@
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
       inset: 44px 14px 18px 14px;
       z-index: 11;
-      transition: z-index 0s 1.3s;
+      transition: z-index 0s 0.1s;
     }
 
     .envelope-stage.opened .envelope-front {
-      z-index: 4;
-      transition: z-index 0s 0.7s;
+      z-index: 2;
+      transition: z-index 0s 0s;
     }
 
     .envelope-flap {
@@ -187,20 +187,26 @@
       0% {
         transform: translateX(-50%) translateY(-50%) rotate(90deg) scale(var(--resume-scale-start));
         opacity: 0;
-        z-index: 1;
+        z-index: 12;
       }
 
       /* Start becoming visible as it slides up */
       15% {
         transform: translateX(-50%) translateY(-60%) rotate(90deg) scale(var(--resume-scale-15));
         opacity: 1;
-        z-index: 1;
+        z-index: 12;
+      }
+
+      /* Rise above flap sooner */
+      25% {
+        transform: translateX(-50%) translateY(-65%) rotate(90deg) scale(calc((var(--resume-scale-15) + var(--resume-scale-35)) / 2));
+        z-index: 12;
       }
 
       /* Still behind envelope front while coming up */
       35% {
         transform: translateX(-50%) translateY(-70%) rotate(90deg) scale(var(--resume-scale-35));
-        z-index: 1;
+        z-index: 12;
       }
 
       /* Come in front - must pass flap now */
