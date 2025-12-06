@@ -970,7 +970,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen p-2 md:p-6 flex items-center justify-center bg-black overflow-hidden relative">
+    <div className="w-screen min-h-screen md:h-screen p-2 md:p-6 flex justify-center items-start bg-black overflow-y-auto md:overflow-hidden relative">
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
         backgroundImage: `radial-gradient(${THEME_COLOR.replace('text-', '')} 1px, transparent 1px)`,
         backgroundSize: '30px 30px'
@@ -978,7 +978,7 @@ const App: React.FC = () => {
 
       {!privacyOpen && (
         <>
-          <div className={`relative z-10 w-full max-w-[1600px] h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
+          <div className={`relative z-10 w-full max-w-[1600px] min-h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
 
             <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
               <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
