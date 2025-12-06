@@ -23,8 +23,10 @@
 
 		// Add floating warning message to body so it can float across entire screen
 		const warningMsg = document.createElement('div');
+		const warningBaseText = "don't press me";
+		let warningResetTimer = null;
 		warningMsg.className = 'lanyard-warning-msg';
-		warningMsg.textContent = "don't press me";
+		warningMsg.textContent = warningBaseText;
 		document.body.appendChild(warningMsg);
 
 		const w = (mount.clientWidth && mount.clientWidth > 0) ? mount.clientWidth : 220;
@@ -96,7 +98,24 @@
 		let spinRemaining = 0;
 		const spinSpeed = 4;
 		let dizzyDuration = 0;
-		mount.addEventListener('click', () => { if (spinRemaining <= 0) { spinRemaining = 2 * Math.PI; dizzyDuration = 2.5; } });
+		renderer.domElement.addEventListener('click', () => {
+			console.log('Lanyard clicked! spinRemaining:', spinRemaining);
+			if (spinRemaining <= 0) {
+				console.log('Starting spin and dizzy...');
+				spinRemaining = 2 * Math.PI;
+				dizzyDuration = 2.5;
+
+				// Temporary dizzy text on the speech cloud
+				console.log('Changing text to dizzy message');
+				warningMsg.textContent = 'Nakaka-hilo talaga pag pina ikot-ikot ka nya';
+				if (warningResetTimer) { clearTimeout(warningResetTimer); }
+				warningResetTimer = setTimeout(() => {
+					console.log('Resetting text back to default');
+					warningMsg.textContent = warningBaseText;
+					warningResetTimer = null;
+				}, 3500);
+			}
+		});
 
 		renderer.domElement.style.cursor = 'pointer';
 
