@@ -15,6 +15,16 @@
       --accent-light: #f3f4f6;
     }
 
+    body.dark-mode {
+      --ink: #e5e7eb;
+      --muted: #9ca3af;
+      --paper: #1f2937;
+      --border: #374151;
+      --accent: #f3f4f6;
+      --accent-light: #374151;
+      background: #111827;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -171,6 +181,17 @@
 
     .btn-link.secondary {
       background: #374151;
+      color: #ffffff;
+    }
+
+    body.dark-mode .btn-link {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    body.dark-mode .btn-link.secondary {
+      background: #4b5563;
+      color: #ffffff;
     }
 
     .top-actions {
@@ -189,6 +210,28 @@
       letter-spacing: 0.15px;
       width: 220px;
       text-align: center;
+    }
+
+    .theme-btn {
+      background: var(--accent);
+      color: #ffffff;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 0;
+      letter-spacing: 0.15px;
+      width: 220px;
+      text-align: center;
+    }
+
+    .theme-btn:hover {
+      background: var(--muted);
+    }
+
+    body.dark-mode .theme-btn {
+      background: #f3f4f6;
+      color: #111827;
     }
 
     @media (max-width: 640px) {
@@ -230,6 +273,10 @@
       .top-actions .btn-link {
         width: 100%;
       }
+
+      .theme-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -238,6 +285,7 @@
     <div class="top-actions">
       <a class="btn-link" href="terminal/index.html">Press to go to terminal resume</a>
       <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
     </div>
     <header class="header">
       <div class="header-main">
@@ -371,5 +419,22 @@
     </section>
 
   </main>
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('simplePortfolioTheme');
+    
+    if (savedTheme === 'dark') {
+      body.classList.add('dark-mode');
+      toggle.textContent = '☀️ Light Mode';
+    }
+    
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      toggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+      localStorage.setItem('simplePortfolioTheme', isDark ? 'dark' : 'light');
+    });
+  </script>
 </body>
 </html>
