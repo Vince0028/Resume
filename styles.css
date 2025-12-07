@@ -1222,7 +1222,7 @@ a.expertise-item {
   padding: 4px;
 }
 
-/* Hover styles moved to @media (hover: hover) section at bottom of file */
+
 
 body.light-mode .expertise-icon img.project-logo {
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25),
