@@ -1190,7 +1190,7 @@ body.light-mode .github-calendar-wrapper:hover {
   transform: translateY(0) rotateX(0);
 }
 
-/* Hover styles moved to @media (hover: hover) section at bottom of file */
+
 
 a.expertise-item {
   text-decoration: none;
