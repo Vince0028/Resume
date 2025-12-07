@@ -3377,7 +3377,7 @@ body.light-mode .cert-content {
   }
 }
 
-/* Only enable hover effects on devices that support hovering (desktop with mouse) */
+
 @media (hover: hover) and (pointer: fine) {
   .expertise-item:hover {
     border-color: var(--primary);
