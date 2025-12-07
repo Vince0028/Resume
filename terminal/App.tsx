@@ -1077,6 +1077,10 @@ const App: React.FC = () => {
               </div>
             </div>
 
+            <div className={`flex md:hidden col-span-12 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden min-h-[180px]`}>
+              <VirtualKeyboard />
+            </div>
+
             <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
               <FileExplorer />
             </div>

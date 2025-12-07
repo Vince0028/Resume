@@ -15,7 +15,7 @@ const VirtualKeyboard: React.FC = () => {
   };
 
   return (
-    <div className="hidden lg:flex flex-col w-full h-full justify-center select-none p-1">
+    <div className="flex flex-col w-full h-full justify-center select-none p-1">
       {KEYS.map((row, rIdx) => (
         <div key={rIdx} className="flex flex-1 w-full gap-1 mb-1 last:mb-0">
           {row.map((key, kIdx) => {
