@@ -309,13 +309,13 @@ body.light-mode .btn-hero-outline {
   }
 
   100% {
-    transform: translateX(calc(-100% / 6));
+    transform: translateX(calc(-100% / 9));
   }
 }
 
 @keyframes scroll-right-left {
   0% {
-    transform: translateX(calc(-100% / 6));
+    transform: translateX(calc(-100% / 9));
   }
 
   100% {
