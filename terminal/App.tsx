@@ -970,7 +970,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen md:h-screen p-2 md:p-6 flex justify-center items-start bg-black overflow-y-auto md:overflow-hidden relative">
+    <div className="w-screen min-h-screen md:h-screen p-2 md:p-6 flex justify-center items-start bg-black md:overflow-hidden relative">
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
         backgroundImage: `radial-gradient(${THEME_COLOR.replace('text-', '')} 1px, transparent 1px)`,
         backgroundSize: '30px 30px'
@@ -1004,7 +1004,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative overflow-hidden`}>
+            <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative md:overflow-hidden`}>
               <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
                 <span className="text-xs font-bold">MAIN - bash</span>
               </div>
