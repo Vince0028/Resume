@@ -3405,7 +3405,7 @@ body.light-mode .cert-content {
   }
 }
 
-/* Disable all hover effects on touch devices */
+
 @media (hover: none) {
 
   .expertise-item:hover,
