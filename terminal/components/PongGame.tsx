@@ -9,7 +9,9 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [scores, setScores] = useState({ player: 0, ai: 0 });
     const [trashTalk, setTrashTalk] = useState<string | null>(null);
+    const [countdown, setCountdown] = useState<number>(3);
     const requestRef = useRef<number>();
+    const initializedRef = useRef(false);
 
     
     const gameState = useRef({
@@ -102,6 +104,25 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('resize', handleResize);
         handleResize();
 
+        // Start countdown
+        if (!initializedRef.current) {
+            initializedRef.current = true;
+            let count = 3;
+            const countdownInterval = setInterval(() => {
+                count--;
+                setCountdown(count);
+                if (count === 0) {
+                    clearInterval(countdownInterval);
+                    // Initialize ball after countdown
+                    const state = gameState.current;
+                    state.ball.x = state.board.width / 2;
+                    state.ball.y = state.board.height / 2;
+                    state.ball.dx = (Math.random() > 0.5 ? 2.5 : -2.5);
+                    state.ball.dy = (Math.random() > 0.5 ? 2.5 : -2.5);
+                }
+            }, 1000);
+        }
+
         
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') gameState.current.keys.up = true;
@@ -117,12 +138,19 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
 
-        
+        // Game loop
         const update = () => {
             const state = gameState.current;
-            const { width, height } = state.board;
+            const { width, height} = state.board;
 
-            
+            // Don't update if countdown is active
+            if (countdown > 0) {
+                draw();
+                requestRef.current = requestAnimationFrame(update);
+                return;
+            }
+
+            // Player movement
             if (state.keys.up) state.paddleLeft.y = Math.max(0, state.paddleLeft.y - 6);
             if (state.keys.down) state.paddleLeft.y = Math.min(height - state.paddleLeft.height, state.paddleLeft.y + 6);
 
@@ -218,8 +246,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             ctx.stroke();
         };
 
-        
-        resetBall(gameState.current);
+        // Start game loop
         requestRef.current = requestAnimationFrame(update);
 
         return () => {
@@ -228,7 +255,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             window.removeEventListener('keyup', handleKeyUp);
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
         };
-    }, [onExit]);
+    }, [onExit, countdown]);
 
     return (
         <div className="w-full h-full flex flex-row bg-black/50 relative overflow-hidden">
@@ -243,6 +270,14 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                     <div className="absolute top-20 w-full flex justify-center z-20 pointer-events-none">
                         <div className="text-indigo-400 font-mono text-lg animate-bounce bg-black/80 px-4 py-2 border border-indigo-500/50 rounded whitespace-nowrap">
                             AI: "{trashTalk}"
+                        </div>
+                    </div>
+                )}
+
+                {countdown > 0 && (
+                    <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
+                        <div className="text-8xl font-bold font-mono text-indigo-500 animate-pulse">
+                            {countdown}
                         </div>
                     </div>
                 )}

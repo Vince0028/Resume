@@ -230,42 +230,42 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     }, []);
 
     return (
-        <div className="w-full h-full flex flex-row items-center justify-center font-mono relative p-2 gap-6">
+        <div className="w-full h-full flex flex-col md:flex-row items-center justify-center font-mono relative p-2 gap-4 md:gap-6">
             {}
-            <div className="h-full max-h-[90vh] w-56 border border-indigo-500/30 bg-black/80 flex flex-col items-center p-4 select-none rounded-lg relative">
-                <div className="text-indigo-500 font-bold text-xs tracking-widest absolute top-6">CONTROLS</div>
+            <div className="md:h-full md:max-h-[90vh] w-full md:w-56 border border-indigo-500/30 bg-black/80 flex md:flex-col items-center p-4 select-none rounded-lg relative order-2 md:order-1">
+                <div className="text-indigo-500 font-bold text-xs tracking-widest md:absolute md:top-6 mb-2 md:mb-0">CONTROLS</div>
 
-                <div className="flex flex-col items-center gap-3 mt-auto mb-24">
+                <div className="flex md:flex-col items-center gap-2 md:gap-3 md:mt-auto md:mb-24">
                     {}
                     <button
-                        className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 mb-2"
+                        className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 md:mb-2"
                         onMouseDown={() => playerRotate(lockedBoard, 1)}
                         onTouchStart={(e) => { e.preventDefault(); playerRotate(lockedBoard, 1); }}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                     </button>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-2 md:gap-4">
                         {}
                         <button
-                            className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
+                            className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
                             onMouseDown={() => movePlayer(-1)}
                             onTouchStart={(e) => { e.preventDefault(); movePlayer(-1); }}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
 
                         {}
                         <button
-                            className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
+                            className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
                             onMouseDown={() => movePlayer(1)}
                             onTouchStart={(e) => { e.preventDefault(); movePlayer(1); }}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
@@ -273,23 +273,23 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
 
                     {}
                     <button
-                        className="w-16 h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 mt-2"
+                        className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 md:mt-2"
                         onMouseDown={() => dropPlayer()}
                         onTouchStart={(e) => { e.preventDefault(); dropPlayer(); }}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                 </div>
 
-                <div className="text-[10px] text-indigo-500/50 text-center absolute bottom-4">
+                <div className="text-[10px] text-indigo-500/50 text-center md:absolute md:bottom-4 ml-2 md:ml-0">
                     TAP CONTROLS
                 </div>
             </div>
 
             {}
-            <div className={`border-2 ${THEME_BORDER} p-4 bg-black/90 relative flex flex-col items-center h-full max-h-[90vh] w-auto aspect-[10/22]`}>
+            <div className={`border-2 ${THEME_BORDER} p-2 md:p-4 bg-black/90 relative flex flex-col items-center h-full max-h-[70vh] md:max-h-[90vh] w-auto aspect-[10/22] order-1 md:order-2`}>
                 <div className="flex justify-between w-full mb-2 text-indigo-400 text-xs md:text-sm">
                     <span>TETRIS_TERM_V1</span>
                     <span>SCORE: {score}</span>
@@ -336,7 +336,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                 {!gameOver && (
                     <button
                         onClick={onExit}
-                        className="absolute top-2 right-2 z-20 px-3 py-1 border border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all text-xs font-bold"
+                        className="absolute top-12 right-2 z-20 px-3 py-1 border border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all text-xs font-bold"
                     >
                         EXIT
                     </button>

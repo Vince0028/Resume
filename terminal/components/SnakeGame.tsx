@@ -8,7 +8,9 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [countdown, setCountdown] = useState<number>(3);
     const requestRef = useRef<number>();
+    const initializedRef = useRef(false);
 
     
     const GRID_SIZE = 20;
@@ -96,6 +98,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
 
         const spawnFood = () => {
             const { gridWidth, gridHeight, snake } = gameState.current;
+            if (gridWidth === 0 || gridHeight === 0) return; // Don't spawn if grid not initialized
             let newFood;
             let isOnSnake;
 
@@ -120,13 +123,33 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             spawnFood();
         };
 
-        
+        // Initialize food after grid is set
         spawnFood();
 
-        
+        // Start countdown
+        if (!initializedRef.current) {
+            initializedRef.current = true;
+            let count = 3;
+            const countdownInterval = setInterval(() => {
+                count--;
+                setCountdown(count);
+                if (count === 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+        // Game loop
         const update = (time: number) => {
             if (gameOver) {
                 draw(); 
+                requestRef.current = requestAnimationFrame(update);
+                return;
+            }
+
+            // Don't update if countdown is active
+            if (countdown > 0) {
+                draw();
                 requestRef.current = requestAnimationFrame(update);
                 return;
             }
@@ -233,7 +256,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             window.removeEventListener('keydown', handleKeyDown);
             if (requestRef.current) cancelAnimationFrame(requestRef.current);
         };
-    }, [onExit, gameOver]);
+    }, [onExit, gameOver, countdown]);
 
     const handleDirectionChange = (newDirection: { x: number, y: number }) => {
         const { direction } = gameState.current;
@@ -248,6 +271,14 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             <div className="absolute top-4 w-full flex justify-center gap-12 text-2xl font-bold font-mono text-indigo-500 z-10 pointer-events-none">
                 <div>SCORE: {score}</div>
             </div>
+
+            {countdown > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
+                    <div className="text-8xl font-bold font-mono text-indigo-500 animate-pulse">
+                        {countdown}
+                    </div>
+                </div>
+            )}
 
             {}
             {gameOver && (
