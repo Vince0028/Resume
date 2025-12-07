@@ -1010,11 +1010,11 @@ const App: React.FC = () => {
               </div>
 
               {gameMode === 'pong' ? (
-                <div className="flex-1 w-full h-full mt-6">
+                <div className="hidden md:flex flex-1 w-full h-full mt-6">
                   <PongGame onExit={handleGameExit} />
                 </div>
               ) : gameMode === 'snake' ? (
-                <div className="flex-1 w-full h-full mt-6">
+                <div className="hidden md:flex flex-1 w-full h-full mt-6">
                   <SnakeGame onExit={handleGameExit} />
                 </div>
               ) : gameMode === 'chat' ? (
@@ -1094,6 +1094,18 @@ const App: React.FC = () => {
           {gameMode === 'tetris' && (
             <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
               <TetrisGame onExit={() => setGameMode('none')} />
+            </div>
+          )}
+
+          {gameMode === 'pong' && (
+            <div className="md:hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+              <PongGame onExit={() => setGameMode('none')} />
+            </div>
+          )}
+
+          {gameMode === 'snake' && (
+            <div className="md:hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+              <SnakeGame onExit={() => setGameMode('none')} />
             </div>
           )}
         </>

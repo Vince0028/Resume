@@ -249,9 +249,43 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
 
                 <canvas ref={canvasRef} className="w-full h-full block" />
 
-                <div className="absolute bottom-4 left-0 w-full text-center text-xs text-indigo-400/50 font-mono pointer-events-none">
+                <div className="absolute bottom-4 left-0 w-full text-center text-xs text-indigo-400/50 font-mono pointer-events-none md:block hidden">
                     CONTROLS: W/S or ARROWS | Q: QUIT
                 </div>
+
+                {/* Mobile Touch Controls */}
+                <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col gap-4 z-30">
+                    {/* Up Button */}
+                    <button
+                        onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.up = true; }}
+                        onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.up = false; }}
+                        onClick={() => {}}
+                        className="w-20 h-20 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/30 transition-all"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+                    {/* Down Button */}
+                    <button
+                        onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.down = true; }}
+                        onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.down = false; }}
+                        onClick={() => {}}
+                        className="w-20 h-20 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/30 transition-all"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Mobile Exit Button */}
+                <button
+                    onClick={onExit}
+                    className="absolute top-4 right-4 z-30 px-4 py-2 border-2 border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all font-mono text-sm font-bold pointer-events-auto"
+                >
+                    EXIT
+                </button>
             </div>
 
 

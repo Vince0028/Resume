@@ -332,6 +332,16 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                     </div>
                 )}
 
+                {/* Mobile Exit Button - Always visible */}
+                {!gameOver && (
+                    <button
+                        onClick={onExit}
+                        className="absolute top-2 right-2 z-20 px-3 py-1 border border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all text-xs font-bold"
+                    >
+                        EXIT
+                    </button>
+                )}
+
                 <div className="mt-2 text-[10px] md:text-xs text-center text-gray-500">
                     ARROWS: MOVE/ROTATE | Q: QUIT
                 </div>

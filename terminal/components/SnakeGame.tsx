@@ -235,6 +235,13 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
         };
     }, [onExit, gameOver]);
 
+    const handleDirectionChange = (newDirection: { x: number, y: number }) => {
+        const { direction } = gameState.current;
+        // Prevent reversing direction
+        if (newDirection.x === -direction.x && newDirection.y === -direction.y) return;
+        gameState.current.nextDirection = newDirection;
+    };
+
     return (
         <div className="w-full h-full flex flex-col relative overflow-hidden bg-black/50">
             {}
@@ -247,18 +254,92 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 backdrop-blur-sm">
                     <h2 className="text-4xl font-bold text-red-500 mb-4 font-mono animate-pulse">GAME OVER</h2>
                     <p className="text-indigo-300 text-xl mb-8 font-mono">FINAL SCORE: {score}</p>
-                    <div className="flex gap-4 text-sm font-mono text-indigo-400">
-                        <span className="border border-indigo-500/50 px-3 py-1 rounded">PRESS SPACE TO RESTART</span>
-                        <span className="border border-indigo-500/50 px-3 py-1 rounded">PRESS Q TO QUIT</span>
+                    <div className="flex flex-col gap-4">
+                        <button
+                            onClick={() => {
+                                setGameOver(false);
+                                setScore(0);
+                                gameState.current.snake = [{ x: 10, y: 10 }];
+                                gameState.current.direction = { x: 1, y: 0 };
+                                gameState.current.nextDirection = { x: 1, y: 0 };
+                            }}
+                            className="px-6 py-2 border-2 border-indigo-500 bg-black text-indigo-400 hover:bg-indigo-500/20 active:scale-95 transition-all font-mono font-bold"
+                        >
+                            RESTART
+                        </button>
+                        <button
+                            onClick={onExit}
+                            className="px-6 py-2 border-2 border-red-500 bg-black text-red-400 hover:bg-red-500/20 active:scale-95 transition-all font-mono font-bold"
+                        >
+                            EXIT
+                        </button>
                     </div>
                 </div>
             )}
 
             <canvas ref={canvasRef} className="w-full h-full block" />
 
-            <div className="absolute bottom-4 left-0 w-full text-center text-xs text-indigo-400/50 font-mono pointer-events-none">
+            <div className="absolute bottom-4 left-0 w-full text-center text-xs text-indigo-400/50 font-mono pointer-events-none md:block hidden">
                 CONTROLS: WASD / ARROWS | Q: QUIT
             </div>
+
+            {/* Mobile Touch Controls */}
+            {!gameOver && (
+                <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30">
+                    {/* Up Button */}
+                    <button
+                        onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 0, y: -1 }); }}
+                        onClick={() => handleDirectionChange({ x: 0, y: -1 })}
+                        className="w-16 h-16 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+                    <div className="flex gap-4">
+                        {/* Left Button */}
+                        <button
+                            onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: -1, y: 0 }); }}
+                            onClick={() => handleDirectionChange({ x: -1, y: 0 })}
+                            className="w-16 h-16 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        {/* Down Button */}
+                        <button
+                            onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 0, y: 1 }); }}
+                            onClick={() => handleDirectionChange({ x: 0, y: 1 })}
+                            className="w-16 h-16 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        {/* Right Button */}
+                        <button
+                            onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 1, y: 0 }); }}
+                            onClick={() => handleDirectionChange({ x: 1, y: 0 })}
+                            className="w-16 h-16 border-2 border-indigo-500 bg-black/80 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Mobile Exit Button - Only show during gameplay */}
+            {!gameOver && (
+                <button
+                    onClick={onExit}
+                    className="absolute top-4 right-4 z-30 px-4 py-2 border-2 border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all font-mono text-sm font-bold"
+                >
+                    EXIT
+                </button>
+            )}
         </div>
     );
 };
