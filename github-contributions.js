@@ -29,12 +29,22 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   const cacheKey = 'gh_contribs_' + username;
+  let cachedData = null;
+  
   try {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (parsed && parsed.ts && Date.now() - parsed.ts < 24 * 60 * 60 * 1000 && parsed.html) {
+      if (parsed && parsed.ts && Date.now() - parsed.ts < 12 * 60 * 60 * 1000 && parsed.html) {
         calendarEl.innerHTML = parsed.html;
+        cachedData = parsed;
+        setTimeout(() => {
+          fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, { signal: AbortSignal.timeout(5000) }).then(r => r.json()).then(data => {
+            if (data && data.contributions && JSON.stringify(data) !== JSON.stringify(parsed.data)) {
+              location.reload();
+            }
+          }).catch(() => {});
+        }, 2000);
         return;
       }
     }
@@ -42,12 +52,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   renderSkeleton();
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-
   try {
-    const resp = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, { signal: controller.signal });
-    clearTimeout(timeout);
+    const resp = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, { signal: AbortSignal.timeout(6000) });
     if (!resp.ok) throw new Error('Network error');
     const data = await resp.json();
     if (!data || !data.contributions) throw new Error('No data');
@@ -108,13 +114,33 @@ document.addEventListener('DOMContentLoaded', async function () {
     html += `</div>`;
 
     html += `<div class="contrib-grid">`;
+    
+    // Calculate max contribution for proper level distribution
+    let maxContribution = 0;
+    contributions.forEach(d => {
+      if (d.count > maxContribution) maxContribution = d.count;
+    });
+    
+    const levelThresholds = [0];
+    if (maxContribution > 0) {
+      levelThresholds.push(Math.ceil(maxContribution * 0.25));
+      levelThresholds.push(Math.ceil(maxContribution * 0.5));
+      levelThresholds.push(Math.ceil(maxContribution * 0.75));
+    }
+    
     weeks.forEach(w => {
       html += `<div class="contrib-week">`;
       for (let i = 0; i < 7; i++) {
         const day = w[i];
         if (!day) { html += `<div class="contrib-day empty"></div>`; continue; }
         const c = day.count || 0;
-        const level = c === 0 ? 0 : c < 3 ? 1 : c < 6 ? 2 : c < 10 ? 3 : 4;
+        let level = 0;
+        if (c > 0) {
+          if (c >= levelThresholds[3]) level = 4;
+          else if (c >= levelThresholds[2]) level = 3;
+          else if (c >= levelThresholds[1]) level = 2;
+          else level = 1;
+        }
         const dt = new Date(day.date);
         const dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         html += `<div class="contrib-day level-${level}" data-count="${c}" data-date="${dateStr}" title="${c} contribution${c !== 1 ? 's' : ''} on ${dateStr}"></div>`;
@@ -137,10 +163,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     calendarEl.innerHTML = html;
 
-    try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), html })); } catch (e) { }
+    try { localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), html, data })); } catch (e) { }
 
   } catch (err) {
-    clearTimeout(timeout);
     console.error('Error loading GitHub contributions:', err);
     const header = calendarEl.querySelector('.contrib-header');
     if (header) {
