@@ -685,6 +685,27 @@
     <script src="lanyard-3d.js"></script>
     <script src="github-contributions.js"></script>
     <style>
+         
+          ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            background: var(--darker-bg, #060918);
+          }
+
+          ::-webkit-scrollbar-track {
+            background: var(--darker-bg, #060918);
+            border-radius: 8px;
+          }
+
+          ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary, #6366f1), var(--secondary, #8b5cf6));
+            border-radius: 8px;
+            border: 2px solid var(--card-bg, #1a1f3a);
+          }
+
+          ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--accent, #ec4899), var(--primary, #6366f1));
+          }
       .messenger-title {
         display: flex;
         align-items: center;

@@ -14,30 +14,32 @@
     body {
       background-color: #050505;
       color: #6366f1;
-      
       font-family: 'Share Tech Mono', monospace;
       overflow-x: hidden;
       overflow-y: auto;
-      
     }
 
     
+    /* Custom Scrollbar to match UI color palette */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
+      background: var(--darker-bg, #060918);
     }
 
     ::-webkit-scrollbar-track {
-      background: #0a0a1a;
+      background: var(--darker-bg, #060918);
+      border-radius: 8px;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #6366f1;
-      border-radius: 2px;
+      background: linear-gradient(135deg, var(--primary, #6366f1), var(--secondary, #8b5cf6));
+      border-radius: 8px;
+      border: 2px solid var(--card-bg, #1a1f3a);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #818cf8;
+      background: linear-gradient(135deg, var(--accent, #ec4899), var(--primary, #6366f1));
     }
 
     
