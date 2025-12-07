@@ -1198,7 +1198,6 @@ a.expertise-item {
   cursor: pointer;
 }
 
-/* Hover styles moved to @media (hover: hover) section at bottom of file */
 
 .expertise-icon {
   font-size: 2rem;
