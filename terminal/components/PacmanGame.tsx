@@ -262,6 +262,9 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         
         const { pacman, ghosts } = gameState.current;
 
+        // Check all ghosts but only trigger one death per cycle
+        let deathTriggered = false;
+
         ghosts.forEach(ghost => {
             if (ghost.isInHouse) return; // Skip ghosts in house
             
@@ -274,9 +277,11 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                     ghost.scared = false;
                     ghost.isInHouse = true;
                     ghost.respawnTimer = GHOST_RESPAWN_TIME;
-                } else {
-                    // Lose a life - trigger death animation
+                } else if (!deathTriggered) {
+                    // Lose a life - trigger death animation (only once)
+                    deathTriggered = true;
                     setIsDying(true);
+                    gameState.current.isInvincible = true; // Immediately set invincible
                     
                     setTimeout(() => {
                         setIsDying(false);
@@ -284,6 +289,7 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                             const newLives = l - 1;
                             if (newLives <= 0) {
                                 setGameOver(true);
+                                gameState.current.isInvincible = false;
                             } else {
                                 // Show ready screen
                                 setShowReady(true);
