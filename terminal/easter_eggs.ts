@@ -58,7 +58,27 @@ export const JOKES = [
   "Why did the database administrator file for divorce? His wife had too many foreign relationships.",
   "I told my computer I needed a break, and now it won't stop sending me Kit-Kats.",
   "Why was the JavaScript developer broke? Because he lost his CENTS (cents)!",
-  "What does a baby computer call its father? Data."
+  "What does a baby computer call its father? Data.",
+  "Why did the developer cross the road? To get to the other IDE.",
+  "I told my computer I needed a break — it responded with a KitKat ad.",
+  "Why don't bachelors like Git? Because they can't commit.",
+  "Why did the cloud break up with the server? Too many issues with uptime.",
+  "How do programmers enjoy nature? They log out.",
+  "Why was the developer afraid of the elevator? Too many cache levels.",
+  "Why did the function blush? It had a local variable.",
+  "How many front-end developers does it take to change a light bulb? None — they just declare it deprecated and leave it to CSS.",
+  "Why did the coder bring a ladder to work? To scale the app.",
+  "I wrote a script that makes coffee. It's called 'brew.js' and it only accepts java.",
+  "Why are assembly programmers always calm? They have low-level control.",
+  "Why don't programmers like to go outside? The sun has too many rays (arrays).",
+  "Why was the computer tired when it got home? It had a long byte at work.",
+  "What's an AI's favorite snack? Neural crisps.",
+  "Why did the binary tree break up? Too many branching decisions.",
+  "A UX designer walks into a bar and immediately moves everything two pixels to the right.",
+  "Why did the developer get promoted? Because he had outstanding callbacks.",
+  "Why do programmers love coffee? It helps them Java better.",
+  "Why did the CSS developer get locked out of the house? Because he forgot to close his tags.",
+  "Why did the programmer stay calm during an outage? He had fault tolerance."
 ];
 
 export const FUN_FACTS = [
@@ -86,5 +106,20 @@ export const FUN_FACTS = [
   "Over 6,000 computer viruses are released every month.",
   "The first banner ad appeared on the internet in 1994.",
   "Bill Gates' house was designed using a Macintosh computer.",
-  "The Firefox logo isn't a fox - it's a red panda."
+  "The Firefox logo isn't a fox - it's a red panda.",
+  "The word 'robot' comes from a Czech word meaning 'forced labor' (from a 1920 play).",
+  "The first computer game to be played over a network was a 1973 project at MIT called 'Spacewar!' modified for the ARPANET.",
+  "The original PlayStation was intended to be a Nintendo console until the partnership fell through.",
+  "Bluetooth is named after a 10th century Scandinavian king, Harald Bluetooth.",
+  "The shortest password in the world might be '1' — but it wouldn't be safe.",
+  "The first e-mail spam was sent in 1978 advertising a new computer system.",
+  "The total number of transistors in a modern smartphone can exceed the number of stars in the Milky Way (in scale comparisons).",
+  "The 'save' icon (floppy disk) is still used even though many users have never seen a floppy disk in real life.",
+  "The GIF file format was introduced in 1987 and remains widely used for short animations.",
+  "NASA still uses FORTRAN for some legacy scientific systems.",
+  "The first CPU contained only a few thousand transistors; modern CPUs have billions.",
+  "The mouse was once considered an optional accessory — now it's almost universal in personal computing.",
+  "More than 50% of the world population uses a smartphone as of the mid-2020s.",
+  "A single Google query uses about 1,000 servers to compute the results in large-scale index lookups (varies by query).",
+  "Some programming languages are intentionally esoteric, created as jokes or challenges (like Brainfuck and Piet)."
 ];
