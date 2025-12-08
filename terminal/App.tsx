@@ -13,6 +13,7 @@ import MemoryBlock from './components/MemoryBlock';
 import TetrisGame from './components/TetrisGame';
 import PongGame from './components/PongGame';
 import SnakeGame from './components/SnakeGame';
+import PacmanGame from './components/PacmanGame';
 import LiveChat from './components/LiveChat';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
@@ -69,7 +70,7 @@ const App: React.FC = () => {
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
-  const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake' | 'chat'>('none');
+  const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake' | 'pacman' | 'chat'>('none');
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -125,6 +126,9 @@ const App: React.FC = () => {
       case 'snake':
         exitMsg = 'Exited Snake. Welcome back to bash.';
         break;
+      case 'pacman':
+        exitMsg = 'Exited Pac-Man. Welcome back to bash.';
+        break;
       case 'chat':
         exitMsg = 'Exited Live Chat. Welcome back to bash.';
         break;
@@ -156,7 +160,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'show me games' || lowerCmd === 'games' || lowerCmd === 'list games') {
-      const gamesText = `\nAVAILABLE GAMES:\n----------------\nTETRIS  - Code: PLAY TETRIS\nPONG    - Code: PLAY PONG\nSNAKE   - Code: PLAY SNAKE\n`;
+      const gamesText = `\nAVAILABLE GAMES:\n----------------\nTETRIS  - Code: PLAY TETRIS\nPONG    - Code: PLAY PONG\nSNAKE   - Code: PLAY SNAKE\nPACMAN  - Code: PLAY PACMAN\n`;
       setHistory(prev => [...prev, { id: `games-${Date.now()}`, type: MessageType.SYSTEM, content: gamesText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -179,6 +183,13 @@ const App: React.FC = () => {
     if (lowerCmd === 'play snake' || lowerCmd === 'snake' || lowerCmd.replace(/\s+/g, ' ') === 'play snake') {
       setGameMode('snake');
       setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Snake...', timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'play pacman' || lowerCmd === 'pacman' || lowerCmd.replace(/\s+/g, ' ') === 'play pacman') {
+      setGameMode('pacman');
+      setHistory(prev => [...prev, { id: `game-${Date.now()}`, type: MessageType.INFO, content: 'Starting Pac-Man...', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -1124,6 +1135,12 @@ const App: React.FC = () => {
           {gameMode === 'snake' && (
             <div className="md:hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
               <SnakeGame onExit={() => setGameMode('none')} />
+            </div>
+          )}
+
+          {gameMode === 'pacman' && (
+            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+              <PacmanGame onExit={() => setGameMode('none')} />
             </div>
           )}
         </>
