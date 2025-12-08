@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { THEME_COLOR } from '../constants';
 
-const MatrixRain: React.FC = () => {
+interface MatrixRainProps {
+    onEasterEggChange?: (isActive: boolean) => void;
+}
+
+const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -34,7 +38,7 @@ const MatrixRain: React.FC = () => {
         const secretMessage = "YOU GET 5 PESOS IF YOU DECRYPT THIS FIRST 5 PERSON TO GET IT";
         const messageBinary = secretMessage.split('').map(char => 
             char.charCodeAt(0).toString(2).padStart(8, '0')
-        ).join(' ');
+        ).join('  ');
         
         let showEasterEgg = false;
         let easterEggStartTime = 0;
@@ -44,6 +48,7 @@ const MatrixRain: React.FC = () => {
             if (!showEasterEgg && Math.random() < 0.10) {
                 showEasterEgg = true;
                 easterEggStartTime = Date.now();
+                onEasterEggChange?.(true);
             }
         };
         
@@ -59,6 +64,7 @@ const MatrixRain: React.FC = () => {
 
             if (showEasterEgg && Date.now() - easterEggStartTime > easterEggDuration) {
                 showEasterEgg = false;
+                onEasterEggChange?.(false);
             }
 
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';

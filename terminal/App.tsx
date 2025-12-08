@@ -71,6 +71,7 @@ const App: React.FC = () => {
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [networkLevel, setNetworkLevel] = useState(60);
   const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake' | 'pacman' | 'chat'>('none');
+  const [isEasterEggActive, setIsEasterEggActive] = useState(false);
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -1019,8 +1020,10 @@ const App: React.FC = () => {
             </div>
 
             <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-              <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
-              <MatrixRain />
+              {!isEasterEggActive && (
+                <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
+              )}
+              <MatrixRain onEasterEggChange={setIsEasterEggActive} />
             </div>
 
             <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
