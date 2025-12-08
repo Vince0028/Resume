@@ -125,44 +125,30 @@ export const FUN_FACTS = [
 ];
 
 
+let daisyBellAudio: HTMLAudioElement | null = null;
+
 export const playDaisyBell = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      console.log('Attempting to play Daisy Bell...');
-     
-      const audio = new Audio('/music/daisy_bell_computer.mp3');
-      audio.volume = 0.7;
-      
-   
-      audio.oncanplay = () => {
-        console.log('Audio can play');
-      };
-      
-      audio.onplay = () => {
-        console.log('Audio started playing');
-        resolve(true);
-      };
-      
-      audio.onerror = (e) => {
-        console.error('Audio error:', e);
-        reject(new Error('Failed to load audio file'));
-      };
-      
-      const playPromise = audio.play();
-      if (playPromise) {
-        playPromise
-          .then(() => {
-            console.log('Audio play promise resolved');
-            resolve(true);
-          })
-          .catch((error) => {
-            console.error('Play error:', error);
-            reject(error);
-          });
-      }
-    } catch (error) {
-      console.error('Exception in playDaisyBell:', error);
-      reject(error);
-    }
-  });
+ 
+  if (!daisyBellAudio) {
+    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio.volume = 0.7;
+  }
+  
+
+  daisyBellAudio.currentTime = 0;
+  return daisyBellAudio.play();
+};
+
+export const pauseDaisyBell = () => {
+  if (daisyBellAudio) {
+    daisyBellAudio.pause();
+  }
+};
+
+export const getDaisyBellAudio = () => {
+  if (!daisyBellAudio) {
+    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio.volume = 0.7;
+  }
+  return daisyBellAudio;
 };
