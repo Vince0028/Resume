@@ -31,6 +31,24 @@ const MatrixRain: React.FC = () => {
         const fps = 30;
         const interval = 1000 / fps;
 
+        const secretMessage = "YOU GET 5 PESOS IF YOU DECRYPT THIS, First 5 person to get it";
+        const messageBinary = secretMessage.split('').map(char => 
+            char.charCodeAt(0).toString(2).padStart(8, '0')
+        ).join(' ');
+        
+        let showEasterEgg = false;
+        let easterEggStartTime = 0;
+        const easterEggDuration = 5000;
+        
+        const checkEasterEgg = () => {
+            if (!showEasterEgg && Math.random() < 0.20) {
+                showEasterEgg = true;
+                easterEggStartTime = Date.now();
+            }
+        };
+        
+        const easterEggInterval = setInterval(checkEasterEgg, 5000);
+
         const draw = (timestamp: number) => {
             animationFrameId = requestAnimationFrame(draw);
 
@@ -39,20 +57,41 @@ const MatrixRain: React.FC = () => {
 
             lastDrawTime = timestamp - (elapsed % interval);
 
+            if (showEasterEgg && Date.now() - easterEggStartTime > easterEggDuration) {
+                showEasterEgg = false;
+            }
+
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#6366f1';
-            ctx.font = `${fontSize}px monospace`;
+            if (showEasterEgg) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff00';
+                ctx.font = `12px monospace`;
+                
+                const lines = messageBinary.match(/.{1,80}/g) || [];
+                const startY = (canvas.height - lines.length * 20) / 2;
+                
+                lines.forEach((line, index) => {
+                    const textWidth = ctx.measureText(line).width;
+                    const x = (canvas.width - textWidth) / 2;
+                    ctx.fillText(line, x, startY + index * 20);
+                });
+            } else {
+                ctx.fillStyle = '#6366f1';
+                ctx.font = `${fontSize}px monospace`;
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = Math.random() > 0.5 ? '1' : '0';
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                for (let i = 0; i < drops.length; i++) {
+                    const text = Math.random() > 0.5 ? '1' : '0';
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
                 }
-                drops[i]++;
             }
         };
 
@@ -61,6 +100,7 @@ const MatrixRain: React.FC = () => {
         return () => {
             window.removeEventListener('resize', resize);
             cancelAnimationFrame(animationFrameId);
+            clearInterval(easterEggInterval);
         };
     }, []);
 
