@@ -114,8 +114,26 @@ const App: React.FC = () => {
   }, []);
 
   const handleGameExit = useCallback(() => {
+    let exitMsg = '';
+    switch (gameMode) {
+      case 'tetris':
+        exitMsg = 'Exited Tetris. Welcome back to bash.';
+        break;
+      case 'pong':
+        exitMsg = 'Exited Pong. Welcome back to bash.';
+        break;
+      case 'snake':
+        exitMsg = 'Exited Snake. Welcome back to bash.';
+        break;
+      case 'chat':
+        exitMsg = 'Exited Live Chat. Welcome back to bash.';
+        break;
+      default:
+        exitMsg = 'Exited game mode.';
+    }
     setGameMode('none');
-  }, []);
+    setHistory(prev => [...prev, { id: `exit-${Date.now()}`, type: MessageType.INFO, content: exitMsg, timestamp: Date.now() }]);
+  }, [gameMode]);
 
   const handleCommand = async (cmd: string) => {
     const userLine: TerminalLine = { id: `user-${Date.now()}`, type: MessageType.USER, content: cmd, timestamp: Date.now() };
