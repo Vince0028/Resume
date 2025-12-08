@@ -42,7 +42,7 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange }) => {
         
         let showEasterEgg = false;
         let easterEggStartTime = 0;
-        const easterEggDuration = 2000;
+        const easterEggDuration = 1500;
         
         const checkEasterEgg = () => {
             if (!showEasterEgg && Math.random() < 0.05) {
