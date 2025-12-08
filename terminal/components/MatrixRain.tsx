@@ -31,7 +31,7 @@ const MatrixRain: React.FC = () => {
         const fps = 30;
         const interval = 1000 / fps;
 
-        const secretMessage = "YOU GET 5 PESOS IF YOU DECRYPT THIS, First 5 person to get it";
+        const secretMessage = "YOU GET 5 PESOS IF YOU DECRYPT THIS FIRST 5 PERSON TO GET IT";
         const messageBinary = secretMessage.split('').map(char => 
             char.charCodeAt(0).toString(2).padStart(8, '0')
         ).join(' ');
@@ -69,15 +69,15 @@ const MatrixRain: React.FC = () => {
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
                 ctx.fillStyle = '#00ff00';
-                ctx.font = `12px monospace`;
+                ctx.font = `10px monospace`;
                 
-                const lines = messageBinary.match(/.{1,80}/g) || [];
-                const startY = (canvas.height - lines.length * 20) / 2;
+                const lines = messageBinary.match(/.{1,120}/g) || [];
+                const startY = (canvas.height - lines.length * 18) / 2;
                 
                 lines.forEach((line, index) => {
                     const textWidth = ctx.measureText(line).width;
                     const x = (canvas.width - textWidth) / 2;
-                    ctx.fillText(line, x, startY + index * 20);
+                    ctx.fillText(line, x, startY + index * 18);
                 });
             } else {
                 ctx.fillStyle = '#6366f1';
