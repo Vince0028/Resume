@@ -127,7 +127,11 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') gameState.current.keys.up = true;
             if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') gameState.current.keys.down = true;
-            if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') onExit();
+            if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') {
+                e.preventDefault();
+                e.stopPropagation();
+                onExit();
+            }
         };
 
         const handleKeyUp = (e: KeyboardEvent) => {

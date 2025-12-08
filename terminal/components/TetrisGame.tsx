@@ -206,7 +206,11 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
             else if (e.keyCode === 39) movePlayer(1);
             else if (e.keyCode === 40) dropPlayer();
             else if (e.keyCode === 38) playerRotate(lockedBoard, 1);
-            else if (e.keyCode === 81 || e.keyCode === 27) onExit(); 
+            else if (e.keyCode === 81 || e.keyCode === 27) {
+                e.preventDefault();
+                e.stopPropagation();
+                onExit();
+            } 
         };
 
         const handleKeyUp = (e: KeyboardEvent) => {

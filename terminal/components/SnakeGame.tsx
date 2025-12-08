@@ -59,7 +59,11 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (gameOver) {
                 if (e.key === 'Enter' || e.key === ' ') restartGame();
-                if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') onExit();
+                if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onExit();
+                }
                 return;
             }
 
@@ -89,6 +93,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                 case 'q':
                 case 'Q':
                 case 'Escape':
+                    e.preventDefault();
+                    e.stopPropagation();
                     onExit();
                     break;
             }
