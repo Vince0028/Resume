@@ -123,3 +123,46 @@ export const FUN_FACTS = [
   "A single Google query uses about 1,000 servers to compute the results in large-scale index lookups (varies by query).",
   "Some programming languages are intentionally esoteric, created as jokes or challenges (like Brainfuck and Piet)."
 ];
+
+
+export const playDaisyBell = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log('Attempting to play Daisy Bell...');
+     
+      const audio = new Audio('/music/daisy_bell_computer.mp3');
+      audio.volume = 0.7;
+      
+   
+      audio.oncanplay = () => {
+        console.log('Audio can play');
+      };
+      
+      audio.onplay = () => {
+        console.log('Audio started playing');
+        resolve(true);
+      };
+      
+      audio.onerror = (e) => {
+        console.error('Audio error:', e);
+        reject(new Error('Failed to load audio file'));
+      };
+      
+      const playPromise = audio.play();
+      if (playPromise) {
+        playPromise
+          .then(() => {
+            console.log('Audio play promise resolved');
+            resolve(true);
+          })
+          .catch((error) => {
+            console.error('Play error:', error);
+            reject(error);
+          });
+      }
+    } catch (error) {
+      console.error('Exception in playDaisyBell:', error);
+      reject(error);
+    }
+  });
+};

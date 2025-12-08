@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TerminalLine, MessageType } from './types';
 import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
+import { playDaisyBell } from './easter_eggs';
 import TerminalInput from './components/TerminalInput';
 import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
@@ -202,9 +203,21 @@ const App: React.FC = () => {
       return;
     }
 
+    if (lowerCmd === 'play daisy bell') {
+      try {
+        await playDaisyBell();
+        setHistory(prev => [...prev, { id: `daisy-${Date.now()}`, type: MessageType.SUCCESS, content: '♪ ♪ ♪ Daisy Bell (1961 - First Song Sung by a Computer) ♪ ♪ ♪\n\nDaisy, Daisy, give me your answer do.\nI\'m half crazy all for the love of you!\nIt won\'t be a stylish marriage,\nI can\'t afford a carriage,\nBut you\'ll look sweet upon the seat\nOf a bicycle built for two! ♪ ♪', timestamp: Date.now() }]);
+      } catch (e) {
+        console.error('Daisy Bell error:', e);
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
+      }
+      setIsProcessing(false);
+      return;
+    }
+
     
     if (lowerCmd === 'please master') {
-      const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nEASTER EGG WINNERS:\n- type: easter egg winner\n\nTry them all!\n`;
+      const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nCOMPUTER HISTORY:\n- play daisy bell (🎵 First song ever sung by a computer in 1961!)\n\nEASTER EGG WINNERS:\n- type: easter egg winner\n\nTry them all!\n`;
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: easterEggList, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
