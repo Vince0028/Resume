@@ -130,7 +130,7 @@ let daisyBellAudio: HTMLAudioElement | null = null;
 export const playDaisyBell = () => {
  
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio('/terminal/music/daisy_bell_computer.mp3');
     daisyBellAudio.volume = 0.7;
   }
   
@@ -147,7 +147,7 @@ export const pauseDaisyBell = () => {
 
 export const getDaisyBellAudio = () => {
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio('/terminal/music/daisy_bell_computer.mp3');
     daisyBellAudio.volume = 0.7;
   }
   return daisyBellAudio;
