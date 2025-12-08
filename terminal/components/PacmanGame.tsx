@@ -18,9 +18,8 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
     const CELL_SIZE = 20;
     const SPEED = 150; 
     const GHOST_SPEED = 200; 
-    const GHOST_RESPAWN_TIME = 10000; 
+    const GHOST_RESPAWN_TIME = 10000;
 
-   
     const MAZE = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
@@ -60,10 +59,10 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
     const gameState = useRef({
         pacman: { x: 9, y: 15, direction: { x: 0, y: 0 }, nextDirection: { x: 0, y: 0 }, mouthOpen: true },
         ghosts: [
-            { x: 8, y: 8, color: '#FF0000', scared: false, lastMoveTime: 0, direction: { x: 0, y: -1 }, respawnTimer: 0, isInHouse: false },  // Blinky (red) - top left
-            { x: 10, y: 8, color: '#FFB8FF', scared: false, lastMoveTime: 0, direction: { x: -1, y: 0 }, respawnTimer: 0, isInHouse: false }, // Pinky (pink) - top right
-            { x: 8, y: 10, color: '#00FFFF', scared: false, lastMoveTime: 0, direction: { x: 1, y: 0 }, respawnTimer: 0, isInHouse: false },  // Inky (cyan) - bottom left
-            { x: 10, y: 10, color: '#FFB852', scared: false, lastMoveTime: 0, direction: { x: 0, y: 1 }, respawnTimer: 0, isInHouse: false }, // Clyde (orange) - bottom right
+            { x: 8, y: 8, color: '#FF0000', scared: false, lastMoveTime: 0, direction: { x: 0, y: -1 }, respawnTimer: 0, isInHouse: false },
+            { x: 10, y: 8, color: '#FFB8FF', scared: false, lastMoveTime: 0, direction: { x: -1, y: 0 }, respawnTimer: 0, isInHouse: false },
+            { x: 8, y: 10, color: '#00FFFF', scared: false, lastMoveTime: 0, direction: { x: 1, y: 0 }, respawnTimer: 0, isInHouse: false },
+            { x: 10, y: 10, color: '#FFB852', scared: false, lastMoveTime: 0, direction: { x: 0, y: 1 }, respawnTimer: 0, isInHouse: false },
         ] as Ghost[],
         maze: MAZE.map(row => [...row]),
         powerModeTimer: 0,
@@ -74,7 +73,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         invincibleTimer: 0
     });
 
-    // Count total pellets
     useEffect(() => {
         let count = 0;
         MAZE.forEach(row => {
@@ -95,18 +93,15 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         
         const { pacman, maze, ghosts, powerModeTimer } = gameState.current;
 
-        // Try to change direction
         const newDirX = pacman.x + pacman.nextDirection.x;
         const newDirY = pacman.y + pacman.nextDirection.y;
         if (!isWall(newDirX, newDirY)) {
             pacman.direction = { ...pacman.nextDirection };
         }
 
-        // Move in current direction
         let newX = pacman.x + pacman.direction.x;
         let newY = pacman.y + pacman.direction.y;
 
-        // Handle tunnel wrapping
         const mazeWidth = MAZE[0].length;
         if (newX < 0) {
             newX = mazeWidth - 1;
@@ -119,7 +114,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             pacman.y = newY;
             pacman.mouthOpen = !pacman.mouthOpen;
 
-            // Check for pellets
             const cell = maze[newY][newX];
             if (cell === 2) {
                 maze[newY][newX] = 0;
@@ -151,17 +145,15 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         const { pacman, ghosts } = gameState.current;
 
         ghosts.forEach(ghost => {
-            // Handle respawn timer
             if (ghost.isInHouse) {
                 if (ghost.respawnTimer > 0) {
-                    ghost.respawnTimer -= 16; // Decrease by frame time
-                    return; // Don't move while in respawn
+                    ghost.respawnTimer -= 16;
+                    return;
                 } else {
-                    ghost.isInHouse = false; // Leave the house
+                    ghost.isInHouse = false;
                 }
             }
 
-            // Only move if enough time has passed
             if (timestamp - ghost.lastMoveTime < GHOST_SPEED) return;
             ghost.lastMoveTime = timestamp;
 
@@ -170,15 +162,13 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             ];
 
             if (ghost.scared) {
-                // Run away from Pacman
                 directions.sort((a, b) => {
                     const distA = Math.abs((ghost.x + a.x) - pacman.x) + Math.abs((ghost.y + a.y) - pacman.y);
                     const distB = Math.abs((ghost.x + b.x) - pacman.x) + Math.abs((ghost.y + b.y) - pacman.y);
                     return distB - distA;
                 });
             } else {
-                // Mix of chasing and random movement for more natural behavior
-                const shouldChase = Math.random() > 0.3; // 70% chase, 30% random
+                const shouldChase = Math.random() > 0.3;
                 
                 if (shouldChase) {
                     directions.sort((a, b) => {
@@ -187,20 +177,16 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                         return distA - distB;
                     });
                 } else {
-                    // Random shuffle
                     directions.sort(() => Math.random() - 0.5);
                 }
             }
 
-            // Try to move, avoid going back on itself
             let moved = false;
             for (const dir of directions) {
-                // Don't go backwards unless stuck
                 const isBackwards = dir.x === -ghost.direction.x && dir.y === -ghost.direction.y;
                 let newX = ghost.x + dir.x;
                 let newY = ghost.y + dir.y;
                 
-                // Handle tunnel wrapping for ghosts
                 const mazeWidth = MAZE[0].length;
                 if (newX < 0) {
                     newX = mazeWidth - 1;
@@ -208,7 +194,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                     newX = 0;
                 }
                 
-                // Check if another ghost is already at this position
                 const isOccupied = ghosts.some(otherGhost => 
                     otherGhost !== ghost && 
                     otherGhost.x === newX && 
@@ -225,13 +210,11 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                 }
             }
 
-            // If stuck, allow going backwards (but still avoid other ghosts)
             if (!moved) {
                 for (const dir of directions) {
                     let newX = ghost.x + dir.x;
                     let newY = ghost.y + dir.y;
                     
-                    // Handle tunnel wrapping for ghosts
                     const mazeWidth = MAZE[0].length;
                     if (newX < 0) {
                         newX = mazeWidth - 1;
@@ -262,15 +245,13 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         
         const { pacman, ghosts } = gameState.current;
 
-        // Check all ghosts but only trigger one death per cycle
         let deathTriggered = false;
 
         ghosts.forEach(ghost => {
-            if (ghost.isInHouse) return; // Skip ghosts in house
+            if (ghost.isInHouse) return;
             
             if (ghost.x === pacman.x && ghost.y === pacman.y) {
                 if (ghost.scared) {
-                    // Eat ghost - send it back to the house
                     setScore(s => s + 200);
                     ghost.x = 9;
                     ghost.y = 9;
@@ -278,10 +259,9 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                     ghost.isInHouse = true;
                     ghost.respawnTimer = GHOST_RESPAWN_TIME;
                 } else if (!deathTriggered) {
-                    // Lose a life - trigger death animation (only once)
                     deathTriggered = true;
                     setIsDying(true);
-                    gameState.current.isInvincible = true; // Immediately set invincible
+                    gameState.current.isInvincible = true;
                     
                     setTimeout(() => {
                         setIsDying(false);
@@ -291,25 +271,22 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                                 setGameOver(true);
                                 gameState.current.isInvincible = false;
                             } else {
-                                // Show ready screen
                                 setShowReady(true);
                                 
-                                // Reset positions
                                 pacman.x = 9;
                                 pacman.y = 15;
                                 pacman.direction = { x: 0, y: 0 };
                                 pacman.nextDirection = { x: 0, y: 0 };
                                 ghosts.forEach((g, i) => {
-                                    if (i === 0) { g.x = 8; g.y = 8; }       // Blinky - top left
-                                    else if (i === 1) { g.x = 10; g.y = 8; }  // Pinky - top right
-                                    else if (i === 2) { g.x = 8; g.y = 10; } // Inky - bottom left
-                                    else if (i === 3) { g.x = 10; g.y = 10; } // Clyde - bottom right
+                                    if (i === 0) { g.x = 8; g.y = 8; }
+                                    else if (i === 1) { g.x = 10; g.y = 8; }
+                                    else if (i === 2) { g.x = 8; g.y = 10; }
+                                    else if (i === 3) { g.x = 10; g.y = 10; }
                                     g.scared = false;
                                     g.isInHouse = false;
                                     g.respawnTimer = 0;
                                 });
                                 
-                                // Hide ready screen after 2 seconds
                                 setTimeout(() => {
                                     setShowReady(false);
                                     gameState.current.isInvincible = true;
@@ -318,7 +295,7 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                             }
                             return newLives;
                         });
-                    }, 2000); // Death animation duration
+                    }, 2000);
                 }
             }
         });
@@ -331,11 +308,9 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
 
         const { pacman, ghosts, maze } = gameState.current;
 
-        // Clear canvas with black background
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw maze
         maze.forEach((row, y) => {
             row.forEach((cell, x) => {
                 if (cell === 1) {
@@ -358,9 +333,7 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             });
         });
 
-        // Draw Pacman with death animation
         if (isDying) {
-            // Death animation - expanding pie slices
             const deathProgress = Math.min(1, (Date.now() % 2000) / 2000);
             ctx.fillStyle = '#FFFF00';
             ctx.beginPath();
@@ -375,7 +348,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             ctx.lineTo(pacman.x * CELL_SIZE + CELL_SIZE / 2, pacman.y * CELL_SIZE + CELL_SIZE / 2);
             ctx.fill();
         } else if (!showReady && (!gameState.current.isInvincible || Math.floor(Date.now() / 100) % 2 === 0)) {
-            // Normal Pacman drawing
             ctx.fillStyle = '#FFFF00';
             ctx.beginPath();
             const mouthAngle = pacman.mouthOpen ? 0.2 : 0.1;
@@ -407,10 +379,8 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             ctx.fill();
         }
 
-        // Draw ghosts (not during death animation or ready screen)
         if (!isDying && !showReady) {
             ghosts.forEach(ghost => {
-                // Don't draw ghosts that are respawning in house
                 if (ghost.isInHouse && ghost.respawnTimer > 0) return;
 
                 ctx.fillStyle = ghost.scared ? '#0000FF' : ghost.color;
@@ -445,7 +415,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             });
         }
 
-        // Draw "READY!" text
         if (showReady) {
             ctx.fillStyle = '#FFFF00';
             ctx.font = 'bold 20px monospace';
@@ -457,15 +426,13 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
     const gameLoop = useCallback((timestamp: number) => {
         const { lastPacmanUpdate, powerModeTimer, invincibleTimer } = gameState.current;
 
-        // Update power mode timer
         if (powerModeTimer > 0) {
-            gameState.current.powerModeTimer -= 16; // Approximate frame time
+            gameState.current.powerModeTimer -= 16;
             if (gameState.current.powerModeTimer <= 0) {
                 gameState.current.ghosts.forEach(ghost => ghost.scared = false);
             }
         }
 
-        // Update invincibility timer
         if (invincibleTimer > 0) {
             gameState.current.invincibleTimer -= 16;
             if (gameState.current.invincibleTimer <= 0) {
@@ -473,25 +440,19 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
             }
         }
 
-        // Only update game logic if not in special states
         if (!gameOver && !gameWon && !isDying && !showReady) {
-            // Move Pacman
             if (timestamp - lastPacmanUpdate >= SPEED) {
                 gameState.current.lastPacmanUpdate = timestamp;
                 movePacman();
             }
 
-            // Move ghosts
             moveGhosts(timestamp);
 
-            // Check collisions
             checkCollisions();
         }
 
-        // Always draw, even during game over
         draw();
 
-        // Continue loop - ALWAYS continue to prevent black screen
         animationFrameRef.current = requestAnimationFrame(gameLoop);
     }, [isDying, showReady, gameWon, draw]);
 
@@ -540,7 +501,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         canvas.width = MAZE[0].length * CELL_SIZE;
         canvas.height = MAZE.length * CELL_SIZE;
 
-        // Force initial draw to show all 4 ghosts
         const ctx = canvas.getContext('2d');
         if (ctx) {
             draw();
@@ -607,13 +567,11 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
         };
     }, [onExit, gameLoop, handleDirection]);
 
-    // Safeguard: Ensure rendering continues even if main loop fails
     useEffect(() => {
         const fallbackInterval = setInterval(() => {
             const canvas = canvasRef.current;
             const ctx = canvas?.getContext('2d');
             if (canvas && ctx && (gameOver || gameWon)) {
-                // Redraw when game is over or won to prevent black screen
                 draw();
             }
         }, 100);
@@ -645,7 +603,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                                 <div className="hidden md:block">Press ENTER to restart</div>
                                 <div className="hidden md:block">Press Q to exit</div>
                             </div>
-                            {/* Mobile buttons */}
                             <div className="flex gap-2 justify-center md:hidden">
                                 <button
                                     onClick={restartGame}
@@ -665,7 +622,6 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                 )}
             </div>
             
-            {/* Mobile controls - hide when game over */}
             {!gameOver && (
                 <div className="mt-4 grid grid-cols-3 gap-2 md:hidden w-48">
                     <div></div>
@@ -704,13 +660,11 @@ const PacmanGame: React.FC<PacmanGameProps> = ({ onExit }) => {
                 </div>
             )}
 
-            {/* Desktop controls hint */}
             <div className="mt-4 text-xs text-gray-400 text-center hidden md:block">
                 <div>WASD or Arrow Keys to move | Q to quit</div>
                 <div className="mt-2">Eat all pellets to win! Power pellets let you eat ghosts!</div>
             </div>
 
-            {/* Mobile controls hint */}
             <div className="mt-2 text-xs text-gray-400 text-center md:hidden">
                 <div>Use buttons to move | Eat all pellets to win!</div>
             </div>
