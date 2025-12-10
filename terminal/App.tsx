@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TerminalLine, MessageType } from './types';
 import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
-import { playDaisyBell, pauseDaisyBell, getDaisyBellAudio } from './easter_eggs';
+import { playDaisyBell, pauseDaisyBell, getDaisyBellAudio, playIAm, pauseIAm, getIAmAudio } from './easter_eggs';
 import TerminalInput from './components/TerminalInput';
 import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
@@ -74,6 +74,7 @@ const App: React.FC = () => {
   const [gameMode, setGameMode] = useState<'none' | 'tetris' | 'pong' | 'snake' | 'pacman' | 'chat'>('none');
   const [isEasterEggActive, setIsEasterEggActive] = useState(false);
   const [isDaisyBellPlaying, setIsDaisyBellPlaying] = useState(false);
+  const [isIAmPlaying, setIsIAmPlaying] = useState(false);
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -206,6 +207,9 @@ const App: React.FC = () => {
 
     if (lowerCmd === 'play daisy bell') {
       try {
+        pauseIAm();
+        setIsIAmPlaying(false);
+
         await playDaisyBell();
         setIsDaisyBellPlaying(true);
         
@@ -219,6 +223,50 @@ const App: React.FC = () => {
         console.error('Daisy Bell error:', e);
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
       }
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'play i am' || lowerCmd === 'play i_am' || lowerCmd === 'i am' || lowerCmd === 'i_am') {
+      try {
+        pauseDaisyBell();
+        setIsDaisyBellPlaying(false);
+
+        if (isIAmPlaying) {
+          const current = getIAmAudio();
+          current.currentTime = 0;
+        }
+
+        await playIAm();
+        setIsIAmPlaying(true);
+
+        const audio = getIAmAudio();
+        audio.onended = () => setIsIAmPlaying(false);
+        audio.onpause = () => setIsIAmPlaying(false);
+
+        setHistory(prev => [...prev, { id: `iam-${Date.now()}`, type: MessageType.SUCCESS, content: '♪ ♪ ♪ I AM — a nod to the book that inspired this track ♪ ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nCONTROLS:\n  • Type \'pause i am\' to PAUSE ⏸\n  • Type \'stop i am\' to STOP ⏹\n  • Type \'play i am\' to RESTART ▶', timestamp: Date.now() }]);
+      } catch (e) {
+        console.error('I Am audio error:', e);
+        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
+      }
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'pause i am' || lowerCmd === 'pause i_am') {
+      pauseIAm();
+      setIsIAmPlaying(false);
+      setHistory(prev => [...prev, { id: `pause-iam-${Date.now()}`, type: MessageType.INFO, content: '⏸ I AM paused. Type \'play i am\' to resume.', timestamp: Date.now() }]);
+      setIsProcessing(false);
+      return;
+    }
+
+    if (lowerCmd === 'stop i am' || lowerCmd === 'stop i_am') {
+      pauseIAm();
+      const audio = getIAmAudio();
+      audio.currentTime = 0;
+      setIsIAmPlaying(false);
+      setHistory(prev => [...prev, { id: `stop-iam-${Date.now()}`, type: MessageType.INFO, content: '⏹ I AM stopped.', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
@@ -243,7 +291,7 @@ const App: React.FC = () => {
 
     
     if (lowerCmd === 'please master') {
-      const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nCOMPUTER HISTORY:\n- play daisy bell (🎵 First song ever sung by a computer in 1961!)\n- pause daisy bell (⏸ Pause the song)\n- stop daisy bell (⏹ Stop and reset the song)\n\nEASTER EGG WINNERS:\n- type: easter egg winner\n\nTry them all!\n`;
+      const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nCOMPUTER HISTORY:\n- play daisy bell (🎵 First song ever sung by a computer in 1961!)\n- pause daisy bell (⏸ Pause the song)\n- stop daisy bell (⏹ Stop and reset the song)\n\nBOOK REFERENCE:\n- play i am (🎵 Book reference track)\n- pause i am (⏸ Pause the track)\n- stop i am (⏹ Stop and reset the track)\n\nEASTER EGG WINNERS:\n- type: easter egg winner\n\nTry them all!\n`;
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: easterEggList, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;

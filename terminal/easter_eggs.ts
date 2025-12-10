@@ -126,6 +126,7 @@ export const FUN_FACTS = [
 
 
 let daisyBellAudio: HTMLAudioElement | null = null;
+let iAmAudio: HTMLAudioElement | null = null;
 
 export const playDaisyBell = () => {
  
@@ -151,4 +152,28 @@ export const getDaisyBellAudio = () => {
     daisyBellAudio.volume = 0.7;
   }
   return daisyBellAudio;
+};
+
+export const playIAm = () => {
+  if (!iAmAudio) {
+    iAmAudio = new Audio('/terminal/music/i_am.mp3');
+    iAmAudio.volume = 0.7;
+  }
+
+  iAmAudio.currentTime = 0;
+  return iAmAudio.play();
+};
+
+export const pauseIAm = () => {
+  if (iAmAudio) {
+    iAmAudio.pause();
+  }
+};
+
+export const getIAmAudio = () => {
+  if (!iAmAudio) {
+    iAmAudio = new Audio('/terminal/music/i_am.mp3');
+    iAmAudio.volume = 0.7;
+  }
+  return iAmAudio;
 };
