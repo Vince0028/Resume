@@ -1146,6 +1146,7 @@ const App: React.FC = () => {
                       onSubmit={handleCommand}
                       disabled={isProcessing}
                       autoFocusEnabled={!isGameActive}
+                      disableNativeKeyboard={isGameActive}
                     />
                   )}
                 </>

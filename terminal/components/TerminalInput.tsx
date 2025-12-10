@@ -5,9 +5,10 @@ interface TerminalInputProps {
   onSubmit: (cmd: string) => void;
   disabled?: boolean;
   autoFocusEnabled?: boolean;
+  disableNativeKeyboard?: boolean;
 }
 
-const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled, autoFocusEnabled = true }) => {
+const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled, autoFocusEnabled = true, disableNativeKeyboard = false }) => {
   const [value, setValue] = useState('');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +70,7 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled, autoF
         disabled={disabled}
         className={`flex-1 bg-transparent border-none outline-none ${THEME_COLOR} font-mono uppercase focus:ring-0 placeholder-indigo-900/50`}
         autoFocus={!isTouchDevice && autoFocusEnabled}
-        inputMode={isTouchDevice ? 'none' : 'text'}
+        inputMode={isTouchDevice && disableNativeKeyboard ? 'none' : 'text'}
         spellCheck={false}
         autoComplete="off"
         autoCapitalize="off"

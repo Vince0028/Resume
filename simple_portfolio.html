@@ -261,6 +261,7 @@
       gap: 8px;
       align-items: center;
       text-align: center;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .envelope-button {
@@ -274,6 +275,12 @@
       border-radius: 6px;
       box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .envelope-stage.opened .envelope-controls {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
     }
 
     .envelope-button:hover {
