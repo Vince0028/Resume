@@ -4,10 +4,12 @@ import { THEME_COLOR } from '../constants';
 interface TerminalInputProps {
   onSubmit: (cmd: string) => void;
   disabled?: boolean;
+  autoFocusEnabled?: boolean;
 }
 
-const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => {
+const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled, autoFocusEnabled = true }) => {
   const [value, setValue] = useState('');
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -18,10 +20,21 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
   };
 
   useEffect(() => {
+    const touch = typeof window !== 'undefined' && (
+      'ontouchstart' in window ||
+      (navigator.maxTouchPoints ?? 0) > 0 ||
+      
+      ((navigator as any).msMaxTouchPoints ?? 0) > 0
+    );
+    setIsTouchDevice(Boolean(touch));
+  }, []);
+
+  useEffect(() => {
+    if (!autoFocusEnabled || isTouchDevice) return;
     const handleClick = () => inputRef.current?.focus();
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, []);
+  }, [autoFocusEnabled, isTouchDevice]);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -55,9 +68,11 @@ const TerminalInput: React.FC<TerminalInputProps> = ({ onSubmit, disabled }) => 
         onChange={(e) => setValue(e.target.value)}
         disabled={disabled}
         className={`flex-1 bg-transparent border-none outline-none ${THEME_COLOR} font-mono uppercase focus:ring-0 placeholder-indigo-900/50`}
-        autoFocus
+        autoFocus={!isTouchDevice && autoFocusEnabled}
+        inputMode={isTouchDevice ? 'none' : 'text'}
         spellCheck={false}
         autoComplete="off"
+        autoCapitalize="off"
       />
     </form>
   );

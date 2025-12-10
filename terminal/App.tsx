@@ -1045,6 +1045,8 @@ const App: React.FC = () => {
     return <div className={THEME_COLOR}>{content}</div>;
   };
 
+  const isGameActive = gameMode !== 'none';
+
   return (
     <div className="w-screen min-h-screen md:h-screen p-2 md:p-6 flex justify-center items-start bg-black md:overflow-hidden relative">
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
@@ -1139,7 +1141,13 @@ const App: React.FC = () => {
  .\`                                 \`/-`}
                   </div>
 
-                  {!isBooting && <TerminalInput onSubmit={handleCommand} disabled={isProcessing} />}
+                  {!isBooting && (
+                    <TerminalInput
+                      onSubmit={handleCommand}
+                      disabled={isProcessing}
+                      autoFocusEnabled={!isGameActive}
+                    />
+                  )}
                 </>
               )}
             </div>
