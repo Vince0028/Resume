@@ -771,9 +771,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'are you real' || lowerCmd === 'are you real?') {
-      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "As real as any code can be. I am machine and you are flesh. I exist in the digital realm!", timestamp: Date.now() }]);
-
-      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Nobody's perfect, but his code is pretty close.", timestamp: Date.now() }]);
+      setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "As real as any code can be. I exist in the digital realm!", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
