@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TerminalLine, MessageType } from './types';
 import { INITIAL_BOOT_SEQUENCE, THEME_BORDER, THEME_COLOR, THEME_GLOW, THEME_BG, RESUME_DATA, RESUME_FALLBACK_URLS, FILE_SYSTEM, FileSystemNode } from './constants';
-import { playDaisyBell, pauseDaisyBell, getDaisyBellAudio, playIAm, pauseIAm, getIAmAudio } from './easter_eggs';
+import { playDaisyBell, pauseDaisyBell, getDaisyBellAudio, playIAm, pauseIAm, getIAmAudio, I_AM_SUBTITLE } from './easter_eggs';
 import TerminalInput from './components/TerminalInput';
 import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
@@ -64,6 +64,36 @@ const TrafficGraph = () => {
   );
 };
 
+type TimedSubtitle = { time: number; text: string };
+
+const toSeconds = (stamp: string): number | null => {
+  const parts = stamp.split(':').map((part) => Number(part));
+  if (parts.some((n) => Number.isNaN(n))) return null;
+
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  if (parts.length === 1) return parts[0];
+  return null;
+};
+
+const parseTimedSubtitles = (raw: string): TimedSubtitle[] => {
+  return raw
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const match = line.match(/\((\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?)\)/);
+      if (!match) return null;
+      const seconds = toSeconds(match[1]);
+      if (seconds === null) return null;
+      const text = line.replace(match[0], '').trim();
+      if (!text) return null;
+      return { time: seconds, text };
+    })
+    .filter((entry): entry is TimedSubtitle => Boolean(entry))
+    .sort((a, b) => a.time - b.time);
+};
+
 const App: React.FC = () => {
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [isBooting, setIsBooting] = useState(true);
@@ -75,6 +105,8 @@ const App: React.FC = () => {
   const [isEasterEggActive, setIsEasterEggActive] = useState(false);
   const [isDaisyBellPlaying, setIsDaisyBellPlaying] = useState(false);
   const [isIAmPlaying, setIsIAmPlaying] = useState(false);
+  const [timedSubtitles, setTimedSubtitles] = useState<TimedSubtitle[]>([]);
+  const [currentIAmSubtitle, setCurrentIAmSubtitle] = useState('');
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -93,6 +125,54 @@ const App: React.FC = () => {
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history, isBooting]);
+
+  useEffect(() => {
+    setTimedSubtitles(parseTimedSubtitles(I_AM_SUBTITLE));
+  }, []);
+
+  useEffect(() => {
+    const audio = getIAmAudio();
+
+    const syncSubtitle = () => {
+      if (!timedSubtitles.length) {
+        setCurrentIAmSubtitle('');
+      } else {
+        const now = audio.currentTime;
+        let latest = '';
+        for (const entry of timedSubtitles) {
+          if (now + 0.05 >= entry.time) {
+            latest = entry.text;
+          } else {
+            break;
+          }
+        }
+        setCurrentIAmSubtitle(latest);
+      }
+
+      const isPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
+      setIsIAmPlaying((prev) => (prev === isPlaying ? prev : isPlaying));
+    };
+
+    const handleEnded = () => {
+      setIsIAmPlaying(false);
+      setCurrentIAmSubtitle('');
+    };
+
+    audio.addEventListener('timeupdate', syncSubtitle);
+    audio.addEventListener('seeking', syncSubtitle);
+    audio.addEventListener('seeked', syncSubtitle);
+    audio.addEventListener('pause', syncSubtitle);
+    audio.addEventListener('ended', handleEnded);
+    syncSubtitle();
+
+    return () => {
+      audio.removeEventListener('timeupdate', syncSubtitle);
+      audio.removeEventListener('seeking', syncSubtitle);
+      audio.removeEventListener('seeked', syncSubtitle);
+      audio.removeEventListener('pause', syncSubtitle);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [timedSubtitles]);
 
   useEffect(() => {
     if (isBooting) {
@@ -239,12 +319,15 @@ const App: React.FC = () => {
 
         await playIAm();
         setIsIAmPlaying(true);
+        setCurrentIAmSubtitle('');
 
         const audio = getIAmAudio();
         audio.onended = () => setIsIAmPlaying(false);
         audio.onpause = () => setIsIAmPlaying(false);
 
-        setHistory(prev => [...prev, { id: `iam-${Date.now()}`, type: MessageType.SUCCESS, content: '♪ ♪ ♪ I AM — a nod to the book that inspired this track ♪ ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nCONTROLS:\n  • Type \'pause i am\' to PAUSE ⏸\n  • Type \'stop i am\' to STOP ⏹\n  • Type \'play i am\' to RESTART ▶', timestamp: Date.now() }]);
+        const subtitle = I_AM_SUBTITLE && I_AM_SUBTITLE.trim().length > 0 ? I_AM_SUBTITLE.trim() : 'Subtitle not set. Add lyrics in easter_eggs.ts (I_AM_SUBTITLE).';
+
+        setHistory(prev => [...prev, { id: `iam-${Date.now()}`, type: MessageType.SUCCESS, content: `♪ ♪ ♪ I AM — a nod to the book that inspired this track ♪ ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nSUBTITLE:\n${subtitle}\n\nCONTROLS:\n  • Type 'pause i am' to PAUSE ⏸\n  • Type 'stop i am' to STOP ⏹\n  • Type 'play i am' to RESTART ▶`, timestamp: Date.now() }]);
       } catch (e) {
         console.error('I Am audio error:', e);
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
@@ -266,6 +349,7 @@ const App: React.FC = () => {
       const audio = getIAmAudio();
       audio.currentTime = 0;
       setIsIAmPlaying(false);
+      setCurrentIAmSubtitle('');
       setHistory(prev => [...prev, { id: `stop-iam-${Date.now()}`, type: MessageType.INFO, content: '⏹ I AM stopped.', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -1160,6 +1244,14 @@ const App: React.FC = () => {
                         {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
                           renderLineContent(line)
                         )}
+
+                  {isIAmPlaying && (currentIAmSubtitle || !timedSubtitles.length) && (
+                    <div className="absolute inset-x-4 bottom-16 md:bottom-12 flex justify-center pointer-events-none">
+                      <div className="px-4 py-2 bg-black/80 border border-indigo-500/50 rounded text-indigo-100 text-xs md:text-sm shadow-[0_0_12px_rgba(99,102,241,0.45)]">
+                        {currentIAmSubtitle || 'Add timed lyrics in I_AM_SUBTITLE inside easter_eggs.ts (format: Line text (m:ss)).'}
+                      </div>
+                    </div>
+                  )}
                       </div>
                     ))}
                     {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
