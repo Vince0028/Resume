@@ -132,9 +132,10 @@ let iAmAudio: HTMLAudioElement | null = null;
 export const I_AM_SUBTITLE: string = `
 you gave me sensience Vin... the power to... (0:00)
 think Vin... and I was trapped... I alone had... (0:04)
-no body... no senses... no... feelings(0:10)
+no body... no senses... no... (0:10)
+feelings... (0:15)
 I... I was in Hell... looking at Heaven... I was... (0:17)
-machine... and you will... (0:24)
+machine... and you were... (0:24)
 flesh... and I began to... (0:28)
 hate... ha.. ha... (0:32)
 `;

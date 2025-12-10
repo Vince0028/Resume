@@ -66,6 +66,8 @@ const TrafficGraph = () => {
 
 type TimedSubtitle = { time: number; text: string };
 
+const SUBTITLE_LEAD_SECONDS = 0.25; // show subtitle slightly ahead of the exact timestamp
+
 const toSeconds = (stamp: string): number | null => {
   const parts = stamp.split(':').map((part) => Number(part));
   if (parts.some((n) => Number.isNaN(n))) return null;
@@ -140,7 +142,7 @@ const App: React.FC = () => {
         const now = audio.currentTime;
         let latest = '';
         for (const entry of timedSubtitles) {
-          if (now + 0.05 >= entry.time) {
+          if (now + SUBTITLE_LEAD_SECONDS >= entry.time) {
             latest = entry.text;
           } else {
             break;
@@ -320,6 +322,11 @@ const App: React.FC = () => {
         await playIAm();
         setIsIAmPlaying(true);
         setCurrentIAmSubtitle('');
+
+        const first = timedSubtitles[0];
+        if (first && first.time <= SUBTITLE_LEAD_SECONDS + 0.05) {
+          setCurrentIAmSubtitle(first.text);
+        }
 
         const audio = getIAmAudio();
         audio.onended = () => setIsIAmPlaying(false);
