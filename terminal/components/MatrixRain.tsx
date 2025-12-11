@@ -10,6 +10,10 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
+        console.log('💻 MatrixRain - isVoicePlaying:', isVoicePlaying);
+    }, [isVoicePlaying]);
+
+    useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 

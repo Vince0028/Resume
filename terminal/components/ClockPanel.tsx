@@ -11,6 +11,10 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   const [isGlitching, setIsGlitching] = useState(false);
 
   useEffect(() => {
+    console.log('🕒 ClockPanel - isVoicePlaying:', isVoicePlaying);
+  }, [isVoicePlaying]);
+
+  useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);

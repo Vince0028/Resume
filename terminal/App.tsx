@@ -320,17 +320,24 @@ const App: React.FC = () => {
         }
 
         await playIAm();
+        
+        const audio = getIAmAudio();
+        
+        // Remove old listeners to prevent conflicts
+        audio.onended = null;
+        audio.onpause = null;
+        audio.onplay = null;
+        
+        // Set playing state
         setIsIAmPlaying(true);
+        console.log('🎵 I AM is now playing - isIAmPlaying set to TRUE');
+        
         setCurrentIAmSubtitle('');
 
         const first = timedSubtitles[0];
         if (first && first.time <= SUBTITLE_LEAD_SECONDS + 0.05) {
           setCurrentIAmSubtitle(first.text);
         }
-
-        const audio = getIAmAudio();
-        audio.onended = () => setIsIAmPlaying(false);
-        audio.onpause = () => setIsIAmPlaying(false);
 
         const subtitle = I_AM_SUBTITLE && I_AM_SUBTITLE.trim().length > 0 ? I_AM_SUBTITLE.trim() : 'Subtitle not set. Add lyrics in easter_eggs.ts (I_AM_SUBTITLE).';
 
