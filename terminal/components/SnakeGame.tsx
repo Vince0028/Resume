@@ -315,10 +315,10 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                 CONTROLS: WASD / ARROWS | Q: QUIT
             </div>
 
-            {/* Mobile Touch Controls */}
+            {}
             {!gameOver && (
                 <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30">
-                    {/* Up Button */}
+                    {}
                     <button
                         onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 0, y: -1 }); }}
                         onClick={() => handleDirectionChange({ x: 0, y: -1 })}
