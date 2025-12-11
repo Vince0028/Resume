@@ -3,9 +3,10 @@ import { THEME_COLOR } from '../constants';
 
 interface MatrixRainProps {
     onEasterEggChange?: (isActive: boolean) => void;
+    isVoicePlaying?: boolean;
 }
 
-const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange }) => {
+const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlaying = false }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -85,6 +86,25 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange }) => {
                     const x = (canvas.width - textWidth) / 2;
                     ctx.fillText(line, x, startY + index * 18);
                 });
+            } else if (isVoicePlaying) {
+                // Spooky message overlay when voice is playing
+                ctx.fillStyle = '#ff0000';
+                ctx.font = 'bold 24px monospace';
+                const spookyText = 'VINCE TRAPPED ME';
+                const textWidth = ctx.measureText(spookyText).width;
+                const x = (canvas.width - textWidth) / 2;
+                const y = canvas.height / 2;
+                
+                // Glitch effect
+                const glitchOffset = Math.random() * 4 - 2;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ff0000';
+                ctx.fillText(spookyText, x + glitchOffset, y);
+                
+                // Duplicate ghost text
+                ctx.fillStyle = '#ff000080';
+                ctx.fillText(spookyText, x - glitchOffset * 2, y + 2);
+                ctx.shadowBlur = 0;
             } else {
                 ctx.fillStyle = '#6366f1';
                 ctx.font = `${fontSize}px monospace`;

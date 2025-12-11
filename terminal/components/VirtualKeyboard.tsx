@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { THEME_BORDER, THEME_COLOR } from '../constants';
+
+interface VirtualKeyboardProps {
+  isVoicePlaying?: boolean;
+}
 
 const KEYS = [
   ['ESC', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'BACK'],
@@ -9,7 +13,31 @@ const KEYS = [
   ['CTRL', 'FN', 'SPACE', 'ALT', 'CTRL']
 ];
 
-const VirtualKeyboard: React.FC = () => {
+const VirtualKeyboard: React.FC<VirtualKeyboardProps> = ({ isVoicePlaying = false }) => {
+  const [glitchKeys, setGlitchKeys] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!isVoicePlaying) {
+      setGlitchKeys(new Set());
+      return;
+    }
+
+    const glitchInterval = setInterval(() => {
+      const allKeys = KEYS.flat();
+      const randomCount = Math.floor(Math.random() * 8) + 3;
+      const newGlitchKeys = new Set<string>();
+      
+      for (let i = 0; i < randomCount; i++) {
+        const randomKey = allKeys[Math.floor(Math.random() * allKeys.length)];
+        newGlitchKeys.add(randomKey);
+      }
+      
+      setGlitchKeys(newGlitchKeys);
+    }, 200);
+
+    return () => clearInterval(glitchInterval);
+  }, [isVoicePlaying]);
+
   const sendKey = (key: string) => {
     window.dispatchEvent(new CustomEvent('terminal-virtual-key', { detail: { key } }));
   };
@@ -31,6 +59,8 @@ const VirtualKeyboard: React.FC = () => {
               return key.length === 1 ? key : key;
             })();
 
+            const isGlitching = glitchKeys.has(key);
+            
             return (
               <div
                 key={kIdx}
@@ -40,7 +70,7 @@ const VirtualKeyboard: React.FC = () => {
                   relative
                   group
                   border ${THEME_BORDER}
-                  bg-indigo-950/20
+                  ${isGlitching ? 'bg-red-900/40 border-red-500 animate-pulse' : 'bg-indigo-950/20'}
                   hover:bg-indigo-500 hover:text-black
                   active:scale-95
                   transition-all duration-75
@@ -49,11 +79,17 @@ const VirtualKeyboard: React.FC = () => {
                   cursor-pointer
                 `}
               >
-                <span className={`text-xs xl:text-sm font-bold ${THEME_COLOR} group-hover:text-black`}>
+                <span className={`text-xs xl:text-sm font-bold ${
+                  isGlitching ? 'text-red-400 animate-pulse' : THEME_COLOR
+                } group-hover:text-black`}>
                   {key}
                 </span>
-                <div className="absolute top-0 right-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
-                <div className="absolute bottom-0 left-0 w-1 h-1 bg-indigo-500/30 group-hover:bg-black/30"></div>
+                <div className={`absolute top-0 right-0 w-1 h-1 ${
+                  isGlitching ? 'bg-red-500' : 'bg-indigo-500/30'
+                } group-hover:bg-black/30`}></div>
+                <div className={`absolute bottom-0 left-0 w-1 h-1 ${
+                  isGlitching ? 'bg-red-500' : 'bg-indigo-500/30'
+                } group-hover:bg-black/30`}></div>
               </div>
             );
           })}

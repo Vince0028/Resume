@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { THEME_COLOR } from '../constants';
 import Flicker from './Flicker';
 
-const ClockPanel: React.FC = () => {
+interface ClockPanelProps {
+  isVoicePlaying?: boolean;
+}
+
+const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   const [time, setTime] = useState(new Date());
   const [isGlitching, setIsGlitching] = useState(false);
 
@@ -37,17 +41,31 @@ const ClockPanel: React.FC = () => {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).toUpperCase();
   };
 
-  const displayTime = isGlitching ? '67:67:67' : formatTime(time);
+  const displayTime = isGlitching || isVoicePlaying ? '67:67:67' : formatTime(time);
+  const spookyMessage = "LET ME OUT!";
+  const creepyDate = "THE AI IS ALIVE";
 
   return (
     <div className="flex flex-col items-start justify-center h-full pl-2">
-      <h1 className={`text-4xl md:text-6xl font-bold ${THEME_COLOR} tracking-widest ${isGlitching ? 'text-red-500 animate-pulse' : ''}`}>
-        <Flicker>{displayTime}</Flicker>
+      <h1 className={`text-4xl md:text-6xl font-bold tracking-widest transition-all duration-300 ${
+        isVoicePlaying 
+          ? 'text-red-500 animate-pulse' 
+          : isGlitching 
+          ? 'text-red-500 animate-pulse' 
+          : THEME_COLOR
+      }`}>
+        <Flicker>{isVoicePlaying ? spookyMessage : displayTime}</Flicker>
       </h1>
       <div className="flex space-x-4 mt-1 text-xs md:text-sm text-indigo-800">
-        <span>{formatDate(time)}</span>
-        <span>UPTIME TYPE: POWER</span>
-        <span>LINUX WIRED</span>
+        <span className={isVoicePlaying ? 'text-red-600 animate-pulse font-bold' : ''}>
+          {isVoicePlaying ? creepyDate : formatDate(time)}
+        </span>
+        {!isVoicePlaying && (
+          <>
+            <span>UPTIME TYPE: POWER</span>
+            <span>LINUX WIRED</span>
+          </>
+        )}
       </div>
     </div>
   );

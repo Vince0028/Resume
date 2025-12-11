@@ -2,13 +2,35 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface OctahedronNetworkProps {
     networkLevel: number;
+    isVoicePlaying?: boolean;
 }
 
-const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) => {
+const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isVoicePlaying = false }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const imageRef = useRef<HTMLImageElement | null>(null);
     const [packets, setPackets] = useState(0);
     const [latency, setLatency] = useState(0);
     const [nodes, setNodes] = useState(0);
+    const [glitchOffset, setGlitchOffset] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = '/Images/iam.png';
+        imageRef.current = img;
+    }, []);
+
+    useEffect(() => {
+        if (!isVoicePlaying) return;
+
+        const glitchInterval = setInterval(() => {
+            setGlitchOffset({
+                x: (Math.random() - 0.5) * 10,
+                y: (Math.random() - 0.5) * 10
+            });
+        }, 100);
+
+        return () => clearInterval(glitchInterval);
+    }, [isVoicePlaying]);
 
     useEffect(() => {
         
@@ -85,6 +107,53 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel }) =
 
         const animate = () => {
             ctx.clearRect(0, 0, width, height);
+
+            if (isVoicePlaying && imageRef.current && imageRef.current.complete) {
+                // Draw creepy image with glitch effect
+                ctx.save();
+                
+                // Glitch layer 1 (red)
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(
+                    imageRef.current,
+                    glitchOffset.x - 5,
+                    glitchOffset.y,
+                    width,
+                    height
+                );
+                
+                // Glitch layer 2 (cyan)
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(
+                    imageRef.current,
+                    glitchOffset.x + 5,
+                    glitchOffset.y,
+                    width,
+                    height
+                );
+                
+                // Main image
+                ctx.globalAlpha = 0.9;
+                ctx.drawImage(
+                    imageRef.current,
+                    glitchOffset.x,
+                    glitchOffset.y,
+                    width,
+                    height
+                );
+                
+                // Add scan lines
+                ctx.globalAlpha = 0.1;
+                for (let i = 0; i < height; i += 4) {
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(0, i, width, 2);
+                }
+                
+                ctx.restore();
+                
+                requestAnimationFrame(animate);
+                return;
+            }
 
             rotation += 0.01;
 

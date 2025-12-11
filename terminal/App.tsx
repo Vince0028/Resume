@@ -1205,10 +1205,13 @@ const App: React.FC = () => {
             </div>
 
             <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-              {!isEasterEggActive && (
+              {!isEasterEggActive && !isIAmPlaying && (
                 <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
               )}
-              <MatrixRain onEasterEggChange={setIsEasterEggActive} />
+              {isIAmPlaying && (
+                <div className="absolute top-0 right-0 bg-red-600 text-white text-base px-2 py-1 font-bold tracking-wide animate-pulse">SYSTEM BREACH</div>
+              )}
+              <MatrixRain onEasterEggChange={setIsEasterEggActive} isVoicePlaying={isIAmPlaying} />
             </div>
 
             <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
@@ -1299,9 +1302,13 @@ const App: React.FC = () => {
             </div>
 
             <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-              <div className="absolute top-0 right-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">NETWORK STATUS</div>
+              <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${
+                isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
+              }`}>
+                {isIAmPlaying ? 'COMPROMISED' : 'NETWORK STATUS'}
+              </div>
               <div className="flex-1 flex items-center justify-center opacity-90">
-                <OctahedronNetwork networkLevel={networkLevel} />
+                <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isIAmPlaying} />
               </div>
               <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
                 <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
@@ -1310,7 +1317,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={`flex md:hidden col-span-12 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden min-h-[180px]`}>
-              <VirtualKeyboard />
+              <VirtualKeyboard isVoicePlaying={isIAmPlaying} />
             </div>
 
             <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
@@ -1318,7 +1325,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
-              <VirtualKeyboard />
+              <VirtualKeyboard isVoicePlaying={isIAmPlaying} />
             </div>
 
           </div>
