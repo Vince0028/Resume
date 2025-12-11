@@ -329,7 +329,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                         </svg>
                     </button>
                     <div className="flex gap-4">
-                        {/* Left Button */}
+                        {}
                         <button
                             onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: -1, y: 0 }); }}
                             onClick={() => handleDirectionChange({ x: -1, y: 0 })}
@@ -339,7 +339,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
-                        {/* Down Button */}
+                        {}
                         <button
                             onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 0, y: 1 }); }}
                             onClick={() => handleDirectionChange({ x: 0, y: 1 })}
@@ -349,7 +349,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        {/* Right Button */}
+                        {}
                         <button
                             onTouchStart={(e) => { e.preventDefault(); handleDirectionChange({ x: 1, y: 0 }); }}
                             onClick={() => handleDirectionChange({ x: 1, y: 0 })}
