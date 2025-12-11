@@ -236,7 +236,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	}
 
 
-	// Touch/Drag support for mobile infinite loop
+	
 	let isDragging = false;
 	let startX = 0;
 	let startY = 0;
