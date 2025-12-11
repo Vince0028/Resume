@@ -6,7 +6,11 @@ interface BlockState {
     warning: boolean;
 }
 
-const MemoryBlock: React.FC = () => {
+interface MemoryBlockProps {
+    isSpookyActive?: boolean;
+}
+
+const MemoryBlock: React.FC<MemoryBlockProps> = ({ isSpookyActive = false }) => {
     const cols = 20;
     const rows = 4;
     const totalBlocks = cols * rows;
@@ -67,8 +71,8 @@ const MemoryBlock: React.FC = () => {
     return (
         <div className="w-full h-full flex flex-col font-mono text-[10px] uppercase">
             <div className="flex justify-between items-center mb-1">
-                <span className="font-bold tracking-wider text-indigo-400">MEMORY</span>
-                <span className="text-[8px] text-indigo-300">USING 1.5 OUT OF 7.5 GIB</span>
+                <span className={`font-bold tracking-wider ${isSpookyActive ? 'text-red-400' : 'text-indigo-400'}`}>MEMORY</span>
+                <span className={`text-[8px] ${isSpookyActive ? 'text-red-300' : 'text-indigo-300'}`}>USING 1.5 OUT OF 7.5 GIB</span>
             </div>
 
             <div className="flex-1 grid gap-0.5" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
@@ -76,18 +80,20 @@ const MemoryBlock: React.FC = () => {
                     <div
                         key={i}
                         className={`w-full h-full rounded-[1px] transition-all duration-500 ${block.warning
-                            ? 'bg-red-500 opacity-90 shadow-[0_0_4px_rgba(239,68,68,0.9)]'
+                            ? 'bg-red-500 opacity-90 shadow-[0_0_6px_rgba(239,68,68,0.95)]'
                             : block.active
-                                ? 'bg-indigo-500 opacity-90 shadow-[0_0_2px_rgba(99,102,241,0.8)]'
-                                : 'bg-indigo-900/20 opacity-30'
+                                ? (isSpookyActive
+                                    ? 'bg-red-400 opacity-90 shadow-[0_0_4px_rgba(239,68,68,0.6)]'
+                                    : 'bg-indigo-500 opacity-90 shadow-[0_0_2px_rgba(99,102,241,0.8)]')
+                                : (isSpookyActive ? 'bg-red-900/30 opacity-40' : 'bg-indigo-900/20 opacity-30')
                             }`}
                     />
                 ))}
             </div>
 
-            <div className="w-full h-px bg-indigo-500/30 mt-1 relative">
-                <div className="absolute left-0 top-0 h-full w-1 bg-indigo-500"></div>
-                <div className="absolute right-0 top-0 h-full w-1 bg-indigo-500"></div>
+            <div className={`w-full h-px ${isSpookyActive ? 'bg-red-500/40' : 'bg-indigo-500/30'} mt-1 relative`}>
+                <div className={`absolute left-0 top-0 h-full w-1 ${isSpookyActive ? 'bg-red-500' : 'bg-indigo-500'}`}></div>
+                <div className={`absolute right-0 top-0 h-full w-1 ${isSpookyActive ? 'bg-red-500' : 'bg-indigo-500'}`}></div>
             </div>
         </div>
     );

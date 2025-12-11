@@ -41,7 +41,7 @@ const generateTree = (nodes: FileSystemNode[], prefix = ''): string => {
   return output;
 };
 
-const TrafficGraph = () => {
+const TrafficGraph: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive = false }) => {
   const [bars, setBars] = useState<number[]>(new Array(10).fill(20));
 
   useEffect(() => {
@@ -57,7 +57,11 @@ const TrafficGraph = () => {
         <div
           key={i}
           style={{ height: `${h}%` }}
-          className="flex-1 bg-indigo-500/30 border-t border-indigo-500 transition-all duration-300 ease-in-out shadow-[0_0_5px_rgba(99,102,241,0.3)]"
+          className={`flex-1 transition-all duration-300 ease-in-out ${
+            isSpookyActive
+              ? 'bg-red-500/30 border-t border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+              : 'bg-indigo-500/30 border-t border-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.3)]'
+          }`}
         />
       ))}
     </div>
@@ -1245,7 +1249,7 @@ const App: React.FC = () => {
                 <SystemMonitor />
               </div>
               <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
-                <MemoryBlock />
+                <MemoryBlock isSpookyActive={isSpookyActive} />
               </div>
             </div>
 
@@ -1337,7 +1341,7 @@ const App: React.FC = () => {
               </div>
               <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
                 <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
-                <TrafficGraph />
+                <TrafficGraph isSpookyActive={isSpookyActive} />
               </div>
             </div>
 
