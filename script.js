@@ -629,7 +629,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		const now = Date.now();
 		if (now - lastMessageTime < RATE_LIMIT_MS) {
-			return; // cooldown UI already running
+			return; 
 		}
 
 		if (isWaitingForResponse) return;
