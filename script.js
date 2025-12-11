@@ -520,12 +520,12 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	openBtn.addEventListener('click', openPopup);
 
-	// Mobile Ask Vince button
+	
 	const openBtnMobile = document.getElementById('openMessengerBtnMobile');
 	if (openBtnMobile) {
 		openBtnMobile.addEventListener('click', () => {
 			openPopup();
-			// Close the mobile sidebar when opening messenger
+			
 			const sidebar = document.getElementById('sidebar');
 			if (sidebar && sidebar.classList.contains('active')) {
 				sidebar.classList.remove('active');
