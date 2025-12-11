@@ -299,7 +299,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" />
                         </svg>
                     </button>
-                    {/* Down Button */}
+                    {}
                     <button
                         onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.down = true; }}
                         onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.down = false; }}
@@ -312,7 +312,7 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                     </button>
                 </div>
 
-                {/* Mobile Exit Button */}
+                {}
                 <button
                     onClick={onExit}
                     className="absolute top-4 right-4 z-30 px-4 py-2 border-2 border-red-500 bg-black/80 text-red-400 hover:bg-red-500/20 active:scale-95 transition-all font-mono text-sm font-bold pointer-events-auto"
