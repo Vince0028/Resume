@@ -319,14 +319,14 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		setTimeout(() => startAutoplay(), 100);
 	}
 
-	// Add touch event listeners to container for better touch handling
+	
 	if (projectsContainer) {
 		projectsContainer.addEventListener('touchstart', touchStart, { passive: false });
 		projectsContainer.addEventListener('touchmove', touchMove, { passive: false });
 		projectsContainer.addEventListener('touchend', touchEnd);
 		projectsContainer.addEventListener('touchcancel', touchEnd);
 
-		// Mouse drag for desktop
+		
 		projectsContainer.addEventListener('mousedown', touchStart);
 		projectsContainer.addEventListener('mousemove', touchMove);
 		projectsContainer.addEventListener('mouseup', touchEnd);
