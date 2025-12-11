@@ -363,7 +363,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                 </div>
             )}
 
-            {/* Mobile Exit Button - Only show during gameplay */}
+            {}
             {!gameOver && (
                 <button
                     onClick={onExit}
