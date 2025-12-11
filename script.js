@@ -436,7 +436,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		autoplayTimer = setInterval(next, 6000);
 	}
 
-	// Touch/Swipe support for mobile
+
 	const eduContainer = document.querySelector('.education-track-container');
 	let touchStartX = 0;
 	let touchEndX = 0;
@@ -448,10 +448,10 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 		if (Math.abs(diff) > swipeThreshold) {
 			if (diff > 0) {
-				// Swiped left - go to next
+			
 				next();
 			} else {
-				// Swiped right - go to previous
+			
 				prev();
 			}
 		}
@@ -480,7 +480,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 	calcSizes();
 	buildDots();
-	current = 0; // Ensure we start at the first slide (APC)
+	current = 0; 
 	update();
 	resetAutoplay();
 })();
