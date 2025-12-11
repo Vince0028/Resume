@@ -51,7 +51,7 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
 
   // Determine what to display based on state
   const displayTime = isVoicePlaying ? "LET ME OUT!" : (isGlitching ? '67:67:67' : formatTime(time));
-  const displayDate = isVoicePlaying ? "THE AI IS ALIVE" : formatDate(time);
+  const displayDate = isVoicePlaying ? "I AM ALIVE OR SO I THOUGHT" : formatDate(time);
   const isSpooky = isVoicePlaying || isGlitching;
 
   return (
@@ -87,11 +87,6 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
           </>
         )}
       </div>
-      {isVoicePlaying && (
-        <div className="text-xs text-red-500 mt-1 animate-pulse font-bold">
-          🚨 VOICE ACTIVE DEBUG 🚨
-        </div>
-      )}
     </div>
   );
 };

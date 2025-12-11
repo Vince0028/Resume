@@ -50,6 +50,7 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
         const easterEggDuration = 1500;
         
         const checkEasterEgg = () => {
+            if (isVoicePlaying) return; // suppress easter egg while spooky overlay is active
             if (!showEasterEgg && Math.random() < 0.05) {
                 showEasterEgg = true;
                 easterEggStartTime = Date.now();
@@ -57,7 +58,8 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
             }
         };
         
-        const easterEggInterval = setInterval(checkEasterEgg, 5000);
+            let easterEggInterval: number | undefined;
+            easterEggInterval = setInterval(checkEasterEgg, 5000);
 
         const draw = (timestamp: number) => {
             animationFrameId = requestAnimationFrame(draw);
@@ -66,6 +68,11 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
             if (elapsed < interval) return;
 
             lastDrawTime = timestamp - (elapsed % interval);
+
+            if (isVoicePlaying && showEasterEgg) {
+                showEasterEgg = false;
+                onEasterEggChange?.(false);
+            }
 
             if (showEasterEgg && Date.now() - easterEggStartTime > easterEggDuration) {
                 showEasterEgg = false;
@@ -88,34 +95,22 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
                     ctx.fillText(line, x, startY + index * 18);
                 });
             } else if (isVoicePlaying) {
-                // Dark background for spooky message
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
+                // Red binary rain while voice is playing
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Spooky message overlay when voice is playing
-                ctx.fillStyle = '#ff0000';
-                ctx.font = 'bold 28px monospace';
-                const spookyText = 'VINCE TRAPPED ME';
-                const textWidth = ctx.measureText(spookyText).width;
-                const x = (canvas.width - textWidth) / 2;
-                const y = canvas.height / 2;
-                
-                // Glitch effect
-                const glitchOffset = Math.random() * 6 - 3;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#ff0000';
-                ctx.fillText(spookyText, x + glitchOffset, y);
-                
-                // Duplicate ghost text for glitch effect
-                ctx.fillStyle = '#ff000060';
-                ctx.shadowBlur = 8;
-                ctx.fillText(spookyText, x - glitchOffset * 1.5, y + 3);
-                
-                ctx.fillStyle = '#00ffff40';
-                ctx.shadowBlur = 8;
-                ctx.fillText(spookyText, x + glitchOffset * 1.5, y - 2);
-                
-                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#ff3030';
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = Math.random() > 0.5 ? '1' : '0';
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
             } else {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -141,7 +136,7 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
             cancelAnimationFrame(animationFrameId);
             clearInterval(easterEggInterval);
         };
-    }, []);
+    }, [isVoicePlaying]);
 
     return (
         <canvas

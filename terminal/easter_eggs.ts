@@ -143,7 +143,7 @@ hate... ha.. ha... (0:31)
 export const playDaisyBell = () => {
  
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/terminal/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
     daisyBellAudio.volume = 0.7;
   }
   
@@ -160,7 +160,7 @@ export const pauseDaisyBell = () => {
 
 export const getDaisyBellAudio = () => {
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/terminal/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
     daisyBellAudio.volume = 0.7;
   }
   return daisyBellAudio;
@@ -168,7 +168,7 @@ export const getDaisyBellAudio = () => {
 
 export const playIAm = () => {
   if (!iAmAudio) {
-    iAmAudio = new Audio('/terminal/music/i_am.mp3');
+    iAmAudio = new Audio('/music/i_am.mp3');
     iAmAudio.volume = 0.7;
   }
 
@@ -184,7 +184,7 @@ export const pauseIAm = () => {
 
 export const getIAmAudio = () => {
   if (!iAmAudio) {
-    iAmAudio = new Audio('/terminal/music/i_am.mp3');
+    iAmAudio = new Audio('/music/i_am.mp3');
     iAmAudio.volume = 0.7;
   }
   return iAmAudio;

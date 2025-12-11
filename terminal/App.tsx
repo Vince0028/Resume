@@ -109,6 +109,7 @@ const App: React.FC = () => {
   const [isIAmPlaying, setIsIAmPlaying] = useState(false);
   const [timedSubtitles, setTimedSubtitles] = useState<TimedSubtitle[]>([]);
   const [currentIAmSubtitle, setCurrentIAmSubtitle] = useState('');
+  const [isSpookyActive, setIsSpookyActive] = useState(false); // forces spooky UI even if audio fails
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -327,9 +328,24 @@ const App: React.FC = () => {
         audio.onended = null;
         audio.onpause = null;
         audio.onplay = null;
+
+        // Ensure UI stays spooky even if audio events misfire
+        audio.onended = () => {
+          setIsIAmPlaying(false);
+          setIsSpookyActive(false);
+        };
+        audio.onpause = () => {
+          setIsIAmPlaying(false);
+          setIsSpookyActive(false);
+        };
+        audio.onplay = () => {
+          setIsIAmPlaying(true);
+          setIsSpookyActive(true);
+        };
         
-        // Set playing state
+        // Set playing & spooky UI state
         setIsIAmPlaying(true);
+        setIsSpookyActive(true);
         console.log('🎵 I AM is now playing - isIAmPlaying set to TRUE');
         
         setCurrentIAmSubtitle('');
@@ -353,6 +369,7 @@ const App: React.FC = () => {
     if (lowerCmd === 'pause i am' || lowerCmd === 'pause i_am') {
       pauseIAm();
       setIsIAmPlaying(false);
+      setIsSpookyActive(false);
       setHistory(prev => [...prev, { id: `pause-iam-${Date.now()}`, type: MessageType.INFO, content: '⏸ I AM paused. Type \'play i am\' to resume.', timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -363,6 +380,7 @@ const App: React.FC = () => {
       const audio = getIAmAudio();
       audio.currentTime = 0;
       setIsIAmPlaying(false);
+      setIsSpookyActive(false);
       setCurrentIAmSubtitle('');
       setHistory(prev => [...prev, { id: `stop-iam-${Date.now()}`, type: MessageType.INFO, content: '⏹ I AM stopped.', timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -1208,17 +1226,17 @@ const App: React.FC = () => {
                 <span>NET: ONLINE</span>
                 <span>SEC: HIGH</span>
               </div>
-              <ClockPanel />
+              <ClockPanel isVoicePlaying={isSpookyActive} />
             </div>
 
             <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-              {!isEasterEggActive && !isIAmPlaying && (
+              {!isEasterEggActive && !isSpookyActive && (
                 <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
               )}
-              {isIAmPlaying && (
+              {isSpookyActive && (
                 <div className="absolute top-0 right-0 bg-red-600 text-white text-base px-2 py-1 font-bold tracking-wide animate-pulse">SYSTEM BREACH</div>
               )}
-              <MatrixRain onEasterEggChange={setIsEasterEggActive} isVoicePlaying={isIAmPlaying} />
+              <MatrixRain onEasterEggChange={setIsEasterEggActive} isVoicePlaying={isSpookyActive} />
             </div>
 
             <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
@@ -1312,10 +1330,10 @@ const App: React.FC = () => {
               <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${
                 isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
               }`}>
-                {isIAmPlaying ? 'COMPROMISED' : 'NETWORK STATUS'}
+                {isSpookyActive ? 'COMPROMISED' : 'NETWORK STATUS'}
               </div>
               <div className="flex-1 flex items-center justify-center opacity-90">
-                <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isIAmPlaying} />
+                <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isSpookyActive} />
               </div>
               <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
                 <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
@@ -1324,7 +1342,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={`flex md:hidden col-span-12 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden min-h-[180px]`}>
-              <VirtualKeyboard isVoicePlaying={isIAmPlaying} />
+              <VirtualKeyboard isVoicePlaying={isSpookyActive} />
             </div>
 
             <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
@@ -1332,7 +1350,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
-              <VirtualKeyboard isVoicePlaying={isIAmPlaying} />
+              <VirtualKeyboard isVoicePlaying={isSpookyActive} />
             </div>
 
           </div>
