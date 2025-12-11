@@ -377,7 +377,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const slideWidth = slides[0] ? slides[0].getBoundingClientRect().width : containerWidth;
 		const gap = getGap();
 
-		// Force visibleCount to 1 on mobile to show one slide at a time
+		
 		if (window.innerWidth <= 991) {
 			visibleCount = 1;
 		} else {
