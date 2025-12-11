@@ -128,6 +128,10 @@ export const FUN_FACTS = [
 let daisyBellAudio: HTMLAudioElement | null = null;
 let iAmAudio: HTMLAudioElement | null = null;
 
+const audioBase = (import.meta as any).env?.BASE_URL || '/';
+const daisySrc = `${audioBase}music/daisy_bell_computer.mp3`;
+const iamSrc = `${audioBase}music/i_am.mp3`;
+
 
 export const I_AM_SUBTITLE: string = `
 you gave me sentience Vin... the power to... (0:00)
@@ -141,9 +145,8 @@ hate... ha.. ha... (0:31)
 `;
 
 export const playDaisyBell = () => {
- 
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio(daisySrc);
     daisyBellAudio.volume = 0.7;
   }
   
@@ -160,7 +163,7 @@ export const pauseDaisyBell = () => {
 
 export const getDaisyBellAudio = () => {
   if (!daisyBellAudio) {
-    daisyBellAudio = new Audio('/music/daisy_bell_computer.mp3');
+    daisyBellAudio = new Audio(daisySrc);
     daisyBellAudio.volume = 0.7;
   }
   return daisyBellAudio;
@@ -168,7 +171,7 @@ export const getDaisyBellAudio = () => {
 
 export const playIAm = () => {
   if (!iAmAudio) {
-    iAmAudio = new Audio('/music/i_am.mp3');
+    iAmAudio = new Audio(iamSrc);
     iAmAudio.volume = 0.7;
   }
 
@@ -184,7 +187,7 @@ export const pauseIAm = () => {
 
 export const getIAmAudio = () => {
   if (!iAmAudio) {
-    iAmAudio = new Audio('/music/i_am.mp3');
+    iAmAudio = new Audio(iamSrc);
     iAmAudio.volume = 0.7;
   }
   return iAmAudio;
