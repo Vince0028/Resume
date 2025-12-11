@@ -1350,7 +1350,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
-              <FileExplorer />
+              <FileExplorer isSpookyActive={isSpookyActive} />
             </div>
 
             <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
