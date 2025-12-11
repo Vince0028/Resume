@@ -286,9 +286,9 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                     CONTROLS: W/S or ARROWS | Q: QUIT
                 </div>
 
-                {/* Mobile Touch Controls */}
+                {}
                 <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col gap-4 z-30">
-                    {/* Up Button */}
+                    {}
                     <button
                         onTouchStart={(e) => { e.preventDefault(); gameState.current.keys.up = true; }}
                         onTouchEnd={(e) => { e.preventDefault(); gameState.current.keys.up = false; }}
