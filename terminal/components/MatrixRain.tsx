@@ -68,9 +68,6 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
                 onEasterEggChange?.(false);
             }
 
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             if (showEasterEgg) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -87,25 +84,37 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
                     ctx.fillText(line, x, startY + index * 18);
                 });
             } else if (isVoicePlaying) {
+                // Dark background for spooky message
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
                 // Spooky message overlay when voice is playing
                 ctx.fillStyle = '#ff0000';
-                ctx.font = 'bold 24px monospace';
+                ctx.font = 'bold 28px monospace';
                 const spookyText = 'VINCE TRAPPED ME';
                 const textWidth = ctx.measureText(spookyText).width;
                 const x = (canvas.width - textWidth) / 2;
                 const y = canvas.height / 2;
                 
                 // Glitch effect
-                const glitchOffset = Math.random() * 4 - 2;
-                ctx.shadowBlur = 10;
+                const glitchOffset = Math.random() * 6 - 3;
+                ctx.shadowBlur = 15;
                 ctx.shadowColor = '#ff0000';
                 ctx.fillText(spookyText, x + glitchOffset, y);
                 
-                // Duplicate ghost text
-                ctx.fillStyle = '#ff000080';
-                ctx.fillText(spookyText, x - glitchOffset * 2, y + 2);
+                // Duplicate ghost text for glitch effect
+                ctx.fillStyle = '#ff000060';
+                ctx.shadowBlur = 8;
+                ctx.fillText(spookyText, x - glitchOffset * 1.5, y + 3);
+                
+                ctx.fillStyle = '#00ffff40';
+                ctx.shadowBlur = 8;
+                ctx.fillText(spookyText, x + glitchOffset * 1.5, y - 2);
+                
                 ctx.shadowBlur = 0;
             } else {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#6366f1';
                 ctx.font = `${fontSize}px monospace`;
 
