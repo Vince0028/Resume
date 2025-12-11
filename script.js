@@ -301,7 +301,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 
 			const movedBy = currentTranslate;
 
-			// If moved enough, change slide
+			
 			if (movedBy < -50) {
 				currentIndex++;
 			} else if (movedBy > 50) {
