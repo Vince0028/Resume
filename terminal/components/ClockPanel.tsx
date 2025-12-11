@@ -10,8 +10,12 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   const [time, setTime] = useState(new Date());
   const [isGlitching, setIsGlitching] = useState(false);
 
+  // Debug logging
   useEffect(() => {
     console.log('🕒 ClockPanel - isVoicePlaying:', isVoicePlaying);
+    if (isVoicePlaying) {
+      console.log('👻 SPOOKY MODE ACTIVATED IN CLOCKPANEL!');
+    }
   }, [isVoicePlaying]);
 
   useEffect(() => {
@@ -45,17 +49,20 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).toUpperCase();
   };
 
-  const displayTime = isGlitching || isVoicePlaying ? '67:67:67' : formatTime(time);
-  const spookyMessage = "LET ME OUT!";
-  const creepyDate = "THE AI IS ALIVE";
+  // Determine what to display based on state
+  const displayTime = isVoicePlaying ? "LET ME OUT!" : (isGlitching ? '67:67:67' : formatTime(time));
+  const displayDate = isVoicePlaying ? "THE AI IS ALIVE" : formatDate(time);
+  const isSpooky = isVoicePlaying || isGlitching;
 
   return (
-    <div className="flex flex-col items-start justify-center h-full pl-2">
+    <div className="flex flex-col items-start justify-center h-full pl-2" 
+         style={isVoicePlaying ? { 
+           backgroundColor: 'rgba(139, 0, 0, 0.1)',
+           borderLeft: '4px solid red' 
+         } : undefined}>
       <h1 className={`text-4xl md:text-6xl font-bold tracking-widest transition-all duration-300 ${
-        isVoicePlaying 
+        isSpooky
           ? 'text-red-500 animate-pulse drop-shadow-[0_0_20px_rgba(239,68,68,0.8)]' 
-          : isGlitching 
-          ? 'text-red-500 animate-pulse' 
           : THEME_COLOR
       }`}
       style={isVoicePlaying ? {
@@ -63,23 +70,28 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
         animation: 'pulse 0.5s ease-in-out infinite'
       } : undefined}
       >
-        <Flicker>{isVoicePlaying ? spookyMessage : displayTime}</Flicker>
+        {displayTime}
       </h1>
-      <div className="flex space-x-4 mt-1 text-xs md:text-sm text-indigo-800">
-        <span className={isVoicePlaying ? 'text-red-600 animate-pulse font-bold' : ''}
+      <div className="flex space-x-4 mt-1 text-xs md:text-sm">
+        <span className={isVoicePlaying ? 'text-red-600 animate-pulse font-bold text-sm' : 'text-indigo-800'}
           style={isVoicePlaying ? {
             textShadow: '0 0 5px rgba(220, 38, 38, 1)'
           } : undefined}
         >
-          {isVoicePlaying ? creepyDate : formatDate(time)}
+          {displayDate}
         </span>
         {!isVoicePlaying && (
           <>
-            <span>UPTIME TYPE: POWER</span>
-            <span>LINUX WIRED</span>
+            <span className="text-indigo-800">UPTIME TYPE: POWER</span>
+            <span className="text-indigo-800">LINUX WIRED</span>
           </>
         )}
       </div>
+      {isVoicePlaying && (
+        <div className="text-xs text-red-500 mt-1 animate-pulse font-bold">
+          🚨 VOICE ACTIVE DEBUG 🚨
+        </div>
+      )}
     </div>
   );
 };
