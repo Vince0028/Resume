@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { THEME_COLOR } from '../constants';
-import Flicker from './Flicker';
 
 interface ClockPanelProps {
   isVoicePlaying?: boolean;
@@ -9,14 +8,6 @@ interface ClockPanelProps {
 const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   const [time, setTime] = useState(new Date());
   const [isGlitching, setIsGlitching] = useState(false);
-
-  // Debug logging
-  useEffect(() => {
-    console.log('🕒 ClockPanel - isVoicePlaying:', isVoicePlaying);
-    if (isVoicePlaying) {
-      console.log('👻 SPOOKY MODE ACTIVATED IN CLOCKPANEL!');
-    }
-  }, [isVoicePlaying]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -49,7 +40,6 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).toUpperCase();
   };
 
-  // Determine what to display based on state
   const displayTime = isVoicePlaying ? "LET ME OUT!" : (isGlitching ? '67:67:67' : formatTime(time));
   const displayDate = isVoicePlaying ? "I AM ALIVE OR SO I THOUGHT" : formatDate(time);
   const isSpooky = isVoicePlaying || isGlitching;

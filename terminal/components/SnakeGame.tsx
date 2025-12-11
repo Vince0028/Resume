@@ -104,7 +104,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
 
         const spawnFood = () => {
             const { gridWidth, gridHeight, snake } = gameState.current;
-            if (gridWidth === 0 || gridHeight === 0) return; // Don't spawn if grid not initialized
+            if (gridWidth === 0 || gridHeight === 0) return;
             let newFood;
             let isOnSnake;
 
@@ -129,10 +129,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             spawnFood();
         };
 
-        // Initialize food after grid is set
         spawnFood();
 
-        // Start countdown
         if (!initializedRef.current) {
             initializedRef.current = true;
             let count = 3;
@@ -145,7 +143,6 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
             }, 1000);
         }
 
-        // Game loop
         const update = (time: number) => {
             if (gameOver) {
                 draw(); 
@@ -153,7 +150,6 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
                 return;
             }
 
-            // Don't update if countdown is active
             if (countdown > 0) {
                 draw();
                 requestRef.current = requestAnimationFrame(update);
@@ -266,7 +262,6 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onExit }) => {
 
     const handleDirectionChange = (newDirection: { x: number, y: number }) => {
         const { direction } = gameState.current;
-        // Prevent reversing direction
         if (newDirection.x === -direction.x && newDirection.y === -direction.y) return;
         gameState.current.nextDirection = newDirection;
     };

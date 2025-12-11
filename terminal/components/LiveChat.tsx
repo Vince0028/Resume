@@ -41,7 +41,6 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                         setIsConnected(true);
                     }
                 } catch (error) {
-                    console.error('Error fetching messages:', error);
                     setIsConnected(false);
                 }
             };
@@ -155,7 +154,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                             body: JSON.stringify({ username: chosen, content }),
                         });
                     } catch (err) {
-                        console.error('Failed to flush queued message:', err);
+                        setUsernameError('Failed to send queued message.');
                     }
                 }
             } else {
@@ -164,7 +163,6 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                 setUsernameError(body.error || 'Authentication failed');
             }
         } catch (error) {
-            console.error('Error authenticating:', error);
             setUsername('');
             setUsernameError('Connection error. Please try again.');
         } finally {
@@ -202,7 +200,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
                 body: JSON.stringify({ username, content }),
             });
         } catch (error) {
-            console.error('Error sending message:', error);
+            setUsernameError('Error sending message.');
         }
     };
 

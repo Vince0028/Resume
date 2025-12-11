@@ -70,7 +70,7 @@ const TrafficGraph: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive =
 
 type TimedSubtitle = { time: number; text: string };
 
-const SUBTITLE_LEAD_SECONDS = 0.25; // show subtitle slightly ahead of the exact timestamp
+const SUBTITLE_LEAD_SECONDS = 0.25;
 
 const toSeconds = (stamp: string): number | null => {
   const parts = stamp.split(':').map((part) => Number(part));
@@ -113,7 +113,7 @@ const App: React.FC = () => {
   const [isIAmPlaying, setIsIAmPlaying] = useState(false);
   const [timedSubtitles, setTimedSubtitles] = useState<TimedSubtitle[]>([]);
   const [currentIAmSubtitle, setCurrentIAmSubtitle] = useState('');
-  const [isSpookyActive, setIsSpookyActive] = useState(false); // forces spooky UI even if audio fails
+  const [isSpookyActive, setIsSpookyActive] = useState(false);
 
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
@@ -307,7 +307,6 @@ const App: React.FC = () => {
         
         setHistory(prev => [...prev, { id: `daisy-${Date.now()}`, type: MessageType.SUCCESS, content: '♪ ♪ ♪ Daisy Bell (1961 - First Song Sung by a Computer) ♪ ♪ ♪\n\nDaisy, Daisy, give me your answer do.\nI\'m half crazy all for the love of you!\nIt won\'t be a stylish marriage,\nI can\'t afford a carriage,\nBut you\'ll look sweet upon the seat\nOf a bicycle built for two! ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nCONTROLS:\n  • Type \'pause daisy bell\' to PAUSE ⏸\n  • Type \'stop daisy bell\' to STOP ⏹\n  • Type \'play daisy bell\' to RESUME ▶', timestamp: Date.now() }]);
       } catch (e) {
-        console.error('Daisy Bell error:', e);
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
       }
       setIsProcessing(false);
@@ -328,12 +327,10 @@ const App: React.FC = () => {
         
         const audio = getIAmAudio();
         
-        // Remove old listeners to prevent conflicts
         audio.onended = null;
         audio.onpause = null;
         audio.onplay = null;
 
-        // Ensure UI stays spooky even if audio events misfire
         audio.onended = () => {
           setIsIAmPlaying(false);
           setIsSpookyActive(false);
@@ -347,10 +344,8 @@ const App: React.FC = () => {
           setIsSpookyActive(true);
         };
         
-        // Set playing & spooky UI state
         setIsIAmPlaying(true);
         setIsSpookyActive(true);
-        console.log('🎵 I AM is now playing - isIAmPlaying set to TRUE');
         
         setCurrentIAmSubtitle('');
 
@@ -363,7 +358,6 @@ const App: React.FC = () => {
 
         setHistory(prev => [...prev, { id: `iam-${Date.now()}`, type: MessageType.SUCCESS, content: `♪ ♪ ♪ I AM — a nod to the book that inspired this track ♪ ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nSUBTITLE:\n${subtitle}\n\nCONTROLS:\n  • Type 'pause i am' to PAUSE ⏸\n  • Type 'stop i am' to STOP ⏹\n  • Type 'play i am' to RESTART ▶`, timestamp: Date.now() }]);
       } catch (e) {
-        console.error('I Am audio error:', e);
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
       }
       setIsProcessing(false);

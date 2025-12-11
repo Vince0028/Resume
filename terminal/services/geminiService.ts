@@ -72,7 +72,6 @@ export const initializeChat = async () => {
   const apiKey = process.env.API_KEY || (import.meta.env && import.meta.env.VITE_GEMINI_API_KEY);
 
   if (!apiKey) {
-    console.warn("Gemini API Key missing");
     return null;
   }
 
@@ -92,7 +91,6 @@ export const initializeChat = async () => {
     });
     return chatSession;
   } catch (error) {
-    console.error("Failed to init Gemini", error);
     return null;
   }
 };
@@ -110,7 +108,6 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
     const result = await chatSession.sendMessage(message);
     return result.response.text();
   } catch (error) {
-    console.error("Gemini Error:", error);
     return "SYSTEM ERROR: CONNECTION INTERRUPTED.";
   }
 };

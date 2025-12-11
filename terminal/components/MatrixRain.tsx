@@ -10,10 +10,6 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        console.log('💻 MatrixRain - isVoicePlaying:', isVoicePlaying);
-    }, [isVoicePlaying]);
-
-    useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -50,7 +46,7 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
         const easterEggDuration = 1500;
         
         const checkEasterEgg = () => {
-            if (isVoicePlaying) return; // suppress easter egg while spooky overlay is active
+            if (isVoicePlaying) return;
             if (!showEasterEgg && Math.random() < 0.05) {
                 showEasterEgg = true;
                 easterEggStartTime = Date.now();
@@ -95,7 +91,6 @@ const MatrixRain: React.FC<MatrixRainProps> = ({ onEasterEggChange, isVoicePlayi
                     ctx.fillText(line, x, startY + index * 18);
                 });
             } else if (isVoicePlaying) {
-                // Red binary rain while voice is playing
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 

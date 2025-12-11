@@ -104,7 +104,6 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('resize', handleResize);
         handleResize();
 
-        // Start countdown
         if (!initializedRef.current) {
             initializedRef.current = true;
             let count = 3;
@@ -113,7 +112,6 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
                 setCountdown(count);
                 if (count === 0) {
                     clearInterval(countdownInterval);
-                    // Initialize ball after countdown
                     const state = gameState.current;
                     state.ball.x = state.board.width / 2;
                     state.ball.y = state.board.height / 2;
@@ -142,19 +140,16 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
 
-        // Game loop
         const update = () => {
             const state = gameState.current;
             const { width, height} = state.board;
 
-            // Don't update if countdown is active
             if (countdown > 0) {
                 draw();
                 requestRef.current = requestAnimationFrame(update);
                 return;
             }
 
-            // Player movement
             if (state.keys.up) state.paddleLeft.y = Math.max(0, state.paddleLeft.y - 6);
             if (state.keys.down) state.paddleLeft.y = Math.min(height - state.paddleLeft.height, state.paddleLeft.y + 6);
 
@@ -250,7 +245,6 @@ const PongGame: React.FC<PongGameProps> = ({ onExit }) => {
             ctx.stroke();
         };
 
-        // Start game loop
         requestRef.current = requestAnimationFrame(update);
 
         return () => {

@@ -109,10 +109,8 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
             ctx.clearRect(0, 0, width, height);
 
             if (isVoicePlaying && imageRef.current && imageRef.current.complete) {
-                // Draw creepy image with glitch effect
                 ctx.save();
                 
-                // Glitch layer 1 (red)
                 ctx.globalAlpha = 0.3;
                 ctx.drawImage(
                     imageRef.current,
@@ -122,7 +120,6 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
                     height
                 );
                 
-                // Glitch layer 2 (cyan)
                 ctx.globalAlpha = 0.3;
                 ctx.drawImage(
                     imageRef.current,
@@ -132,7 +129,6 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
                     height
                 );
                 
-                // Main image
                 ctx.globalAlpha = 0.9;
                 ctx.drawImage(
                     imageRef.current,
@@ -142,7 +138,6 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
                     height
                 );
                 
-                // Add scan lines
                 ctx.globalAlpha = 0.1;
                 for (let i = 0; i < height; i += 4) {
                     ctx.fillStyle = '#000';
