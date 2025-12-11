@@ -269,7 +269,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 		const diffX = Math.abs(currentX - initialTouch.x);
 		const diffY = Math.abs(currentY - initialTouch.y);
 
-		// Only start dragging if horizontal movement is greater than vertical
+		
 		if (diffX > diffY && diffX > 5) {
 			if (!isDragging) {
 				isDragging = true;
