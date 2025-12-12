@@ -101,17 +101,19 @@ const Flicker: React.FC<FlickerProps> = ({
     };
 
     return (
-        <span 
+        <div 
             className={className} 
             style={{ 
                 opacity, 
                 transition: 'opacity 30ms linear',
-                display: 'inline',
-                whiteSpace: 'nowrap'
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                whiteSpace: 'normal'
             }}
         >
             {renderContent()}
-        </span>
+        </div>
     );
 };
 

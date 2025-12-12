@@ -125,15 +125,19 @@ const App: React.FC = () => {
     if (React.isValidElement(node)) {
       const { className = '', ...rest } = node.props as { className?: string };
       return (
-        <Flicker className={`${className} block`} errorChance={0.12}>
-          {React.cloneElement(node, { ...rest, className: `${className} w-full h-full` })}
-        </Flicker>
+        <div className={className}>
+          <Flicker className="block w-full h-full" errorChance={0.12}>
+            {React.cloneElement(node, { ...rest, className: 'w-full h-full' })}
+          </Flicker>
+        </div>
       );
     }
     return (
-      <Flicker className="block w-full h-full" errorChance={0.12}>
-        {node}
-      </Flicker>
+      <div>
+        <Flicker className="block w-full h-full" errorChance={0.12}>
+          {node}
+        </Flicker>
+      </div>
     );
   };
   
