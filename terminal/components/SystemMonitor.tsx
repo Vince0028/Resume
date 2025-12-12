@@ -103,7 +103,7 @@ const MonitorGraph = ({ label, data, color, error, redMask, redHistory }: { labe
   );
 };
 
-const SystemMonitor: React.FC = () => {
+const SystemMonitor: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive = false }) => {
   const [cpuData, setCpuData] = useState<{ value: number }[]>(new Array(20).fill({ value: 0 }));
   const [memData, setMemData] = useState<{ value: number }[]>(new Array(20).fill({ value: 0 }));
   const [cpuError, setCpuError] = useState(false);
@@ -246,28 +246,40 @@ const SystemMonitor: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
+    <div className="flex flex-col w-full h-full overflow-hidden relative">
       <div className={`border-b ${THEME_BORDER} mb-2 pb-1 shrink-0`}>
         <h3 className={`${THEME_COLOR} text-sm tracking-widest`}>SYSTEM MONITOR</h3>
       </div>
 
-      <MonitorGraph label="CPU CORE 0" data={cpuData} color="#6366f1" error={cpuError} redMask={cpuMask} redHistory={cpuHistory} />
-      <MonitorGraph label="MEMORY ALLOC" data={memData} color="#6366f1" error={memError} redMask={memMask} redHistory={memHistory} />
+      {isSpookyActive ? (
+        <div className="flex-1 flex items-center justify-center">
+          <img
+            src="/Images/eye.png"
+            alt="System intrusion detected"
+            className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain"
+          />
+        </div>
+      ) : (
+        <>
+          <MonitorGraph label="CPU CORE 0" data={cpuData} color="#6366f1" error={cpuError} redMask={cpuMask} redHistory={cpuHistory} />
+          <MonitorGraph label="MEMORY ALLOC" data={memData} color="#6366f1" error={memError} redMask={memMask} redHistory={memHistory} />
 
-      <div className={`mt-auto shrink-0 border ${THEME_BORDER} p-2 text-xs ${THEME_COLOR}`}>
-        <div className="flex justify-between">
-          <span>UPTIME:</span>
-          <span>412D 14H 22M</span>
-        </div>
-        <div className="flex justify-between mt-1">
-          <span>TEMP:</span>
-          <span>42°C</span>
-        </div>
-        <div className="flex justify-between mt-1">
-          <span>FAN:</span>
-          <span>2400 RPM</span>
-        </div>
-      </div>
+          <div className={`mt-auto shrink-0 border ${THEME_BORDER} p-2 text-xs ${THEME_COLOR}`}>
+            <div className="flex justify-between">
+              <span>UPTIME:</span>
+              <span>412D 14H 22M</span>
+            </div>
+            <div className="flex justify-between mt-1">
+              <span>TEMP:</span>
+              <span>42°C</span>
+            </div>
+            <div className="flex justify-between mt-1">
+              <span>FAN:</span>
+              <span>2400 RPM</span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

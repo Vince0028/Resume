@@ -1312,7 +1312,7 @@ const App: React.FC = () => {
               <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
                 <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
                   <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
-                  <SystemMonitor />
+                  <SystemMonitor isSpookyActive={isSpookyActive} />
                 </div>
                 <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
                   <MemoryBlock isSpookyActive={isSpookyActive} />
