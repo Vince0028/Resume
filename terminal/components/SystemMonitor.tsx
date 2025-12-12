@@ -115,8 +115,9 @@ const SystemMonitor: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive 
   const [isBlinking, setIsBlinking] = useState(false);
 
   const getImagePath = (imageName: string) => {
-    const baseUrl = (import.meta as any).env?.BASE_URL || '/';
-    return `${baseUrl}Images/${imageName}`;
+    
+    const basePath = import.meta.env.BASE_URL || '/';
+    return `${basePath}Images/${imageName}`;
   };
 
   useEffect(() => {
