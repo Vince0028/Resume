@@ -33,7 +33,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) =
 
       {isSpookyActive ? (
         <div className="flex-1 flex items-center justify-center text-red-500 font-extrabold text-3xl md:text-4xl animate-pulse text-center px-10 drop-shadow-[0_0_18px_rgba(250,78,78,0.9)]">
-          VINCE TRAPPED ME
+          FOR I AM, I AM
         </div>
       ) : (
         <>
