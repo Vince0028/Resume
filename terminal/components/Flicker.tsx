@@ -50,7 +50,10 @@ const Flicker: React.FC<FlickerProps> = ({
                     return;
                 }
 
-                const newOpacity = toggles % 2 === 0 ? Math.random() * 0.4 + 0.05 : 1;
+                // Keep a minimum opacity so the panel never fully disappears on desktop
+                const minOpacity = 0.5;
+                const flickerOpacity = Math.max(minOpacity, Math.random() * 0.4 + 0.5);
+                const newOpacity = toggles % 2 === 0 ? flickerOpacity : 1;
                 setOpacity(newOpacity);
                 toggles++;
 
@@ -81,7 +84,7 @@ const Flicker: React.FC<FlickerProps> = ({
             mounted = false;
             clearTimeout(timeout);
         };
-    }, [errorChance, isError]);
+    }, [errorChance]);
 
     
     const renderContent = () => {
@@ -98,7 +101,15 @@ const Flicker: React.FC<FlickerProps> = ({
     };
 
     return (
-        <span className={className} style={{ opacity, transition: 'opacity 30ms linear' }}>
+        <span 
+            className={className} 
+            style={{ 
+                opacity, 
+                transition: 'opacity 30ms linear',
+                display: 'inline',
+                whiteSpace: 'nowrap'
+            }}
+        >
             {renderContent()}
         </span>
     );
