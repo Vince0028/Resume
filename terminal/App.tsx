@@ -127,7 +127,7 @@ const App: React.FC = () => {
       return (
         <div className={className}>
           <Flicker className="block w-full h-full" errorChance={0.12}>
-            {React.cloneElement(node, { ...rest, className: 'w-full h-full' })}
+            {React.cloneElement(node, { ...rest, className: `${className} w-full h-full` })}
           </Flicker>
         </div>
       );
