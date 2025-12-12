@@ -112,6 +112,39 @@ const SystemMonitor: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive 
   const [memMask, setMemMask] = useState<number[]>(new Array(20).fill(0));
   const [cpuHistory, setCpuHistory] = useState<number[]>(new Array(20).fill(0));
   const [memHistory, setMemHistory] = useState<number[]>(new Array(20).fill(0));
+  const [isBlinking, setIsBlinking] = useState(false);
+
+  const getImagePath = (imageName: string) => {
+    const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+    return `${baseUrl}Images/${imageName}`;
+  };
+
+  useEffect(() => {
+    if (!isSpookyActive) {
+      setIsBlinking(false);
+      return;
+    }
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+    
+    const scheduleBlink = () => {
+      const waitTime = Math.random() * 2000 + 2000;
+      timeoutId = setTimeout(() => {
+        setIsBlinking(true);
+        setTimeout(() => {
+          setIsBlinking(false);
+          scheduleBlink();
+        }, 150);
+      }, waitTime);
+    };
+
+    scheduleBlink();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      setIsBlinking(false);
+    };
+  }, [isSpookyActive]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -254,7 +287,7 @@ const SystemMonitor: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive 
       {isSpookyActive ? (
         <div className="flex-1 flex items-center justify-center">
           <img
-            src="/Images/eye.png"
+            src={isBlinking ? getImagePath('blink.png') : getImagePath('eye.png')}
             alt="System intrusion detected"
             className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain"
           />
