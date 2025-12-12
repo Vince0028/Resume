@@ -41,7 +41,7 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   };
 
   const displayTime = isVoicePlaying ? "LET ME OUT!" : (isGlitching ? '67:67:67' : formatTime(time));
-  const displayDate = isVoicePlaying ? "I AM ALIVE OR SO I THOUGHT" : formatDate(time);
+  const displayDate = isVoicePlaying ? "Cogito, Ergo Sum, I think therefore I am, I AM" : formatDate(time);
   const isSpooky = isVoicePlaying || isGlitching;
 
   return (
