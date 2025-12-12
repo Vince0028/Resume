@@ -16,6 +16,7 @@ import PongGame from './components/PongGame';
 import SnakeGame from './components/SnakeGame';
 import PacmanGame from './components/PacmanGame';
 import LiveChat from './components/LiveChat';
+import Flicker from './components/Flicker';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -114,7 +115,27 @@ const App: React.FC = () => {
   const [timedSubtitles, setTimedSubtitles] = useState<TimedSubtitle[]>([]);
   const [currentIAmSubtitle, setCurrentIAmSubtitle] = useState('');
   const [isSpookyActive, setIsSpookyActive] = useState(false);
-
+  const [horrorStyle, setHorrorStyle] = useState<React.CSSProperties>({
+    transform: 'translate3d(0, 0, 0)',
+    filter: 'none',
+    opacity: 1
+  });
+  const flickerWrap = (node: React.ReactNode) => {
+    if (!isSpookyActive) return node;
+    if (React.isValidElement(node)) {
+      const { className = '', ...rest } = node.props as { className?: string };
+      return (
+        <Flicker className={`${className} block`} errorChance={0.12}>
+          {React.cloneElement(node, { ...rest, className: `${className} w-full h-full` })}
+        </Flicker>
+      );
+    }
+    return (
+      <Flicker className="block w-full h-full" errorChance={0.12}>
+        {node}
+      </Flicker>
+    );
+  };
   
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
 
@@ -180,6 +201,38 @@ const App: React.FC = () => {
       audio.removeEventListener('ended', handleEnded);
     };
   }, [timedSubtitles]);
+
+  useEffect(() => {
+    if (!isSpookyActive) {
+      setHorrorStyle({ transform: 'translate3d(0, 0, 0)', filter: 'none', opacity: 1 });
+      return;
+    }
+
+    const jitter = () => {
+      const shakeX = (Math.random() - 0.5) * 8;
+      const shakeY = (Math.random() - 0.5) * 6;
+      const rotate = (Math.random() - 0.5) * 1.4;
+      const scale = 1 + (Math.random() - 0.5) * 0.01;
+      const opacity = 0.82 + Math.random() * 0.16;
+      const blur = Math.random() < 0.35 ? `blur(${(Math.random() * 1.4).toFixed(2)}px)` : 'none';
+      const contrast = (1.1 + Math.random() * 0.6).toFixed(2);
+      const saturate = (0.9 + Math.random() * 0.5).toFixed(2);
+
+      setHorrorStyle({
+        transform: `translate(${shakeX.toFixed(2)}px, ${shakeY.toFixed(2)}px) rotate(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
+        filter: `contrast(${contrast}) saturate(${saturate}) ${blur}`,
+        opacity
+      });
+    };
+
+    const interval = setInterval(jitter, 90);
+    jitter();
+
+    return () => {
+      clearInterval(interval);
+      setHorrorStyle({ transform: 'translate3d(0, 0, 0)', filter: 'none', opacity: 1 });
+    };
+  }, [isSpookyActive]);
 
   useEffect(() => {
     if (isBooting) {
@@ -1216,38 +1269,55 @@ const App: React.FC = () => {
 
       {!privacyOpen && (
         <>
-          <div className={`relative z-10 w-full max-w-[1600px] min-h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}>
+          <div
+            className={`relative z-10 w-full max-w-[1600px] min-h-full md:h-[90vh] flex flex-col md:grid md:grid-cols-12 md:grid-rows-12 gap-4 ${THEME_COLOR}`}
+            style={
+              isSpookyActive
+                ? {
+                    ...horrorStyle,
+                    transition: 'transform 90ms linear, filter 90ms linear, opacity 90ms linear'
+                  }
+                : undefined
+            }
+          >
 
-            <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
-              <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
-              <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
-                <span>NET: ONLINE</span>
-                <span>SEC: HIGH</span>
+            {flickerWrap(
+              <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
+                <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
+                <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
+                  <span>NET: ONLINE</span>
+                  <span>SEC: HIGH</span>
+                </div>
+                <ClockPanel isVoicePlaying={isSpookyActive} />
               </div>
-              <ClockPanel isVoicePlaying={isSpookyActive} />
-            </div>
+            )}
 
-            <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
-              {!isEasterEggActive && !isSpookyActive && (
-                <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
-              )}
-              {isSpookyActive && (
-                <div className="absolute top-0 right-0 bg-red-600 text-white text-base px-2 py-1 font-bold tracking-wide animate-pulse">SYSTEM BREACH</div>
-              )}
-              <MatrixRain onEasterEggChange={setIsEasterEggActive} isVoicePlaying={isSpookyActive} />
-            </div>
-
-            <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
-              <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
-                <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
-                <SystemMonitor />
+            {flickerWrap(
+              <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
+                {!isEasterEggActive && !isSpookyActive && (
+                  <div className="absolute top-0 right-0 bg-indigo-500 text-black text-base px-2 py-1 font-bold tracking-wide">DATA STREAM</div>
+                )}
+                {isSpookyActive && (
+                  <div className="absolute top-0 right-0 bg-red-600 text-white text-base px-2 py-1 font-bold tracking-wide animate-pulse">SYSTEM BREACH</div>
+                )}
+                <MatrixRain onEasterEggChange={setIsEasterEggActive} isVoicePlaying={isSpookyActive} />
               </div>
-              <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
-                <MemoryBlock isSpookyActive={isSpookyActive} />
-              </div>
-            </div>
+            )}
 
-            <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative md:overflow-hidden`}>
+            {flickerWrap(
+              <div className={`hidden md:flex col-span-3 row-span-7 flex-col gap-4 overflow-hidden`}>
+                <div className={`flex-1 min-h-0 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex flex-col`}>
+                  <div className="absolute top-0 left-0 text-[10px] bg-indigo-900/40 px-1 text-indigo-300 font-bold">HARDWARE MONITOR</div>
+                  <SystemMonitor />
+                </div>
+                <div className={`shrink-0 border ${THEME_BORDER} ${THEME_BG} p-3 flex flex-col justify-center h-24`}>
+                  <MemoryBlock isSpookyActive={isSpookyActive} />
+                </div>
+              </div>
+            )}
+
+            {flickerWrap(
+              <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative md:overflow-hidden`}>
               <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
                 <span className="text-xs font-bold">MAIN - bash</span>
               </div>
@@ -1323,33 +1393,42 @@ const App: React.FC = () => {
                 </>
               )}
             </div>
+            )}
 
-            <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-              <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${
-                isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
-              }`}>
-                {isSpookyActive ? 'COMPROMISED' : 'NETWORK STATUS'}
+            {flickerWrap(
+              <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
+                <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${
+                  isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
+                }`}>
+                  {isSpookyActive ? 'COMPROMISED' : 'NETWORK STATUS'}
+                </div>
+                <div className="flex-1 flex items-center justify-center opacity-90">
+                  <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isSpookyActive} />
+                </div>
+                <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
+                  <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
+                  <TrafficGraph isSpookyActive={isSpookyActive} />
+                </div>
               </div>
-              <div className="flex-1 flex items-center justify-center opacity-90">
-                <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isSpookyActive} />
+            )}
+
+            {flickerWrap(
+              <div className={`flex md:hidden col-span-12 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden min-h-[180px]`}>
+                <VirtualKeyboard isVoicePlaying={isSpookyActive} />
               </div>
-              <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
-                <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
-                <TrafficGraph isSpookyActive={isSpookyActive} />
+            )}
+
+            {flickerWrap(
+              <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
+                <FileExplorer isSpookyActive={isSpookyActive} />
               </div>
-            </div>
+            )}
 
-            <div className={`flex md:hidden col-span-12 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden min-h-[180px]`}>
-              <VirtualKeyboard isVoicePlaying={isSpookyActive} />
-            </div>
-
-            <div className={`col-span-12 md:col-span-5 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4`}>
-              <FileExplorer isSpookyActive={isSpookyActive} />
-            </div>
-
-            <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
-              <VirtualKeyboard isVoicePlaying={isSpookyActive} />
-            </div>
+            {flickerWrap(
+              <div className={`hidden md:flex col-span-7 row-span-3 border ${THEME_BORDER} ${THEME_BG} p-4 items-center justify-center overflow-hidden`}>
+                <VirtualKeyboard isVoicePlaying={isSpookyActive} />
+              </div>
+            )}
 
           </div>
 

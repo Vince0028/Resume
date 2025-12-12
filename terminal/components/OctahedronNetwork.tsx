@@ -12,6 +12,10 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
     const [latency, setLatency] = useState(0);
     const [nodes, setNodes] = useState(0);
     const [glitchOffset, setGlitchOffset] = useState({ x: 0, y: 0 });
+    const [imageEffect, setImageEffect] = useState<{ opacity: number; filter: string }>({
+        opacity: 1,
+        filter: 'none'
+    });
 
     useEffect(() => {
         const img = new Image();
@@ -30,6 +34,33 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
         }, 100);
 
         return () => clearInterval(glitchInterval);
+    }, [isVoicePlaying]);
+
+    useEffect(() => {
+        if (!isVoicePlaying) {
+            setImageEffect({ opacity: 1, filter: 'none' });
+            return;
+        }
+
+        const updateEffect = () => {
+            const opacity = 0.7 + Math.random() * 0.25;
+            const blur = Math.random() < 0.35 ? `blur(${(Math.random() * 1.6).toFixed(2)}px)` : 'none';
+            const contrast = (1.1 + Math.random() * 0.6).toFixed(2);
+            const saturate = (0.85 + Math.random() * 0.5).toFixed(2);
+            const hue = ((Math.random() - 0.5) * 12).toFixed(2);
+
+            setImageEffect({
+                opacity,
+                filter: `contrast(${contrast}) saturate(${saturate}) hue-rotate(${hue}deg) ${blur}`
+            });
+        };
+
+        updateEffect();
+        const interval = setInterval(updateEffect, 90);
+        return () => {
+            clearInterval(interval);
+            setImageEffect({ opacity: 1, filter: 'none' });
+        };
     }, [isVoicePlaying]);
 
     useEffect(() => {
@@ -270,7 +301,7 @@ const OctahedronNetwork: React.FC<OctahedronNetworkProps> = ({ networkLevel, isV
             width={300}
             height={300}
             className="w-full h-full"
-            style={{ imageRendering: 'crisp-edges' }}
+            style={{ imageRendering: 'crisp-edges', opacity: imageEffect.opacity, filter: imageEffect.filter }}
         />
     );
 };
