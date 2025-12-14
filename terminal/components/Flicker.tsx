@@ -50,7 +50,7 @@ const Flicker: React.FC<FlickerProps> = ({
                     return;
                 }
 
-                // Keep a minimum opacity so the panel never fully disappears on desktop
+               
                 const minOpacity = 0.5;
                 const flickerOpacity = Math.max(minOpacity, Math.random() * 0.4 + 0.5);
                 const newOpacity = toggles % 2 === 0 ? flickerOpacity : 1;
