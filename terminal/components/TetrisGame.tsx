@@ -336,7 +336,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                     </div>
                 )}
 
-                {/* Mobile Exit Button - Always visible */}
+                {}
                 {!gameOver && (
                     <button
                         onClick={onExit}
