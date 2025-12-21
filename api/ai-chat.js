@@ -18,7 +18,7 @@ function detectLanguage(text) {
         'halimbawa', 'kaya', 'pero', 'kahit', 'kung', 'kapag', 'habang', 'dahil', 'upang',
         'napaka', 'sobra', 'medyo', 'halos', 'lalong', 'mas', 'pinaka', 'lubha', 'masyado'
     ];
-    
+
     const englishWords = [
         'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for',
         'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by',
@@ -52,6 +52,24 @@ function detectLanguage(text) {
     return 'english';
 }
 
+const ipCache = new Map();
+
+function checkRateLimit(ip) {
+    const now = Date.now();
+    const windowMs = 5000;
+
+
+    if (ipCache.size > 5000) ipCache.clear();
+
+    const lastRequest = ipCache.get(ip) || 0;
+    if (now - lastRequest < windowMs) {
+        return false;
+    }
+
+    ipCache.set(ip, now);
+    return true;
+}
+
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -64,6 +82,18 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
+    }
+
+
+    const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown-ip';
+
+    const clientIp = Array.isArray(ip) ? ip[0] : ip.split(',')[0].trim();
+
+    if (!checkRateLimit(clientIp)) {
+        return res.status(429).json({
+            error: 'Too Many Requests',
+            reply: 'You are chatting too fast. Please wait 5 seconds.'
+        });
     }
 
     if (req.method !== 'POST') {
@@ -258,8 +288,8 @@ Show personality pero be concise.`
 
         if (useProvider === 'gemini' && genAI) {
             const geminiModel = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-            const model = genAI.getGenerativeModel({ 
-                model: geminiModel, 
+            const model = genAI.getGenerativeModel({
+                model: geminiModel,
                 systemInstruction: systemPrompt,
                 generationConfig: {
                     temperature: 0.7,
