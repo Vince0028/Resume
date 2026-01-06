@@ -48,7 +48,12 @@ async function generate() {
     }
     console.log(`\nTotal points: ${generatedPoints.length}`);
 
-    const outputPath = path.resolve(__dirname, '../public/globe_points.json');
+    const outputPath = path.resolve(__dirname, '../data/globe_points.json');
+    // Ensure dir exists
+    const dir = path.dirname(outputPath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
     fs.writeFileSync(outputPath, JSON.stringify(generatedPoints));
     console.log(`Saved to ${outputPath}`);
 }

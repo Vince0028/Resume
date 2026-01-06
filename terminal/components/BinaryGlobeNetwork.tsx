@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+// @ts-ignore
+import globeData from '../data/globe_points.json';
 
 interface Point3D {
     x: number;
@@ -48,65 +50,54 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
     const frameIdRef = useRef<number>(0);
 
     useEffect(() => {
-        let mounted = true;
+        // Load data synchronously from bundle
+        const rawPoints = globeData as RawPoint[];
 
-        fetch('/globe_points.json')
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to load globe data');
-                return res.json();
-            })
-            .then((rawPoints: RawPoint[]) => {
-                if (!mounted) return;
+        const generatedPoints: Point3D[] = rawPoints.map(p => ({
+            ...p,
+            char: Math.random() > 0.5 ? '1' : '0'
+        }));
 
-                const generatedPoints: Point3D[] = rawPoints.map(p => ({
-                    ...p,
-                    char: Math.random() > 0.5 ? '1' : '0'
-                }));
+        // Shuffle points for "random" infection order
+        for (let i = generatedPoints.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [generatedPoints[i], generatedPoints[j]] = [generatedPoints[j], generatedPoints[i]];
+        }
 
-                // Shuffle points for "random" infection order
-                for (let i = generatedPoints.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [generatedPoints[i], generatedPoints[j]] = [generatedPoints[j], generatedPoints[i]];
+        // Crisis Generation
+        const crisisPoints: CrisisPoint[] = [];
+        const crisisLabels = ['HACKED', 'BREACH', 'SYSTEM_FAIL', 'CRITICAL', 'ROOT_ACCESS', 'OVERRIDE', 'FATAL', 'MALWARE'];
+        const minDistance = 0.35;
+
+        const candidates = generatedPoints.filter(p => p.isLand); // Use shuffled land points
+
+        for (const p of candidates) {
+            if (crisisPoints.length >= 40) break; // Increased capability
+
+            let tooClose = false;
+            for (const existing of crisisPoints) {
+                const dx = p.x - existing.x;
+                const dy = p.y - existing.y;
+                const dz = p.z - existing.z;
+                const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                if (dist < minDistance) {
+                    tooClose = true;
+                    break;
                 }
+            }
 
-                // Crisis Generation
-                const crisisPoints: CrisisPoint[] = [];
-                const crisisLabels = ['HACKED', 'BREACH', 'SYSTEM_FAIL', 'CRITICAL', 'ROOT_ACCESS', 'OVERRIDE', 'FATAL', 'MALWARE'];
-                const minDistance = 0.35;
+            if (!tooClose) {
+                crisisPoints.push({
+                    x: p.x,
+                    y: p.y,
+                    z: p.z,
+                    label: crisisLabels[Math.floor(Math.random() * crisisLabels.length)]
+                });
+            }
+        }
 
-                const candidates = generatedPoints.filter(p => p.isLand); // Use shuffled land points
-
-                for (const p of candidates) {
-                    if (crisisPoints.length >= 20) break;
-
-                    let tooClose = false;
-                    for (const existing of crisisPoints) {
-                        const dx = p.x - existing.x;
-                        const dy = p.y - existing.y;
-                        const dz = p.z - existing.z;
-                        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                        if (dist < minDistance) {
-                            tooClose = true;
-                            break;
-                        }
-                    }
-
-                    if (!tooClose) {
-                        crisisPoints.push({
-                            x: p.x,
-                            y: p.y,
-                            z: p.z,
-                            label: crisisLabels[Math.floor(Math.random() * crisisLabels.length)]
-                        });
-                    }
-                }
-
-                setPoints(generatedPoints);
-                setCrises(crisisPoints);
-            })
-            .catch(err => console.error(err));
-
-        return () => { mounted = false; };
+        setPoints(generatedPoints);
+        setCrises(crisisPoints);
     }, []);
 
     useEffect(() => {
