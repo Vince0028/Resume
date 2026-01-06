@@ -40,7 +40,10 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
         glitchTimer: 0,
         jitter: 0,
         pulse: 0,
-        glitchIntensity: 0
+        glitchIntensity: 0,
+        infectionActive: false,
+        infectionProgress: 0,
+        rebootTimer: 0
     });
     const frameIdRef = useRef<number>(0);
 
@@ -60,17 +63,21 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     char: Math.random() > 0.5 ? '1' : '0'
                 }));
 
-                // Crisis Generation with spacing logic
+                // Shuffle points for "random" infection order
+                for (let i = generatedPoints.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [generatedPoints[i], generatedPoints[j]] = [generatedPoints[j], generatedPoints[i]];
+                }
+
+                // Crisis Generation
                 const crisisPoints: CrisisPoint[] = [];
                 const crisisLabels = ['HACKED', 'BREACH', 'SYSTEM_FAIL', 'CRITICAL', 'ROOT_ACCESS', 'OVERRIDE', 'FATAL', 'MALWARE'];
-                // Reduced distance to allow more points while still preventing direct overlap
                 const minDistance = 0.35;
 
-                // Shuffle points to randomize selection order
-                const candidates = generatedPoints.filter(p => p.isLand && Math.random() > 0.95); // More candidates
+                const candidates = generatedPoints.filter(p => p.isLand); // Use shuffled land points
 
                 for (const p of candidates) {
-                    if (crisisPoints.length >= 20) break; // Increased limit to 20
+                    if (crisisPoints.length >= 20) break;
 
                     let tooClose = false;
                     for (const existing of crisisPoints) {
@@ -113,7 +120,6 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
         const height = canvas.height;
         const radius = Math.min(width, height) * 0.40;
 
-        // Double buffer for glitch effects
         const buffer = document.createElement('canvas');
         buffer.width = width;
         buffer.height = height;
@@ -125,6 +131,27 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
         const render = () => {
             const s = stateRef.current;
             s.pulse += 0.1;
+
+            // --- Infection Logic ---
+            if (!s.infectionActive) {
+                // Chance to start infection
+                if (Math.random() > 0.9995) {
+                    s.infectionActive = true;
+                    s.infectionProgress = 0;
+                }
+            } else {
+                // Spread infection
+                s.infectionProgress += 10; // Speed of spread
+                if (s.infectionProgress >= points.length + 200) {
+                    if (!s.rebootTimer) s.rebootTimer = 180; // Hold red for 3s
+                    s.rebootTimer--;
+                    if (s.rebootTimer <= 0) {
+                        s.infectionActive = false;
+                        s.infectionProgress = 0;
+                        s.rebootTimer = 0;
+                    }
+                }
+            }
 
             // Physics & Glitch Logic
             if (s.glitchTimer > 0) {
@@ -158,9 +185,12 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
             // --- Draw to Buffer ---
             bctx.clearRect(0, 0, width, height);
 
-            // Background Glow (Indigo)
+            // Background Glow (Indigo, or Red if infected)
+            const isFullRed = s.infectionActive && s.infectionProgress > points.length;
+            const glowColor = isFullRed ? 'rgba(239, 68, 68, 0.2)' : 'rgba(99, 102, 241, 0.1)';
+
             const glow = bctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, radius * 1.5);
-            glow.addColorStop(0, 'rgba(99, 102, 241, 0.1)');
+            glow.addColorStop(0, glowColor);
             glow.addColorStop(1, 'rgba(13, 14, 16, 0)');
             bctx.fillStyle = glow;
             bctx.fillRect(0, 0, width, height);
@@ -181,13 +211,21 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     const screenX = width / 2 + rx * radius;
                     const screenY = height / 2 - ry * radius;
                     const scale = 0.7 + (rrz * 0.3);
+                    const isInfected = s.infectionActive && i < s.infectionProgress;
 
-                    if (p.isLand) {
+                    if (isInfected) {
+                        // Red Infection Style
                         bctx.font = `bold ${Math.floor(6 * scale)}px ${fontMono}`;
-                        bctx.fillStyle = `rgba(129, 140, 248, ${0.5 + rrz * 0.5})`; // Indigo-400
+                        bctx.fillStyle = `rgba(239, 68, 68, ${0.8 + rrz * 0.2})`; // Red-500
                     } else {
-                        bctx.font = `${Math.floor(4 * scale)}px ${fontMono}`;
-                        bctx.fillStyle = `rgba(199, 210, 254, ${rrz * 0.12})`; // Indigo-200
+                        // Normal Indigo Style
+                        if (p.isLand) {
+                            bctx.font = `bold ${Math.floor(6 * scale)}px ${fontMono}`;
+                            bctx.fillStyle = `rgba(129, 140, 248, ${0.5 + rrz * 0.5})`; // Indigo-400
+                        } else {
+                            bctx.font = `${Math.floor(4 * scale)}px ${fontMono}`;
+                            bctx.fillStyle = `rgba(199, 210, 254, ${rrz * 0.12})`; // Indigo-200
+                        }
                     }
 
                     const flickerRate = s.glitchIntensity > 0 ? 0.90 : 0.994;
@@ -203,25 +241,21 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                 let ry = c.y * cosX - rz * sinX;
                 let rrz = c.y * sinX + rz * cosX;
 
-                // Threshold rrz > 0.2 means it must be more "forward" to show
                 if (rrz > 0.2) {
                     const screenX = width / 2 + rx * radius;
                     const screenY = height / 2 - ry * radius;
                     const op = (0.5 + Math.sin(s.pulse) * 0.5) * rrz;
 
-                    // Pulsing Ring
                     bctx.beginPath();
                     bctx.arc(screenX, screenY, (3 + Math.sin(s.pulse * 2.5) * 2) * rrz, 0, Math.PI * 2);
-                    bctx.strokeStyle = `rgba(239, 68, 68, ${op * 0.8})`; // Red
+                    bctx.strokeStyle = `rgba(239, 68, 68, ${op * 0.8})`;
                     bctx.stroke();
 
-                    // Solid Dot
                     bctx.beginPath();
                     bctx.arc(screenX, screenY, 2 * rrz, 0, Math.PI * 2);
                     bctx.fillStyle = `rgba(220, 38, 38, ${rrz})`;
                     bctx.fill();
 
-                    // Text & Line (Only if not glitching too hard, or maybe flicker it?)
                     if (Math.random() > 0.1 || s.glitchTimer === 0) {
                         bctx.font = `bold ${Math.floor(14 * rrz)}px ${fontMono}`;
                         bctx.fillStyle = `rgba(239, 68, 68, ${rrz})`;
@@ -247,32 +281,27 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     const y = Math.random() * (height - h);
                     const xOffset = (Math.random() - 0.5) * 60 * s.glitchIntensity;
 
-                    // Draw slice
                     ctx.drawImage(buffer, 0, y, width, h, xOffset, y, width, h);
 
-                    // Scanline/Color artifact
                     if (Math.random() > 0.7) {
-                        ctx.fillStyle = `rgba(99, 102, 241, ${Math.random() * 0.2})`; // Indigo flash
+                        ctx.fillStyle = `rgba(99, 102, 241, ${Math.random() * 0.2})`;
                         ctx.fillRect(0, y, width, 1);
                     }
                 }
 
-                // RGB Shift Ghosting
                 if (Math.random() > 0.5) {
                     ctx.globalCompositeOperation = 'screen';
                     ctx.globalAlpha = 0.4;
-                    ctx.drawImage(buffer, 4 * s.glitchIntensity, 0); // Shift for ghost
+                    ctx.drawImage(buffer, 4 * s.glitchIntensity, 0);
                     ctx.globalAlpha = 1.0;
                     ctx.globalCompositeOperation = 'source-over';
                 }
 
-                // White Noise / Interference
                 if (Math.random() > 0.92) {
                     ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.08})`;
                     ctx.fillRect(0, Math.random() * height, width, 20 + Math.random() * 100);
                 }
             } else {
-                // Clean Draw
                 ctx.drawImage(buffer, 0, 0);
             }
 
