@@ -131,15 +131,27 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     s.infectionProgress = 0;
                 }
             } else {
-                // Spread infection
-                s.infectionProgress += 10; // Speed of spread
+                // Spread infection (Accelerating)
+                s.infectionProgress += 2 + (s.infectionProgress * 0.03);
                 if (s.infectionProgress >= points.length + 200) {
-                    if (!s.rebootTimer) s.rebootTimer = 180; // Hold red for 3s
+                    if (!s.rebootTimer) {
+                        s.rebootTimer = 180; // Hold red for 3s
+                        s.glitchTimer = 180; // Force glitch during hold
+                    }
+
                     s.rebootTimer--;
+
+                    // Force maximum chaos during takeover
+                    if (s.rebootTimer > 0) {
+                        s.glitchIntensity = 1.0;
+                        s.jitter = (Math.random() - 0.5) * 0.05;
+                    }
+
                     if (s.rebootTimer <= 0) {
                         s.infectionActive = false;
                         s.infectionProgress = 0;
                         s.rebootTimer = 0;
+                        s.glitchTimer = 0; // Stop glitch
                     }
                 }
             }
