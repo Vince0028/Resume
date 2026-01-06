@@ -7,7 +7,7 @@ import SystemMonitor from './components/SystemMonitor';
 import FileExplorer from './components/FileExplorer';
 import ClockPanel from './components/ClockPanel';
 import VirtualKeyboard from './components/VirtualKeyboard';
-import OctahedronNetwork from './components/OctahedronNetwork';
+import BinaryGlobeNetwork from './components/BinaryGlobeNetwork';
 import FingerprintScanner from './components/FingerprintScanner';
 import MatrixRain from './components/MatrixRain';
 import MemoryBlock from './components/MemoryBlock';
@@ -58,11 +58,10 @@ const TrafficGraph: React.FC<{ isSpookyActive?: boolean }> = ({ isSpookyActive =
         <div
           key={i}
           style={{ height: `${h}%` }}
-          className={`flex-1 transition-all duration-300 ease-in-out ${
-            isSpookyActive
-              ? 'bg-red-500/30 border-t border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
-              : 'bg-indigo-500/30 border-t border-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.3)]'
-          }`}
+          className={`flex-1 transition-all duration-300 ease-in-out ${isSpookyActive
+            ? 'bg-red-500/30 border-t border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+            : 'bg-indigo-500/30 border-t border-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.3)]'
+            }`}
         />
       ))}
     </div>
@@ -140,7 +139,7 @@ const App: React.FC = () => {
       </div>
     );
   };
-  
+
   const [isFingerprintVerified, setIsFingerprintVerified] = useState(false);
 
   const handleScanComplete = () => {
@@ -356,12 +355,12 @@ const App: React.FC = () => {
 
         await playDaisyBell();
         setIsDaisyBellPlaying(true);
-        
-        
+
+
         const audio = getDaisyBellAudio();
         audio.onended = () => setIsDaisyBellPlaying(false);
         audio.onpause = () => setIsDaisyBellPlaying(false);
-        
+
         setHistory(prev => [...prev, { id: `daisy-${Date.now()}`, type: MessageType.SUCCESS, content: '♪ ♪ ♪ Daisy Bell (1961 - First Song Sung by a Computer) ♪ ♪ ♪\n\nDaisy, Daisy, give me your answer do.\nI\'m half crazy all for the love of you!\nIt won\'t be a stylish marriage,\nI can\'t afford a carriage,\nBut you\'ll look sweet upon the seat\nOf a bicycle built for two! ♪ ♪\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎵 NOW PLAYING 🎵\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nCONTROLS:\n  • Type \'pause daisy bell\' to PAUSE ⏸\n  • Type \'stop daisy bell\' to STOP ⏹\n  • Type \'play daisy bell\' to RESUME ▶', timestamp: Date.now() }]);
       } catch (e) {
         setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `Error: ${e instanceof Error ? e.message : 'Could not load audio file'}`, timestamp: Date.now() }]);
@@ -381,9 +380,9 @@ const App: React.FC = () => {
         }
 
         await playIAm();
-        
+
         const audio = getIAmAudio();
-        
+
         audio.onended = null;
         audio.onpause = null;
         audio.onplay = null;
@@ -400,10 +399,10 @@ const App: React.FC = () => {
           setIsIAmPlaying(true);
           setIsSpookyActive(true);
         };
-        
+
         setIsIAmPlaying(true);
         setIsSpookyActive(true);
-        
+
         setCurrentIAmSubtitle('');
 
         const first = timedSubtitles[0];
@@ -460,7 +459,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'please master') {
       const easterEggList = `\nEASTER EGGS REVEALED:\n=====================\n\nVINCE-RELATED:\n- is vince gay?\n- is vince handsome?\n- is vince ugly?\n- who is vince?\n\nGREETINGS:\n- hello / hi / hey\n- hello vince / hi vince / hey vince\n- good morning / good afternoon / good evening\n- thank you / thanks\n- bye / goodbye / exit / quit\n\nGENERAL KNOWLEDGE:\n- what is the meaning of life?\n- who created you?\n- what is your name?\n- how are you?\n- what can you do?\n- are you real?\n\nFUN STUFF:\n- tell me a joke / joke (35 random jokes!)\n- tell me a fun fact / fun fact\n- i love you\n\nPOP CULTURE:\n- sudo make me a sandwich\n- make me a sandwich\n- hello there\n- the cake is a lie\n- do a barrel roll\n\nCOMPUTER HISTORY:\n- play daisy bell (🎵 First song ever sung by a computer in 1961!)\n- pause daisy bell (⏸ Pause the song)\n- stop daisy bell (⏹ Stop and reset the song)\n\nBOOK REFERENCE:\n- play i am (🎵 I Have No Mouth, and I Must Scream - reference)\n- pause i am (⏸ Pause the track)\n- stop i am (⏹ Stop and reset the track)\n\nEASTER EGG WINNERS:\n- type: easter egg winner\n\nTry them all!, Just type it in the bash\n`;
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: easterEggList, timestamp: Date.now() }]);
@@ -550,28 +549,28 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'is vince gay' || lowerCmd === 'is vince gay?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "No, Vince isn't... but Rick is", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    
+
     if (lowerCmd === 'is vince handsome' || lowerCmd === 'is vince handsome?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Most definitely", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    
+
     if (lowerCmd === 'is vince ugly' || lowerCmd === 'is vince ugly?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Definitely not", timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
     }
 
-    
+
     if (lowerCmd === 'is vince smart' || lowerCmd === 'is vince smart?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Smart enough to build this terminal. You decide.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -692,7 +691,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'hello' || lowerCmd === 'hi' || lowerCmd === 'hey') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hello! Welcome to BENBEN OS. Type 'help' to see available commands.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -711,7 +710,7 @@ const App: React.FC = () => {
       return;
     }
 
-  
+
     if (lowerCmd === 'what is the meaning of life' || lowerCmd === 'what is the meaning of life?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "42. Obviously.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -794,7 +793,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'sudo make me a sandwich') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Okay. *makes you a sandwich*", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -825,7 +824,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'thank you' || lowerCmd === 'thanks') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "You're welcome! Happy to help.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -886,7 +885,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'hello' || lowerCmd === 'hi' || lowerCmd === 'hey') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Hello! Welcome to BENBEN OS. Type 'help' to see available commands.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -905,7 +904,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'what is the meaning of life' || lowerCmd === 'what is the meaning of life?') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "42. Obviously.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -988,7 +987,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'sudo make me a sandwich') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "Okay. *makes you a sandwich*", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -1019,7 +1018,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     if (lowerCmd === 'thank you' || lowerCmd === 'thanks') {
       setHistory(prev => [...prev, { id: `easter-${Date.now()}`, type: MessageType.SYSTEM, content: "You're welcome! Happy to help.", timestamp: Date.now() }]);
       setIsProcessing(false);
@@ -1142,7 +1141,7 @@ const App: React.FC = () => {
       return;
     }
 
-    
+
     const sarcasticResponses = [
       "Type better.",
       "Wrong answer.",
@@ -1223,7 +1222,7 @@ const App: React.FC = () => {
         return;
       }
       try {
-        
+
         const fetchPath = filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
           ? '/' + filename
           : '../' + filename;
@@ -1278,9 +1277,9 @@ const App: React.FC = () => {
             style={
               isSpookyActive
                 ? {
-                    ...horrorStyle,
-                    transition: 'transform 90ms linear, filter 90ms linear, opacity 90ms linear'
-                  }
+                  ...horrorStyle,
+                  transition: 'transform 90ms linear, filter 90ms linear, opacity 90ms linear'
+                }
                 : undefined
             }
           >
@@ -1322,50 +1321,50 @@ const App: React.FC = () => {
 
             {flickerWrap(
               <div className={`col-span-12 md:col-span-6 row-span-7 border ${THEME_BORDER} bg-black/80 ${THEME_GLOW} p-4 flex flex-col relative md:overflow-hidden`}>
-              <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
-                <span className="text-xs font-bold">MAIN - bash</span>
-              </div>
+                <div className="absolute top-0 left-0 w-full h-6 bg-indigo-900/20 border-b border-indigo-500/30 flex items-center px-2">
+                  <span className="text-xs font-bold">MAIN - bash</span>
+                </div>
 
-              {gameMode === 'pong' ? (
-                <div className="hidden md:flex flex-1 w-full h-full mt-6">
-                  <PongGame onExit={handleGameExit} />
-                </div>
-              ) : gameMode === 'snake' ? (
-                <div className="hidden md:flex flex-1 w-full h-full mt-6">
-                  <SnakeGame onExit={handleGameExit} />
-                </div>
-              ) : gameMode === 'chat' ? (
-                <div className="flex-1 w-full h-full mt-6">
-                  <LiveChat onExit={handleGameExit} />
-                </div>
-              ) : (
-                <>
-                  <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
-                    {history.map((line) => (
-                      <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
-                        {line.type === MessageType.USER && (
-                          <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
-                        )}
-                        {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
-                          renderLineContent(line)
-                        )}
-
-                  {isIAmPlaying && (currentIAmSubtitle || !timedSubtitles.length) && (
-                    <div className="absolute inset-x-4 bottom-16 md:bottom-12 flex justify-center pointer-events-none">
-                      <div className="px-4 py-2 bg-black/80 border border-indigo-500/50 rounded text-indigo-100 text-xs md:text-sm shadow-[0_0_12px_rgba(99,102,241,0.45)]">
-                        {currentIAmSubtitle || 'Add timed lyrics in I_AM_SUBTITLE inside easter_eggs.ts (format: Line text (m:ss)).'}
-                      </div>
-                    </div>
-                  )}
-                      </div>
-                    ))}
-                    {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
-                    <div ref={terminalEndRef} />
+                {gameMode === 'pong' ? (
+                  <div className="hidden md:flex flex-1 w-full h-full mt-6">
+                    <PongGame onExit={handleGameExit} />
                   </div>
+                ) : gameMode === 'snake' ? (
+                  <div className="hidden md:flex flex-1 w-full h-full mt-6">
+                    <SnakeGame onExit={handleGameExit} />
+                  </div>
+                ) : gameMode === 'chat' ? (
+                  <div className="flex-1 w-full h-full mt-6">
+                    <LiveChat onExit={handleGameExit} />
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex-1 overflow-y-auto mt-6 font-mono text-sm md:text-base leading-relaxed p-2">
+                      {history.map((line) => (
+                        <div key={line.id} className="mb-2 break-words whitespace-pre-wrap">
+                          {line.type === MessageType.USER && (
+                            <div className="text-indigo-300 opacity-90">{`> ${line.content}`}</div>
+                          )}
+                          {(line.type === MessageType.SYSTEM || line.type === MessageType.INFO || line.type === MessageType.CODE || line.type === MessageType.ERROR) && (
+                            renderLineContent(line)
+                          )}
 
-                  {}
-                  <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
-                    {`                   -\`
+                          {isIAmPlaying && (currentIAmSubtitle || !timedSubtitles.length) && (
+                            <div className="absolute inset-x-4 bottom-16 md:bottom-12 flex justify-center pointer-events-none">
+                              <div className="px-4 py-2 bg-black/80 border border-indigo-500/50 rounded text-indigo-100 text-xs md:text-sm shadow-[0_0_12px_rgba(99,102,241,0.45)]">
+                                {currentIAmSubtitle || 'Add timed lyrics in I_AM_SUBTITLE inside easter_eggs.ts (format: Line text (m:ss)).'}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      {isProcessing && <div className="animate-pulse">_ PROCESSING...</div>}
+                      <div ref={terminalEndRef} />
+                    </div>
+
+                    { }
+                    <div className="absolute right-[10%] bottom-[20%] pointer-events-none opacity-20 text-indigo-500 font-mono text-[10px] md:text-xs leading-tight whitespace-pre select-none hidden md:block">
+                      {`                   -\`
                   .o+\`
                  \`ooo/
                 \`+oooo:
@@ -1384,30 +1383,33 @@ const App: React.FC = () => {
   \`+sso+:-                 \`.-/+oso:
  \`++:.                           \`-/+/
  .\`                                 \`/-`}
-                  </div>
+                    </div>
 
-                  {!isBooting && (
-                    <TerminalInput
-                      onSubmit={handleCommand}
-                      disabled={isProcessing}
-                      autoFocusEnabled={!isGameActive}
-                      disableNativeKeyboard={isGameActive}
-                    />
-                  )}
-                </>
-              )}
-            </div>
+                    {!isBooting && (
+                      <TerminalInput
+                        onSubmit={handleCommand}
+                        disabled={isProcessing}
+                        autoFocusEnabled={!isGameActive}
+                        disableNativeKeyboard={isGameActive}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
             )}
 
             {flickerWrap(
               <div className={`hidden md:flex col-span-3 row-span-7 border ${THEME_BORDER} ${THEME_BG} p-4 relative flex-col`}>
-                <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${
-                  isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
-                }`}>
+                <div className={`absolute top-0 right-0 text-[10px] px-1 font-bold ${isIAmPlaying ? 'bg-red-900/60 text-red-300 animate-pulse' : 'bg-indigo-900/40 text-indigo-300'
+                  }`}>
                   {isSpookyActive ? 'COMPROMISED' : 'NETWORK STATUS'}
                 </div>
                 <div className="flex-1 flex items-center justify-center opacity-90">
-                  <OctahedronNetwork networkLevel={networkLevel} isVoicePlaying={isSpookyActive} />
+                  <BinaryGlobeNetwork
+                    networkLevel={networkLevel}
+                    isVoicePlaying={isSpookyActive}
+                    isIAmPlaying={isIAmPlaying}
+                  />
                 </div>
                 <div className="h-24 shrink-0 border-t border-indigo-500/30 pt-2">
                   <div className="text-[10px] mb-1 text-indigo-300 font-bold">TRAFFIC ANALYSIS</div>
@@ -1464,12 +1466,12 @@ const App: React.FC = () => {
 
       {privacyOpen && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm overflow-hidden">
-          {}
+          { }
           <div className="absolute inset-0 z-0 opacity-30">
             <MatrixRain />
           </div>
 
-          {}
+          { }
           <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-12 opacity-40 text-indigo-500 font-mono text-xs md:text-xl leading-none whitespace-pre select-none origin-center">
             <div className="hidden md:block">
               {`__      __  ___   _   _    ___   _____ 

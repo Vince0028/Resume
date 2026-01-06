@@ -1,0 +1,317 @@
+import React, { useEffect, useRef, useState } from 'react';
+
+interface Point3D {
+    x: number;
+    y: number;
+    z: number;
+    isLand: boolean;
+    char: string;
+}
+
+interface CrisisPoint {
+    x: number;
+    y: number;
+    z: number;
+    label: string;
+}
+
+interface BinaryGlobeNetworkProps {
+    networkLevel?: number;
+    isVoicePlaying?: boolean;
+    isIAmPlaying?: boolean;
+}
+
+interface RawPoint {
+    x: number;
+    y: number;
+    z: number;
+    isLand: boolean;
+}
+
+const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, isVoicePlaying, isIAmPlaying }) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [points, setPoints] = useState<Point3D[]>([]);
+    const [crises, setCrises] = useState<CrisisPoint[]>([]);
+
+    const stateRef = useRef({
+        y: 0,
+        velocity: 0.012,
+        baseSpeed: 0.012,
+        glitchTimer: 0,
+        jitter: 0,
+        pulse: 0,
+        glitchIntensity: 0
+    });
+    const frameIdRef = useRef<number>(0);
+
+    useEffect(() => {
+        let mounted = true;
+
+        fetch('/globe_points.json')
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to load globe data');
+                return res.json();
+            })
+            .then((rawPoints: RawPoint[]) => {
+                if (!mounted) return;
+
+                const generatedPoints: Point3D[] = rawPoints.map(p => ({
+                    ...p,
+                    char: Math.random() > 0.5 ? '1' : '0'
+                }));
+
+                // Crisis Generation with spacing logic
+                const crisisPoints: CrisisPoint[] = [];
+                const crisisLabels = ['HACKED', 'BREACH', 'SYSTEM_FAIL', 'CRITICAL', 'ROOT_ACCESS', 'OVERRIDE', 'FATAL', 'MALWARE'];
+                // Reduced distance to allow more points while still preventing direct overlap
+                const minDistance = 0.35;
+
+                // Shuffle points to randomize selection order
+                const candidates = generatedPoints.filter(p => p.isLand && Math.random() > 0.95); // More candidates
+
+                for (const p of candidates) {
+                    if (crisisPoints.length >= 20) break; // Increased limit to 20
+
+                    let tooClose = false;
+                    for (const existing of crisisPoints) {
+                        const dx = p.x - existing.x;
+                        const dy = p.y - existing.y;
+                        const dz = p.z - existing.z;
+                        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                        if (dist < minDistance) {
+                            tooClose = true;
+                            break;
+                        }
+                    }
+
+                    if (!tooClose) {
+                        crisisPoints.push({
+                            x: p.x,
+                            y: p.y,
+                            z: p.z,
+                            label: crisisLabels[Math.floor(Math.random() * crisisLabels.length)]
+                        });
+                    }
+                }
+
+                setPoints(generatedPoints);
+                setCrises(crisisPoints);
+            })
+            .catch(err => console.error(err));
+
+        return () => { mounted = false; };
+    }, []);
+
+    useEffect(() => {
+        if (!canvasRef.current || points.length === 0) return;
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d', { alpha: true });
+        if (!ctx) return;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        const radius = Math.min(width, height) * 0.40;
+
+        // Double buffer for glitch effects
+        const buffer = document.createElement('canvas');
+        buffer.width = width;
+        buffer.height = height;
+        const bctx = buffer.getContext('2d', { alpha: true });
+        if (!bctx) return;
+
+        const fontMono = '"Courier New", Courier, monospace';
+
+        const render = () => {
+            const s = stateRef.current;
+            s.pulse += 0.1;
+
+            // Physics & Glitch Logic
+            if (s.glitchTimer > 0) {
+                s.glitchTimer--;
+                s.jitter = (Math.random() - 0.5) * 0.03;
+                s.glitchIntensity = Math.random();
+                if (Math.random() > 0.8) s.velocity *= 0.4;
+            } else {
+                s.jitter = 0;
+                s.glitchIntensity = 0;
+                const rand = Math.random();
+                if (rand > 0.988) { // Chance to start glitch
+                    s.glitchTimer = Math.floor(Math.random() * 20) + 8;
+                    if (Math.random() > 0.6) {
+                        s.velocity = -s.velocity * (1.5 + Math.random());
+                    } else {
+                        s.velocity = (Math.random() - 0.5) * 0.1;
+                    }
+                }
+            }
+
+            const targetSpeed = s.velocity < 0 ? -s.baseSpeed : s.baseSpeed;
+            s.velocity += (targetSpeed - s.velocity) * 0.04;
+            s.y += s.velocity + s.jitter;
+
+            const cosY = Math.cos(s.y);
+            const sinY = Math.sin(s.y);
+            const cosX = Math.cos(0.25);
+            const sinX = Math.sin(0.25);
+
+            // --- Draw to Buffer ---
+            bctx.clearRect(0, 0, width, height);
+
+            // Background Glow (Indigo)
+            const glow = bctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, radius * 1.5);
+            glow.addColorStop(0, 'rgba(99, 102, 241, 0.1)');
+            glow.addColorStop(1, 'rgba(13, 14, 16, 0)');
+            bctx.fillStyle = glow;
+            bctx.fillRect(0, 0, width, height);
+
+            bctx.textAlign = 'center';
+            bctx.textBaseline = 'middle';
+
+            // Draw Points
+            const len = points.length;
+            for (let i = 0; i < len; i++) {
+                const p = points[i];
+                let rx = p.x * cosY - p.z * sinY;
+                let rz = p.x * sinY + p.z * cosY;
+                let ry = p.y * cosX - rz * sinX;
+                let rrz = p.y * sinX + rz * cosX;
+
+                if (rrz > 0) {
+                    const screenX = width / 2 + rx * radius;
+                    const screenY = height / 2 - ry * radius;
+                    const scale = 0.7 + (rrz * 0.3);
+
+                    if (p.isLand) {
+                        bctx.font = `bold ${Math.floor(6 * scale)}px ${fontMono}`;
+                        bctx.fillStyle = `rgba(129, 140, 248, ${0.5 + rrz * 0.5})`; // Indigo-400
+                    } else {
+                        bctx.font = `${Math.floor(4 * scale)}px ${fontMono}`;
+                        bctx.fillStyle = `rgba(199, 210, 254, ${rrz * 0.12})`; // Indigo-200
+                    }
+
+                    const flickerRate = s.glitchIntensity > 0 ? 0.90 : 0.994;
+                    const char = Math.random() > flickerRate ? (p.char === '1' ? '0' : '1') : p.char;
+                    bctx.fillText(char, screenX, screenY);
+                }
+            }
+
+            // Draw Crisis Points (Red)
+            for (const c of crises) {
+                let rx = c.x * cosY - c.z * sinY;
+                let rz = c.x * sinY + c.z * cosY;
+                let ry = c.y * cosX - rz * sinX;
+                let rrz = c.y * sinX + rz * cosX;
+
+                // Threshold rrz > 0.2 means it must be more "forward" to show
+                if (rrz > 0.2) {
+                    const screenX = width / 2 + rx * radius;
+                    const screenY = height / 2 - ry * radius;
+                    const op = (0.5 + Math.sin(s.pulse) * 0.5) * rrz;
+
+                    // Pulsing Ring
+                    bctx.beginPath();
+                    bctx.arc(screenX, screenY, (3 + Math.sin(s.pulse * 2.5) * 2) * rrz, 0, Math.PI * 2);
+                    bctx.strokeStyle = `rgba(239, 68, 68, ${op * 0.8})`; // Red
+                    bctx.stroke();
+
+                    // Solid Dot
+                    bctx.beginPath();
+                    bctx.arc(screenX, screenY, 2 * rrz, 0, Math.PI * 2);
+                    bctx.fillStyle = `rgba(220, 38, 38, ${rrz})`;
+                    bctx.fill();
+
+                    // Text & Line (Only if not glitching too hard, or maybe flicker it?)
+                    if (Math.random() > 0.1 || s.glitchTimer === 0) {
+                        bctx.font = `bold ${Math.floor(14 * rrz)}px ${fontMono}`;
+                        bctx.fillStyle = `rgba(239, 68, 68, ${rrz})`;
+                        bctx.fillText(c.label, screenX + 16 * rrz, screenY - 12 * rrz);
+
+                        bctx.beginPath();
+                        bctx.moveTo(screenX, screenY);
+                        bctx.lineTo(screenX + 12 * rrz, screenY - 10 * rrz);
+                        bctx.strokeStyle = `rgba(239, 68, 68, ${rrz * 0.5})`;
+                        bctx.stroke();
+                    }
+                }
+            }
+
+            // --- Render Buffer to Main Canvas with Glitch Effects ---
+            ctx.clearRect(0, 0, width, height);
+
+            if (s.glitchTimer > 0) {
+                // Slice Glitch
+                const slices = 8 + Math.floor(Math.random() * 12);
+                for (let i = 0; i < slices; i++) {
+                    const h = Math.random() * (height / 8);
+                    const y = Math.random() * (height - h);
+                    const xOffset = (Math.random() - 0.5) * 60 * s.glitchIntensity;
+
+                    // Draw slice
+                    ctx.drawImage(buffer, 0, y, width, h, xOffset, y, width, h);
+
+                    // Scanline/Color artifact
+                    if (Math.random() > 0.7) {
+                        ctx.fillStyle = `rgba(99, 102, 241, ${Math.random() * 0.2})`; // Indigo flash
+                        ctx.fillRect(0, y, width, 1);
+                    }
+                }
+
+                // RGB Shift Ghosting
+                if (Math.random() > 0.5) {
+                    ctx.globalCompositeOperation = 'screen';
+                    ctx.globalAlpha = 0.4;
+                    ctx.drawImage(buffer, 4 * s.glitchIntensity, 0); // Shift for ghost
+                    ctx.globalAlpha = 1.0;
+                    ctx.globalCompositeOperation = 'source-over';
+                }
+
+                // White Noise / Interference
+                if (Math.random() > 0.92) {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.08})`;
+                    ctx.fillRect(0, Math.random() * height, width, 20 + Math.random() * 100);
+                }
+            } else {
+                // Clean Draw
+                ctx.drawImage(buffer, 0, 0);
+            }
+
+            frameIdRef.current = requestAnimationFrame(render);
+        };
+
+        render();
+        return () => cancelAnimationFrame(frameIdRef.current);
+    }, [points, crises]);
+
+    if (isIAmPlaying) {
+        return (
+            <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                <img
+                    src="/Images/iam.png"
+                    alt="I AM"
+                    className="w-full h-full object-cover opacity-90 filter hue-rotate-15 contrast-125 sepia-[.3]"
+                />
+                <div className="absolute inset-0 bg-red-900/10 mix-blend-overlay animate-pulse pointer-events-none"></div>
+                <div className="absolute inset-0 pointer-events-none bg-[url('/scanlines.png')] opacity-10"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="relative w-full h-full flex items-center justify-center">
+            <canvas
+                ref={canvasRef}
+                width={300}
+                height={300}
+                className="w-full h-full object-contain cursor-default select-none filter drop-shadow-[0_0_20px_rgba(99,102,241,0.15)]"
+            />
+            {points.length === 0 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-[10px] text-indigo-400/50 animate-pulse font-mono">INITIALIZING...</div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default BinaryGlobeNetwork;
