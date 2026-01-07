@@ -17,6 +17,7 @@ import SnakeGame from './components/SnakeGame';
 import PacmanGame from './components/PacmanGame';
 import LiveChat from './components/LiveChat';
 import Flicker from './components/Flicker';
+import BrightnessCheck from './components/BrightnessCheck';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -101,6 +102,7 @@ const parseTimedSubtitles = (raw: string): TimedSubtitle[] => {
 };
 
 const App: React.FC = () => {
+  const [showBrightnessCheck, setShowBrightnessCheck] = useState(true);
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [isBooting, setIsBooting] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -1262,6 +1264,10 @@ const App: React.FC = () => {
   };
 
   const isGameActive = gameMode !== 'none';
+
+  if (showBrightnessCheck) {
+    return <BrightnessCheck onComplete={() => setShowBrightnessCheck(false)} />;
+  }
 
   return (
     <div className="w-screen min-h-screen md:h-screen p-2 md:p-6 flex justify-center items-start bg-black md:overflow-hidden relative">
