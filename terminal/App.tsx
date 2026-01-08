@@ -1401,7 +1401,7 @@ const App: React.FC = () => {
                     {!isBooting && (
                       <TerminalInput
                         onSubmit={handleCommand}
-                        disabled={isProcessing}
+                        disabled={isProcessing || isGameActive}
                         autoFocusEnabled={!isGameActive}
                         disableNativeKeyboard={isGameActive}
                       />

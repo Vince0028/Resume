@@ -33,7 +33,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     const [score, setScore] = useState(0);
     const [dropTime, setDropTime] = useState<number | null>(null);
 
-    
+
     const playerRef = useRef(player);
     useEffect(() => {
         playerRef.current = player;
@@ -107,19 +107,19 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
     };
 
     const handleDrop = () => {
-        
+
         if (!checkCollision(playerRef.current, lockedBoard, { x: 0, y: 1 })) {
-            
+
             setPlayer(prev => ({ ...prev, pos: { ...prev.pos, y: prev.pos.y + 1 } }));
         } else {
-            
+
             if (playerRef.current.pos.y < 1) {
                 setGameOver(true);
                 setDropTime(null);
                 return;
             }
 
-            
+
             const newBoard = JSON.parse(JSON.stringify(lockedBoard));
             playerRef.current.tetromino.forEach((row: any[], y: number) => {
                 row.forEach((value: number, x: number) => {
@@ -129,7 +129,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                 });
             });
 
-            
+
             const rowsToClear: number[] = [];
             newBoard.forEach((row: any[], i: number) => {
                 if (row.every(cell => cell[0] !== 0)) {
@@ -155,7 +155,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
         handleDrop();
     };
 
-    
+
     const useInterval = (callback: () => void, delay: number | null) => {
         const savedCallback = useRef<() => void>();
         useEffect(() => {
@@ -176,7 +176,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
         handleDrop();
     }, dropTime);
 
-    
+
     const getRenderBoard = () => {
         const newBoard = JSON.parse(JSON.stringify(lockedBoard));
         player.tetromino.forEach((row: any[], y: number) => {
@@ -197,25 +197,25 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (gameOver) return;
 
-            
-            if ([32, 37, 38, 39, 40].includes(e.keyCode)) {
+            // Prevent default scrolling/actions for game keys
+            if ([32, 37, 38, 39, 40, 65, 68, 83, 87].includes(e.keyCode)) {
                 e.preventDefault();
             }
 
-            if (e.keyCode === 37) movePlayer(-1);
-            else if (e.keyCode === 39) movePlayer(1);
-            else if (e.keyCode === 40) dropPlayer();
-            else if (e.keyCode === 38) playerRotate(lockedBoard, 1);
+            if (e.keyCode === 37 || e.keyCode === 65) movePlayer(-1);       // Left / A
+            else if (e.keyCode === 39 || e.keyCode === 68) movePlayer(1);   // Right / D
+            else if (e.keyCode === 40 || e.keyCode === 83) dropPlayer();    // Down / S
+            else if (e.keyCode === 38 || e.keyCode === 87) playerRotate(lockedBoard, 1); // Up / W
             else if (e.keyCode === 81 || e.keyCode === 27) {
                 e.preventDefault();
                 e.stopPropagation();
                 onExit();
-            } 
+            }
         };
 
         const handleKeyUp = (e: KeyboardEvent) => {
             if (!gameOver) {
-                if (e.keyCode === 40) {
+                if (e.keyCode === 40 || e.keyCode === 83) {
                     setDropTime(1000 / (Math.floor(score / 100) + 1));
                 }
             }
@@ -235,12 +235,12 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
 
     return (
         <div className="w-full h-full flex flex-col md:flex-row items-center justify-center font-mono relative p-2 gap-4 md:gap-6">
-            {}
+            { }
             <div className="md:h-full md:max-h-[90vh] w-full md:w-56 border border-indigo-500/30 bg-black/80 flex md:flex-col items-center p-4 select-none rounded-lg relative order-2 md:order-1">
                 <div className="text-indigo-500 font-bold text-xs tracking-widest md:absolute md:top-6 mb-2 md:mb-0">CONTROLS</div>
 
                 <div className="flex md:flex-col items-center gap-2 md:gap-3 md:mt-auto md:mb-24">
-                    {}
+                    { }
                     <button
                         className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 md:mb-2"
                         onMouseDown={() => playerRotate(lockedBoard, 1)}
@@ -252,7 +252,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                     </button>
 
                     <div className="flex gap-2 md:gap-4">
-                        {}
+                        { }
                         <button
                             className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
                             onMouseDown={() => movePlayer(-1)}
@@ -263,7 +263,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                             </svg>
                         </button>
 
-                        {}
+                        { }
                         <button
                             className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400"
                             onMouseDown={() => movePlayer(1)}
@@ -275,7 +275,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                         </button>
                     </div>
 
-                    {}
+                    { }
                     <button
                         className="w-12 h-12 md:w-16 md:h-16 border-2 border-indigo-500 rounded-lg flex items-center justify-center active:bg-indigo-500/20 active:scale-95 transition-all hover:shadow-[0_0_12px_rgba(99,102,241,0.6)] hover:border-indigo-400 md:mt-2"
                         onMouseDown={() => dropPlayer()}
@@ -292,7 +292,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                 </div>
             </div>
 
-            {}
+            { }
             <div className={`border-2 ${THEME_BORDER} p-2 md:p-4 bg-black/90 relative flex flex-col items-center h-full max-h-[70vh] md:max-h-[90vh] w-auto aspect-[10/22] order-1 md:order-2`}>
                 <div className="flex justify-between w-full mb-2 text-indigo-400 text-xs md:text-sm">
                     <span>TETRIS_TERM_V1</span>
@@ -336,7 +336,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
                     </div>
                 )}
 
-                {}
+                { }
                 {!gameOver && (
                     <button
                         onClick={onExit}
