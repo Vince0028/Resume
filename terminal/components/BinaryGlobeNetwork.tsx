@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 // @ts-ignore
 import globeData from '../data/globe_points.json';
 
@@ -315,6 +315,25 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
         return () => cancelAnimationFrame(frameIdRef.current);
     }, [points, crises]);
 
+    // Memoized Map Points for Overlay
+    const mapPoints = useMemo(() => {
+        if (points.length === 0) return [];
+        const sampled = [];
+        // Sample every 2nd point for higher density
+        for (let i = 0; i < points.length; i += 2) {
+            const p = points[i];
+            if (p.isLand) {
+                const lon = Math.atan2(p.x, p.z);
+                const lat = Math.asin(p.y);
+                // Map from spherical (-PI..PI, -PI/2..PI/2) to 0..100%
+                const x = ((lon + Math.PI) / (Math.PI * 2)) * 100;
+                const y = ((Math.PI / 2 - lat) / Math.PI) * 100;
+                sampled.push({ x, y, id: i });
+            }
+        }
+        return sampled;
+    }, [points]);
+
     if (isIAmPlaying) {
         return (
             <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -342,6 +361,9 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     <div className="text-[10px] text-indigo-400/50 animate-pulse font-mono">INITIALIZING...</div>
                 </div>
             )}
+
+            {/* Accurate Mini Map Overlay - REMOVED per user request */}
+            {points.length > 0 && null}
         </div>
     );
 };

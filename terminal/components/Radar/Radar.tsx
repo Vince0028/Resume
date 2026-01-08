@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Target } from './types';
 import { SWEEP_SPEED, HUD_COLORS } from './constants';
+// @ts-ignore
+import globeData from '../../data/globe_points.json';
 
 interface RadarProps {
     targets: Target[];
@@ -8,10 +10,40 @@ interface RadarProps {
     startAngle?: number;
 }
 
+interface RawPoint {
+    x: number;
+    y: number;
+    z: number;
+    isLand: boolean;
+}
+
 const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 }) => {
     const [sweepAngle, setSweepAngle] = useState(startAngle);
     const requestRef = useRef<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Prepare Map Points (Memoized)
+    const mapPoints = useMemo(() => {
+        const rawPoints = globeData as RawPoint[];
+        const sampled = [];
+        // No sampling - use ALL points for solid look
+        for (let i = 0; i < rawPoints.length; i++) {
+            const p = rawPoints[i];
+            if (p.isLand) {
+                // Equirectangular Projection
+                const lon = Math.atan2(p.x, p.z);
+                const lat = Math.asin(p.y);
+                const x = ((lon + Math.PI) / (Math.PI * 2)) * 100;
+                const y = ((Math.PI / 2 - lat) / Math.PI) * 100;
+
+                // Filter out the very bottom distorted points (Antarctica artifacts)
+                if (y < 88) {
+                    sampled.push({ x, y, id: i });
+                }
+            }
+        }
+        return sampled;
+    }, []);
 
     const animate = (time: number) => {
         setSweepAngle((prev) => {
@@ -49,93 +81,88 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
     }, [targets, sweepAngle, direction]);
 
     return (
-        <div ref={containerRef} className="relative aspect-square w-full h-full flex items-center justify-center">
-            {/* Outer Compass Scale */}
-            <div className="absolute inset-0 rounded-full border border-indigo-500/10 flex items-center justify-center">
-                {Array.from({ length: 72 }).map((_, i) => (
+        <div ref={containerRef} className="relative w-full h-full flex items-center justify-center bg-black/95 overflow-hidden">
+
+            {/* World Map Background Layer (Fills Container - Dotted Style) */}
+            <div className="absolute inset-0 opacity-100 z-0">
+                {mapPoints.map(p => (
                     <div
-                        key={i}
-                        className="absolute h-full flex flex-col justify-between items-center"
-                        style={{ transform: `rotate(${i * 5}deg)` }}
-                    >
-                        <div className={`w-[1px] ${i % 2 === 0 ? 'h-2 bg-indigo-500/40' : 'h-1 bg-indigo-500/20'}`} />
-                        <div className={`w-[1px] ${i % 2 === 0 ? 'h-2 bg-indigo-500/40' : 'h-1 bg-indigo-500/20'}`} />
-                    </div>
+                        key={p.id}
+                        className="absolute bg-indigo-500 w-[2px] h-[2px] rounded-full"
+                        style={{ left: `${p.x}%`, top: `${p.y}%`, opacity: 0.8 }}
+                    />
                 ))}
             </div>
 
-            {/* Main Radar Screen */}
-            <div className="relative w-[88%] h-[88%] rounded-full bg-black border-[2px] border-indigo-500/30 shadow-[inset_0_0_60px_rgba(99,102,241,0.2)] overflow-hidden">
-                {/* Radar Scanning Grid (Phosphor mesh) */}
-                <div className="absolute inset-0 opacity-[0.08] pointer-events-none"
-                    style={{
-                        backgroundImage: `linear-gradient(${HUD_COLORS.PRIMARY} 1px, transparent 1px), linear-gradient(90deg, ${HUD_COLORS.PRIMARY} 1px, transparent 1px)`,
-                        backgroundSize: '4px 4px'
-                    }} />
+            {/* Radar UI Overlays (Full Container) */}
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="relative w-full h-full">
 
-                {/* Concentric Rings */}
-                {rings.map((r) => (
-                    <div
-                        key={r}
-                        className="absolute inset-0 border border-indigo-500/20 rounded-full"
-                        style={{ margin: `${r * 12.5}%` }}
-                    />
-                ))}
+                    {/* Main Radar Screen (Rectangular Viewport) */}
+                    <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(99,102,241,0.15)] overflow-hidden">
 
-                {/* Tactical Crosshair Lines */}
-                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-indigo-500/30 -translate-y-1/2 pointer-events-none" />
-                <div className="absolute left-1/2 top-0 h-full w-[1px] bg-indigo-500/30 -translate-x-1/2 pointer-events-none" />
+                        {/* Rectangular Grid Overlay */}
+                        <div className="absolute inset-0 opacity-20 pointer-events-none"
+                            style={{
+                                backgroundImage: `linear-gradient(rgba(99, 102, 241, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.5) 1px, transparent 1px)`,
+                                backgroundSize: '40px 40px'
+                            }}
+                        />
 
-                {/* THE RADAR SWEEP (Lead line + Wedge) */}
-                <div
-                    className="absolute inset-0 origin-center pointer-events-none z-10"
-                    style={{ transform: `rotate(${sweepAngle}deg)` }}
-                >
-                    {/* Leading Sweep Line (The bright beam) */}
-                    <div className="absolute left-1/2 top-0 w-[2px] h-[50%] bg-indigo-400 origin-bottom shadow-[0_0_20px_2px_rgba(99,102,241,0.8)]"
-                        style={{ transform: 'translateX(-50%)' }} />
+                        {/* Tactical Crosshair Lines (Brighter) */}
+                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-indigo-500/40 -translate-y-1/2 pointer-events-none" />
+                        <div className="absolute left-1/2 top-0 h-full w-[1px] bg-indigo-500/40 -translate-x-1/2 pointer-events-none" />
 
-                    {/* Trailing Wedge Gradient (The "After Effect") */}
-                    <div className="absolute inset-0 rounded-full"
-                        style={{
-                            background: direction === 1
-                                ? `conic-gradient(from 180deg at 50% 50%, rgba(99, 102, 241, 0) 0deg, rgba(99, 102, 241, 0.05) 120deg, rgba(99, 102, 241, 0.4) 178deg, transparent 180deg)`
-                                : `conic-gradient(from 180deg at 50% 50%, transparent 180deg, rgba(99, 102, 241, 0.4) 182deg, rgba(99, 102, 241, 0.05) 240deg, rgba(99, 102, 241, 0) 360deg)`,
-                            transform: 'rotate(0deg)'
-                        }}
-                    />
-                </div>
+                        {/* THE RADAR SWEEP (Full Coverage) */}
+                        <div
+                            className="absolute inset-[-50%] origin-center pointer-events-none z-10"
+                            style={{ transform: `rotate(${sweepAngle}deg)` }}
+                        >
+                            {/* Extended sweep arm */}
+                            <div className="absolute left-1/2 top-0 w-[2px] h-[50%] bg-indigo-400 origin-bottom shadow-[0_0_20px_2px_rgba(99,102,241,0.8)]"
+                                style={{ transform: 'translateX(-50%)' }} />
 
-                {/* Target Blips & Data Blocks */}
-                {visibleTargets.map((t) => (
-                    <div
-                        key={t.id}
-                        className="absolute transition-all duration-300 ease-out z-20"
-                        style={{
-                            left: `${50 + (t.distance / 2.1) * Math.cos(((t.angle - 90) * Math.PI) / 180)}%`,
-                            top: `${50 + (t.distance / 2.1) * Math.sin(((t.angle - 90) * Math.PI) / 180)}%`,
-                            opacity: t.opacity,
-                            transform: `translate(-50%, -50%)`,
-                        }}
-                    >
-                        <div className="relative flex flex-col items-center">
-                            {/* Target Icon (Triangle) */}
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={t.type === 'HOSTILE' ? '#ef4444' : '#818cf8'} strokeWidth="3" style={{ transform: `rotate(${t.angle}deg)` }}>
-                                <path d="M12 4L18 16H6L12 4Z" fill="currentColor" fillOpacity={t.opacity * 0.4} />
-                            </svg>
-
-                            {t.type === 'HOSTILE' && (
-                                <div className="absolute -inset-1.5 border border-red-500/40 rounded-full animate-ping opacity-50" />
-                            )}
-
-                            {/* Phosphorus Glow Trail */}
-                            <div className="absolute inset-0 bg-indigo-500/20 blur-md rounded-full pointer-events-none" style={{ opacity: t.opacity * 0.5 }} />
+                            {/* Gradient Wedge */}
+                            <div className="absolute inset-0"
+                                style={{
+                                    background: direction === 1
+                                        ? `conic-gradient(from 180deg at 50% 50%, rgba(99, 102, 241, 0) 0deg, rgba(99, 102, 241, 0.05) 120deg, rgba(99, 102, 241, 0.3) 178deg, transparent 180deg)`
+                                        : `conic-gradient(from 180deg at 50% 50%, transparent 180deg, rgba(99, 102, 241, 0.3) 182deg, rgba(99, 102, 241, 0.05) 240deg, rgba(99, 102, 241, 0) 360deg)`,
+                                    transform: 'rotate(0deg)'
+                                }}
+                            />
                         </div>
-                    </div>
-                ))}
 
-                {/* Center Station Point */}
-                <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-indigo-400 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_#6366f1] z-30" />
+                        {/* Target Blips */}
+                        {visibleTargets.map((t) => (
+                            <div
+                                key={t.id}
+                                className="absolute transition-all duration-300 ease-out z-20"
+                                style={{
+                                    left: `${50 + (t.distance / 2.1) * Math.cos(((t.angle - 90) * Math.PI) / 180)}%`,
+                                    top: `${50 + (t.distance / 2.1) * Math.sin(((t.angle - 90) * Math.PI) / 180)}%`,
+                                    opacity: t.opacity,
+                                    transform: `translate(-50%, -50%)`,
+                                }}
+                            >
+                                <div className="relative flex items-center justify-center">
+                                    {t.opacity > 0.8 && (
+                                        <div className="absolute w-8 h-8 border border-indigo-400 rounded-full animate-ping opacity-75"
+                                            style={{ animationDuration: '1s' }} />
+                                    )}
+                                    <div className={`w-2 h-2 rounded-full shadow-[0_0_5px_currentColor] ${t.type === 'HOSTILE' ? 'bg-red-500 text-red-500' : 'bg-indigo-400 text-indigo-400'
+                                        }`} />
+                                    {t.type === 'HOSTILE' && (
+                                        <div className="absolute -inset-2 border border-red-500/40 rounded-full animate-pulse opacity-50" />
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+
+                        {/* Center Point */}
+                        <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-indigo-400 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_#6366f1] z-30" />
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -52,8 +52,8 @@ const RadarMain: React.FC = () => {
     }, []);
 
     return (
-        <div className="relative w-full h-full overflow-hidden bg-transparent select-none flex items-center justify-center p-2">
-            <div className="h-full aspect-square relative flex items-center justify-center">
+        <div className="relative w-full h-full overflow-hidden bg-transparent select-none flex items-center justify-center">
+            <div className="w-full h-full relative flex items-center justify-center">
                 <Radar targets={targets} direction={1} startAngle={0} />
             </div>
         </div>
