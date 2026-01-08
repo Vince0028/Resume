@@ -18,6 +18,7 @@ import PacmanGame from './components/PacmanGame';
 import LiveChat from './components/LiveChat';
 import Flicker from './components/Flicker';
 import BrightnessCheck from './components/BrightnessCheck';
+import RadarMain from './components/Radar/RadarMain';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -1291,13 +1292,19 @@ const App: React.FC = () => {
           >
 
             {flickerWrap(
-              <div className={`col-span-12 md:col-span-6 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
+              <div className={`col-span-12 md:col-span-4 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative p-4 flex items-center`}>
                 <div className="absolute top-0 left-0 bg-indigo-500 text-black text-xs px-2 font-bold">SYSTEM</div>
                 <div className="absolute top-0 right-0 px-2 flex space-x-2 text-xs border-l border-b border-indigo-500/30 items-center">
                   <span>NET: ONLINE</span>
                   <span>SEC: HIGH</span>
                 </div>
                 <ClockPanel isVoicePlaying={isSpookyActive} />
+              </div>
+            )}
+
+            {flickerWrap(
+              <div className={`col-span-12 md:col-span-2 row-span-2 border ${THEME_BORDER} ${THEME_BG} ${THEME_GLOW} relative overflow-hidden flex items-center justify-center`}>
+                <RadarMain />
               </div>
             )}
 

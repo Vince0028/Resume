@@ -15,16 +15,16 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   }, []);
 
   useEffect(() => {
-    
+
     const scheduleGlitch = () => {
-      const delay = Math.random() * 20000 + 10000; 
+      const delay = Math.random() * 20000 + 10000;
       setTimeout(() => {
         setIsGlitching(true);
-        
+
         const glitchDuration = Math.random() * 300 + 200;
         setTimeout(() => {
           setIsGlitching(false);
-          scheduleGlitch(); 
+          scheduleGlitch();
         }, glitchDuration);
       }, delay);
     };
@@ -45,24 +45,23 @@ const ClockPanel: React.FC<ClockPanelProps> = ({ isVoicePlaying = false }) => {
   const isSpooky = isVoicePlaying || isGlitching;
 
   return (
-    <div className="flex flex-col items-start justify-center h-full pl-2" 
-         style={isVoicePlaying ? { 
-           backgroundColor: 'rgba(139, 0, 0, 0.1)',
-           borderLeft: '4px solid red' 
-         } : undefined}>
-      <h1 className={`text-4xl md:text-6xl font-bold tracking-widest transition-all duration-300 ${
-        isSpooky
-          ? 'text-red-500 animate-pulse drop-shadow-[0_0_20px_rgba(239,68,68,0.8)]' 
-          : THEME_COLOR
-      }`}
+    <div className="flex flex-col items-start justify-center h-full pl-2"
       style={isVoicePlaying ? {
-        textShadow: '0 0 10px rgba(239, 68, 68, 1), 0 0 20px rgba(239, 68, 68, 0.8), 0 0 30px rgba(239, 68, 68, 0.6)',
-        animation: 'pulse 0.5s ease-in-out infinite'
-      } : undefined}
+        backgroundColor: 'rgba(139, 0, 0, 0.1)',
+        borderLeft: '4px solid red'
+      } : undefined}>
+      <h1 className={`text-4xl md:text-5xl font-bold tracking-widest transition-all duration-300 ${isSpooky
+          ? 'text-red-500 animate-pulse drop-shadow-[0_0_20px_rgba(239,68,68,0.8)]'
+          : THEME_COLOR
+        }`}
+        style={isVoicePlaying ? {
+          textShadow: '0 0 10px rgba(239, 68, 68, 1), 0 0 20px rgba(239, 68, 68, 0.8), 0 0 30px rgba(239, 68, 68, 0.6)',
+          animation: 'pulse 0.5s ease-in-out infinite'
+        } : undefined}
       >
         {displayTime}
       </h1>
-      <div className="flex space-x-4 mt-1 text-xs md:text-sm">
+      <div className="flex flex-wrap gap-2 mt-1 text-xs md:text-sm">
         <span className={isVoicePlaying ? 'text-red-600 animate-pulse font-bold text-sm' : 'text-indigo-800'}
           style={isVoicePlaying ? {
             textShadow: '0 0 5px rgba(220, 38, 38, 1)'
