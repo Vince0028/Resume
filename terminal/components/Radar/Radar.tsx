@@ -71,10 +71,10 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                 : (t.angle - sweepAngle + 360) % 360;
 
             let opacity = 0;
-            // Phosphorus decay simulation - targets stay visible for ~160 degrees of rotation
-            const decayAngle = 160;
+            // Phosphorus decay simulation - targets stay visible for ~15 degrees of rotation
+            const decayAngle = 150;
             if (diff < decayAngle) {
-                opacity = Math.pow(1 - (diff / decayAngle), 2.5);
+                opacity = Math.pow(1 - (diff / decayAngle), 4);
             }
             return { ...t, opacity };
         });
@@ -137,7 +137,7 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                         {visibleTargets.map((t) => (
                             <div
                                 key={t.id}
-                                className="absolute transition-all duration-300 ease-out z-20"
+                                className="absolute z-20"
                                 style={{
                                     left: `${50 + (t.distance / 2.1) * Math.cos(((t.angle - 90) * Math.PI) / 180)}%`,
                                     top: `${50 + (t.distance / 2.1) * Math.sin(((t.angle - 90) * Math.PI) / 180)}%`,

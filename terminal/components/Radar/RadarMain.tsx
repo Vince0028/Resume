@@ -67,9 +67,21 @@ const RadarMain: React.FC = () => {
         setTargets(generateTargets(15, 'T'));
     }, []);
 
-    // Minimal movement or "respawn" logic could go here, but static is safer for "only spawn on land" 
-    // to strictly adhere to user request. Let's add a slow "blink" or refresh instead of movement drift
-    // to prevent them walking into the ocean.
+    // Restoring random behavior with UNIQUE keys to prevent "teleporting" (sliding) effect
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTargets(prev => prev.map(t => {
+                // 10% chance to respawn a target
+                if (Math.random() > 0.90) {
+                    // Generate a NEW target with a unique ID to prevent React from animating the position change
+                    // passing a unique prefix based on time and random value
+                    return generateTargets(1, `T-${Date.now()}-${Math.floor(Math.random() * 1000)}`)[0];
+                }
+                return t;
+            }));
+        }, 800); // Slower interval for less chaos
+        return () => clearInterval(interval);
+    }, []);
 
 
     return (
