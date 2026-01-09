@@ -71,7 +71,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) =
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 overflow-y-auto pr-1 content-start">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 overflow-y-auto pr-1 content-start">
             {/* Render children of the current folder */}
             {currentFolder.children?.map((node, idx) => (
               <div
