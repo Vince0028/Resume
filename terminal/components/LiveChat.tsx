@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { THEME_COLOR } from '../constants';
+import { filterProfanity } from '../utils/profanity_list';
 
 interface Message {
     id: string;
@@ -129,7 +130,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
         }
 
 
-        const chosen = tempUsername.trim();
+        const chosen = filterProfanity(tempUsername.trim());
         setUsername(chosen);
         setTempPassword('');
         setTempUsername('');
@@ -174,7 +175,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onExit }) => {
         e.preventDefault();
         if (!input.trim() || !username) return;
 
-        const content = input.trim();
+        const content = filterProfanity(input.trim());
         setInput('');
 
         if (content.toLowerCase() === '/exit' || content.toLowerCase() === '/quit') {

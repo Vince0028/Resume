@@ -303,7 +303,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'help') {
-      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nCAT <file>         - Display file contents\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nSHOW ME GAMES      - List available terminal games\nLIVE CHAT          - Join live chat room\nOPEN GUI           - Open graphical resume (same tab)\nOPEN RESUME        - Open graphical resume (same tab)\nGO BACK TO SIMPLE RESUME - Open simple portfolio page\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
+      const helpText = `\nAVAILABLE COMMANDS:\n-------------------\nHELP               - Show this message\nCLEAR              - Clear terminal buffer\nABOUT              - Display user summary\nPROJECTS           - List portfolio projects\nCONTACT            - Show contact channels\nPRIVACY            - View Privacy Policy\nOPEN <file>        - Open or display file\nTREE               - Show file system structure\nSHOW ME GAMES      - List available terminal games\nLIVE CHAT          - Join live chat room\nOPEN GUI           - Open graphical resume (same tab)\nSUDO SIMPLE RESUME - Open simple portfolio page\n\nTIP: Try asking the system random questions... there might be easter eggs hidden!\nCan't find any? Just say 'please master' and I'll show you.\n`;
       setHistory(prev => [...prev, { id: `sys-${Date.now()}`, type: MessageType.SYSTEM, content: helpText, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
@@ -498,7 +498,7 @@ const App: React.FC = () => {
       return;
     }
 
-    if (lowerCmd === 'go back to simple resume' || lowerCmd === 'simple resume' || lowerCmd === 'simple portfolio') {
+    if (lowerCmd === 'sudo simple resume' || lowerCmd === 'simple resume' || lowerCmd === 'simple portfolio' || lowerCmd === 'go back to simple resume') {
       const target = '../simple_portfolio.html';
       setHistory(prev => [...prev, { id: `simple-${Date.now()}`, type: MessageType.INFO, content: `Opening ${target} ...`, timestamp: Date.now() }]);
       window.location.href = target;
@@ -1259,6 +1259,12 @@ const App: React.FC = () => {
 
     if (line.type === MessageType.CODE) {
       return <pre className={`${THEME_COLOR} whitespace-pre-wrap font-mono text-xs md:text-sm`}>{content || ' '}</pre>;
+    }
+
+
+
+    if (content.includes("TYPE 'help' FOR AVAILABLE COMMANDS")) {
+      return <div className={`${THEME_COLOR} text-lg md:text-2xl font-bold animate-pulse mt-2 mb-2`}>{content}</div>;
     }
 
     return <div className={THEME_COLOR}>{content}</div>;

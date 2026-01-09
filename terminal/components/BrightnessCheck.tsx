@@ -66,6 +66,12 @@ const BrightnessCheck: React.FC<BrightnessCheckProps> = ({ onComplete }) => {
                         </div>
                     </div>
 
+
+
+                    <p className="text-lg md:text-xl text-center text-indigo-400/80 max-w-3xl mx-auto mt-6 px-4 font-medium leading-relaxed">
+                        <span className="font-bold text-indigo-400">NOTE:</span> This interactive resume requires active user engagement to discover and navigate all content.
+                    </p>
+
                     <div className="h-px w-full bg-indigo-900/50 my-2" />
 
                     <button
