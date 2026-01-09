@@ -1,0 +1,101 @@
+/* Adapted from resources.css to match simple-portfolio.css variables */
+
+.resources-container {
+    max-width: 100%;
+}
+
+.resource-card {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.resource-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.resource-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.resource-content h3 {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+    letter-spacing: 0.2px;
+}
+
+.resource-content p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.page-title {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+/* Modal Styling Improvements for Simple Theme */
+#prompts-modal {
+    backdrop-filter: blur(4px);
+}
+
+#prompts-modal > div {
+    background: var(--paper) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border-radius: 0 !important;
+}
+
+#prompts-modal button {
+    color: var(--ink) !important;
+}
+
+#prompts-modal h2 {
+    color: var(--accent) !important;
+    font-family: "Georgia", "Times New Roman", serif;
+}
+
+#prompts-modal h3 {
+    color: var(--accent) !important;
+    font-family: "Georgia", "Times New Roman", serif;
+}
+
+#prompts-content {
+    background: var(--accent-light) !important;
+    color: var(--muted) !important;
+    border: 1px solid var(--border) !important;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 0 !important;
+}
+
+body.dark-mode #prompts-content {
+    background: #111827 !important;
+    color: #e5e7eb !important;
+    border-color: #374151 !important;
+}

@@ -38,6 +38,10 @@
       "destination": "/html/index.html"
     },
     {
+      "source": "/simple_resources.html",
+      "destination": "/html/simple_resources.html"
+    },
+    {
       "source": "/resources.html",
       "destination": "/html/resources.html"
     },

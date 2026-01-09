@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resources & Credits | Alobin Resume</title>
+    <link rel="icon" type="image/png" href="../Images/darkmode_normal.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/simple-portfolio.css">
+    <link rel="stylesheet" href="../css/simple-resources.css">
+</head>
+
+<body>
+    <div class="envelope-stage opened" id="envelopeStage">
+        <div class="envelope-visual" id="envelope" aria-label="Envelope containing resume" role="group">
+            <div class="envelope-shadow"></div>
+            <div class="envelope-body"></div>
+            <div class="envelope-liner"></div>
+            <div class="envelope-label" aria-label="Applicant details on envelope" role="group">
+                <div class="label-line">Applicant No. 028</div>
+                <div class="label-line">Vince Nelmar Alobin</div>
+                <div class="label-line">Applying for: Software Engineer</div>
+            </div>
+            <main class="page resume-card" aria-label="Resources & Credits" id="resumeCard">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
+                <div class="top-actions">
+                    <a class="btn-link secondary" href="simple_portfolio.html">Back to Profile</a>
+                    <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+                </div>
+
+                <div class="resources-container">
+                    <h1 class="page-title">Resources & Credits</h1>
+                    <p style="color: var(--muted); margin-bottom: 3rem; font-family: 'Georgia', serif;">
+                        The tools, technologies, and inspirations that made this personal website possible.
+                    </p>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-robot"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Antigravity (Google DeepMind)</h3>
+                            <p>Advanced Agentic Coding AI utilized for planning, structuring, and generating code for
+                                this website.</p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Windsurf</h3>
+                            <p>The IDE and coding environment used for development.</p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-github"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>GitHub Copilot</h3>
+                            <p>AI coding assistant that helped with code suggestions and debugging.</p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-bezier2"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>React Bits</h3>
+                            <p>Source for various animations and the inspiration behind the Lanyard UI implementation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Vanta.js</h3>
+                            <p>Library used for the animated background effects.</p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-bootstrap"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Bootstrap 5</h3>
+                            <p>Framework used for responsive grid and utility classes.</p>
+                        </div>
+                    </div>
+
+                    <div class="resource-card" style="margin-top: 3rem;">
+                        <div class="resource-icon">
+                            <i class="bi bi-chat-square-text"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>AI Development Prompts</h3>
+                            <p>Complete conversation history with AI assistants (GitHub Copilot & Antigravity)
+                                documenting the entire development process - over 7,000 lines of prompts.</p>
+                            <button class="btn-link" style="margin-top: 1rem; cursor: pointer; border: none;"
+                                onclick="loadPrompts()">
+                                View Full Prompts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <div class="envelope-front"></div>
+            <div class="envelope-flap"></div>
+            <div class="envelope-glow"></div>
+        </div>
+
+        <div class="envelope-controls" style="display: none;"> <!-- Hidden since it's pre-opened -->
+            <button class="envelope-button" id="openEnvelopeBtn" aria-label="Open the envelope">Open the
+                envelope</button>
+        </div>
+    </div>
+
+    <!-- Prompts Modal -->
+    <div id="prompts-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow: auto;">
+        <div
+            style="background: var(--paper); margin: 2rem auto; max-width: 900px; padding: 2rem; position: relative; border-radius: 0; border: 1px solid var(--border);">
+            <button onclick="document.getElementById('prompts-modal').style.display='none'"
+                style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 2rem; cursor: pointer; color: var(--ink);">&times;</button>
+
+            <h2 style="color: var(--accent); margin-bottom: 1rem; font-family: 'Georgia', serif;">Development Journey
+            </h2>
+
+            <div
+                style="background: var(--accent-light); padding: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--accent);">
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">📊 Summary</h3>
+                <p style="color: var(--muted); line-height: 1.6;">
+                    This document chronicles the complete development of this portfolio website.
+                </p>
+            </div>
+
+            <div id="prompts-content"
+                style="background: var(--paper); padding: 1.5rem; border: 1px solid var(--border); max-height: 70vh; overflow-y: scroll; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.6; color: var(--ink); white-space: pre-wrap; word-wrap: break-word;">
+                Loading conversation history...
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/simple-portfolio.js"></script>
+    <script src="../js/prompts.js"></script>
+    <script src="../js/prompts-loader.js"></script>
+    <script>
+        // Force envelope open state logic if JS doesn't pick it up automatically
+        const event = new Event('click');
+        // We don't need to click it if we added the 'opened' class, but let's ensure the JS state matches
+        if (typeof openEnvelope === 'function') {
+            openEnvelope();
+        }
+    </script>
+</body>
+
+</html>
