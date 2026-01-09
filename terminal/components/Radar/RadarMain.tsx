@@ -70,19 +70,7 @@ const RadarMain: React.FC = () => {
     // Minimal movement or "respawn" logic could go here, but static is safer for "only spawn on land" 
     // to strictly adhere to user request. Let's add a slow "blink" or refresh instead of movement drift
     // to prevent them walking into the ocean.
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // Occasionally refresh a target to a new land position
-            setTargets(prev => prev.map(t => {
-                if (Math.random() > 0.98) {
-                    // Respawn one target
-                    return generateTargets(1, t.id.split('-')[0])[0];
-                }
-                return t;
-            }));
-        }, 100);
-        return () => clearInterval(interval);
-    }, []);
+
 
     return (
         <div className="relative w-full h-full overflow-hidden bg-transparent select-none flex items-center justify-center">
