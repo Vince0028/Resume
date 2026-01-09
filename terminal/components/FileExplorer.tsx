@@ -1,33 +1,67 @@
-import React from 'react';
-import { Folder, FileText, Lock, Image as ImageIcon } from 'lucide-react';
-import { THEME_BORDER, THEME_COLOR, THEME_BG } from '../constants';
-import { FileItem } from '../types';
-
-const REAL_FILES: FileItem[] = [
-  { name: 'index.html', type: 'FILE', size: '25KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'script.js', type: 'FILE', size: '12KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'styles.css', type: 'FILE', size: '10KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'lanyard-3d.js', type: 'FILE', size: '6KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'skillset-order.js', type: 'FILE', size: '2KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'github-contributions.js', type: 'FILE', size: '7KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'serve.ps1', type: 'FILE', size: '1KB', permissions: '-rw-r--r--', date: 'NOV 25' },
-  { name: 'Images', type: 'DIR', permissions: 'drwxr-xr-x', date: 'NOV 25' },
-  { name: 'terminal', type: 'DIR', permissions: 'drwxr-xr-x', date: 'NOV 25' },
-];
+import React, { useState, useEffect } from 'react';
+import { Folder, FileText, Lock, Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { THEME_BORDER, THEME_COLOR, THEME_BG, FILE_SYSTEM, FileSystemNode } from '../constants';
 
 interface FileExplorerProps {
   isSpookyActive?: boolean;
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) => {
+  // We'll treat the top-level FILE_SYSTEM array as the contents of the root (or /home/guest)
+  const rootNode: FileSystemNode = {
+    name: '~',
+    type: 'dir',
+    children: FILE_SYSTEM,
+    restricted: false
+  };
+
+  // Stack of nodes representing the path. Start with root.
+  const [pathStack, setPathStack] = useState<FileSystemNode[]>([rootNode]);
+
+  // Current folder is the last item in the stack
+  const currentFolder = pathStack[pathStack.length - 1];
+
+  // Breadcrumb path string
+  const pathString = pathStack.map(node => node.name).join('/').replace('~', '/home/guest');
+
+  const handleNavigate = (node: FileSystemNode) => {
+    if (node.type === 'dir') {
+      if (node.restricted) {
+        // Optional: show access denied visual feedback?
+        return;
+      }
+      setPathStack([...pathStack, node]);
+    } else {
+      // It's a file, open it
+      window.dispatchEvent(new CustomEvent('terminal-open-file', { detail: { filename: node.name, path: node.path } }));
+    }
+  };
+
+  const handleBack = () => {
+    if (pathStack.length > 1) {
+      setPathStack(pathStack.slice(0, -1));
+    }
+  };
+
   return (
     <div className="w-full h-full flex flex-col">
       <div className={`border-b ${THEME_BORDER} mb-2 pb-1 flex justify-between items-end`}>
-        <h3 className={`${THEME_COLOR} text-sm tracking-widest`}>
-          {isSpookyActive ? 'CORRUPTED' : 'FILESYSTEM'}
-        </h3>
-        <span className={`text-[10px] ${isSpookyActive ? 'text-red-500 animate-pulse' : 'text-indigo-700'}`}>
-          {isSpookyActive ? 'system compromised' : '/home/guest'}
+        <div className="flex items-center gap-2">
+          {pathStack.length > 1 && (
+            <button
+              onClick={handleBack}
+              className={`${THEME_COLOR} hover:text-indigo-400 transition-colors cursor-pointer`}
+              aria-label="Go back"
+            >
+              <ArrowLeft size={16} />
+            </button>
+          )}
+          <h3 className={`${THEME_COLOR} text-sm tracking-widest`}>
+            {isSpookyActive ? 'CORRUPTED' : 'FILESYSTEM'}
+          </h3>
+        </div>
+        <span className={`text-[10px] ${isSpookyActive ? 'text-red-500 animate-pulse' : 'text-indigo-700'} truncate ml-2`}>
+          {isSpookyActive ? 'system compromised' : pathString}
         </span>
       </div>
 
@@ -37,27 +71,43 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) =
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 overflow-y-auto pr-1">
-            {REAL_FILES.map((file, idx) => (
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 overflow-y-auto pr-1 content-start">
+            {/* Render children of the current folder */}
+            {currentFolder.children?.map((node, idx) => (
               <div
                 key={idx}
                 role="button"
-                onClick={() => window.dispatchEvent(new CustomEvent('terminal-open-file', { detail: { filename: file.name } }))}
-                className={`group flex flex-col items-center justify-center p-2 border border-transparent hover:${THEME_BORDER} hover:${THEME_BG} cursor-pointer transition-all duration-150`}
+                onClick={() => handleNavigate(node)}
+                className={`group flex flex-col items-center justify-center p-2 border border-transparent hover:${THEME_BORDER} hover:${THEME_BG} cursor-pointer transition-all duration-150 rounded min-h-[80px]`}
               >
-                <div className={`${THEME_COLOR} mb-2 opacity-80 group-hover:opacity-100`}>
-                  {file.type === 'DIR' && <Folder size={32} strokeWidth={1.5} />}
-                  {file.type === 'FILE' && file.name.endsWith('.dat') && <Lock size={32} strokeWidth={1.5} />}
-                  {file.type === 'FILE' && file.name.endsWith('.png') && <ImageIcon size={32} strokeWidth={1.5} />}
-                  {file.type === 'FILE' && !file.name.endsWith('.dat') && !file.name.endsWith('.png') && <FileText size={32} strokeWidth={1.5} />}
+                <div className={`${THEME_COLOR} mb-2 opacity-80 group-hover:opacity-100 relative`}>
+                  {node.restricted && (
+                    <div className="absolute -top-1 -right-1 z-10 text-xs bg-black/50 rounded-full">
+                      <Lock size={12} />
+                    </div>
+                  )}
+                  {node.type === 'dir' && <Folder size={32} strokeWidth={1.5} />}
+                  {node.type === 'file' && node.name.endsWith('.png') && <ImageIcon size={32} strokeWidth={1.5} />}
+                  {node.type === 'file' && !node.name.endsWith('.png') && <FileText size={32} strokeWidth={1.5} />}
                 </div>
-                <span className={`text-[10px] ${THEME_COLOR} text-center truncate w-full`}>{file.name}</span>
-                <span className="text-[8px] text-indigo-800">{file.size || 'DIR'}</span>
+                <span className={`text-[10px] ${THEME_COLOR} text-center break-words leading-tight w-full px-1`} title={node.name}>
+                  {node.name}
+                </span>
+                <span className="text-[8px] text-indigo-800 uppercase mt-0.5">
+                  {node.type === 'dir' ? 'DIR' : 'FILE'}
+                </span>
               </div>
             ))}
+
+            {(!currentFolder.children || currentFolder.children.length === 0) && (
+              <div className="col-span-full text-center text-indigo-800 text-xs py-10">
+                (Empty Directory)
+              </div>
+            )}
           </div>
+
           <div className={`mt-auto pt-2 border-t ${THEME_BORDER} text-[10px] text-indigo-700 flex justify-between`}>
-            <span>USED: 89%</span>
+            <span>ITEMS: {currentFolder.children?.length || 0}</span>
             <span>FREE: 124GB</span>
           </div>
         </>

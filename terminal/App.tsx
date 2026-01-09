@@ -1207,30 +1207,23 @@ const App: React.FC = () => {
   useEffect(() => {
     const handler = async (e: any) => {
       const filename = e?.detail?.filename;
+      const filepath = e?.detail?.path;
       if (!filename) return;
 
-      const ALLOWED_FILES = [
-        'privacy_policy.txt',
-        'README.md',
-        'LICENSE',
-        'index.html',
-        'script.js',
-        'styles.css',
-        'lanyard-3d.js',
-        'skillset-order.js',
-        'github-contributions.js'
-      ];
-      if (!ALLOWED_FILES.includes(filename)) {
-        setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: access denied to ${filename}`, timestamp: Date.now() }]);
-        return;
-      }
       try {
+        // Use provided path or fallback for legacy/direct calls
+        const fetchPath = filepath || (
+          filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
+            ? '/' + filename
+            : '../' + filename
+        );
 
-        const fetchPath = filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
-          ? '/' + filename
-          : '../' + filename;
         const res = await fetch(fetchPath);
-        if (!res.ok) { setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: cannot open ${filename} (${res.status})`, timestamp: Date.now() }]); return; }
+        if (!res.ok) {
+          setHistory(prev => [...prev, { id: `err-${Date.now()}`, type: MessageType.ERROR, content: `open: cannot open ${filename} (${res.status})`, timestamp: Date.now() }]);
+          return;
+        }
+
         const text = await res.text();
         setHistory(prev => [...prev, { id: `file-${Date.now()}`, type: MessageType.CODE, content: `----- ${filename} -----\n${text || '[EMPTY FILE]'}\n----- end -----`, timestamp: Date.now() }]);
       } catch (err) {
