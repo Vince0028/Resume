@@ -6,6 +6,18 @@
       "destination": "/terminal/dist/assets/$1"
     },
     {
+      "source": "/terminal/music/(.*)",
+      "destination": "/terminal/dist/music/$1"
+    },
+    {
+      "source": "/terminal/Images/(.*)",
+      "destination": "/terminal/dist/Images/$1"
+    },
+    {
+      "source": "/terminal/globe_points.json",
+      "destination": "/terminal/dist/globe_points.json"
+    },
+    {
       "source": "/terminal",
       "destination": "/terminal/dist/index.html"
     },
