@@ -471,7 +471,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'easter egg winner' || lowerCmd === 'easter egg winners') {
-      const winnerBoard = `\nEASTER EGG WINNERS (5 PESOS):\n-----------------------------\n1) TBD\n2) TBD\n3) TBD\n4) TBD\n5) TBD\n`;
+      const winnerBoard = `\nEASTER EGG WINNERS (10 PESOS):\n-----------------------------\n1) TBD\n2) TBD\n3) TBD\n4) TBD\n5) TBD\n`;
       setHistory(prev => [...prev, { id: `winner-${Date.now()}`, type: MessageType.SYSTEM, content: winnerBoard, timestamp: Date.now() }]);
       setIsProcessing(false);
       return;
