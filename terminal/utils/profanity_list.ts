@@ -1,12 +1,44 @@
-// OBFUSCATED LIST TO PREVENT FLAGGING/READABILITY IN REPO
-const RAW_DATA = "WyJmdWNrIiwic2hpdCIsImJpdGNoIiwiYXNzIiwiYXNzaG9sZSIsImJhc3RhcmQiLCJkYW1uIiwiY3VudCIsImRpY2siLCJwdXNzeSIsImNvY2siLCJzdWNrZXIiLCJtb3RoZXJmdWNrZXIiLCJmdWNrZXIiLCJuaWdnZXIiLCJuaWdnYSIsImZhZyIsImZhZ2dvdCIsInNsdXQiLCJ3aG9yZSIsImRvdWNoZSIsImR1bWJhc3MiLCJyZXRhcmQiLCJpZGlvdCIsInN0dXBpZCIsIm1vcm9uIiwiaW1iZWNpbGUiLCJzZXgiLCJwb3JuIiwieHh4IiwibnVkZSIsIm5ha2VkIiwiYm9vYnMiLCJ0aXRzIiwicGVuaXMiLCJ2YWdpbmEiLCJhbmFsIiwib3JhbCIsImJsb3dqb2IiLCJoYW5ZGxvYiIsImN1bSIsInNwZXJtIiwib3JnYXNtIiwibWFzdHVyYmF0ZSIsInJhcGUiLCJtb2xlc3QiLCJwZWRvcGhpbGUiLCJpbmNlc3QiLCJiZWFzdGlhbGl0eSIsImdvZGRhbW4iLCJoZWxsIiwiY3JhcCIsImJ1bGxzaGl0IiwicHJpY2siLCJ0d2F0Iiwid2Fua2VyIiwiYm9sbG9ja3MiLCJidWdnZXIiLCJjaGluayIsImdvb2siLCJzcGljIiwia2lrZSIsIndldGJhY2siLCJ0cmFubnkiLCJzaGVtYWxlIiwiZHlrZSIsImxlc2JvIiwiaG9tbyIsImZhdHNvIiwibGFyZGFzcyIsInNjdW0iLCJ0cmFzaCIsImZpbHRoIiwicGlnIiwiY293IiwiZG9nIiwic25ha2UiLCJyYXQiLCJsb3NlciIsImZhaWx1cmUiLCJkaXNhcHBvaW50bWVudCIsInVnbHkiLCJmcmVhayIsIm1vbnN0ZXIiLCJkZW1vbiIsImRldmlsIiwic2F0YW4iLCJraWxsIiwibXVyZGVyIiwic3VpY2lkZSIsImRpZSIsImRlYXRoIiwiZGVhZCIsImJsb29kIiwiZ29yZSIsInZpb2xlbmNlIiwiYWJ1c2UiLCJkcnVnIiwiY29jYWluZSIsImhlcm9pbiIsIm1ldGgiLCJ3ZWVkIiwibWFyaWp1YW5hIiwiaGlnaCIsInN0b25lZCIsImRydW5rIiwid2FzdGVkIiwiYm9tYiIsInRlcnJvcmlzdCIsImlzaXMiLCJuYXppIiwiaGl0bGVyIiwia2trIiwic2xhdmUiLCJzbGF2ZXJ5IiwicmFjaXN0IiwiYmlnb3QiLCJnYWdvIiwidGFuZ2EiLCJpbnV0aWwiLCJib2JvIiwicHV0YW5naW5hIiwicHV0YW5nIiwiaW5hbmV0IiwicHVrZSIsInBlcGVrIiwia2lraSIsInRpdGkiLCJidXJhdCIsIm90ZW4iLCJiYXlhZyIsImthbnRvdCIsIml5b3QiLCJqYWtvbCIsImhpbWFzIiwic2Fsc2FsIiwibG9sbyIsInRhcmFudGFkbyIsImdpYmEiLCJzaXJhdWxvIiwiYmFsaXciLCJidXdpc2l0IiwibGVjaGUiLCJsaW50aWsiLCJoaW5kb3QiLCJwdW55ZXRhIiwidWxvbCIsInVuZ2dveSIsImJhYm95IiwiaGF5b3AiLCJkZW1vbnlvIiwiaHVkYXMiLCJiYWxpbWJpbmciLCJzaXBzaXAiLCJwbGFzdGlrIiwiYmFkaW5nIiwiYmFrbGEiLCJ0b21ib3kiLCJ0aWJpYm8iLCJzaWxhaGlzIiwiYmluYWJhZSIsInNob2tsYSIsImZvayIsInBva3BvayIsInB1dGEiLCJ3YWxrZXIiLCJrYWxhbmRpYW4iLCJtYWxhbmRpIiwiaGlnYWQiLCJtYWthdGkiLCJsaWJvZyIsIm1hbnW1hriIsImJhc3RvcyIsIndhbGFuZ2hpeWEiLCJrYXBhbCIsImt1cGFsIiwiZXBhbCIsInRhbmdhIiwiZW5nb3QiLCJndW5nZ29uZyIsImhhbmdhbCIsIm1hbmdtYW5nIiwiYWJub3kiLCJtb25nb2xvaWQiLCJzcGFzdGljIiwibmdvbmdvIiwibmd1c28iLCJuZ2l3aSIsInBhbmdp0iwiY2hha2EiLCJndXJhbmciLCJ0aHVuZGVycyIsImxhb3MiLCJ0YW5kZXJzIiwiZ3VyYW5nZXJzIiwiYmFkamFvIiwiaXRhIiwibmVncmEiLCJuZWdybyIsImJpc2F5YSIsInByb2JpbnN5YW5vIiwiaW5kYXkiLCJib3kiLCJrYXR1bG9uZyIsImNoaW1heSIsImFsaXBpbiIsImR1a2hhIiwicHVsdWJpIiwicGF0YXkiLCJtYW1hdGF5IiwicGFncGF0YXkiLCJiYXJpbCIsInNha3NhayIsImhvbGR1cCIsIm1hZ25hbmFrYXciLCJzbmF0Y2hlciIsImFkaWsiLCJzaGFidSIsIm1hcmlqdWFuYSIsImRhbW8iLCJiYXRvIiwicnVnYnkiLCJsYXNpbmciLCJsYXNpbmdnZXJvIiwic3VnYXJvbCIsInNhYnVuZ2VybyIsIm1hbmxvbG9rbyIsInNjYW1tZXIiLCJidWRvbCIsInRpZ2FzIiwidWxvIiwibWF0aWdhcyIsInBhc2F3YXkiLCJzdXdhaWwiLCJzYWxiYWhlIiwiZGVtb255byIsInNhdGFuYXMiLCJpbXB5ZXJubyIsImh1ZGFzIiwiYmFydW1iYWRvIiwiYmFzYWciLCJ1bG8iLCJiYXNhZ3VsZXJvIiwid2FyZnJlYWsiLCJlc2thbmRhbG8iLCJjaGlzbWlzIiwiY2hpc21vc2EiLCJwYWtpYWxhbWVyYSIsImVwYWwiLCJiaWRhIiwiYmlkYWJpZGEiLCJwYWJpZGEiLCJwdXRhbmcgaW5hIG1vIiwiaW5hIG1vIiwiZ2FnYSIsInB1bnlldGEiLCJ0YWUiLCJwb3RlayIsImxldHNlIiwiaGF5b3AiLCJsaW50aWsiLCJ1dG90IiwicGVlcGVlIiwid2FsYW5nIGhpeWEiLCJwYWt5dSIsInBha3NoZXQiLCJ0YW5naW5hIiwidGFuZyBpbmEiLCJib2JhIiwiYnVhbmciLCJwdXRyYWdpcyIsImJhdHVnYW4iLCJwdXRpayIsInNpcmEgdWxvIiwic3lldCIsInNoZXQiLCJrdXBhbCIsImh1ZGFzIiwiYnVyYXQiLCJ1bmdhcyIsImhpbmF5dXBhayIsInB1Y2hhIiwicGVzdGVuZyB5YXdhIiwic3Vwb3QiLCJhbmltYWwiLCJrYWluaW4gbW8gdGFlIGtvIiwiYW5hayBuZyB0b2t3YSIsInRva3dhIiwiZ3VuZ2dvbmciXQ==";
+export const PROFANITY_LIST = [
+    // English
+    "fuck", "shit", "bitch", "ass", "asshole", "bastard", "damn", "cunt", "dick", "pussy",
+    "cock", "sucker", "motherfucker", "fucker", "nigger", "nigga", "fag", "faggot", "slut", "whore",
+    "douche", "dumbass", "retard", "idiot", "stupid", "moron", "imbecile", "sex", "porn", "xxx",
+    "nude", "naked", "boobs", "tits", "penis", "vagina", "anal", "oral", "blowjob", "handjob",
+    "cum", "sperm", "orgasm", "masturbate", "rape", "molest", "pedophile", "incest", "beastiality",
+    "goddamn", "hell", "crap", "bullshit", "prick", "twat", "wanker", "bollocks", "bugger",
+    "chink", "gook", "spic", "kike", "wetback", "tranny", "shemale", "dyke", "lesbo", "homo",
+    "fatso", "lardass", "scum", "trash", "filth", "pig", "cow", "dog", "snake", "rat",
+    "loser", "failure", "disappointment", "ugly", "freak", "monster", "demon", "devil", "satan",
+    "kill", "murder", "suicide", "die", "death", "dead", "blood", "gore", "violence", "abuse",
+    "drug", "cocaine", "heroin", "meth", "weed", "marijuana", "high", "stoned", "drunk", "wasted",
+    "bomb", "terrorist", "isis", "nazi", "hitler", "kkk", "slave", "slavery", "racist", "bigot",
 
-export const PROFANITY_LIST = JSON.parse(atob(RAW_DATA));
+    // Tagalog
+    "gago", "tanga", "inutil", "bobo", "putangina", "putang", "inanet", "puke", "pepek", "kiki",
+    "titi", "burat", "oten", "bayag", "kantot", "iyot", "jakol", "himas", "salsal", "lolo",
+    "tarantado", "giba", "siraulo", "baliw", "buwisit", "leche", "lintik", "hindot", "punyeta",
+    "ulol", "unggoy", "baboy", "hayop", "demonyo", "hudas", "balimbing", "sipsip", "plastik",
+    "bading", "bakla", "tomboy", "tibibo", "silahis", "binabae", "shokla", "fok",
+    "pokpok", "puta", "walker", "kalandian", "malandi", "higad", "makati", "libog", "manyak",
+    "bastos", "walanghiya", "kapal", "kupal", "epal", "tanga", "engot", "gunggong", "hangal",
+    "mangmang", "abnoy", "mongoloid", "spastic", "ngongo", "nguso", "ngiwi", "pangit", "chaka",
+    "gurang", "thunders", "laos", "tanders", "gurangers", "badjao", "ita", "negra", "negro",
+    "bisaya", "probinsyano", "inday", "boy", "katulong", "chimay", "alipin", "dukha", "pulubi",
+    "patay", "mamatay", "pagpatay", "baril", "saksak", "holdup", "magnanakaw", "snatcher", "adik",
+    "shabu", "marijuana", "damo", "bato", "rugby", "lasing", "lasinggero", "sugarol", "sabungero",
+    "manloloko", "scammer", "budol", "tigas", "ulo", "matigas", "pasaway", "suwail", "salbahe",
+    "demonyo", "satanas", "impyerno", "hudas", "barumbado", "basag", "ulo", "basagulero", "warfreak",
+    "eskandalo", "chismis", "chismosa", "pakialamera", "epal", "bida", "bidabida", "pabida",
+    "putang ina mo", "ina mo", "gaga", "punyeta", "tae", "potek", "letse", "hayop", "lintik",
+    "utot", "peepee", "walang hiya", "pakyu", "pakshet", "tangina", "tang ina", "boba",
+    "buang", "putragis", "batugan", "putik", "sira ulo", "syet", "shet", "kupal", "hudas",
+    "burat", "ungas", "hinayupak", "pucha", "pesteng yawa", "supot", "animal",
+    "kainin mo tae ko", "anak ng tokwa", "tokwa", "gunggong"
+];
 
 export const filterProfanity = (text: string): string => {
     let filteredText = text;
-    // @ts-ignore
-    PROFANITY_LIST.forEach((word: string) => {
+    PROFANITY_LIST.forEach(word => {
         const regex = new RegExp(`\\b${word}\\b`, 'gi');
         filteredText = filteredText.replace(regex, '*'.repeat(word.length));
     });
