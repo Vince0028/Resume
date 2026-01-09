@@ -50,8 +50,8 @@ export const INITIAL_BOOT_SEQUENCE = [
 ];
 
 export const RESUME_FALLBACK_URLS = [
-  '../index.html?resume=1',
-  '../index.html'
+  '../html/index.html?resume=1',
+  '../html/index.html'
 ];
 
 export interface FileSystemNode {
@@ -73,6 +73,44 @@ export const FILE_SYSTEM: FileSystemNode[] = [
     ]
   },
   {
+    name: 'html',
+    type: 'dir',
+    restricted: false,
+    children: [
+      { name: 'index.html', type: 'file', path: '../html/index.html', restricted: false },
+      { name: 'simple_portfolio.html', type: 'file', path: '../html/simple_portfolio.html', restricted: false },
+      { name: 'resources.html', type: 'file', path: '../html/resources.html', restricted: false },
+    ]
+  },
+  {
+    name: 'css',
+    type: 'dir',
+    restricted: false,
+    children: [
+      { name: 'styles.css', type: 'file', path: '../css/styles.css', restricted: false },
+    ]
+  },
+  {
+    name: 'js',
+    type: 'dir',
+    restricted: false,
+    children: [
+      { name: 'script.js', type: 'file', path: '../js/script.js', restricted: false },
+      { name: 'lanyard-3d.js', type: 'file', path: '../js/lanyard-3d.js', restricted: false },
+      { name: 'github-contributions.js', type: 'file', path: '../js/github-contributions.js', restricted: false },
+      { name: 'skillset-order.js', type: 'file', path: '../js/skillset-order.js', restricted: false },
+    ]
+  },
+  {
+    name: 'Images',
+    type: 'dir',
+    restricted: false,
+    children: [
+      { name: 'web_logo.png', type: 'file', path: '../Images/web_logo.png', restricted: false },
+      // Add other common images if needed, or keep it minimal
+    ]
+  },
+  {
     name: 'src',
     type: 'dir',
     restricted: true,
@@ -85,14 +123,7 @@ export const FILE_SYSTEM: FileSystemNode[] = [
   { name: '.gitignore', type: 'file', restricted: true },
   { name: 'LICENSE', type: 'file', restricted: true },
   { name: 'README.md', type: 'file', restricted: true },
-  { name: 'privacy_policy.txt', type: 'file', restricted: true },
   { name: 'package.json', type: 'file', restricted: true },
   { name: 'tsconfig.json', type: 'file', restricted: true },
   { name: 'vite.config.ts', type: 'file', restricted: true },
-  { name: 'index.html', type: 'file', path: '../index.html', restricted: false },
-  { name: 'styles.css', type: 'file', path: '../styles.css', restricted: false },
-  { name: 'script.js', type: 'file', path: '../script.js', restricted: false },
-  { name: 'lanyard-3d.js', type: 'file', path: '../lanyard-3d.js', restricted: false },
-  { name: 'github-contributions.js', type: 'file', path: '../github-contributions.js', restricted: false },
-  { name: 'skillset-order.js', type: 'file', path: '../skillset-order.js', restricted: false },
 ];
