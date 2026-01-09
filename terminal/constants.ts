@@ -65,14 +65,6 @@ export interface FileSystemNode {
 
 export const FILE_SYSTEM: FileSystemNode[] = [
   {
-    name: '.github',
-    type: 'dir',
-    restricted: true,
-    children: [
-      { name: 'workflows', type: 'dir', children: [{ name: 'deploy.yml', type: 'file' }] }
-    ]
-  },
-  {
     name: 'html',
     type: 'dir',
     restricted: false,
@@ -87,7 +79,15 @@ export const FILE_SYSTEM: FileSystemNode[] = [
     type: 'dir',
     restricted: false,
     children: [
+      { name: 'animations.css', type: 'file', path: '../css/animations.css', restricted: false },
+      { name: 'components.css', type: 'file', path: '../css/components.css', restricted: false },
+      { name: 'global.css', type: 'file', path: '../css/global.css', restricted: false },
+      { name: 'layout.css', type: 'file', path: '../css/layout.css', restricted: false },
+      { name: 'resources.css', type: 'file', path: '../css/resources.css', restricted: false },
+      { name: 'sections.css', type: 'file', path: '../css/sections.css', restricted: false },
+      { name: 'simple-portfolio.css', type: 'file', path: '../css/simple-portfolio.css', restricted: false },
       { name: 'styles.css', type: 'file', path: '../css/styles.css', restricted: false },
+      { name: 'variables.css', type: 'file', path: '../css/variables.css', restricted: false },
     ]
   },
   {
@@ -95,9 +95,14 @@ export const FILE_SYSTEM: FileSystemNode[] = [
     type: 'dir',
     restricted: false,
     children: [
-      { name: 'script.js', type: 'file', path: '../js/script.js', restricted: false },
-      { name: 'lanyard-3d.js', type: 'file', path: '../js/lanyard-3d.js', restricted: false },
       { name: 'github-contributions.js', type: 'file', path: '../js/github-contributions.js', restricted: false },
+      { name: 'guestbook.js', type: 'file', path: '../js/guestbook.js', restricted: false },
+      { name: 'lanyard-3d.js', type: 'file', path: '../js/lanyard-3d.js', restricted: false },
+      { name: 'prompts-loader.js', type: 'file', path: '../js/prompts-loader.js', restricted: false },
+      { name: 'prompts.js', type: 'file', path: '../js/prompts.js', restricted: false },
+      { name: 'redirect.js', type: 'file', path: '../js/redirect.js', restricted: false },
+      { name: 'script.js', type: 'file', path: '../js/script.js', restricted: false },
+      { name: 'simple-portfolio.js', type: 'file', path: '../js/simple-portfolio.js', restricted: false },
       { name: 'skillset-order.js', type: 'file', path: '../js/skillset-order.js', restricted: false },
     ]
   },
@@ -107,23 +112,6 @@ export const FILE_SYSTEM: FileSystemNode[] = [
     restricted: false,
     children: [
       { name: 'web_logo.png', type: 'file', path: '../Images/web_logo.png', restricted: false },
-      // Add other common images if needed, or keep it minimal
     ]
   },
-  {
-    name: 'src',
-    type: 'dir',
-    restricted: true,
-    children: [
-      { name: 'components', type: 'dir', children: [{ name: 'Terminal.tsx', type: 'file' }] },
-      { name: 'utils', type: 'dir', children: [{ name: 'helpers.ts', type: 'file' }] }
-    ]
-  },
-  { name: '.env', type: 'file', restricted: true },
-  { name: '.gitignore', type: 'file', restricted: true },
-  { name: 'LICENSE', type: 'file', restricted: true },
-  { name: 'README.md', type: 'file', restricted: true },
-  { name: 'package.json', type: 'file', restricted: true },
-  { name: 'tsconfig.json', type: 'file', restricted: true },
-  { name: 'vite.config.ts', type: 'file', restricted: true },
 ];
