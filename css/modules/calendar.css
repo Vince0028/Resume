@@ -1,0 +1,266 @@
+.github-calendar-wrapper {
+    --contrib-cell-size: 11px;
+    --contrib-cell-gap: 3.5px;
+    --contrib-cell-step: calc(var(--contrib-cell-size) + var(--contrib-cell-gap));
+    --contrib-offset: 40px;
+    --contrib-day-label-width: 35px;
+    --contrib-month-height: 24px;
+    background: var(--darker-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    transition: all 0.3s ease;
+}
+
+.github-calendar-wrapper:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+}
+
+#github-contributions {
+    clear: both;
+    padding-top: 0.4rem;
+}
+
+.contrib-years {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.year-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.year-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+.year-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.contrib-header {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.contrib-calendar {
+    position: relative;
+    padding-top: calc(var(--contrib-month-height) + 8px);
+    min-width: 100%;
+    width: fit-content;
+}
+
+.contrib-months {
+    position: absolute;
+    top: 0;
+    left: var(--contrib-offset);
+    right: 0;
+    height: var(--contrib-month-height);
+    display: flex;
+}
+
+.contrib-months span {
+    position: absolute;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+}
+
+.contrib-days {
+    position: absolute;
+    left: 0;
+    top: calc(var(--contrib-month-height) + 4px);
+    display: grid;
+    grid-template-rows: repeat(7, var(--contrib-cell-size));
+    gap: var(--contrib-cell-gap);
+    width: var(--contrib-day-label-width);
+}
+
+.contrib-days span {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    line-height: var(--contrib-cell-size);
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.contrib-grid {
+    display: flex;
+    gap: var(--contrib-cell-gap);
+    margin-left: var(--contrib-offset);
+    padding: 5px 0;
+    width: fit-content;
+}
+
+.contrib-week {
+    display: flex;
+    flex-direction: column;
+    gap: var(--contrib-cell-gap);
+}
+
+.contrib-day {
+    width: var(--contrib-cell-size);
+    height: var(--contrib-cell-size);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid rgba(27, 31, 35, 0.06);
+}
+
+.contrib-day.empty {
+    background: transparent;
+    border: none;
+}
+
+.contrib-day.level-0 {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: var(--border-color);
+}
+
+.contrib-day.level-1 {
+    background: #0e4429;
+    border-color: #0e4429;
+}
+
+.contrib-day.level-2 {
+    background: #006d32;
+    border-color: #006d32;
+}
+
+.contrib-day.level-3 {
+    background: #26a641;
+    border-color: #26a641;
+}
+
+.contrib-day.level-4 {
+    background: #39d353;
+    border-color: #39d353;
+}
+
+body.light-mode .contrib-day.level-0 {
+    background: #f0f0f0;
+    border-color: #d0d0d0;
+}
+
+body.light-mode .contrib-day.level-1 {
+    background: #c6e48b;
+    border-color: #c6e48b;
+}
+
+body.light-mode .contrib-day.level-2 {
+    background: #7bc67b;
+    border-color: #7bc67b;
+}
+
+body.light-mode .contrib-day.level-3 {
+    background: #239a3b;
+    border-color: #239a3b;
+}
+
+body.light-mode .contrib-day.level-4 {
+    background: #0d7c26;
+    border-color: #0d7c26;
+}
+
+.contrib-day:hover:not(.empty) {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    transform: scale(1.25);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contrib-legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 1.25rem;
+    margin-left: var(--contrib-offset);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.contrib-legend .contrib-day {
+    margin: 0 2px;
+}
+
+body.light-mode .github-calendar-wrapper {
+    background: var(--card-bg);
+}
+
+body.light-mode .github-calendar-wrapper:hover {
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+@media (max-width: 991px) {
+    .github-calendar-wrapper {
+        padding: 1.25rem;
+        border-radius: 14px;
+        --contrib-offset: 36px;
+        --contrib-day-label-width: 32px;
+    }
+
+    .contrib-header {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .github-calendar-wrapper {
+        padding: 1rem;
+        border-radius: 12px;
+        --contrib-cell-size: 9px;
+        --contrib-cell-gap: 3px;
+        --contrib-cell-step: calc(var(--contrib-cell-size) + var(--contrib-cell-gap));
+        --contrib-offset: 33px;
+        --contrib-day-label-width: 30px;
+        scrollbar-width: none;
+        
+        -ms-overflow-style: none;
+        
+    }
+
+    .github-calendar-wrapper::-webkit-scrollbar {
+        display: none;
+        
+    }
+
+    .contrib-header {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .contrib-months span {
+        font-size: 0.65rem;
+    }
+
+    .contrib-days span {
+        font-size: 0.6rem;
+    }
+}

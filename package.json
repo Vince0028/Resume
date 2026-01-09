@@ -1,7 +1,10 @@
 {
   "type": "module",
+  "name": "miterm-resume-alobin",
   "scripts": {
-    "start-api": "node servers/api-server.js"
+    "start-api": "node servers/api-server.js",
+    "install-terminal": "cd terminal && npm install",
+    "build": "cd terminal && npm install && npm run build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

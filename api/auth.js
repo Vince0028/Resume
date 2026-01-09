@@ -4,6 +4,7 @@ import crypto from 'crypto';
 //You actually thought the api keys are here? lmao
 //You actually thought the api keys are here? lmao
 
+
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
@@ -38,7 +39,7 @@ function verifyPassword(password, stored) {
 }
 
 export default async function handler(req, res) {
-    
+
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -56,7 +57,7 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: 'Missing username or password' });
             }
 
-            
+
             if (supabase) {
                 const { data: rows, error: selectError } = await supabase
                     .from('chat_users')
@@ -73,7 +74,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ success: true, isNewUser: false });
                 }
 
-                
+
                 const password_hash = hashPassword(password);
                 const { data: insertData, error: insertError } = await supabase
                     .from('chat_users')
@@ -83,7 +84,7 @@ export default async function handler(req, res) {
                 if (insertError) throw insertError;
                 return res.status(200).json({ success: true, isNewUser: true });
             } else {
-                
+
                 if (inMemoryUsers.has(username)) {
                     const stored = inMemoryUsers.get(username);
                     if (!verifyPassword(password, stored)) {

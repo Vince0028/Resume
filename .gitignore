@@ -1,15 +1,65 @@
 
 .env
-.vercel
-.env*.local
+.env.*
+.env.local
+.env.development
+.env.production
 .env.vercel
+*.env
 
 
-.env
-.env.vercel
+node_modules/
+website_resume/node_modules/
 
+
+dist/
+build/
+public/
 *.log
-server.log
+*.tgz
 
 
+.vercel
+.vercel.json
 
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+
+**/api-keys/
+**/secrets/
+*.pem
+*.key
+
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+*.tmp
+*.temp
+.cache/
+.temp/
+
+
+package-lock.json.backup
+yarn.lock.backup
+.env*.local

@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 //You actually thought the api keys are here? lmao
 //You actually thought the api keys are here? lmao
 
+
 function detectLanguage(text) {
     const tagalogWords = [
         'ako', 'ikaw', 'siya', 'kami', 'kayo', 'sila', 'ang', 'ng', 'sa', 'mga', 'ay',
@@ -52,24 +53,6 @@ function detectLanguage(text) {
     return 'english';
 }
 
-const ipCache = new Map();
-
-function checkRateLimit(ip) {
-    const now = Date.now();
-    const windowMs = 5000;
-
-
-    if (ipCache.size > 5000) ipCache.clear();
-
-    const lastRequest = ipCache.get(ip) || 0;
-    if (now - lastRequest < windowMs) {
-        return false;
-    }
-
-    ipCache.set(ip, now);
-    return true;
-}
-
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -82,18 +65,6 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
-    }
-
-
-    const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown-ip';
-
-    const clientIp = Array.isArray(ip) ? ip[0] : ip.split(',')[0].trim();
-
-    if (!checkRateLimit(clientIp)) {
-        return res.status(429).json({
-            error: 'Too Many Requests',
-            reply: 'You are chatting too fast. Please wait 5 seconds.'
-        });
     }
 
     if (req.method !== 'POST') {
@@ -121,9 +92,9 @@ export default async function handler(req, res) {
 Profile:
 Name: Vince Nelmar Pega Alobin
 Role: BSIT student, Asia Pacific College, second year
-Age: 20 years old
+Age: 19 years old
 City: Pasay City, Philippines
-Parents: Nelmar Alobin (father), Rosemarie Pega-Alobin (mother)
+Parents: Nelson Alobin Jr. (father), Maria Lourdes P. Alobin (mother)
 Email: alobinvince@gmail.com
 Phone: 09480914634
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign
@@ -175,9 +146,9 @@ No lengthy explanations - answer directly and stop.`,
 Profile:
 Pangalan: Vince Nelmar Pega Alobin
 Tungkulin: BSIT student, Asia Pacific College, ikalawang taon
-Edad: 20 taong gulang
+Edad: 19 taong gulang
 Lungsod: Pasay City, Philippines
-Mga Magulang: Nelmar Alobin (ama), Rosemarie Pega-Alobin (ina)
+Mga Magulang: Nelson Alobin Jr. (ama), Maria Lourdes P. Alobin (ina)
 Email: alobinvince@gmail.com
 Phone: 09480914634
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign
@@ -229,9 +200,9 @@ Gumamit ng mga salitang: kasi, talaga, lang, naman, po, alam mo, ganun, diba, si
 Profile:
 Name: Vince Nelmar Pega Alobin
 Role: BSIT student, Asia Pacific College, second year
-Age: 20 years old
+Age: 19 years old
 City: Pasay City, Philippines
-Parents: Nelmar Alobin (father), Rosemarie Pega-Alobin (mother)
+Parents: Nelson Alobin Jr. (father), Maria Lourdes P. Alobin (mother)
 Email: alobinvince@gmail.com
 Phone: 09480914634
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign

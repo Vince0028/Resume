@@ -499,7 +499,7 @@ const App: React.FC = () => {
     }
 
     if (lowerCmd === 'sudo simple resume' || lowerCmd === 'simple resume' || lowerCmd === 'simple portfolio' || lowerCmd === 'go back to simple resume') {
-      const target = '../simple_portfolio.html';
+      const target = '../html/simple_portfolio.html';
       setHistory(prev => [...prev, { id: `simple-${Date.now()}`, type: MessageType.INFO, content: `Opening ${target} ...`, timestamp: Date.now() }]);
       window.location.href = target;
       return;
