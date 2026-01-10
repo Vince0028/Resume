@@ -606,6 +606,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function openPopup() {
 		popup.classList.add('open');
 		popup.setAttribute('aria-hidden', 'false');
+		document.body.classList.add('chat-open'); // Shift floating buttons
 		input.focus();
 
 		if (!hasGreeted) {
@@ -617,9 +618,23 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function closePopup() {
 		popup.classList.remove('open');
 		popup.setAttribute('aria-hidden', 'true');
+		document.body.classList.remove('chat-open'); // Reset floating buttons
 	}
 
-	openBtn.addEventListener('click', openPopup);
+	openBtn.addEventListener('click', (e) => {
+		console.log('=== Chat button clicked ===');
+		console.log('Popup element:', popup);
+		console.log('Popup classes:', popup.classList.toString());
+		console.log('Has open class:', popup.classList.contains('open'));
+
+		if (popup.classList.contains('open')) {
+			console.log('Calling closePopup()');
+			closePopup();
+		} else {
+			console.log('Calling openPopup()');
+			openPopup();
+		}
+	});
 
 
 	const openBtnMobile = document.getElementById('openMessengerBtnMobile');
