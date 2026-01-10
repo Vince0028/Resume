@@ -1,24 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const characters = [
+        'Ai.png',
         'Andy.png',
         'Aqua.png',
         'Bachira.png',
+        'Frieren.png',
         'Gintoki.png',
         'Guita.png',
         'Kazuma.png',
         'Keyaru.png',
         'Mash.png',
+        'Milim.png',
+        'Mio.png',
         'Rudeus.png',
         'Saiki.png',
         'Tobi.png',
         'Twice.png',
         'Waguri.png',
         'Wein.png',
+        'Yoshiko.png',
         'Yoshitake.png',
         'Zenitsu.png'
     ];
 
-    const femaleNames = ['Waguri', 'Guita']; // Based on filenames minus extension
+    const femaleNames = ['Ai', 'Frieren', 'Guita', 'Milim', 'Mio', 'Waguri', 'Yoshiko']; // Female characters
 
     const track = document.getElementById('animeTrack');
     const prevBtn = document.getElementById('animePrevBtn');
