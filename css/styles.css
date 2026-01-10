@@ -399,3 +399,24 @@ body.chat-open .floating-actions {
     padding: 2px 8px;
     top: -5px;
 }
+
+/* -- Favorite Character Text Label (Below Name) -- */
+.favorite-label-text {
+    font-size: 0.75rem;
+    color: #FFD700 !important; /* Gold */
+    font-weight: 700;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+}
+
+.favorite-label-text i {
+    font-size: 0.8rem;
+    color: #FFD700 !important;
+    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.6));
+}
