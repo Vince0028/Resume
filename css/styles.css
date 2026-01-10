@@ -420,3 +420,81 @@ body.chat-open .floating-actions {
     color: #FFD700 !important;
     filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.6));
 }
+
+
+/* -- Light Mode Fixes for Anime Modal -- */
+[data-theme='light'] .anime-modal-content {
+    background: #f5f5f5;
+    color: #1a1a2e;
+}
+
+[data-theme='light'] .anime-modal-content h2 {
+    color: #1a1a2e;
+}
+
+[data-theme='light'] .anime-grid-item {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1a1a2e;
+}
+
+[data-theme='light'] .anime-grid-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .anime-grid-item div {
+    color: #1a1a2e;
+}
+
+[data-theme='light'] .anime-close {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] .anime-close:hover {
+    color: #000;
+}
+
+
+/* -- FIXED Light Mode for Anime Modal -- */
+body.light-mode .anime-modal-content {
+    background: #f5f5f5 !important;
+    color: #1a1a2e !important;
+}
+
+body.light-mode .anime-modal-content h2 {
+    color: #1a1a2e !important;
+}
+
+body.light-mode .anime-grid-item {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #1a1a2e !important;
+}
+
+body.light-mode .anime-grid-item:hover {
+    background: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .anime-grid-item div {
+    color: #1a1a2e !important;
+}
+
+body.light-mode .anime-close {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+body.light-mode .anime-close:hover {
+    color: #000 !important;
+}
+/* -- CORRECT Light Mode Fix for View All Button -- */
+body.light-mode #viewAllAnimeBtnHeader,
+body.light-mode .view-all-header-btn {
+    color: #000 !important;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode #viewAllAnimeBtnHeader:hover,
+body.light-mode .view-all-header-btn:hover {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: #000 !important;
+    border-color: rgba(0, 0, 0, 0.8) !important;
+}
