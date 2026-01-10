@@ -8,8 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
         'Ban.png',
         'Crimson.png',
         'Delta.png',
+        'Denji.png',
         'Enjin.png',
         'Frieren.png',
+        'Gabimaru.png',
         'Gintoki.png',
         'Guita.png',
         'Ichika.png',
@@ -121,6 +123,41 @@ document.addEventListener('DOMContentLoaded', () => {
             const fab = document.getElementById('floatingActions');
             if (fab) fab.classList.add('hidden'); // Hide FABs
 
+            // -- Lightbox Setup --
+            let lightbox = document.getElementById('animeLightbox');
+            if (!lightbox) {
+                lightbox = document.createElement('div');
+                lightbox.className = 'lightbox-overlay';
+                lightbox.id = 'animeLightbox';
+                lightbox.innerHTML = `
+                        <span class="lightbox-close">&times;</span>
+                        <img class="lightbox-image" src="" alt="Zoomed Figurine">
+                    `;
+                document.body.appendChild(lightbox);
+
+                const closeLightbox = () => {
+                    lightbox.classList.remove('active');
+                    setTimeout(() => {
+                        if (lightbox.style.display !== 'none') lightbox.style.display = 'none';
+                    }, 300); // Wait for transition
+                };
+
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target !== lightbox.querySelector('.lightbox-image')) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            const showLightbox = (src) => {
+                const img = lightbox.querySelector('.lightbox-image');
+                img.src = src;
+                lightbox.style.display = 'flex';
+                // Force reflow
+                lightbox.offsetHeight;
+                lightbox.classList.add('active');
+            };
+
             // Populate only if empty
             if (modalGrid.children.length === 0) {
                 // Helper to create grid items
@@ -133,10 +170,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const imgWrapper = document.createElement('div');
                     imgWrapper.style.position = 'relative';
                     imgWrapper.style.width = '100%';
+                    imgWrapper.style.cursor = 'zoom-in'; // Pointer cue
 
                     const img = document.createElement('img');
                     img.src = `../Images/anime_characters/${char}`;
                     img.alt = name;
+
+                    // Click to Zoom
+                    imgWrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showLightbox(`../Images/anime_characters/${char}`);
+                    });
 
                     imgWrapper.appendChild(img);
 
