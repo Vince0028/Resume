@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const femaleNames = ['Ai', 'Crimson', 'Delta', 'Frieren', 'Guita', 'Komi', 'Masha', 'Milim', 'Mio', 'Nazuna', 'Shalltear', 'Shikimori', 'Waguri', 'Yoshiko']; // Female characters
+    const favoriteNames = ['Koenji', 'Masha']; // Favorite characters
 
     const track = document.getElementById('animeTrack');
     const prevBtn = document.getElementById('animePrevBtn');
@@ -126,15 +127,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     gridItem.className = 'anime-grid-item';
 
                     const name = char.replace('.png', '');
+
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative';
+                    imgWrapper.style.width = '100%';
+
                     const img = document.createElement('img');
                     img.src = `../Images/anime_characters/${char}`;
                     img.alt = name;
 
+                    imgWrapper.appendChild(img);
+
                     const label = document.createElement('div');
                     label.textContent = name;
 
-                    gridItem.appendChild(img);
+                    gridItem.appendChild(imgWrapper);
                     gridItem.appendChild(label);
+
+                    // Favorite Label below name
+                    if (favoriteNames.includes(name)) {
+                        const favLabel = document.createElement('div');
+                        favLabel.className = 'favorite-label-text';
+                        favLabel.innerHTML = '<i class="bi bi-star-fill"></i> FAVORITE';
+                        gridItem.appendChild(favLabel);
+                    }
+
                     return gridItem;
                 };
 

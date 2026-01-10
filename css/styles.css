@@ -373,3 +373,29 @@ body.chat-open .floating-actions {
         pointer-events: none !important;
     }
 }
+
+/* -- Favorite Character Badge -- */
+.favorite-badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(-5deg);
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    z-index: 10;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.favorite-badge-grid {
+    font-size: 0.55rem;
+    padding: 2px 8px;
+    top: -5px;
+}
