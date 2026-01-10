@@ -12,10 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'Frieren.png',
         'Gintoki.png',
         'Guita.png',
+        'Ichika.png',
         'Kazuma.png',
         'Keyaru.png',
         'Koenji.png',
         'Komi.png',
+        'Mahiru.png',
         'Mash.png',
         'Masha.png',
         'Milim.png',
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Zenitsu.png'
     ];
 
-    const femaleNames = ['Ai', 'Crimson', 'Delta', 'Frieren', 'Guita', 'Komi', 'Masha', 'Milim', 'Mio', 'Nazuna', 'Shalltear', 'Shikimori', 'Waguri', 'Yoshiko']; // Female characters
+    const femaleNames = ['Ai', 'Crimson', 'Delta', 'Frieren', 'Guita', 'Ichika', 'Komi', 'Mahiru', 'Masha', 'Milim', 'Mio', 'Nazuna', 'Shalltear', 'Shikimori', 'Waguri', 'Yoshiko']; // Female characters
     const favoriteNames = ['Koenji', 'Masha']; // Favorite characters
 
     const track = document.getElementById('animeTrack');

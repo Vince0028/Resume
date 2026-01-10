@@ -7263,4 +7263,66 @@ body.light-mode .view-all-header-btn {
 `
 
 Made changes.
+
+User: i added mahiru
+GitHub Copilot: I will add 'Mahiru' to the characters array and the emaleNames array in js/anime-carousel.js.
+
+Read [](file:///c%3A/Users/Vince/Documents/Alobin%20ICT241/website_resume/js/anime-carousel.js)
+
+Using "Multi-Replace String in Files"
+
+`javascript
+    // ... in characters array ...
+    'Komi.png',
+    'Mahiru.png',
+    'Mash.png',
+
+    // ... in femaleNames array ...
+    const femaleNames = ['Ai', ..., 'Komi', 'Mahiru', 'Masha', ...];
+`
+
+Made changes.
+
+User: i added achika
+GitHub Copilot: I will add 'Achika' to the characters array (sorted alphabetically) and the emaleNames array in js/anime-carousel.js.
+
+Read [](file:///c%3A/Users/Vince/Documents/Alobin%20ICT241/website_resume/js/anime-carousel.js)
+
+Using "Multi-Replace String in Files"
+
+`javascript
+    const characters = [
+        'Achika.png', // Added alphabetically
+        'Ai.png',
+        ...
+    ];
+
+    // ... in femaleNames array ...
+    const femaleNames = ['Achika', 'Ai', ...];
+`
+
+Made changes.
+
+User: Ichika i added
+GitHub Copilot: I will correct the previous entry. I'll remove 'Achika' and add 'Ichika' instead to js/anime-carousel.js.
+
+Read [](file:///c%3A/Users/Vince/Documents/Alobin%20ICT241/website_resume/js/anime-carousel.js)
+
+Using "Multi-Replace String in Files"
+
+`javascript
+    const characters = [
+        // Removed 'Achika.png'
+        'Ai.png',
+        // ...
+        'Guita.png',
+        'Ichika.png', // Added correctly
+        'Kazuma.png',
+    ];
+
+    // ... in femaleNames array ...
+    const femaleNames = ['Ai', ..., 'Guita', 'Ichika', 'Komi', ...];
+`
+
+Made changes.
 ;
