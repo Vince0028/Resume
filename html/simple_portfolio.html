@@ -7,6 +7,72 @@
     <title>Alobin Resume</title>
     <link rel="icon" type="image/png" href="../Images/darkmode_normal.png">
     <link rel="stylesheet" href="../css/simple-portfolio.css">
+    <style>
+        /* Force Robust Mobile/Desktop Behavior to Override potential conflicts */
+
+        /* Desktop & Tablet > 640px */
+        @media (min-width: 641px) {
+            .top-actions {
+                position: absolute !important;
+                top: 1.5rem !important;
+                right: 1.5rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-end !important;
+                gap: 0.5rem !important;
+                z-index: 100 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            .header {
+                max-width: 65% !important;
+            }
+
+            .menu-toggle {
+                display: none !important;
+            }
+        }
+
+        /* Mobile <= 640px */
+        @media (max-width: 640px) {
+            .top-actions {
+                /* Hidden by default */
+                display: none;
+                /* Floating Popup Style */
+                position: absolute !important;
+                top: 3.5rem !important;
+                right: 1rem !important;
+                background: var(--paper) !important;
+                border: 1px solid var(--border) !important;
+                padding: 1rem !important;
+                border-radius: 12px !important;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+                z-index: 200 !important;
+                flex-direction: column;
+                align-items: stretch;
+                min-width: 200px;
+            }
+
+            /* Shown when JS toggles this class */
+            .top-actions.show {
+                display: flex !important;
+            }
+
+            .menu-toggle {
+                display: inline-flex !important;
+                position: absolute !important;
+                top: 1rem !important;
+                right: 1rem !important;
+                z-index: 201 !important;
+            }
+
+            .header {
+                max-width: 100% !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -22,8 +88,7 @@
             </div>
             <main class="page resume-card" aria-label="Simple portfolio" id="resumeCard">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
-                <div class="top-actions"
-                    style="position: absolute; top: 1.5rem; right: 1.5rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; z-index: 10;">
+                <div class="top-actions">
                     <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
                     <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
                     <a class="btn-link secondary" id="enter3dBtn" href="#"
@@ -32,7 +97,7 @@
                 </div>
 
                 <!-- (Rest of content remains the same until script) -->
-                <header class="header" style="max-width: 65%;">
+                <header class="header">
                     <div class="header-main">
                         <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
                         <div>
@@ -296,9 +361,7 @@
             });
         }
     </script>
-    console.error('Enter 3D button not found!');
-    }
-    </script>
+
 </body>
 
 </html>
