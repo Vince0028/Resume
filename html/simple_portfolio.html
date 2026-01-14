@@ -62,6 +62,108 @@
             }
         }
 
+
+        /* Dropdown styles for desktop */
+        @media (min-width: 641px) {
+            .resume-dropdown {
+                position: relative;
+                width: 100%;
+            }
+
+            .resume-dropdown-btn {
+                width: 100%;
+                padding: 12px 16px;
+                background: var(--accent);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-family: inherit;
+                font-size: 0.9rem;
+                cursor: pointer;
+                text-align: left;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.2s;
+            }
+
+            body.dark-mode .resume-dropdown-btn {
+                background: var(--accent);
+                color: var(--paper);
+            }
+
+            .resume-dropdown-btn:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
+
+            .resume-dropdown-content {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--paper);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                margin-top: 0.5rem;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                overflow: hidden;
+            }
+
+            body.dark-mode .resume-dropdown-content {
+                background: var(--paper);
+                border-color: var(--border);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            }
+
+            .resume-dropdown.active .resume-dropdown-content {
+                display: block;
+            }
+
+            .resume-dropdown-content a {
+                display: block;
+                padding: 12px 16px;
+                color: var(--ink);
+                text-decoration: none;
+                transition: background 0.2s;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .resume-dropdown-content a:last-child {
+                border-bottom: none;
+            }
+
+            .resume-dropdown-content a:hover {
+                background: var(--accent-light);
+            }
+
+            .dropdown-arrow {
+                transition: transform 0.2s;
+            }
+
+            .resume-dropdown.active .dropdown-arrow {
+                transform: rotate(180deg);
+            }
+
+            /* Hide individual buttons on desktop */
+            .desktop-individual-btns {
+                display: none;
+            }
+        }
+
+        /* Show individual buttons on mobile, hide dropdown */
+        @media (max-width: 640px) {
+            .resume-dropdown {
+                display: none;
+            }
+
+            .desktop-individual-btns {
+                display: contents;
+            }
+        }
+
         /* Ensure wrapper behaves on mobile */
         @media (max-width: 640px) {
             .resume-header-row {
@@ -168,10 +270,28 @@
                         ">
                             Jack of all trades,<br>Master of everything
                         </div>
-                        <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
-                        <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
-                        <a class="btn-link secondary" id="enter3dBtn" href="#"
-                            style="background: var(--accent); color: white; border: none;">Press to go to 3d resume</a>
+                        <!-- Desktop: Dropdown -->
+                        <div class="resume-dropdown" id="resumeDropdown">
+                            <button class="resume-dropdown-btn" id="resumeDropdownBtn">
+                                <span>Press to see all resume</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                            <div class="resume-dropdown-content">
+                                <a href="index.html?resume=1">UI Resume</a>
+                                <a href="/terminal/index.html">Terminal Resume</a>
+                                <a href="#" id="enter3dBtnDropdown">3D Resume</a>
+                            </div>
+                        </div>
+
+                        <!-- Mobile: Individual Buttons -->
+                        <div class="desktop-individual-btns">
+                            <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
+                            <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
+                            <a class="btn-link secondary" id="enter3dBtn" href="#"
+                                style="background: var(--accent); color: white; border: none;">Press to go to 3d
+                                resume</a>
+                        </div>
+
                         <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
                     </div>
                 </div>
@@ -377,7 +497,27 @@
     </div>
 
     <script>
+        // Dropdown toggle
+        const dropdown = document.getElementById('resumeDropdown');
+        const dropdownBtn = document.getElementById('resumeDropdownBtn');
+
+        if (dropdownBtn) {
+            dropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+
+        // 3D Resume handlers (both dropdown and mobile button)
         const enterBtn = document.getElementById('enter3dBtn');
+        const enterBtnDropdown = document.getElementById('enter3dBtnDropdown');
         const bsodOverlay = document.getElementById('bsod-overlay');
 
         // Preload Audio using JS Object
@@ -389,36 +529,42 @@
 
         console.log('BSOD Script loaded');
 
+        const handle3DClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Show BSOD
+            bsodOverlay.style.display = 'block';
+
+            // Play Sound
+            const playPromise = bsodSound.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('Audio playing...');
+                }).catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+            }
+
+            // Wait for NEXT input to "fix" it and navigate
+            setTimeout(() => {
+                const navigate = (event) => {
+                    bsodSound.pause();
+                    bsodSound.currentTime = 0;
+                    window.location.href = '3d_resume.html';
+                };
+
+                window.addEventListener('keydown', navigate, { once: true });
+                window.addEventListener('click', navigate, { once: true });
+            }, 100);
+        };
+
         if (enterBtn) {
-            enterBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+            enterBtn.addEventListener('click', handle3DClick);
+        }
 
-                // Show BSOD
-                bsodOverlay.style.display = 'block';
-
-                // Play Sound
-                const playPromise = bsodSound.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('Audio playing...');
-                    }).catch(error => {
-                        console.error('Audio playback failed:', error);
-                    });
-                }
-
-                // Wait for NEXT input to "fix" it and navigate
-                setTimeout(() => {
-                    const navigate = (event) => {
-                        bsodSound.pause();
-                        bsodSound.currentTime = 0;
-                        window.location.href = '3d_resume.html';
-                    };
-
-                    window.addEventListener('keydown', navigate, { once: true });
-                    window.addEventListener('click', navigate, { once: true });
-                }, 100);
-            });
+        if (enterBtnDropdown) {
+            enterBtnDropdown.addEventListener('click', handle3DClick);
         }
     </script>
 
