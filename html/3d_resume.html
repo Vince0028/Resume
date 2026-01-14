@@ -241,15 +241,65 @@
 
     <div id="canvas-container"></div>
 
-    <!-- Mini Tutorial / Controls Guide -->
-    <div id="controls-tutorial"
-        style="position: absolute; bottom: 20px; left: 20px; color: #0f0; background: rgba(0, 0, 0, 0.7); padding: 15px; font-size: 12px; font-family: 'Courier Prime', monospace; border: 1px solid #0f0; pointer-events: none; user-select: none;">
-        <h3 style="margin: 0 0 10px 0; border-bottom: 1px solid #0f0; padding-bottom: 5px; font-size: 14px;">CONTROLS
-        </h3>
-        <div style="margin-bottom: 5px;">[SCROLL] ZOOM In/Out</div>
-        <div style="margin-bottom: 5px;">[L-CLICK] ROTATE View</div>
-        <div style="margin-bottom: 5px;">[R-CLICK] PAN View</div>
-        <div style="color: #fff; margin-top: 10px; font-weight: bold;">> ZOOM into PAPER for RESUME</div>
+    <!-- Mini Tutorial / Controls Guide (Windows 95 Style) -->
+    <div id="controls-tutorial" style="
+        position: absolute; 
+        bottom: 20px; 
+        left: 20px; 
+        width: 250px;
+        background: #c0c0c0; 
+        border: 2px solid; 
+        border-color: #fff #404040 #404040 #fff; 
+        box-shadow: 1px 1px 0 #000;
+        padding: 2px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+        color: #000;
+        pointer-events: none; 
+        user-select: none;
+        z-index: 2000;
+    ">
+        <!-- Title Bar -->
+        <div style="
+            background: linear-gradient(90deg, #000080, #1084d0); 
+            color: white; 
+            padding: 3px 6px; 
+            font-weight: bold; 
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        ">
+            <span>Controls.exe</span>
+            <!-- Close Button (Visual Only) -->
+            <div style="
+                width: 14px; 
+                height: 12px; 
+                background: #c0c0c0; 
+                border: 1px solid;
+                border-color: #fff #404040 #404040 #fff;
+                display: flex; 
+                align-items: center; 
+                justify-content: center;
+                font-size: 10px;
+                color: black;
+                font-family: sans-serif;
+            ">✖</div>
+        </div>
+
+        <!-- Content Area -->
+        <div style="padding: 10px;">
+            <div style="margin-bottom: 5px;"><strong>[Scroll]</strong> Zoom In/Out</div>
+            <div style="margin-bottom: 5px;"><strong>[L-Click]</strong> Rotate View</div>
+            <div style="margin-bottom: 8px;"><strong>[R-Click]</strong> Pan View</div>
+
+            <div style="border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 8px 0;"></div>
+
+            <div style="font-style: italic;">
+                <strong>Tip:</strong> Zoom into the paper to fully open the resume document.
+            </div>
+        </div>
     </div>
 
     <div id="word-resume-overlay">
