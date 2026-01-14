@@ -224,28 +224,17 @@
     </div>
 
     <script>
-        const overlay = document.getElementById('loading-overlay');
-        const audio = document.getElementById('error-sound');
-        let gameStarted = false;
-
-        function startGame() {
-            if (gameStarted) return;
-            gameStarted = true;
-
-            // Play Sound
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("Audio play failed:", e));
-
-            // Hide Overlay
-            overlay.style.opacity = '0';
+        // Simple fade out on load
+        window.addEventListener('load', () => {
+            const overlay = document.getElementById('loading-overlay');
+            // Ensure 3D scene has a moment to render
             setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 500);
-        }
-
-        // Interaction Listeners
-        window.addEventListener('click', startGame);
-        window.addEventListener('keydown', startGame);
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
     </script>
 
     <a href="simple_portfolio.html" id="back-btn">← EXIT SIMULATION</a>
