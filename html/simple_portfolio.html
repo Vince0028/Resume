@@ -25,9 +25,12 @@
                 <div class="top-actions">
                     <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
                     <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
+                    <a class="btn-link secondary" id="enter3dBtn" href="#"
+                        style="background: var(--accent); color: white; border: none;">Enter 3D Office</a>
                     <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
                 </div>
 
+                <!-- (Rest of content remains the same until script) -->
                 <header class="header">
                     <div class="header-main">
                         <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
@@ -48,6 +51,13 @@
                         solutions,
                         reliable execution, and continuous learning.</p>
                 </section>
+
+                <!-- ... (Skipping middle sections for brevity in replacement, focusing on structure integrity) ... -->
+                <!-- WAIT: replace_file_content requires contiguous block. I must be careful not to delete content. -->
+                <!-- My target end line is 237 (script src), start line is 13 (envelope stage). This is too big. -->
+                <!-- I should insert the Overlay at the end of body, and modify the button separately. -->
+
+
 
                 <section class="section" aria-labelledby="projects-title">
                     <h2 id="projects-title">Projects</h2>
@@ -233,6 +243,44 @@
     </div>
 
     <script src="../js/simple-portfolio.js"></script>
+    <!-- BSOD Prank Overlay (Hidden Initially) -->
+    <div id="bsod-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; cursor: none;">
+        <img src="../Images/3d-resume-img/Window_error.png" style="width: 100%; height: 100%; object-fit: cover;"
+            alt="Windows Error">
+        <audio id="bsod-sound" src="../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3"></audio>
+    </div>
+
+    <script>
+        const enterBtn = document.getElementById('enter3dBtn');
+        const bsodOverlay = document.getElementById('bsod-overlay');
+        const bsodSound = document.getElementById('bsod-sound');
+
+        if (enterBtn) {
+            enterBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Show BSOD
+                bsodOverlay.style.display = 'block';
+
+                // Play Sound Immediately (User Click Triggered)
+                bsodSound.volume = 0.6;
+                bsodSound.play().catch(err => console.log('Audio error:', err));
+
+                // Wait for any input to "fix" it and navigate
+                const navigate = () => {
+                    window.location.href = '3d_resume.html';
+                };
+
+                // Add listeners for exit
+                window.addEventListener('keydown', navigate);
+                window.addEventListener('click', navigate);
+
+                // Or navigate automatically after sound ends? User said "when pressing... image appear and sound"
+                // Usually pranks wait for user panic. Let's let them click to escape.
+            });
+        }
+    </script>
 </body>
 
 </html>

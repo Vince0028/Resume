@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Office Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: #0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Word Resume Overlay (Whole Paper / A4 Style) */
+        #word-resume-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Container passes clicks through */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            background: rgba(0, 0, 0, 0.6);
+            /* Dim background to focus on paper */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #word-resume-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+            /* Enable clicks on overlay (backdrop) when active? No, let click-off close it. */
+        }
+
+        .resume-paper {
+            background: #ffffff;
+            color: #000;
+            /* A4 Ratio (1 : 1.414) */
+            /* Height 90vh -> Width ~63.6vh */
+            height: 90vh;
+            width: 63.6vh;
+            max-width: 90vw;
+            padding: 40px;
+            box-sizing: border-box;
+
+            /* Animation State */
+            transform: scale(0.8) translateY(50px);
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            /* CRITICAL FIX: Block events ONLY when active */
+            pointer-events: none;
+
+            font-family: 'Courier Prime', monospace;
+            overflow-y: auto;
+            border: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            /* Lifted paper effect */
+        }
+
+        #word-resume-overlay.active .resume-paper {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            /* Enable interaction only when visible */
+        }
+
+        /* Hide the window bar, we want it 'raw' on screen */
+        .window-bar {
+            display: none;
+        }
+
+        /* Custom Scrollbar for 'retro' feel */
+        .resume-paper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .resume-paper::-webkit-scrollbar-track {
+            background: #ddd;
+        }
+
+        .resume-paper::-webkit-scrollbar-thumb {
+            background: #666;
+        }
+
+        .window-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 24px;
+            text-align: center;
+            padding: 0;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            background: #cc0000;
+        }
+
+        .resume-content {
+            padding: 40px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .resume-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .resume-section {
+            margin-bottom: 30px;
+        }
+
+        .resume-section h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Return Button */
+        #back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid white;
+            cursor: pointer;
+            z-index: 100;
+            text-decoration: none;
+            font-family: sans-serif;
+            transition: background 0.3s;
+        }
+
+        #back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Debug Info */
+        #debug-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #0f0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            display: none;
+        }
+    </style>
+
+    <!-- Three.js Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<body>
+    <!-- BSOD Prank Overlay -->
+    <div id="loading-overlay" style="cursor: pointer;">
+        <img src="../Images/3d-resume-img/Window_error.png" style="width: 100%; height: 100%; object-fit: cover;"
+            alt="Windows Error">
+        <!-- Hidden audio, played on interaction -->
+        <audio id="error-sound" src="../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3"></audio>
+        <div class="loading-text"
+            style="position: absolute; bottom: 20px; right: 20px; font-size: 14px; color: white; opacity: 0.5;">Press
+            any key to continue...</div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('loading-overlay');
+        const audio = document.getElementById('error-sound');
+        let gameStarted = false;
+
+        function startGame() {
+            if (gameStarted) return;
+            gameStarted = true;
+
+            // Play Sound
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Audio play failed:", e));
+
+            // Hide Overlay
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+        }
+
+        // Interaction Listeners
+        window.addEventListener('click', startGame);
+        window.addEventListener('keydown', startGame);
+    </script>
+
+    <a href="simple_portfolio.html" id="back-btn">← EXIT SIMULATION</a>
+
+    <div id="canvas-container"></div>
+
+    <div id="debug-info">Click to get coordinates</div>
+
+    <div id="word-resume-overlay">
+        <div class="resume-paper">
+            <div class="resume-header">
+                <h1>VINCE NELMAR ALOBIN</h1>
+                <p>Software Engineer | Web Developer | Creative Technologist</p>
+                <p>alobinvince@gmail.com | Manila, Philippines</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>Summary</h2>
+                <p>Passionate IT student building practical web, app, and embedded projects. Focused on clear solutions,
+                    reliable execution, and continuous learning.</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>Technical Skills</h2>
+                <p><strong>Languages:</strong> Python, JavaScript, TypeScript, C/C++, Java, SQL</p>
+                <p><strong>Web:</strong> HTML5, CSS3, React, Next.js, Node.js, Flask, Supabase</p>
+                <p><strong>Tools:</strong> Git, Docker, VS Code, Raspberry Pi, Arduino</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>Featured Projects</h2>
+                <ul>
+                    <li><strong>DengueTect:</strong> AI-powered dengue risk assessment tool.</li>
+                    <li><strong>AnaLytics:</strong> Inventory management for rice retailers.</li>
+                    <li><strong>Driver Expression Detector:</strong> Computer vision safety system.</li>
+                </ul>
+            </div>
+
+            <div class="resume-section">
+                <h2>Education</h2>
+                <p><strong>Asia Pacific College</strong><br>Bachelor of Science in Information Technology (2024 -
+                    Present)</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/3d-view.js?v=22"></script>
+</body>
+
+</html>
