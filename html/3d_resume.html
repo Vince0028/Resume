@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Retro Office Resume</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <style>
@@ -18,6 +18,8 @@
             width: 100vw;
             height: 100vh;
             display: block;
+            touch-action: none;
+            /* Prevent browser zoom/scroll */
         }
 
         /* Loading Overlay */
@@ -75,6 +77,8 @@
         }
 
         .resume-paper {
+            position: relative;
+            /* Fix for absolute children */
             background: #ffffff;
             color: #000;
             /* A4 Ratio (1 : 1.414) */
@@ -132,19 +136,24 @@
         }
 
         .close-btn {
-            background: #ff5555;
+            background: #ff0000;
             color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 14px;
-            line-height: 24px;
+            font-size: 16px;
+            line-height: 28px;
             text-align: center;
             padding: 0;
             font-family: sans-serif;
             font-weight: bold;
+            display: flex;
+            /* Ensure centering */
+            align-items: center;
+            justify-content: center;
         }
 
         .close-btn:hover {
@@ -301,16 +310,16 @@
     <!-- Mini Tutorial / Controls Guide (Windows 95 Style) -->
     <div id="controls-tutorial" style="
         position: absolute; 
-        bottom: 20px; 
-        left: 20px; 
-        width: 250px;
+        top: 20px; 
+        right: 20px; 
+        width: 300px;
         background: #c0c0c0; 
         border: 2px solid; 
         border-color: #fff #404040 #404040 #fff; 
         box-shadow: 1px 1px 0 #000;
         padding: 2px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 12px;
+        font-size: 14px;
         color: #000;
         pointer-events: none; 
         user-select: none;
@@ -348,7 +357,7 @@
         <!-- Content Area -->
         <div style="padding: 10px;">
             <div style="margin-bottom: 5px;"><strong>[Scroll]</strong> Zoom In/Out</div>
-            <div style="margin-bottom: 5px;"><strong>[L-Click]</strong> Rotate View</div>
+            <div style="margin-bottom: 5px;"><strong>[Left-Click-Mouse]</strong> Rotate View</div>
 
 
             <div style="border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 8px 0;"></div>
@@ -361,6 +370,28 @@
 
     <div id="word-resume-overlay">
         <div class="resume-paper">
+            <button onclick="window.closeResume()" style="
+                position: absolute; 
+                top: 15px; 
+                right: 20px; 
+                width: 32px; 
+                height: 32px; 
+                background: #c0c0c0; 
+                border-top: 2px solid #fff;
+                border-left: 2px solid #fff;
+                border-right: 2px solid #000;
+                border-bottom: 2px solid #000;
+                color: #000; 
+                font-family: sans-serif; 
+                font-weight: bold; 
+                font-size: 16px; 
+                cursor: pointer; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center;
+                z-index: 3000;
+            " onmousedown="this.style.borderTop='2px solid #000'; this.style.borderLeft='2px solid #000'; this.style.borderRight='2px solid #fff'; this.style.borderBottom='2px solid #fff';"
+                onmouseup="this.style.borderTop='2px solid #fff'; this.style.borderLeft='2px solid #fff'; this.style.borderRight='2px solid #000'; this.style.borderBottom='2px solid #000';">X</button>
             <div class="resume-header">
                 <h1>VINCE NELMAR ALOBIN</h1>
                 <p>Software Engineer | Web Developer | Creative Technologist</p>
