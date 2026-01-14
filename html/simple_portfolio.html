@@ -248,7 +248,8 @@
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; cursor: none;">
         <img src="../Images/3d-resume-img/Window_error.png" style="width: 100%; height: 100%; object-fit: cover;"
             alt="Windows Error">
-        <audio id="bsod-sound" src="../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3"></audio>
+        <audio id="bsod-sound" src="../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3"
+            preload="auto"></audio>
     </div>
 
     <script>
@@ -256,29 +257,53 @@
         const bsodOverlay = document.getElementById('bsod-overlay');
         const bsodSound = document.getElementById('bsod-sound');
 
+        console.log('BSOD Script loaded');
+        console.log('enterBtn:', enterBtn);
+        console.log('bsodSound:', bsodSound);
+        console.log('Audio src:', bsodSound ? bsodSound.src : 'N/A');
+
         if (enterBtn) {
             enterBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation(); // CRITICAL: Prevent event from bubbling to window
+                console.log('Button clicked!');
 
                 // Show BSOD
                 bsodOverlay.style.display = 'block';
+                console.log('BSOD shown');
 
                 // Play Sound Immediately (User Click Triggered)
                 bsodSound.volume = 0.6;
-                bsodSound.play().catch(err => console.log('Audio error:', err));
+                console.log('Attempting to play sound...');
+                console.log('Audio ready state:', bsodSound.readyState);
 
-                // Wait for any input to "fix" it and navigate
-                const navigate = () => {
-                    window.location.href = '3d_resume.html';
-                };
+                const playPromise = bsodSound.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Sound playing successfully!');
+                    }).catch(err => {
+                        console.error('Audio play failed:', err);
+                        alert('Audio failed to play: ' + err.message);
+                    });
+                }
 
-                // Add listeners for exit
-                window.addEventListener('keydown', navigate);
-                window.addEventListener('click', navigate);
+                // Wait for NEXT input to "fix" it and navigate
+                // Use setTimeout to ensure we don't catch the current click event
+                setTimeout(() => {
+                    const navigate = (event) => {
+                        console.log('Navigate triggered by:', event.type);
+                        bsodSound.pause();
+                        window.location.href = '3d_resume.html';
+                    };
 
-                // Or navigate automatically after sound ends? User said "when pressing... image appear and sound"
-                // Usually pranks wait for user panic. Let's let them click to escape.
+                    // Add listeners for exit (use once to prevent multiple navigations)
+                    window.addEventListener('keydown', navigate, { once: true });
+                    window.addEventListener('click', navigate, { once: true });
+                    console.log('Navigation listeners attached - waiting for user input...');
+                }, 100); // Small delay to ensure current click event is finished
             });
+        } else {
+            console.error('Enter 3D button not found!');
         }
     </script>
 </body>
