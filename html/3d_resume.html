@@ -218,6 +218,29 @@
             pointer-events: none;
             display: none;
         }
+
+        /* Mobile Layout Fixes */
+        @media (max-width: 768px) {
+            #controls-tutorial {
+                top: auto !important;
+                bottom: 20px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%);
+                width: 90% !important;
+                max-width: 320px;
+            }
+
+            #back-btn {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* Auto-hide controls when resume is open */
+        body:has(#word-resume-overlay.active) #controls-tutorial {
+            display: none !important;
+        }
     </style>
 
     <!-- Three.js Dependencies -->
