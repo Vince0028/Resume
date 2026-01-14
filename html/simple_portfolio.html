@@ -11,11 +11,32 @@
         /* Force Robust Mobile/Desktop Behavior to Override potential conflicts */
 
         /* Desktop & Tablet > 640px */
+        /* Desktop & Tablet > 640px */
+        /* Desktop & Tablet > 640px */
         @media (min-width: 641px) {
+            .resume-header-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 2rem;
+                /* More gap */
+                margin-bottom: 2rem;
+                position: relative;
+            }
+
+            .header-left-col {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                flex: 1;
+                /* Take available space */
+                min-width: 0;
+                /* Prevent flex overflow */
+            }
+
             .top-actions {
-                position: absolute !important;
-                top: 1.5rem !important;
-                right: 1.5rem !important;
+                position: static !important;
+                margin-top: 0;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: flex-end !important;
@@ -24,14 +45,33 @@
                 background: transparent !important;
                 box-shadow: none !important;
                 border: none !important;
+                flex-shrink: 0;
+                width: auto;
+                /* Or max-content */
+                /* max-width: 40%; */
             }
 
             .header {
-                max-width: 65% !important;
+                max-width: 100% !important;
+                /* Managed by col */
+                margin-top: 0 !important;
             }
 
             .menu-toggle {
                 display: none !important;
+            }
+        }
+
+        /* Ensure wrapper behaves on mobile */
+        @media (max-width: 640px) {
+            .resume-header-row {
+                display: block;
+                position: relative;
+            }
+
+            .header-left-col {
+                display: contents;
+                /* Ungroup on mobile */
             }
         }
 
@@ -88,35 +128,55 @@
             </div>
             <main class="page resume-card" aria-label="Simple portfolio" id="resumeCard">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
-                <div class="top-actions">
-                    <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
-                    <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
-                    <a class="btn-link secondary" id="enter3dBtn" href="#"
-                        style="background: var(--accent); color: white; border: none;">Enter 3D Office</a>
-                    <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+
+                <!-- Flex Container for Header + Summary vs Buttons -->
+                <div class="resume-header-row">
+                    <!-- Left Column: Header + Summary -->
+                    <div class="header-left-col">
+                        <header class="header" style="margin-bottom: 1rem; padding-bottom: 1rem;">
+                            <div class="header-main">
+                                <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
+                                <div>
+                                    <div class="name">Vince Nelmar Alobin</div>
+                                    <div class="role">BSIT Student • Web & App Projects</div>
+                                    <div class="contact-line">
+                                        <span>📧 alobinvince@gmail.com</span>
+                                        <span>📱 09480914634</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+
+                        <section class="section" aria-labelledby="summary-title" style="margin-top: 0;">
+                            <h2 id="summary-title" style="margin-top: 0;">Summary</h2>
+                            <p>Passionate IT student building practical web, app, and embedded projects. Focused on
+                                clear solutions, reliable execution, and continuous learning.</p>
+                        </section>
+                    </div>
+
+                    <!-- Right Column: Top Actions -->
+                    <div class="top-actions">
+                        <div style="
+                            color: var(--text-secondary); 
+                            font-style: italic; 
+                            font-family: 'Georgia', serif;
+                            font-size: 0.85rem; 
+                            margin-bottom: 0.8rem; 
+                            text-align: center;
+                            width: 100%;
+                            opacity: 0.9;
+                        ">
+                            Jack of all trades,<br>Master of everything
+                        </div>
+                        <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
+                        <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
+                        <a class="btn-link secondary" id="enter3dBtn" href="#"
+                            style="background: var(--accent); color: white; border: none;">Press to go to 3d resume</a>
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+                    </div>
                 </div>
 
-                <!-- (Rest of content remains the same until script) -->
-                <header class="header">
-                    <div class="header-main">
-                        <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
-                        <div>
-                            <div class="name">Vince Nelmar Alobin</div>
-                            <div class="role">BSIT Student • Web & App Projects</div>
-                            <div class="contact-line">
-                                <span>📧 alobinvince@gmail.com</span>
-                                <span>📱 09480914634</span>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <section class="section" aria-labelledby="summary-title">
-                    <h2 id="summary-title">Summary</h2>
-                    <p>Passionate IT student building practical web, app, and embedded projects. Focused on clear
-                        solutions,
-                        reliable execution, and continuous learning.</p>
-                </section>
+                <!-- Summary moved to Left Column -->
 
                 <!-- ... (Skipping middle sections for brevity in replacement, focusing on structure integrity) ... -->
                 <!-- WAIT: replace_file_content requires contiguous block. I must be careful not to delete content. -->

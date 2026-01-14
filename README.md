@@ -13,6 +13,7 @@ that's what i asked myself and did it.
 -This version targets people who like design and structure. It uses a left and right sidebar with a center panel. Making it responsive took effort. It also includes an AI chatbot version of me.
 
 
+
 # Terminal Resume
 -This version targets people who enjoy interaction. It includes small old games, many easter eggs in the bash, and a live chat where you can talk with others. It also includes several references for fun.
 
