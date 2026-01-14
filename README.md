@@ -18,4 +18,10 @@ that's what i asked myself and did it.
 -This version targets people who enjoy interaction. It includes small old games, many easter eggs in the bash, and a live chat where you can talk with others. It also includes several references for fun.
 
 
+
+# 3D Resume
+-This version brings the resume to life in three dimensions! Navigate through an interactive 3D space showcasing my skills, projects, and experience in an immersive way. Perfect for those who want to explore something truly unique and cutting-edge.
+
+
+
 I hope you enjoy the experience and find something that fits your taste.
