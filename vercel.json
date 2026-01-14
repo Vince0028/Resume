@@ -50,6 +50,10 @@
       "destination": "/html/simple_portfolio.html"
     },
     {
+      "source": "/3d_resume.html",
+      "destination": "/html/3d_resume.html"
+    },
+    {
       "source": "/",
       "destination": "/html/simple_portfolio.html"
     }
