@@ -216,12 +216,69 @@
 </head>
 
 <body>
-    <!-- Simple Loader (Silent) -->
-    <div id="loading-overlay"
-        style="background: black; display: flex; align-items: center; justify-content: center; position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1000; transition: opacity 0.5s;">
-        <div class="loading-text" style="color: #0f0; font-family: monospace; font-size: 24px;">INITIALIZING VIRTUAL
-            OFFICE...</div>
+    <!-- Windows 95 Style Loader -->
+    <div id="loading-overlay" style="
+        position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1000; 
+        background: #008080; /* Windows 95 Teal */
+        display: flex; align-items: center; justify-content: center;
+        transition: opacity 0.5s;
+    ">
+        <div style="
+            width: 300px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #fff #404040 #404040 #fff;
+            box-shadow: 1px 1px 0 #000;
+            padding: 2px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            cursor: wait;
+        ">
+            <!-- Title Bar -->
+            <div style="
+                background: #000080; 
+                color: white; 
+                padding: 3px 6px; 
+                font-weight: bold; 
+                font-size: 13px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2px;
+            ">
+                <span>System Startup</span>
+                <div
+                    style="width:14px; height:12px; background:#c0c0c0; border:1px solid; border-color:#fff #404040 #404040 #fff; color:black; display:flex; justify-content:center; align-items:center; font-size:10px;">
+                    x</div>
+            </div>
+
+            <!-- Content -->
+            <div style="padding: 20px; text-align: center; color: black; font-size: 13px;">
+                <p style="margin: 0 0 15px 0;">Initializing Virtual Office Environment...</p>
+
+                <!-- Retro Progress Bar -->
+                <div
+                    style="height: 18px; background: #fff; border: 1px solid #808080; position: relative; padding: 2px;">
+                    <div style="width: 100%; height: 100%; background: #000080; animation: loadBar 2s infinite;"></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <style>
+        @keyframes loadBar {
+            0% {
+                width: 10%;
+            }
+
+            50% {
+                width: 60%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
 
     <script>
         // Simple fade out on load
