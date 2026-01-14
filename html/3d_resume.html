@@ -235,6 +235,20 @@
                 font-size: 12px;
                 padding: 8px 12px;
             }
+
+            /* Toggle Instructions */
+            .desktop-instr {
+                display: none !important;
+            }
+
+            .mobile-instr {
+                display: block !important;
+            }
+        }
+
+        /* Default: Hide Mobile Instructions */
+        .mobile-instr {
+            display: none;
         }
 
         /* Auto-hide controls when resume is open */
@@ -381,8 +395,15 @@
 
         <!-- Content Area -->
         <div style="padding: 10px;">
-            <div style="margin-bottom: 5px;"><strong>[Scroll]</strong> Zoom In/Out</div>
-            <div style="margin-bottom: 5px;"><strong>[Left-Click-Mouse]</strong> Rotate View</div>
+            <div class="desktop-instr">
+                <div style="margin-bottom: 5px;"><strong>[Scroll]</strong> Zoom In/Out</div>
+                <div style="margin-bottom: 5px;"><strong>[Left-Click]</strong> Rotate View</div>
+            </div>
+
+            <div class="mobile-instr">
+                <div style="margin-bottom: 5px;"><strong>[2 Fingers]</strong> Zoom In/Out</div>
+                <div style="margin-bottom: 5px;"><strong>[1 Finger]</strong> Move/Rotate</div>
+            </div>
 
 
             <div style="border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 8px 0;"></div>
