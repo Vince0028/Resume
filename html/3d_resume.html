@@ -186,24 +186,59 @@
             letter-spacing: 2px;
         }
 
-        /* Return Button */
+        /* Return Button - Windows 95 Style */
         #back-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: 1px solid white;
-            cursor: pointer;
+            padding: 8px 16px;
+            background: #c0c0c0;
+            color: black;
+            border: 2px solid;
+            border-color: #fff #404040 #404040 #fff;
+            box-shadow: 1px 1px 0 #000;
+            cursor: default;
             z-index: 100;
             text-decoration: none;
-            font-family: sans-serif;
-            transition: background 0.3s;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 13px;
+            font-weight: normal;
+            transition: none;
+            pointer-events: none;
+            opacity: 1;
+            white-space: nowrap;
+        }
+
+        #back-btn.ready {
+            pointer-events: auto;
+            cursor: pointer;
         }
 
         #back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #c0c0c0;
+        }
+
+        #back-btn:active {
+            border-color: #404040 #fff #fff #404040;
+            padding: 9px 15px 7px 17px;
+        }
+
+        /* Clock Display */
+        #clock-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: #c0c0c0;
+            color: black;
+            border: 2px solid;
+            border-color: #404040 #fff #fff #404040;
+            box-shadow: inset 1px 1px 0 #808080;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 13px;
+            z-index: 100;
+            min-width: 80px;
+            text-align: center;
         }
 
         /* Debug Info */
@@ -233,7 +268,16 @@
 
             #back-btn {
                 font-size: 12px;
-                padding: 8px 12px;
+                padding: 6px 12px;
+            }
+
+            #clock-display {
+                top: auto;
+                bottom: 20px;
+                right: 10px;
+                font-size: 11px;
+                padding: 6px 10px;
+                min-width: 70px;
             }
 
             /* Toggle Instructions */
@@ -337,12 +381,91 @@
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';
+                    // Start typing animation after loading screen disappears
+                    startTypingAnimation();
                 }, 500);
             }, 1000);
         });
+
+        // Typing Animation
+        function startTypingAnimation() {
+            const btn = document.getElementById('back-btn');
+            const fullName = "VINCE NELMAR ALOBIN";
+            const finalText = "← EXIT SIMULATION";
+            let currentText = "";
+            let isTyping = true;
+            let charIndex = 0;
+
+            function typeWriter() {
+                if (isTyping) {
+                    // Type the name
+                    if (charIndex < fullName.length) {
+                        currentText += fullName[charIndex];
+                        btn.textContent = currentText;
+                        charIndex++;
+                        setTimeout(typeWriter, 100); // Typing speed
+                    } else {
+                        // Pause before backspacing
+                        setTimeout(() => {
+                            isTyping = false;
+                            charIndex = currentText.length;
+                            typeWriter();
+                        }, 1000);
+                    }
+                } else {
+                    // Backspace the name
+                    if (charIndex > 0) {
+                        currentText = currentText.slice(0, -1);
+                        btn.textContent = currentText;
+                        charIndex--;
+                        setTimeout(typeWriter, 50); // Backspace speed (faster)
+                    } else {
+                        // Type final text
+                        typeFinalText();
+                    }
+                }
+            }
+
+            function typeFinalText() {
+                let finalIndex = 0;
+                currentText = "";
+
+                function typeFinal() {
+                    if (finalIndex < finalText.length) {
+                        currentText += finalText[finalIndex];
+                        btn.textContent = currentText;
+                        finalIndex++;
+                        setTimeout(typeFinal, 80);
+                    } else {
+                        // Enable the button
+                        btn.classList.add('ready');
+                    }
+                }
+
+                typeFinal();
+            }
+
+            typeWriter();
+        }
+
+        // Live Clock
+        function updateClock() {
+            const clockEl = document.getElementById('clock-display');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            clockEl.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+
+        // Update clock immediately and every second
+        updateClock();
+        setInterval(updateClock, 1000);
     </script>
 
-    <a href="simple_portfolio.html" id="back-btn">← EXIT SIMULATION</a>
+    <div id="clock-display"></div>
+    <a href="simple_portfolio.html" id="back-btn"></a>
 
     <div id="canvas-container"></div>
 
@@ -439,42 +562,109 @@
             " onmousedown="this.style.borderTop='2px solid #000'; this.style.borderLeft='2px solid #000'; this.style.borderRight='2px solid #fff'; this.style.borderBottom='2px solid #fff';"
                 onmouseup="this.style.borderTop='2px solid #fff'; this.style.borderLeft='2px solid #fff'; this.style.borderRight='2px solid #000'; this.style.borderBottom='2px solid #000';">X</button>
             <div class="resume-header">
-                <h1>VINCE NELMAR ALOBIN</h1>
-                <p>Software Engineer | Web Developer | Creative Technologist</p>
-                <p>alobinvince@gmail.com | Manila, Philippines</p>
+                <h1 data-typewriter data-speed="40">VINCE NELMAR ALOBIN</h1>
+                <p data-typewriter data-speed="60">Software Engineer | Web Developer | Creative Technologist</p>
+                <p data-typewriter data-speed="75">alobinvince@gmail.com | Manila, Philippines</p>
             </div>
 
             <div class="resume-section">
-                <h2>Summary</h2>
-                <p>Passionate IT student building practical web, app, and embedded projects. Focused on clear solutions,
+                <h2 data-typewriter data-speed="50">Summary</h2>
+                <p data-typewriter data-speed="45">Passionate IT student building practical web, app, and embedded
+                    projects. Focused on clear solutions,
                     reliable execution, and continuous learning.</p>
             </div>
 
             <div class="resume-section">
-                <h2>Technical Skills</h2>
-                <p><strong>Languages:</strong> Python, JavaScript, TypeScript, C/C++, Java, SQL</p>
-                <p><strong>Web:</strong> HTML5, CSS3, React, Next.js, Node.js, Flask, Supabase</p>
-                <p><strong>Tools:</strong> Git, Docker, VS Code, Raspberry Pi, Arduino</p>
+                <h2 data-typewriter data-speed="55">Technical Skills</h2>
+                <p data-typewriter data-speed="35"><strong>Languages:</strong> Python, JavaScript, TypeScript, C/C++,
+                    Java, SQL</p>
+                <p data-typewriter data-speed="42"><strong>Web:</strong> HTML5, CSS3, React, Next.js, Node.js, Flask,
+                    Supabase</p>
+                <p data-typewriter data-speed="38"><strong>Tools:</strong> Git, Docker, VS Code, Raspberry Pi, Arduino
+                </p>
             </div>
 
             <div class="resume-section">
-                <h2>Featured Projects</h2>
+                <h2 data-typewriter data-speed="48">Featured Projects</h2>
                 <ul>
-                    <li><strong>DengueTect:</strong> AI-powered dengue risk assessment tool.</li>
-                    <li><strong>AnaLytics:</strong> Inventory management for rice retailers.</li>
-                    <li><strong>Driver Expression Detector:</strong> Computer vision safety system.</li>
+                    <li data-typewriter data-speed="52"><strong>DengueTect:</strong> AI-powered dengue risk assessment
+                        tool.</li>
+                    <li data-typewriter data-speed="44"><strong>AnaLytics:</strong> Inventory management for rice
+                        retailers.</li>
+                    <li data-typewriter data-speed="58"><strong>Driver Expression Detector:</strong> Computer vision
+                        safety system.</li>
                 </ul>
             </div>
 
             <div class="resume-section">
-                <h2>Education</h2>
-                <p><strong>Asia Pacific College</strong><br>Bachelor of Science in Information Technology (2024 -
+                <h2 data-typewriter data-speed="46">Education</h2>
+                <p data-typewriter data-speed="50"><strong>Asia Pacific College</strong><br>Bachelor of Science in
+                    Information Technology (2024 -
                     Present)</p>
             </div>
         </div>
     </div>
 
-    <script src="../js/3d-view.js?v=22"></script>
+    <script>
+        // Resume Typing Animation - Store original text immediately
+        const resumeTextData = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const elements = document.querySelectorAll('[data-typewriter]');
+            console.log('Found typewriter elements:', elements.length);
+
+            // Store original text for each element
+            elements.forEach((element, index) => {
+                const originalText = element.innerHTML;
+                const speed = parseInt(element.getAttribute('data-speed')) || 50;
+                resumeTextData.push({
+                    element: element,
+                    originalText: originalText,
+                    speed: speed,
+                    index: index
+                });
+                // Clear the element immediately
+                element.innerHTML = '';
+                console.log(`Stored element ${index}:`, originalText.substring(0, 50));
+            });
+        });
+
+        window.typeResumeContent = function () {
+            console.log('typeResumeContent called! Data length:', resumeTextData.length);
+
+            if (resumeTextData.length === 0) {
+                console.error('No resume data stored!');
+                return;
+            }
+
+            resumeTextData.forEach((data) => {
+                const { element, originalText, speed, index } = data;
+
+                // Clear element
+                element.innerHTML = '';
+                element.style.opacity = '1';
+
+                let charIndex = 0;
+                const delay = index * 200; // Stagger start times
+
+                setTimeout(() => {
+                    console.log(`Starting typing for element ${index}`);
+                    function typeChar() {
+                        if (charIndex < originalText.length) {
+                            element.innerHTML = originalText.substring(0, charIndex + 1);
+                            charIndex++;
+                            setTimeout(typeChar, speed);
+                        } else {
+                            console.log(`Finished typing element ${index}`);
+                        }
+                    }
+                    typeChar();
+                }, delay);
+            });
+        };
+    </script>
+
+    <script src="../js/3d-view.js?v=23"></script>
 </body>
 
 </html>

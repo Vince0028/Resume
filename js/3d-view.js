@@ -206,6 +206,13 @@ function animate() {
     if (distance < ZOOM_THRESHOLD && !isOverlayActive && !isResumeClosed) {
         isOverlayActive = true;
         wordResumeOverlay.classList.add('active');
+        console.log('Resume overlay activated! Triggering typing animation...');
+        // Trigger typing animation when resume opens
+        if (typeof window.typeResumeContent === 'function') {
+            window.typeResumeContent();
+        } else {
+            console.error('typeResumeContent function not found!');
+        }
     }
     // 2. Reset the "Closed" flag only when user backs away significantly
     else if (distance > ZOOM_THRESHOLD + 1.5) {
