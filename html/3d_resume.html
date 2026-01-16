@@ -226,19 +226,22 @@
         /* Clock Display */
         #clock-display {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 8px 16px;
+            top: 62px;
+            left: 20px;
+            padding: 10px 20px;
             background: #c0c0c0;
             color: black;
             border: 2px solid;
             border-color: #404040 #fff #fff #404040;
             box-shadow: inset 1px 1px 0 #808080;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: bold;
             z-index: 100;
-            min-width: 80px;
             text-align: center;
+            white-space: nowrap;
+            display: inline-block;
+            min-width: 100px;
         }
 
         /* Debug Info */
@@ -272,12 +275,10 @@
             }
 
             #clock-display {
-                top: auto;
-                bottom: 20px;
-                right: 10px;
+                top: 50px;
+                left: 20px;
                 font-size: 11px;
-                padding: 6px 10px;
-                min-width: 70px;
+                padding: 6px 12px;
             }
 
             /* Toggle Instructions */
@@ -451,20 +452,29 @@
         // Live Clock
         function updateClock() {
             const clockEl = document.getElementById('clock-display');
+            if (!clockEl) {
+                console.error('Clock element not found!');
+                return;
+            }
             const now = new Date();
             let hours = now.getHours();
             const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12 || 12;
-            clockEl.textContent = `${hours}:${minutes} ${ampm}`;
+            const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            clockEl.textContent = timeString;
+            console.log('Clock updated:', timeString);
         }
 
         // Update clock immediately and every second
-        updateClock();
-        setInterval(updateClock, 1000);
+        setTimeout(() => {
+            updateClock();
+            setInterval(updateClock, 1000);
+        }, 100);
     </script>
 
-    <div id="clock-display"></div>
+    <div id="clock-display">12:00:00 PM</div>
     <a href="simple_portfolio.html" id="back-btn"></a>
 
     <div id="canvas-container"></div>
