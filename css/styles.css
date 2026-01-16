@@ -223,8 +223,23 @@
     border: 1px solid transparent;
 }
 
+/* Staggered reveal animation states */
+.anime-grid-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Essential to ensure pointer events don't trigger while hidden */
+    pointer-events: none;
+}
+
+.anime-grid-item.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
 .anime-grid-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) !important;
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);

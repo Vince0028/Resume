@@ -245,6 +245,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalGrid.appendChild(maleHeader);
                 modalGrid.appendChild(maleGrid);
             }
+
+            // --- RELIABLE ANIMATION SEQUENCE ---
+
+            // 1. Force start state (HIDDEN) instantly via inline styles
+            const allGridItems = modalGrid.querySelectorAll('.anime-grid-item');
+            allGridItems.forEach(item => {
+                item.classList.remove('visible');
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px) scale(0.9)';
+                item.style.transition = 'none';
+            });
+
+            // 2. Force a browser reflow 
+            void modalGrid.offsetHeight;
+
+            // 3. Trigger staggered reveal ONLY for items initially in view
+            setTimeout(() => {
+                let delayCounter = 0;
+                allGridItems.forEach((item) => {
+                    const rect = item.getBoundingClientRect();
+                    // VISIBILITY CHECK: Only animate if top is within viewport + buffer
+                    if (rect.top < window.innerHeight - 20) {
+                        setTimeout(() => {
+                            item.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0) scale(1)';
+                            item.classList.add('visible');
+                        }, delayCounter * 60); // 60ms delay
+                        delayCounter++;
+                    }
+                    // Else: Item stays hidden (opacity: 0)
+                });
+
+                // 4. Attach scroll listener AFTER initial reveal is set up
+                // This prevents instant triggering during open
+                setTimeout(() => {
+                    const modalContent = document.querySelector('.anime-modal-content');
+                    if (modalContent) {
+                        modalContent.onscroll = () => {
+                            const gridItems = modalGrid.querySelectorAll('.anime-grid-item');
+                            gridItems.forEach(item => {
+                                // Start animation for hidden items when they scroll into view
+                                if (item.style.opacity === '0') {
+                                    const rect = item.getBoundingClientRect();
+                                    // Check if entered viewport
+                                    if (rect.top < window.innerHeight - 50 && rect.bottom > 0) {
+                                        item.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                                        item.style.opacity = '1';
+                                        item.style.transform = 'translateY(0) scale(1)';
+                                        item.classList.add('visible');
+                                    }
+                                }
+                            });
+                        };
+                    }
+                }, 500); // 0.5s delay before enabling scroll detection
+            }, 100); // 100ms initial wait for layout
+
+            /* REMOVED OLD SCROLL BLOCK */
         };
 
         const closeModal = () => {
@@ -252,6 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = 'auto'; // Unlock scroll
             const fab = document.getElementById('floatingActions');
             if (fab) fab.classList.remove('hidden'); // Show FABs
+
+            // Reset reveal animation for next open
+            const allGridItems = modalGrid.querySelectorAll('.anime-grid-item');
+            allGridItems.forEach(item => item.classList.remove('visible'));
         };
 
         viewAllBtns.forEach(btn => btn.addEventListener('click', openModal));
