@@ -13,13 +13,380 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css?v=10">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <!-- Defer background effect scripts -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <script src="../js/redirect.js"></script>
 </head>
 
 <body>
+    <!-- Particle Loading Screen -->
+    <div id="page-loader">
+        <canvas id="particle-canvas"></canvas>
+        <div class="loader-content">
+            <h2 class="loader-title">VINCE NELMAR ALOBIN</h2>
+            <p class="loader-subtitle">Loading Resume...</p>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0e27;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .loader-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .loader-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 10px rgba(99, 102, 241, 0.3));
+        }
+
+        .loader-subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: #94a3b8;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loader-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            border-radius: 10px;
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+
+            50% {
+                width: 70%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        body.loaded #page-loader {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Hide floating buttons during loading */
+        body:not(.loaded) .floating-actions {
+            display: none !important;
+        }
+
+        /* Prevent scroll jump during animations */
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        /* Grand Entrance Animations */
+        .sidebar,
+        .main-content,
+        .right-sidebar,
+        .floating-actions,
+        .mobile-toggle {
+            opacity: 0;
+        }
+
+        /* Left sidebar slides from left */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Main content fades in without moving (prevents scroll jump) */
+        .main-content {
+            transform: scale(0.95);
+            transition: opacity 0.8s ease,
+                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Right sidebar slides from right */
+        .right-sidebar {
+            transform: translateX(100%);
+            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Floating buttons fade and slide up */
+        .floating-actions {
+            transform: translateY(100px) scale(0.8);
+            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Mobile toggle fades in */
+        .mobile-toggle {
+            transition: opacity 0.5s ease;
+        }
+
+        /* Animate in when loaded */
+        body.loaded .sidebar {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 0.3s;
+        }
+
+        body.loaded .main-content {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.5s;
+        }
+
+        body.loaded .right-sidebar {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 0.7s;
+        }
+
+        body.loaded .floating-actions {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition-delay: 0.9s;
+            display: flex !important;
+        }
+
+        body.loaded .mobile-toggle {
+            opacity: 1;
+            transition-delay: 0.4s;
+        }
+
+        /* Vanta background fades in */
+        #vanta-bg {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        body.loaded #vanta-bg {
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+
+        /* Animate sections and text inside main content */
+        .fade-in,
+        .section,
+        .hero-card,
+        .stat-card,
+        .expertise-item,
+        .project-slide,
+        .contact-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        body.loaded .fade-in,
+        body.loaded .section,
+        body.loaded .hero-card,
+        body.loaded .stat-card,
+        body.loaded .expertise-item,
+        body.loaded .project-slide,
+        body.loaded .contact-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger animations for multiple items */
+        body.loaded .stat-card:nth-child(1) {
+            transition-delay: 0.7s;
+        }
+
+        body.loaded .stat-card:nth-child(2) {
+            transition-delay: 0.8s;
+        }
+
+        body.loaded .expertise-item:nth-child(1) {
+            transition-delay: 0.7s;
+        }
+
+        body.loaded .expertise-item:nth-child(2) {
+            transition-delay: 0.8s;
+        }
+
+        body.loaded .expertise-item:nth-child(3) {
+            transition-delay: 0.9s;
+        }
+
+        body.loaded .expertise-item:nth-child(4) {
+            transition-delay: 1.0s;
+        }
+
+        body.loaded .hero-card {
+            transition-delay: 0.6s;
+        }
+
+        @media (max-width: 768px) {
+            .loader-title {
+                font-size: 1.5rem;
+            }
+
+            .loader-bar {
+                width: 250px;
+            }
+        }
+    </style>
+
+    <script>
+        // Particle Animation
+        (function () {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 80;
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 2 - 1;
+                    this.speedY = Math.random() * 2 - 1;
+                    this.opacity = Math.random() * 0.5 + 0.3;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.y > canvas.height) this.y = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                }
+
+                draw() {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                // Draw connections
+                particles.forEach((a, i) => {
+                    particles.slice(i + 1).forEach(b => {
+                        const dx = a.x - b.x;
+                        const dy = a.y - b.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 120) {
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * (1 - distance / 120)})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y);
+                            ctx.lineTo(b.x, b.y);
+                            ctx.stroke();
+                        }
+                    });
+                });
+
+                if (!document.body.classList.contains('loaded')) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        })();
+
+        // Hide loader when page is loaded
+        window.addEventListener('load', function () {
+            // Force scroll to top
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+
+            setTimeout(function () {
+                document.body.classList.add('loaded');
+                setTimeout(function () {
+                    document.getElementById('page-loader').style.display = 'none';
+                }, 500);
+            }, 300);
+        });
+
+        // Fallback
+        setTimeout(function () {
+            document.body.classList.add('loaded');
+        }, 5000);
+
+        // Ensure page starts at top
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+
     <div id="vanta-bg"></div>
 
     <button class="mobile-toggle" id="mobileToggle">
@@ -721,10 +1088,12 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/skillset-order.js"></script>
-    <script src="../js/lanyard-3d.js"></script>
     <script src="../js/github-contributions.js"></script>
     <script src="../js/guestbook.js"></script>
-    <script src="../js/anime-carousel.js"></script>
+
+    <!-- Defer heavy/non-critical scripts -->
+    <script defer src="../js/lanyard-3d.js"></script>
+    <script defer src="../js/anime-carousel.js"></script>
 </body>
 
 </html>

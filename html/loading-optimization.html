@@ -1,0 +1,61 @@
+<div id="page-loader" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.5s ease;
+">
+    <div style="
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    "></div>
+    <p style="
+        color: white;
+        margin-top: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+    ">Loading Resume...</p>
+</div>
+
+<style>
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+
+    body.loaded #page-loader {
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    // Hide loader when page is fully loaded
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            document.body.classList.add('loaded');
+            setTimeout(function () {
+                document.getElementById('page-loader').style.display = 'none';
+            }, 500);
+        }, 300);
+    });
+
+
+    setTimeout(function () {
+        document.body.classList.add('loaded');
+    }, 5000);
+</script>
