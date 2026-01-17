@@ -315,6 +315,7 @@
 
                         <a class="card card-link" href="https://denguetect.onrender.com" target="_blank"
                             rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>DengueTect</strong>
                                 <p>AI-powered tool assessing dengue risk from symptoms and mosquito bite images.</p>
@@ -329,6 +330,7 @@
                         </a>
                         <a class="card card-link" href="https://anilytics-rice-app.onrender.com" target="_blank"
                             rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>AnaLytics</strong>
                                 <p>Rice retailer app for waste tracking and online storefronts.</p>
@@ -340,7 +342,7 @@
                                 <span class="pill">Supabase</span>
                             </div>
                         </a>
-                        <a class="card card-link" href="#">
+                        <div class="card">
                             <div class="list-item">
                                 <strong>Driver Expression Detector</strong>
                                 <p>Detects yawns or lost focus and triggers buzzer for driver safety.</p>
@@ -350,8 +352,8 @@
                                 <span class="pill">Raspberry Pi</span>
                                 <span class="pill">OpenCV</span>
                             </div>
-                        </a>
-                        <a class="card card-link" href="#">
+                        </div>
+                        <div class="card">
                             <div class="list-item">
                                 <strong>SmartShut</strong>
                                 <p>Arduino-based motion-aware lighting with warning buzzer.</p>
@@ -360,10 +362,10 @@
                                 <span class="pill">Arduino</span>
                                 <span class="pill">C++</span>
                             </div>
-                        </a>
+                        </div>
 
                         <!-- Personal Projects -->
-                        <a class="card card-link" href="#">
+                        <div class="card">
                             <div class="list-item">
                                 <strong>Veriface</strong>
                                 <p>Advanced attendance tracking system powered by Computer Vision & ML.</p>
@@ -374,9 +376,10 @@
                                 <span class="pill">TensorFlow</span>
                                 <span class="pill">NumPy</span>
                             </div>
-                        </a>
+                        </div>
                         <a class="card card-link" href="https://track-my-gains-psi.vercel.app" target="_blank"
                             rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>TrackMyGains</strong>
                                 <p>Gym companion app for tracking splits, progress, and AI-powered meal analysis.</p>
@@ -391,6 +394,7 @@
                         </a>
                         <a class="card card-link" href="https://beta-budget.vercel.app" target="_blank"
                             rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>BETA</strong>
                                 <p>AI-powered financial management with smart receipt scanning and budgeting.</p>
@@ -404,6 +408,7 @@
                         </a>
                         <a class="card card-link" href="https://student-monitor-student-portal.onrender.com"
                             target="_blank" rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>Student Portal</strong>
                                 <p>Classroom portal combining assignments, monitoring, and forms.</p>
@@ -417,6 +422,7 @@
                         </a>
                         <a class="card card-link" href="https://benpdf.onrender.com" target="_blank"
                             rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>benPDF</strong>
                                 <p>Multi-tool converter for QR codes, binaries, and document formats.</p>
@@ -501,7 +507,7 @@
     </div>
 
     <script>
-        
+
         const dropdown = document.getElementById('resumeDropdown');
         const dropdownBtn = document.getElementById('resumeDropdownBtn');
 
@@ -511,7 +517,7 @@
                 dropdown.classList.toggle('active');
             });
 
-            
+
             document.addEventListener('click', (e) => {
                 if (!dropdown.contains(e.target)) {
                     dropdown.classList.remove('active');
@@ -519,12 +525,12 @@
             });
         }
 
-        
+
         const enterBtn = document.getElementById('enter3dBtn');
         const enterBtnDropdown = document.getElementById('enter3dBtnDropdown');
         const bsodOverlay = document.getElementById('bsod-overlay');
 
-        
+
         const audioPath = "../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3";
         const bsodSound = new Audio(audioPath);
         bsodSound.loop = true;
@@ -537,10 +543,10 @@
             e.preventDefault();
             e.stopPropagation();
 
-            
+
             bsodOverlay.style.display = 'block';
 
-            
+
             const playPromise = bsodSound.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
@@ -550,7 +556,7 @@
                 });
             }
 
-            
+
             setTimeout(() => {
                 const navigate = (event) => {
                     bsodSound.pause();

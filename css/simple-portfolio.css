@@ -480,6 +480,22 @@ body.dark-mode .avatar:hover {
     border: 1px solid var(--border);
     border-radius: 0;
     padding: 14px 16px;
+    position: relative;
+}
+
+.link-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    color: #000000;
+    font-weight: bold;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 2px 4px;
+    border-radius: 2px;
+    text-decoration: underline;
 }
 
 .card-link {
