@@ -176,7 +176,6 @@
 
         .floating-btn {
             opacity: 0 !important;
-            transition: opacity 0.5s ease !important;
         }
 
 
@@ -203,22 +202,15 @@
             transition-delay: 0.7s;
         }
 
+
         body.loaded .floating-actions {
-            opacity: 1 !important;
-            transition-delay: 1.5s !important;
             display: flex !important;
             visibility: visible !important;
+            opacity: 1 !important;
         }
 
-
-        body.loaded .floating-btn:nth-child(1) {
+        body.loaded .floating-btn {
             opacity: 1 !important;
-            transition-delay: 1.6s !important;
-        }
-
-        body.loaded .floating-btn:nth-child(2) {
-            opacity: 1 !important;
-            transition-delay: 1.8s !important;
         }
 
         body.loaded .mobile-toggle {
