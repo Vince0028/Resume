@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'Zenitsu.png'
     ];
 
-    const femaleNames = ['Ai', 'Crimson', 'Delta', 'Frieren', 'Guita', 'Ichika', 'Komi', 'Mahiru', 'Masha', 'Milim', 'Mio', 'Nazuna', 'Shalltear', 'Shikimori', 'Waguri', 'Yoshiko']; 
-    const favoriteNames = ['Koenji', 'Masha']; 
+    const femaleNames = ['Ai', 'Crimson', 'Delta', 'Frieren', 'Guita', 'Ichika', 'Komi', 'Mahiru', 'Masha', 'Milim', 'Mio', 'Nazuna', 'Shalltear', 'Shikimori', 'Waguri', 'Yoshiko'];
+    const favoriteNames = ['Koenji', 'Masha'];
 
     const track = document.getElementById('animeTrack');
     const prevBtn = document.getElementById('animePrevBtn');
@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
 
-    
+
     characters.forEach(char => {
         const slide = document.createElement('div');
         slide.className = 'anime-slide';
 
         const name = char.replace('.png', '');
 
-        
+
         const contentWrapper = document.createElement('div');
         contentWrapper.className = 'anime-content-wrapper';
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.alt = name;
         img.className = 'anime-figurine';
 
-        
+
         const nameLabel = document.createElement('div');
         nameLabel.className = 'anime-name';
         nameLabel.textContent = name;
@@ -98,32 +98,37 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCarousel();
     });
 
-    
+
     setInterval(() => {
         currentIndex = (currentIndex + 1) % totalSlides;
         updateCarousel();
     }, 3000);
 
-    
+
     setTimeout(updateCarousel, 100);
     window.addEventListener('resize', updateCarousel);
 
 
-    
+
     const viewAllBtns = document.querySelectorAll('.view-all-header-btn, #viewAllAnimeBtn');
     const modal = document.getElementById('animeModal');
     const closeBtn = document.getElementById('closeAnimeModal');
-    const modalGrid = document.getElementById('animeGrid'); 
+    const modalGrid = document.getElementById('animeGrid');
 
     if (modal && closeBtn && modalGrid) {
 
         const openModal = () => {
             modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; 
+            // Always reset scroll to top when opening
+            const modalContent = document.querySelector('.anime-modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
+            document.body.style.overflow = 'hidden';
             const fab = document.getElementById('floatingActions');
-            if (fab) fab.classList.add('hidden'); 
+            if (fab) fab.classList.add('hidden');
 
-            
+
             let lightbox = document.getElementById('animeLightbox');
             if (!lightbox) {
                 lightbox = document.createElement('div');
@@ -139,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     lightbox.classList.remove('active');
                     setTimeout(() => {
                         if (lightbox.style.display !== 'none') lightbox.style.display = 'none';
-                    }, 300); 
+                    }, 300);
                 };
 
                 lightbox.addEventListener('click', (e) => {
@@ -153,14 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = lightbox.querySelector('.lightbox-image');
                 img.src = src;
                 lightbox.style.display = 'flex';
-                
+
                 lightbox.offsetHeight;
                 lightbox.classList.add('active');
             };
 
-            
+
             if (modalGrid.children.length === 0) {
-                
+
                 const createGridItem = (char) => {
                     const gridItem = document.createElement('div');
                     gridItem.className = 'anime-grid-item';
@@ -170,13 +175,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const imgWrapper = document.createElement('div');
                     imgWrapper.style.position = 'relative';
                     imgWrapper.style.width = '100%';
-                    imgWrapper.style.cursor = 'zoom-in'; 
+                    imgWrapper.style.cursor = 'zoom-in';
 
                     const img = document.createElement('img');
                     img.src = `../Images/anime_characters/${char}`;
                     img.alt = name;
 
-                    
+
                     imgWrapper.addEventListener('click', (e) => {
                         e.stopPropagation();
                         showLightbox(`../Images/anime_characters/${char}`);
@@ -190,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     gridItem.appendChild(imgWrapper);
                     gridItem.appendChild(label);
 
-                    
+
                     if (favoriteNames.includes(name)) {
                         const favLabel = document.createElement('div');
                         favLabel.className = 'favorite-label-text';
@@ -201,11 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     return gridItem;
                 };
 
-                
+
                 const females = characters.filter(c => femaleNames.includes(c.replace('.png', '')));
                 const males = characters.filter(c => !femaleNames.includes(c.replace('.png', '')));
 
-                
+
                 const femaleHeader = document.createElement('h3');
                 femaleHeader.className = 'anime-section-title';
                 femaleHeader.textContent = 'Female';
@@ -216,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 femaleHeader.style.paddingBottom = '0.5rem';
 
                 const femaleGrid = document.createElement('div');
-                femaleGrid.className = 'anime-grid'; 
+                femaleGrid.className = 'anime-grid';
 
                 females.forEach(char => {
                     femaleGrid.appendChild(createGridItem(char));
@@ -225,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalGrid.appendChild(femaleHeader);
                 modalGrid.appendChild(femaleGrid);
 
-                
+
                 const maleHeader = document.createElement('h3');
                 maleHeader.className = 'anime-section-title';
                 maleHeader.textContent = 'Male';
@@ -236,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 maleHeader.style.paddingBottom = '0.5rem';
 
                 const maleGrid = document.createElement('div');
-                maleGrid.className = 'anime-grid'; 
+                maleGrid.className = 'anime-grid';
 
                 males.forEach(char => {
                     maleGrid.appendChild(createGridItem(char));
@@ -246,9 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalGrid.appendChild(maleGrid);
             }
 
-            
 
-            
+
+
             const allGridItems = modalGrid.querySelectorAll('.anime-grid-item');
             allGridItems.forEach(item => {
                 item.classList.remove('visible');
@@ -257,39 +262,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.style.transition = 'none';
             });
 
-            
+
             void modalGrid.offsetHeight;
 
-            
+
             setTimeout(() => {
                 let delayCounter = 0;
                 allGridItems.forEach((item) => {
                     const rect = item.getBoundingClientRect();
-                    
+
                     if (rect.top < window.innerHeight - 20) {
                         setTimeout(() => {
                             item.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
                             item.style.opacity = '1';
                             item.style.transform = 'translateY(0) scale(1)';
                             item.classList.add('visible');
-                        }, delayCounter * 60); 
+                        }, delayCounter * 60);
                         delayCounter++;
                     }
-                    
+
                 });
 
-                
-                
+
+
                 setTimeout(() => {
                     const modalContent = document.querySelector('.anime-modal-content');
                     if (modalContent) {
                         modalContent.onscroll = () => {
                             const gridItems = modalGrid.querySelectorAll('.anime-grid-item');
                             gridItems.forEach(item => {
-                                
+
                                 if (item.style.opacity === '0') {
                                     const rect = item.getBoundingClientRect();
-                                    
+
                                     if (rect.top < window.innerHeight - 50 && rect.bottom > 0) {
                                         item.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
                                         item.style.opacity = '1';
@@ -300,19 +305,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                         };
                     }
-                }, 500); 
-            }, 100); 
+                }, 500);
+            }, 100);
 
             /* REMOVED OLD SCROLL BLOCK */
         };
 
         const closeModal = () => {
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto';
             const fab = document.getElementById('floatingActions');
-            if (fab) fab.classList.remove('hidden'); 
+            if (fab) fab.classList.remove('hidden');
 
-            
+
             const allGridItems = modalGrid.querySelectorAll('.anime-grid-item');
             allGridItems.forEach(item => item.classList.remove('visible'));
         };
