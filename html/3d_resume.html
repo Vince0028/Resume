@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Alobin Resume</title>
@@ -21,10 +21,10 @@
             height: 100vh;
             display: block;
             touch-action: none;
-            
+
         }
 
-        
+
         #loading-overlay {
             position: absolute;
             top: 0;
@@ -53,7 +53,7 @@
             }
         }
 
-        
+
         #word-resume-overlay {
             position: absolute;
             top: 0;
@@ -61,13 +61,13 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            
+
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 500;
             background: rgba(0, 0, 0, 0.6);
-            
+
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -75,50 +75,50 @@
         #word-resume-overlay.active {
             opacity: 1;
             pointer-events: auto;
-            
+
         }
 
         .resume-paper {
             position: relative;
-            
+
             background: #ffffff;
             color: #000;
-            
-            
+
+
             height: 90vh;
             width: 63.6vh;
             max-width: 90vw;
             padding: 40px;
             box-sizing: border-box;
 
-            
+
             transform: scale(0.8) translateY(50px);
             opacity: 0;
             transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-            
+
             pointer-events: none;
 
             font-family: 'Courier Prime', monospace;
             overflow-y: auto;
             border: none;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            
+
         }
 
         #word-resume-overlay.active .resume-paper {
             opacity: 1;
             transform: scale(1) translateY(0);
             pointer-events: auto;
-            
+
         }
 
-        
+
         .window-bar {
             display: none;
         }
 
-        
+
         .resume-paper::-webkit-scrollbar {
             width: 8px;
         }
@@ -153,7 +153,7 @@
             font-family: sans-serif;
             font-weight: bold;
             display: flex;
-            
+
             align-items: center;
             justify-content: center;
         }
@@ -186,7 +186,7 @@
             letter-spacing: 2px;
         }
 
-        
+
         #back-btn {
             position: absolute;
             top: 20px;
@@ -223,7 +223,7 @@
             padding: 9px 15px 7px 17px;
         }
 
-        
+
         #clock-display {
             position: absolute;
             top: 62px;
@@ -244,7 +244,7 @@
             min-width: 100px;
         }
 
-        
+
         #debug-info {
             position: absolute;
             bottom: 10px;
@@ -257,7 +257,7 @@
             display: none;
         }
 
-        
+
         @media (max-width: 768px) {
             #controls-tutorial {
                 top: auto !important;
@@ -281,7 +281,7 @@
                 padding: 6px 12px;
             }
 
-            
+
             .desktop-instr {
                 display: none !important;
             }
@@ -291,28 +291,28 @@
             }
         }
 
-        
+
         .mobile-instr {
             display: none;
         }
 
-        
+
         body:has(#word-resume-overlay.active) #controls-tutorial {
             display: none !important;
         }
     </style>
 
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 
 <body>
-    
+
     <div id="loading-overlay" style="
         position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1000; 
-        background: #ffffff; /* White background */
+        background: #ffffff; 
         display: flex; align-items: center; justify-content: center;
         transition: opacity 0.5s;
     ">
@@ -326,7 +326,7 @@
             font-family: 'Segoe UI', Tahoma, sans-serif;
             cursor: wait;
         ">
-            
+
             <div style="
                 background: #000080; 
                 color: white; 
@@ -344,11 +344,11 @@
                     x</div>
             </div>
 
-            
+
             <div style="padding: 20px; text-align: center; color: black; font-size: 13px;">
                 <p style="margin: 0 0 15px 0;">Initializing Virtual Office Environment...</p>
 
-                
+
                 <div
                     style="height: 18px; background: #fff; border: 1px solid #808080; position: relative; padding: 2px;">
                     <div style="width: 100%; height: 100%; background: #000080; animation: loadBar 2s infinite;"></div>
@@ -479,7 +479,7 @@
 
     <div id="canvas-container"></div>
 
-    
+
     <div id="controls-tutorial" style="
         position: absolute; 
         top: 20px; 
@@ -497,7 +497,7 @@
         user-select: none;
         z-index: 2000;
     ">
-        
+
         <div style="
             background: linear-gradient(90deg, #000080, #1084d0); 
             color: white; 

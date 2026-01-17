@@ -241,14 +241,14 @@ body.light-mode .github-calendar-wrapper:hover {
         --contrib-offset: 33px;
         --contrib-day-label-width: 30px;
         scrollbar-width: none;
-        
+
         -ms-overflow-style: none;
-        
+
     }
 
     .github-calendar-wrapper::-webkit-scrollbar {
         display: none;
-        
+
     }
 
     .contrib-header {
