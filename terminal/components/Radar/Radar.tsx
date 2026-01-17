@@ -83,7 +83,7 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
     return (
         <div ref={containerRef} className="relative w-full h-full flex items-center justify-center bg-black/95 overflow-hidden">
 
-            {/* World Map Background Layer (Fills Container - Dotted Style) */}
+            {}
             <div className="absolute inset-0 opacity-100 z-0">
                 {mapPoints.map(p => (
                     <div
@@ -94,14 +94,14 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                 ))}
             </div>
 
-            {/* Radar UI Overlays (Full Container) */}
+            {}
             <div className="absolute inset-0 flex items-center justify-center z-10">
                 <div className="relative w-full h-full">
 
-                    {/* Main Radar Screen (Rectangular Viewport) */}
+                    {}
                     <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(99,102,241,0.15)] overflow-hidden">
 
-                        {/* Rectangular Grid Overlay */}
+                        {}
                         <div className="absolute inset-0 opacity-20 pointer-events-none"
                             style={{
                                 backgroundImage: `linear-gradient(rgba(99, 102, 241, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.5) 1px, transparent 1px)`,
@@ -109,20 +109,20 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                             }}
                         />
 
-                        {/* Tactical Crosshair Lines (Brighter) */}
+                        {}
                         <div className="absolute top-1/2 left-0 w-full h-[1px] bg-indigo-500/40 -translate-y-1/2 pointer-events-none" />
                         <div className="absolute left-1/2 top-0 h-full w-[1px] bg-indigo-500/40 -translate-x-1/2 pointer-events-none" />
 
-                        {/* THE RADAR SWEEP (Full Coverage) */}
+                        {}
                         <div
                             className="absolute inset-[-50%] origin-center pointer-events-none z-10"
                             style={{ transform: `rotate(${sweepAngle}deg)` }}
                         >
-                            {/* Extended sweep arm */}
+                            {}
                             <div className="absolute left-1/2 top-0 w-[2px] h-[50%] bg-indigo-400 origin-bottom shadow-[0_0_20px_2px_rgba(99,102,241,0.8)]"
                                 style={{ transform: 'translateX(-50%)' }} />
 
-                            {/* Gradient Wedge */}
+                            {}
                             <div className="absolute inset-0"
                                 style={{
                                     background: direction === 1
@@ -133,7 +133,7 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                             />
                         </div>
 
-                        {/* Target Blips */}
+                        {}
                         {visibleTargets.map((t) => (
                             <div
                                 key={t.id}
@@ -159,7 +159,7 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
                             </div>
                         ))}
 
-                        {/* Center Point */}
+                        {}
                         <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-indigo-400 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_#6366f1] z-30" />
                     </div>
                 </div>

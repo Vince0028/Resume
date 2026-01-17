@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const openModal = () => {
             modal.style.display = 'flex';
-            // Always reset scroll to top when opening
+            
             const modalContent = document.querySelector('.anime-modal-content');
             if (modalContent) {
                 modalContent.scrollTop = 0;
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 500);
             }, 100);
 
-            /* REMOVED OLD SCROLL BLOCK */
+            
         };
 
         const closeModal = () => {

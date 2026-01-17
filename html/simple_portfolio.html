@@ -7,23 +7,23 @@
     <title>Alobin Resume</title>
     <link rel="icon" type="image/png" href="../Images/darkmode_normal.png">
     <link rel="stylesheet" href="../css/simple-portfolio.css">
-    <!-- Preload images to prevent flashing on hover/mode switch -->
+    
     <link rel="preload" as="image" href="../Images/web_shy.png">
     <link rel="preload" as="image" href="../Images/darkmode_normal.png">
     <link rel="preload" as="image" href="../Images/darkmode_shy.png">
     <style>
-        /* Force Robust Mobile/Desktop Behavior to Override potential conflicts */
+        
 
-        /* Desktop & Tablet > 640px */
-        /* Desktop & Tablet > 640px */
-        /* Desktop & Tablet > 640px */
+        
+        
+        
         @media (min-width: 641px) {
             .resume-header-row {
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
                 gap: 2rem;
-                /* More gap */
+                
                 margin-bottom: 2rem;
                 position: relative;
             }
@@ -33,9 +33,9 @@
                 flex-direction: column;
                 gap: 1.5rem;
                 flex: 1;
-                /* Take available space */
+                
                 min-width: 0;
-                /* Prevent flex overflow */
+                
             }
 
             .top-actions {
@@ -51,13 +51,13 @@
                 border: none !important;
                 flex-shrink: 0;
                 width: auto;
-                /* Or max-content */
-                /* max-width: 40%; */
+                
+                
             }
 
             .header {
                 max-width: 100% !important;
-                /* Managed by col */
+                
                 margin-top: 0 !important;
             }
 
@@ -67,7 +67,7 @@
         }
 
 
-        /* Dropdown styles for desktop */
+        
         @media (min-width: 641px) {
             .resume-dropdown {
                 position: relative;
@@ -151,13 +151,13 @@
                 transform: rotate(180deg);
             }
 
-            /* Hide individual buttons on desktop */
+            
             .desktop-individual-btns {
                 display: none;
             }
         }
 
-        /* Show individual buttons on mobile, hide dropdown */
+        
         @media (max-width: 640px) {
             .resume-dropdown {
                 display: none;
@@ -168,7 +168,7 @@
             }
         }
 
-        /* Ensure wrapper behaves on mobile */
+        
         @media (max-width: 640px) {
             .resume-header-row {
                 display: block;
@@ -177,16 +177,16 @@
 
             .header-left-col {
                 display: contents;
-                /* Ungroup on mobile */
+                
             }
         }
 
-        /* Mobile <= 640px */
+        
         @media (max-width: 640px) {
             .top-actions {
-                /* Hidden by default */
+                
                 display: none;
-                /* Floating Popup Style */
+                
                 position: absolute !important;
                 top: 3.5rem !important;
                 right: 1rem !important;
@@ -201,7 +201,7 @@
                 min-width: 200px;
             }
 
-            /* Shown when JS toggles this class */
+            
             .top-actions.show {
                 display: flex !important;
             }
@@ -235,9 +235,9 @@
             <main class="page resume-card" aria-label="Simple portfolio" id="resumeCard">
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle actions">☰ Menu</button>
 
-                <!-- Flex Container for Header + Summary vs Buttons -->
+                
                 <div class="resume-header-row">
-                    <!-- Left Column: Header + Summary -->
+                    
                     <div class="header-left-col">
                         <header class="header" style="margin-bottom: 1rem; padding-bottom: 1rem;">
                             <div class="header-main">
@@ -260,7 +260,7 @@
                         </section>
                     </div>
 
-                    <!-- Right Column: Top Actions -->
+                    
                     <div class="top-actions">
                         <div style="
                             color: var(--text-secondary); 
@@ -274,7 +274,7 @@
                         ">
                             Jack of all trades
                         </div>
-                        <!-- Desktop: Dropdown -->
+                        
                         <div class="resume-dropdown" id="resumeDropdown">
                             <button class="resume-dropdown-btn" id="resumeDropdownBtn">
                                 <span>Press to see all resume</span>
@@ -287,7 +287,7 @@
                             </div>
                         </div>
 
-                        <!-- Mobile: Individual Buttons -->
+                        
                         <div class="desktop-individual-btns">
                             <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
                             <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
@@ -300,12 +300,12 @@
                     </div>
                 </div>
 
-                <!-- Summary moved to Left Column -->
+                
 
-                <!-- ... (Skipping middle sections for brevity in replacement, focusing on structure integrity) ... -->
-                <!-- WAIT: replace_file_content requires contiguous block. I must be careful not to delete content. -->
-                <!-- My target end line is 237 (script src), start line is 13 (envelope stage). This is too big. -->
-                <!-- I should insert the Overlay at the end of body, and modify the button separately. -->
+                
+                
+                
+                
 
 
 
@@ -364,7 +364,7 @@
                             </div>
                         </div>
 
-                        <!-- Personal Projects -->
+                        
                         <div class="card">
                             <div class="list-item">
                                 <strong>Veriface</strong>
@@ -499,7 +499,7 @@
     </div>
 
     <script src="../js/simple-portfolio.js"></script>
-    <!-- BSOD Prank Overlay (Hidden Initially) -->
+    
     <div id="bsod-overlay"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; cursor: none;">
         <img src="../Images/3d-resume-img/Window_error.png" style="width: 100%; height: 100%; object-fit: cover;"

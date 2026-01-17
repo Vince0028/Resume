@@ -362,7 +362,7 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                 </div>
             )}
 
-            {/* Accurate Mini Map Overlay - REMOVED per user request */}
+            {}
             {points.length > 0 && null}
         </div>
     );

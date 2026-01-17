@@ -1,4 +1,4 @@
-/* Adapted from resources.css to match simple-portfolio.css variables */
+
 
 .resources-container {
     max-width: 100%;
@@ -59,7 +59,7 @@
     padding-bottom: 1rem;
 }
 
-/* Modal Styling Improvements for Simple Theme */
+
 #prompts-modal {
     backdrop-filter: blur(4px);
 }
