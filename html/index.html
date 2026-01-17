@@ -302,7 +302,7 @@
     </style>
 
     <script>
-        // Particle Animation
+        
         (function () {
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
@@ -353,7 +353,7 @@
                     particle.draw();
                 });
 
-                // Draw connections
+                
                 particles.forEach((a, i) => {
                     particles.slice(i + 1).forEach(b => {
                         const dx = a.x - b.x;
@@ -384,9 +384,9 @@
             });
         })();
 
-        // Hide loader when page is loaded
+        
         window.addEventListener('load', function () {
-            // Force scroll to top
+            
             window.scrollTo(0, 0);
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
@@ -399,12 +399,12 @@
             }, 300);
         });
 
-        // Fallback
+        
         setTimeout(function () {
             document.body.classList.add('loaded');
         }, 5000);
 
-        // Ensure page starts at top
+        
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }

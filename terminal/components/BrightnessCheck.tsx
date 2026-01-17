@@ -7,7 +7,7 @@ interface BrightnessCheckProps {
 const BrightnessCheck: React.FC<BrightnessCheckProps> = ({ onComplete }) => {
     const [brightnessLevel, setBrightnessLevel] = useState(0);
 
-    // Animation for the brightness indicator
+    
     useEffect(() => {
         const interval = setInterval(() => {
             setBrightnessLevel((prev) => {

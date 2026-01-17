@@ -197,15 +197,15 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onExit }) => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (gameOver) return;
 
-            // Prevent default scrolling/actions for game keys
+            
             if ([32, 37, 38, 39, 40, 65, 68, 83, 87].includes(e.keyCode)) {
                 e.preventDefault();
             }
 
-            if (e.keyCode === 37 || e.keyCode === 65) movePlayer(-1);       // Left / A
-            else if (e.keyCode === 39 || e.keyCode === 68) movePlayer(1);   // Right / D
-            else if (e.keyCode === 40 || e.keyCode === 83) dropPlayer();    // Down / S
-            else if (e.keyCode === 38 || e.keyCode === 87) playerRotate(lockedBoard, 1); // Up / W
+            if (e.keyCode === 37 || e.keyCode === 65) movePlayer(-1);       
+            else if (e.keyCode === 39 || e.keyCode === 68) movePlayer(1);   
+            else if (e.keyCode === 40 || e.keyCode === 83) dropPlayer();    
+            else if (e.keyCode === 38 || e.keyCode === 87) playerRotate(lockedBoard, 1); 
             else if (e.keyCode === 81 || e.keyCode === 27) {
                 e.preventDefault();
                 e.stopPropagation();

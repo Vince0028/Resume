@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 //You actually thought the api keys are here? lmao
 
 
+
 function detectLanguage(text) {
     const tagalogWords = [
         'ako', 'ikaw', 'siya', 'kami', 'kayo', 'sila', 'ang', 'ng', 'sa', 'mga', 'ay',

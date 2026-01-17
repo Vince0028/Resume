@@ -606,7 +606,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function openPopup() {
 		popup.classList.add('open');
 		popup.setAttribute('aria-hidden', 'false');
-		document.body.classList.add('chat-open'); // Shift floating buttons
+		document.body.classList.add('chat-open'); 
 		input.focus();
 
 		if (!hasGreeted) {
@@ -618,7 +618,7 @@ let vantaNetEffect = null; let vantaRingsEffect = null; const savedTheme = local
 	function closePopup() {
 		popup.classList.remove('open');
 		popup.setAttribute('aria-hidden', 'true');
-		document.body.classList.remove('chat-open'); // Reset floating buttons
+		document.body.classList.remove('chat-open'); 
 	}
 
 	openBtn.addEventListener('click', (e) => {

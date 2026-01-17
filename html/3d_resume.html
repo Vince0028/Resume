@@ -374,21 +374,21 @@
     </style>
 
     <script>
-        // Simple fade out on load
+
         window.addEventListener('load', () => {
             const overlay = document.getElementById('loading-overlay');
-            // Ensure 3D scene has a moment to render
+
             setTimeout(() => {
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';
-                    // Start typing animation after loading screen disappears
+
                     startTypingAnimation();
                 }, 500);
             }, 1000);
         });
 
-        // Typing Animation
+
         function startTypingAnimation() {
             const btn = document.getElementById('back-btn');
             const fullName = "VINCE NELMAR ALOBIN";
@@ -399,14 +399,14 @@
 
             function typeWriter() {
                 if (isTyping) {
-                    // Type the name
+
                     if (charIndex < fullName.length) {
                         currentText += fullName[charIndex];
                         btn.textContent = currentText;
                         charIndex++;
-                        setTimeout(typeWriter, 100); // Typing speed
+                        setTimeout(typeWriter, 100);
                     } else {
-                        // Pause before backspacing
+
                         setTimeout(() => {
                             isTyping = false;
                             charIndex = currentText.length;
@@ -414,14 +414,14 @@
                         }, 1000);
                     }
                 } else {
-                    // Backspace the name
+
                     if (charIndex > 0) {
                         currentText = currentText.slice(0, -1);
                         btn.textContent = currentText;
                         charIndex--;
-                        setTimeout(typeWriter, 50); // Backspace speed (faster)
+                        setTimeout(typeWriter, 50);
                     } else {
-                        // Type final text
+
                         typeFinalText();
                     }
                 }
@@ -438,7 +438,7 @@
                         finalIndex++;
                         setTimeout(typeFinal, 80);
                     } else {
-                        // Enable the button
+
                         btn.classList.add('ready');
                     }
                 }
@@ -449,7 +449,7 @@
             typeWriter();
         }
 
-        // Live Clock
+
         function updateClock() {
             const clockEl = document.getElementById('clock-display');
             if (!clockEl) {
@@ -467,7 +467,7 @@
             console.log('Clock updated:', timeString);
         }
 
-        // Update clock immediately and every second
+
         setTimeout(() => {
             updateClock();
             setInterval(updateClock, 1000);
@@ -510,7 +510,7 @@
             margin-bottom: 4px;
         ">
             <span>Controls.exe</span>
-            <!-- Close Button (Visual Only) -->
+
             <div style="
                 width: 14px; 
                 height: 12px; 
@@ -526,7 +526,7 @@
             ">✖</div>
         </div>
 
-        <!-- Content Area -->
+
         <div style="padding: 10px;">
             <div class="desktop-instr">
                 <div style="margin-bottom: 5px;"><strong>[Scroll]</strong> Zoom In/Out</div>
@@ -616,14 +616,14 @@
     </div>
 
     <script>
-        // Resume Typing Animation - Store original text immediately
+
         const resumeTextData = [];
 
         document.addEventListener('DOMContentLoaded', function () {
             const elements = document.querySelectorAll('[data-typewriter]');
             console.log('Found typewriter elements:', elements.length);
 
-            // Store original text for each element
+
             elements.forEach((element, index) => {
                 const originalText = element.innerHTML;
                 const speed = parseInt(element.getAttribute('data-speed')) || 50;
@@ -633,7 +633,7 @@
                     speed: speed,
                     index: index
                 });
-                // Clear the element immediately
+
                 element.innerHTML = '';
                 console.log(`Stored element ${index}:`, originalText.substring(0, 50));
             });
@@ -650,12 +650,12 @@
             resumeTextData.forEach((data) => {
                 const { element, originalText, speed, index } = data;
 
-                // Clear element
+
                 element.innerHTML = '';
                 element.style.opacity = '1';
 
                 let charIndex = 0;
-                const delay = index * 200; // Stagger start times
+                const delay = index * 200;
 
                 setTimeout(() => {
                     console.log(`Starting typing for element ${index}`);

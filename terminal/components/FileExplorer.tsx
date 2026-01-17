@@ -7,7 +7,7 @@ interface FileExplorerProps {
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) => {
-  // We'll treat the top-level FILE_SYSTEM array as the contents of the root (or /home/guest)
+  
   const rootNode: FileSystemNode = {
     name: '~',
     type: 'dir',
@@ -15,24 +15,24 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ isSpookyActive = false }) =
     restricted: false
   };
 
-  // Stack of nodes representing the path. Start with root.
+  
   const [pathStack, setPathStack] = useState<FileSystemNode[]>([rootNode]);
 
-  // Current folder is the last item in the stack
+  
   const currentFolder = pathStack[pathStack.length - 1];
 
-  // Breadcrumb path string
+  
   const pathString = pathStack.map(node => node.name).join('/').replace('~', '/home/guest');
 
   const handleNavigate = (node: FileSystemNode) => {
     if (node.type === 'dir') {
       if (node.restricted) {
-        // Optional: show access denied visual feedback?
+        
         return;
       }
       setPathStack([...pathStack, node]);
     } else {
-      // It's a file, open it
+      
       window.dispatchEvent(new CustomEvent('terminal-open-file', { detail: { filename: node.name, path: node.path } }));
     }
   };

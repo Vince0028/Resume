@@ -1,5 +1,5 @@
 export const PROFANITY_LIST = [
-    // English
+    
     "fuck", "shit", "bitch", "ass", "asshole", "bastard", "damn", "cunt", "dick", "pussy",
     "cock", "sucker", "motherfucker", "fucker", "nigger", "nigga", "fag", "faggot", "slut", "whore",
     "douche", "dumbass", "retard", "idiot", "stupid", "moron", "imbecile", "sex", "porn", "xxx",
@@ -13,7 +13,7 @@ export const PROFANITY_LIST = [
     "drug", "cocaine", "heroin", "meth", "weed", "marijuana", "high", "stoned", "drunk", "wasted",
     "bomb", "terrorist", "isis", "nazi", "hitler", "kkk", "slave", "slavery", "racist", "bigot",
 
-    // Tagalog
+    
     "gago", "tanga", "inutil", "bobo", "putangina", "putang", "inanet", "puke", "pepek", "kiki",
     "titi", "burat", "oten", "bayag", "kantot", "iyot", "jakol", "himas", "salsal", "lolo",
     "tarantado", "giba", "siraulo", "baliw", "buwisit", "leche", "lintik", "hindot", "punyeta",

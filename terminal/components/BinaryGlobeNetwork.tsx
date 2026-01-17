@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-// @ts-ignore
+
 import globeData from '../data/globe_points.json';
 
 interface Point3D {
@@ -50,7 +50,7 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
     const frameIdRef = useRef<number>(0);
 
     useEffect(() => {
-        // Load data synchronously from bundle
+        
         const rawPoints = globeData as RawPoint[];
 
         const generatedPoints: Point3D[] = rawPoints.map(p => ({
@@ -58,21 +58,21 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
             char: Math.random() > 0.5 ? '1' : '0'
         }));
 
-        // Shuffle points for "random" infection order
+        
         for (let i = generatedPoints.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [generatedPoints[i], generatedPoints[j]] = [generatedPoints[j], generatedPoints[i]];
         }
 
-        // Crisis Generation
+        
         const crisisPoints: CrisisPoint[] = [];
         const crisisLabels = ['HACKED', 'BREACH', 'SYSTEM_FAIL', 'CRITICAL', 'ROOT_ACCESS', 'OVERRIDE', 'FATAL', 'MALWARE'];
         const minDistance = 0.35;
 
-        const candidates = generatedPoints.filter(p => p.isLand); // Use shuffled land points
+        const candidates = generatedPoints.filter(p => p.isLand); 
 
         for (const p of candidates) {
-            if (crisisPoints.length >= 40) break; // Increased capability
+            if (crisisPoints.length >= 40) break; 
 
             let tooClose = false;
             for (const existing of crisisPoints) {
@@ -123,25 +123,25 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
             const s = stateRef.current;
             s.pulse += 0.1;
 
-            // --- Infection Logic ---
+            
             if (!s.infectionActive) {
-                // Chance to start infection
+                
                 if (Math.random() > 0.9995) {
                     s.infectionActive = true;
                     s.infectionProgress = 0;
                 }
             } else {
-                // Spread infection (Accelerating)
+                
                 s.infectionProgress += 2 + (s.infectionProgress * 0.03);
                 if (s.infectionProgress >= points.length + 200) {
                     if (!s.rebootTimer) {
-                        s.rebootTimer = 180; // Hold red for 3s
-                        s.glitchTimer = 180; // Force glitch during hold
+                        s.rebootTimer = 180; 
+                        s.glitchTimer = 180; 
                     }
 
                     s.rebootTimer--;
 
-                    // Force maximum chaos during takeover
+                    
                     if (s.rebootTimer > 0) {
                         s.glitchIntensity = 1.0;
                         s.jitter = (Math.random() - 0.5) * 0.05;
@@ -151,12 +151,12 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                         s.infectionActive = false;
                         s.infectionProgress = 0;
                         s.rebootTimer = 0;
-                        s.glitchTimer = 0; // Stop glitch
+                        s.glitchTimer = 0; 
                     }
                 }
             }
 
-            // Physics & Glitch Logic
+            
             if (s.glitchTimer > 0) {
                 s.glitchTimer--;
                 s.jitter = (Math.random() - 0.5) * 0.03;
@@ -166,7 +166,7 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                 s.jitter = 0;
                 s.glitchIntensity = 0;
                 const rand = Math.random();
-                if (rand > 0.988) { // Chance to start glitch
+                if (rand > 0.988) { 
                     s.glitchTimer = Math.floor(Math.random() * 20) + 8;
                     if (Math.random() > 0.6) {
                         s.velocity = -s.velocity * (1.5 + Math.random());
@@ -185,10 +185,10 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
             const cosX = Math.cos(0.25);
             const sinX = Math.sin(0.25);
 
-            // --- Draw to Buffer ---
+            
             bctx.clearRect(0, 0, width, height);
 
-            // Background Glow (Indigo, or Red if infected)
+            
             const isFullRed = s.infectionActive && s.infectionProgress > points.length;
             const glowColor = isFullRed ? 'rgba(239, 68, 68, 0.2)' : 'rgba(99, 102, 241, 0.1)';
 
@@ -201,7 +201,7 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
             bctx.textAlign = 'center';
             bctx.textBaseline = 'middle';
 
-            // Draw Points
+            
             const len = points.length;
             for (let i = 0; i < len; i++) {
                 const p = points[i];
@@ -217,17 +217,17 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                     const isInfected = s.infectionActive && i < s.infectionProgress;
 
                     if (isInfected) {
-                        // Red Infection Style
+                        
                         bctx.font = `bold ${Math.floor(6 * scale)}px ${fontMono}`;
-                        bctx.fillStyle = `rgba(239, 68, 68, ${0.8 + rrz * 0.2})`; // Red-500
+                        bctx.fillStyle = `rgba(239, 68, 68, ${0.8 + rrz * 0.2})`; 
                     } else {
-                        // Normal Indigo Style
+                        
                         if (p.isLand) {
                             bctx.font = `bold ${Math.floor(6 * scale)}px ${fontMono}`;
-                            bctx.fillStyle = `rgba(129, 140, 248, ${0.5 + rrz * 0.5})`; // Indigo-400
+                            bctx.fillStyle = `rgba(129, 140, 248, ${0.5 + rrz * 0.5})`; 
                         } else {
                             bctx.font = `${Math.floor(4 * scale)}px ${fontMono}`;
-                            bctx.fillStyle = `rgba(199, 210, 254, ${rrz * 0.12})`; // Indigo-200
+                            bctx.fillStyle = `rgba(199, 210, 254, ${rrz * 0.12})`; 
                         }
                     }
 
@@ -237,7 +237,7 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                 }
             }
 
-            // Draw Crisis Points (Red)
+            
             for (const c of crises) {
                 let rx = c.x * cosY - c.z * sinY;
                 let rz = c.x * sinY + c.z * cosY;
@@ -273,11 +273,11 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
                 }
             }
 
-            // --- Render Buffer to Main Canvas with Glitch Effects ---
+            
             ctx.clearRect(0, 0, width, height);
 
             if (s.glitchTimer > 0) {
-                // Slice Glitch
+                
                 const slices = 8 + Math.floor(Math.random() * 12);
                 for (let i = 0; i < slices; i++) {
                     const h = Math.random() * (height / 8);
@@ -315,17 +315,17 @@ const BinaryGlobeNetwork: React.FC<BinaryGlobeNetworkProps> = ({ networkLevel, i
         return () => cancelAnimationFrame(frameIdRef.current);
     }, [points, crises]);
 
-    // Memoized Map Points for Overlay
+    
     const mapPoints = useMemo(() => {
         if (points.length === 0) return [];
         const sampled = [];
-        // Sample every 2nd point for higher density
+        
         for (let i = 0; i < points.length; i += 2) {
             const p = points[i];
             if (p.isLand) {
                 const lon = Math.atan2(p.x, p.z);
                 const lat = Math.asin(p.y);
-                // Map from spherical (-PI..PI, -PI/2..PI/2) to 0..100%
+                
                 const x = ((lon + Math.PI) / (Math.PI * 2)) * 100;
                 const y = ((Math.PI / 2 - lat) / Math.PI) * 100;
                 sampled.push({ x, y, id: i });

@@ -501,7 +501,7 @@
     </div>
 
     <script>
-        // Dropdown toggle
+        
         const dropdown = document.getElementById('resumeDropdown');
         const dropdownBtn = document.getElementById('resumeDropdownBtn');
 
@@ -511,7 +511,7 @@
                 dropdown.classList.toggle('active');
             });
 
-            // Close dropdown when clicking outside
+            
             document.addEventListener('click', (e) => {
                 if (!dropdown.contains(e.target)) {
                     dropdown.classList.remove('active');
@@ -519,12 +519,12 @@
             });
         }
 
-        // 3D Resume handlers (both dropdown and mobile button)
+        
         const enterBtn = document.getElementById('enter3dBtn');
         const enterBtnDropdown = document.getElementById('enter3dBtnDropdown');
         const bsodOverlay = document.getElementById('bsod-overlay');
 
-        // Preload Audio using JS Object
+        
         const audioPath = "../Images/3d-resume-img/loading-issues-made-with-Voicemod.mp3";
         const bsodSound = new Audio(audioPath);
         bsodSound.loop = true;
@@ -537,10 +537,10 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Show BSOD
+            
             bsodOverlay.style.display = 'block';
 
-            // Play Sound
+            
             const playPromise = bsodSound.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
@@ -550,7 +550,7 @@
                 });
             }
 
-            // Wait for NEXT input to "fix" it and navigate
+            
             setTimeout(() => {
                 const navigate = (event) => {
                     bsodSound.pause();

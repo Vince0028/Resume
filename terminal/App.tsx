@@ -1211,7 +1211,7 @@ const App: React.FC = () => {
       if (!filename) return;
 
       try {
-        // Use provided path or fallback for legacy/direct calls
+        
         const fetchPath = filepath || (
           filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
             ? '/' + filename

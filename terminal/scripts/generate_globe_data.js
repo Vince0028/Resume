@@ -20,7 +20,7 @@ async function generate() {
     console.log('Generating points...');
     let count = 0;
 
-    // Use the exact same loop logic
+    
     for (let lat = -90; lat <= 90; lat += 2.5) {
         const radiusAtLat = Math.cos((lat * Math.PI) / 180);
         const lonStep = 2.5 / (radiusAtLat || 0.1);
@@ -29,7 +29,7 @@ async function generate() {
             const phi = (90 - lat) * (Math.PI / 180);
             const theta = (lon + 180) * (Math.PI / 180);
 
-            // Heavy operation
+            
             const isLand = d3.geoContains(countries, [lon, lat]);
             const x = Math.sin(phi) * Math.cos(theta);
             const y = Math.cos(phi);
@@ -49,7 +49,7 @@ async function generate() {
     console.log(`\nTotal points: ${generatedPoints.length}`);
 
     const outputPath = path.resolve(__dirname, '../data/globe_points.json');
-    // Ensure dir exists
+    
     const dir = path.dirname(outputPath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });

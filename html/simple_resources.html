@@ -205,9 +205,9 @@
     <script src="../js/prompts.js"></script>
     <script src="../js/prompts-loader.js"></script>
     <script>
-        // Force envelope open state logic if JS doesn't pick it up automatically
+        
         const event = new Event('click');
-        // We don't need to click it if we added the 'opened' class, but let's ensure the JS state matches
+        
         if (typeof openEnvelope === 'function') {
             openEnvelope();
         }

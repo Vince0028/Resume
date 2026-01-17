@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Target } from './types';
 import { SWEEP_SPEED, HUD_COLORS } from './constants';
-// @ts-ignore
+
 import globeData from '../../data/globe_points.json';
 
 interface RadarProps {
     targets: Target[];
-    direction?: 1 | -1; // 1 for clockwise, -1 for counter-clockwise
+    direction?: 1 | -1; 
     startAngle?: number;
 }
 
@@ -22,21 +22,21 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
     const requestRef = useRef<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Prepare Map Points (Memoized)
+    
     const mapPoints = useMemo(() => {
         const rawPoints = globeData as RawPoint[];
         const sampled = [];
-        // No sampling - use ALL points for solid look
+        
         for (let i = 0; i < rawPoints.length; i++) {
             const p = rawPoints[i];
             if (p.isLand) {
-                // Equirectangular Projection
+                
                 const lon = Math.atan2(p.x, p.z);
                 const lat = Math.asin(p.y);
                 const x = ((lon + Math.PI) / (Math.PI * 2)) * 100;
                 const y = ((Math.PI / 2 - lat) / Math.PI) * 100;
 
-                // Filter out the very bottom distorted points (Antarctica artifacts)
+                
                 if (y < 88) {
                     sampled.push({ x, y, id: i });
                 }
@@ -48,7 +48,7 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
     const animate = (time: number) => {
         setSweepAngle((prev) => {
             const next = prev + (SWEEP_SPEED * direction);
-            // Normalize angle to 0-360
+            
             return (next + 360) % 360;
         });
         requestRef.current = requestAnimationFrame(animate);
@@ -65,13 +65,13 @@ const Radar: React.FC<RadarProps> = ({ targets, direction = 1, startAngle = 0 })
 
     const visibleTargets = useMemo(() => {
         return targets.map(t => {
-            // Calculate angular difference based on sweep direction
+            
             const diff = direction === 1
                 ? (sweepAngle - t.angle + 360) % 360
                 : (t.angle - sweepAngle + 360) % 360;
 
             let opacity = 0;
-            // Phosphorus decay simulation - targets stay visible for ~15 degrees of rotation
+            
             const decayAngle = 150;
             if (diff < decayAngle) {
                 opacity = Math.pow(1 - (diff / decayAngle), 4);

@@ -7218,7 +7218,7 @@ Using "Apply Patch"
 `javascript
     const favoriteNames = ['Koenji', 'Masha'];
 
-    // ... inside grid item creation ...
+    
     if (favoriteNames.includes(name)) {
         const favLabel = document.createElement('div');
         favLabel.className = 'favorite-label-text';
@@ -7272,12 +7272,12 @@ Read [](file:///c%3A/Users/Vince/Documents/Alobin%20ICT241/website_resume/js/ani
 Using "Multi-Replace String in Files"
 
 `javascript
-    // ... in characters array ...
+    
     'Komi.png',
     'Mahiru.png',
     'Mash.png',
 
-    // ... in femaleNames array ...
+    
     const femaleNames = ['Ai', ..., 'Komi', 'Mahiru', 'Masha', ...];
 `
 
@@ -7292,12 +7292,12 @@ Using "Multi-Replace String in Files"
 
 `javascript
     const characters = [
-        'Achika.png', // Added alphabetically
+        'Achika.png', 
         'Ai.png',
         ...
     ];
 
-    // ... in femaleNames array ...
+    
     const femaleNames = ['Achika', 'Ai', ...];
 `
 
@@ -7312,15 +7312,15 @@ Using "Multi-Replace String in Files"
 
 `javascript
     const characters = [
-        // Removed 'Achika.png'
+        
         'Ai.png',
-        // ...
+        
         'Guita.png',
-        'Ichika.png', // Added correctly
+        'Ichika.png', 
         'Kazuma.png',
     ];
 
-    // ... in femaleNames array ...
+    
     const femaleNames = ['Ai', ..., 'Guita', 'Ichika', 'Komi', ...];
 `
 
