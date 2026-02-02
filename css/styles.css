@@ -693,3 +693,24 @@ body.light-mode .view-all-header-btn:hover {
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
     color: white;
 }
+
+/* Light Mode Overrides for Infinite Gallery */
+body.light-mode #infinite-menu-container {
+    background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .infinite-info-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .infinite-title {
+    color: #0f172a !important;
+}
+
+body.light-mode .infinite-desc {
+    color: #475569 !important;
+}
