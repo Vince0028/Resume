@@ -87,6 +87,10 @@ body.light-mode .hero-date {
     color: #475569;
 }
 
+body.light-mode .hero-tagline {
+    color: #334155 !important;
+}
+
 
 .stats-grid {
     display: grid;
