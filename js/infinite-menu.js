@@ -198,8 +198,8 @@ class ArcballControl {
             const move = vec2.sub(vec2.create(), this.pointerPos, this.prevPointerPos);
             vec2.scale(move, move, 0.3 * ts);
 
-            if (vec2.sqrLen(move) > 0.1) {
-                vec2.add(move, this.prevPointerPos, move);
+            if (vec2.sqrLen(move) > 0.000001) {
+                vec2.add(move, this.prevPointerPos, move); // Linear interpolation
                 const a = this.project(move);
                 const b = this.project(this.prevPointerPos);
                 vec3.normalize(a, a);
