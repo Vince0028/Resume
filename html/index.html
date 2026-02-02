@@ -1132,6 +1132,22 @@
     <script defer src="../js/lanyard-3d.js"></script>
     <script defer src="../js/anime-carousel.js"></script>
     <script src="../js/text-scramble.js"></script>
+    <script src="../js/text-type.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                new TextType(heroTitle, {
+                    texts: ["Welcome to My Resume", "Welcome to my World"],
+                    typingSpeed: 100,
+                    deletingSpeed: 50,
+                    pauseDuration: 2000,
+                    loop: true,
+                    cursorCharacter: '|'
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
