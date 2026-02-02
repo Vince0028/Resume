@@ -608,3 +608,88 @@ body.light-mode .view-all-header-btn:hover {
         opacity: 0;
     }
 }
+
+/* Infinite Menu Gallery */
+#infinite-menu-section {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+#infinite-menu-container {
+    height: 600px;
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.infinite-menu-overlay {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    text-align: left;
+    width: auto;
+    z-index: 10;
+}
+
+.infinite-info-card {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 400px;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.infinite-info-card.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.infinite-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.infinite-desc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.infinite-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 28px;
+    background: var(--primary, #6366f1);
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.infinite-btn:hover {
+    transform: translateY(-2px);
+    background: #4f46e5;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    color: white;
+}

@@ -867,6 +867,28 @@
                 </div>
             </section>
 
+            <section id="gallery" class="section fade-in">
+                <div class="section-card">
+                    <h2 class="section-header">
+                        <i class="bi bi-images"></i>
+                        My Image Gallery
+                    </h2>
+                    <div id="infinite-menu-section">
+                        <div id="infinite-menu-container">
+                            <div class="infinite-menu-overlay">
+                                <div class="infinite-info-card" id="infinite-info-card">
+                                    <h3 class="infinite-title" id="infinite-title">Gallery</h3>
+                                    <p class="infinite-desc" id="infinite-desc">Drag to explore my collection.</p>
+                                    <button class="infinite-btn" id="infinite-btn">
+                                        View Image <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="movies" class="section fade-in">
                 <div class="section-card">
                     <h2 class="section-header">
@@ -1131,6 +1153,49 @@
 
     <script defer src="../js/lanyard-3d.js"></script>
     <script defer src="../js/anime-carousel.js"></script>
+    <script defer src="../js/anime-carousel.js"></script>
+
+    <!-- Infinite Menu Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+    <script src="../js/infinite-menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuContainer = document.getElementById('infinite-menu-container');
+            if (menuContainer && window.InfiniteMenu) {
+                const items = [
+                    { title: 'Vince', description: 'Profile Picture 1', image: '/Images/Profile_pics/img1.png', link: '#' },
+                    { title: 'Vince', description: 'Profile Picture 2', image: '/Images/Profile_pics/img2.png', link: '#' },
+                    { title: 'Vince', description: 'Profile Picture 3', image: '/Images/Profile_pics/img3.png', link: '#' }
+                ];
+
+                console.log('Infinite Menu items:', items);
+
+                const updateUI = (item) => {
+                    const card = document.getElementById('infinite-info-card');
+                    const title = document.getElementById('infinite-title');
+                    const desc = document.getElementById('infinite-desc');
+                    const btn = document.getElementById('infinite-btn');
+
+                    // Simple fade transition for text
+                    card.classList.remove('active');
+                    setTimeout(() => {
+                        title.textContent = item.title;
+                        desc.textContent = item.description;
+                        btn.onclick = () => { if (item.link !== '#') window.open(item.link, '_blank'); };
+                        card.classList.add('active');
+                    }, 300);
+                };
+
+                menuContainer.updateUICallback = updateUI;
+
+                // Small delay to ensure layout is ready
+                setTimeout(() => {
+                    new InfiniteMenu(menuContainer, items, 1.2); // Scale 1.2
+                }, 500);
+            }
+        });
+    </script>
+
     <script src="../js/text-scramble.js"></script>
     <script src="../js/text-type.js"></script>
     <script>
