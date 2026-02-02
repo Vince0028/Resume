@@ -1,0 +1,8 @@
+{
+  "name": "Sanctum Portal Experience",
+  "description": "A cinematic Doctor Strange inspired web experience featuring a dynamic particle portal expansion and a mystic dashboard powered by Gemini.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

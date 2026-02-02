@@ -23,12 +23,12 @@
 <body>
 
     <div id="page-loader">
-        <canvas id="particle-canvas"></canvas>
+        <canvas id="portal-canvas"></canvas>
         <div class="loader-content">
-            <h2 class="loader-title">VINCE NELMAR ALOBIN</h2>
-            <p class="loader-subtitle">Loading Resume...</p>
+            <h2 class="loader-title mystic-glow">VINCE NELMAR ALOBIN</h2>
+            <p class="loader-subtitle mystic-text">Aligning Realities...</p>
             <div class="loader-bar">
-                <div class="loader-progress"></div>
+                <div class="loader-progress portal-glow"></div>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             overflow: hidden;
         }
 
-        #particle-canvas {
+        #portal-canvas {
             position: absolute;
             top: 0;
             left: 0;
@@ -75,16 +75,55 @@
             justify-content: center;
         }
 
+        .mystic-glow {
+            text-shadow:
+                0 0 10px rgba(255, 179, 0, 0.8),
+                0 0 20px rgba(255, 60, 0, 0.6),
+                0 0 30px rgba(255, 179, 0, 0.4);
+            animation: mysticPulse 2s ease-in-out infinite;
+        }
+
+        .mystic-text {
+            color: #ffb300;
+            text-shadow: 0 0 10px rgba(255, 179, 0, 0.5);
+            letter-spacing: 0.3em;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .portal-glow {
+            box-shadow:
+                0 0 10px rgba(255, 179, 0, 0.8),
+                0 0 20px rgba(255, 60, 0, 0.6);
+        }
+
+        @keyframes mysticPulse {
+
+            0%,
+            100% {
+                text-shadow:
+                    0 0 10px rgba(255, 179, 0, 0.8),
+                    0 0 20px rgba(255, 60, 0, 0.6),
+                    0 0 30px rgba(255, 179, 0, 0.4);
+            }
+
+            50% {
+                text-shadow:
+                    0 0 20px rgba(255, 179, 0, 1),
+                    0 0 30px rgba(255, 60, 0, 0.8),
+                    0 0 40px rgba(255, 179, 0, 0.6);
+            }
+        }
+
         .loader-title {
             font-size: clamp(1.2rem, 4vw, 2rem);
             font-weight: 700;
             margin: 0 0 15px 0;
             letter-spacing: clamp(0.5px, 0.5vw, 2px);
-            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            background: linear-gradient(135deg, #ffb300 0%, #ff3c00 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 2px 10px rgba(99, 102, 241, 0.3));
             word-break: break-word;
             line-height: 1.3;
             width: 100%;
@@ -94,7 +133,6 @@
             font-size: clamp(0.85rem, 2.5vw, 1rem);
             font-weight: 400;
             margin: 0 0 30px 0;
-            color: #94a3b8;
             width: 100%;
         }
 
@@ -102,14 +140,14 @@
             width: 100%;
             max-width: 300px;
             height: 4px;
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(255, 179, 0, 0.2);
             border-radius: 10px;
             overflow: hidden;
         }
 
         .loader-progress {
             height: 100%;
-            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            background: linear-gradient(90deg, #ffb300 0%, #ff6b00 50%, #ff3c00 100%);
             border-radius: 10px;
             animation: loading 2s ease-in-out infinite;
         }
@@ -314,110 +352,11 @@
         }
     </style>
 
+    <!-- Sanctum Portal Loading Effect -->
+    <script src="../js/sanctum-portal-loader.js"></script>
+
     <script>
-
-        (function () {
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const particleCount = 80;
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 3 + 1;
-                    this.speedX = Math.random() * 2 - 1;
-                    this.speedY = Math.random() * 2 - 1;
-                    this.opacity = Math.random() * 0.5 + 0.3;
-                }
-
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-
-                    if (this.x > canvas.width) this.x = 0;
-                    if (this.x < 0) this.x = canvas.width;
-                    if (this.y > canvas.height) this.y = 0;
-                    if (this.y < 0) this.y = canvas.height;
-                }
-
-                draw() {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                particles.forEach(particle => {
-                    particle.update();
-                    particle.draw();
-                });
-
-
-                particles.forEach((a, i) => {
-                    particles.slice(i + 1).forEach(b => {
-                        const dx = a.x - b.x;
-                        const dy = a.y - b.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < 120) {
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * (1 - distance / 120)})`;
-                            ctx.lineWidth = 1;
-                            ctx.beginPath();
-                            ctx.moveTo(a.x, a.y);
-                            ctx.lineTo(b.x, b.y);
-                            ctx.stroke();
-                        }
-                    });
-                });
-
-                if (!document.body.classList.contains('loaded')) {
-                    requestAnimationFrame(animate);
-                }
-            }
-
-            animate();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-        })();
-
-
-        window.addEventListener('load', function () {
-
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-
-            setTimeout(function () {
-                document.body.classList.add('loaded');
-                setTimeout(function () {
-                    document.getElementById('page-loader').style.display = 'none';
-                }, 500);
-            }, 300);
-        });
-
-
-        setTimeout(function () {
-            document.body.classList.add('loaded');
-        }, 5000);
-
-
+        // Scroll restoration
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
