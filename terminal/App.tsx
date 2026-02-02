@@ -19,6 +19,7 @@ import LiveChat from './components/LiveChat';
 import Flicker from './components/Flicker';
 import BrightnessCheck from './components/BrightnessCheck';
 import RadarMain from './components/Radar/RadarMain';
+import DecryptedText from './components/DecryptedText';
 
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
@@ -242,14 +243,25 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (isBooting) {
+      const timeouts: any[] = [];
       let delay = 0;
       INITIAL_BOOT_SEQUENCE.forEach((line, index) => {
         delay += Math.random() * 300 + 100;
-        setTimeout(() => {
-          setHistory(prev => [...prev, { id: `boot-${index}-${Date.now()}`, type: MessageType.INFO, content: line, timestamp: Date.now() }]);
+        const tm = setTimeout(() => {
+          setHistory(prev => {
+            // Avoid adding duplicates if they already exist (checking by content/approx time might be hard, but strict mode runs fast)
+            // Better: clean up on unmount so the second run is the only one that persists?
+            // Actually, react strict mode runs effect twice. Clearing timeouts on unmount prevents the first/aborted run from committing state.
+            return [...prev, { id: `boot-${index}-${Date.now()}`, type: MessageType.INFO, content: line, timestamp: Date.now() }];
+          });
           if (index === INITIAL_BOOT_SEQUENCE.length - 1) setIsBooting(false);
         }, delay);
+        timeouts.push(tm);
       });
+
+      return () => {
+        timeouts.forEach(clearTimeout);
+      };
     }
   }, [isBooting]);
 
@@ -1211,7 +1223,7 @@ const App: React.FC = () => {
       if (!filename) return;
 
       try {
-        
+
         const fetchPath = filepath || (
           filename === 'privacy_policy.txt' || filename === 'README.md' || filename === 'LICENSE'
             ? '/' + filename
@@ -1256,8 +1268,23 @@ const App: React.FC = () => {
 
 
 
-    if (content.includes("TYPE 'help' FOR AVAILABLE COMMANDS")) {
-      return <div className={`${THEME_COLOR} text-lg md:text-2xl font-bold animate-pulse mt-2 mb-2`}>{content}</div>;
+    if (line.id.startsWith('boot-')) {
+      const isHelpCommand = content.includes("TYPE 'help' FOR AVAILABLE COMMANDS");
+      const specialClasses = isHelpCommand ? 'text-lg md:text-2xl font-bold animate-pulse mt-2 mb-2' : '';
+
+      return (
+        <div className={THEME_COLOR}>
+          <DecryptedText
+            text={content}
+            animateOn="view"
+            speed={50}
+            maxIterations={20}
+            className={`${THEME_COLOR} ${specialClasses}`}
+            revealDirection="start"
+            sequential={true}
+          />
+        </div>
+      );
     }
 
     return <div className={THEME_COLOR}>{content}</div>;
