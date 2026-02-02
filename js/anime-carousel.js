@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const openModal = () => {
             modal.style.display = 'flex';
-            
+
             const modalContent = document.querySelector('.anime-modal-content');
             if (modalContent) {
                 modalContent.scrollTop = 0;
@@ -201,6 +201,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         favLabel.className = 'favorite-label-text';
                         favLabel.innerHTML = '<i class="bi bi-star-fill"></i> FAVORITE';
                         gridItem.appendChild(favLabel);
+
+                        // Apply Electric Border
+                        if (window.ElectricBorder) {
+                            // Use setTimeout to ensure DOM is ready/dimensions are calculable
+                            setTimeout(() => {
+                                new ElectricBorder(gridItem, {
+                                    color: '#6366f1',
+                                    speed: 1,
+                                    borderRadius: 16 // Match card border radius if known
+                                });
+                            }, 100);
+                        }
                     }
 
                     return gridItem;
@@ -308,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 500);
             }, 100);
 
-            
+
         };
 
         const closeModal = () => {
