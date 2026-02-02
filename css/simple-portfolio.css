@@ -427,7 +427,7 @@ body.dark-mode .avatar:hover {
 }
 
 .section {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .section h2 {
@@ -467,6 +467,35 @@ body.dark-mode .avatar:hover {
     display: inline-block;
     margin-bottom: 4px;
     color: var(--ink);
+}
+
+.skills-languages-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.skills-languages-grid>.section {
+    flex: 0 0 48%;
+    /* Each section takes less than half width */
+    margin-bottom: 0;
+    /* Remove default margin inside flex */
+}
+
+#skills-title+.pill-row,
+#languages-title+.pill-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 640px) {
+    .skills-languages-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
 }
 
 .two-column {
