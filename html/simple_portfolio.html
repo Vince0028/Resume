@@ -232,94 +232,29 @@
                 <div class="resume-header-row">
 
                     <div class="header-left-col">
-                        <header class="header" style="margin-bottom: 1rem; padding-bottom: 1rem;">
-                            <div class="header-main">
-                                <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"></div>
-                                <div>
-                                    <div class="name">Vince Nelmar Alobin</div>
-                                    <div class="role">BSIT Student • Web & App Projects</div>
-                                    <div class="contact-line">
-                                        <span>📧 alobinvince@gmail.com</span>
-                                        <span>📱 09480914634</span>
-                                    </div>
+
+                        <!-- Profile Header (not in a card) -->
+                        <header class="profile-header"
+                            style="display: flex; align-items: flex-start; gap: 20px; padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--border);">
+                            <div class="avatar" role="img" aria-label="Vince Nelmar Alobin"
+                                style="width: 80px; height: 80px; border-radius: 12px; flex-shrink: 0;"></div>
+                            <div class="profile-info" style="flex: 1;">
+                                <div class="name" style="font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">
+                                    Vince Nelmar Alobin</div>
+                                <div class="location"
+                                    style="font-size: 0.9rem; color: var(--muted); margin-bottom: 6px;">📍 Makati City,
+                                    Philippines</div>
+                                <div class="tagline" style="font-size: 1rem; color: var(--ink); margin-bottom: 16px;">
+                                    BSIT Student • Full Stack Developer</div>
+                                <div class="profile-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                    <a href="mailto:alobinvince@gmail.com" class="btn btn-primary">📧 Send Email</a>
+                                    <a href="tel:09480914634" class="btn btn-secondary">📱 Call</a>
+                                    <a href="https://github.com/Vince0028" target="_blank" class="btn btn-secondary">🔗
+                                        GitHub</a>
                                 </div>
                             </div>
                         </header>
-
-                        <section class="section" aria-labelledby="summary-title" style="margin-top: 0;">
-                            <h2 id="summary-title" style="margin-top: 0;">Summary</h2>
-                            <p>Passionate IT student building practical web, app, and embedded projects. Focused on
-                                clear solutions, reliable execution, and continuous learning.</p>
-                        </section>
-
-
-                        <div class="skills-languages-grid">
-                            <section class="section" aria-labelledby="skills-title">
-                                <h2 id="skills-title">Skills</h2>
-                                <div class="pill-row">
-                                    <span class="pill">Web Development</span>
-                                    <span class="pill">Computer Programming</span>
-                                    <span class="pill">Computer Animation</span>
-                                    <span class="pill">Video Editing</span>
-                                    <span class="pill">Embedded Prototyping</span>
-                                </div>
-                            </section>
-
-                            <section class="section" aria-labelledby="languages-title">
-                                <h2 id="languages-title">Programming Languages</h2>
-                                <div class="pill-row">
-                                    <span class="pill">Python</span>
-                                    <span class="pill">JavaScript</span>
-                                    <span class="pill">Java</span>
-                                    <span class="pill">TypeScript</span>
-                                    <span class="pill">Dart</span>
-                                    <span class="pill">HTML/CSS</span>
-                                    <span class="pill">SQL</span>
-                                    <span class="pill">C/C++</span>
-                                </div>
-                            </section>
-
-                            <section class="section" aria-labelledby="frameworks-title">
-                                <h2 id="frameworks-title">Frameworks & Tools</h2>
-                                <div class="pill-row">
-                                    <span class="pill">React</span>
-                                    <span class="pill">Next.js</span>
-                                    <span class="pill">Vue</span>
-                                    <span class="pill">Flutter</span>
-                                    <span class="pill">Flask</span>
-                                    <span class="pill">Node.js</span>
-                                    <span class="pill">Vite</span>
-                                    <span class="pill">TailwindCSS</span>
-                                    <span class="pill">Bootstrap</span>
-                                    <span class="pill">Three.js</span>
-                                    <span class="pill">Supabase</span>
-                                    <span class="pill">PostgreSQL</span>
-                                    <span class="pill">Docker</span>
-                                    <span class="pill">Git</span>
-                                    <span class="pill">OpenCV</span>
-                                    <span class="pill">Arduino</span>
-                                    <span class="pill">Raspberry Pi</span>
-                                </div>
-                            </section>
-                        </div>
-
-                        <hr
-                            style="border: none; border-top: 1px solid var(--border); margin: 1.5rem -1rem; width: calc(100% + 2rem);">
-
-                        <section class="section" aria-labelledby="cert-title">
-                            <h2 id="cert-title">Certificate</h2>
-                            <p>NC2 Animation Certificate (TESDA)</p>
-                        </section>
-
-                        <section class="section" aria-labelledby="education-title">
-                            <h2 id="education-title">Education</h2>
-                            <div class="list-item">
-                                <strong>Asia Pacific College (APC)</strong>
-                                <p>BS Information Technology • 2024 - Present • Makati City, Philippines</p>
-                            </div>
-                        </section>
                     </div>
-
 
                     <div class="top-actions">
                         <div style="
@@ -360,7 +295,6 @@
                             ">🌙</button>
                         </div>
 
-
                         <div class="desktop-individual-btns">
                             <a class="btn-link secondary" href="index.html?resume=1">Press to go to UI resume</a>
                             <a class="btn-link secondary" href="/terminal/index.html">Press to go to terminal resume</a>
@@ -371,12 +305,183 @@
                     </div>
                 </div>
 
+                <!-- Two Column Layout (Full Width) -->
+                <div class="content-layout" style="margin-top: 24px;">
+                    <!-- Left Column -->
+                    <div class="main-column">
+                        <!-- About Card -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="icon">📄</span>
+                                <h2>About</h2>
+                            </div>
+                            <p style="line-height: 1.7; color: var(--muted);">
+                                I'm a passionate IT student building practical web, app, and embedded projects.
+                                I focus on clear solutions, reliable execution, and continuous learning.
+                            </p>
+                            <p style="line-height: 1.7; color: var(--muted); margin-top: 1rem;">
+                                Currently exploring full-stack development with React, Flutter, and cloud
+                                technologies
+                                while pursuing my BS in Information Technology at Asia Pacific College.
+                            </p>
+                        </div>
+
+                        <!-- Tech Stack Card -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="icon">⚡</span>
+                                <h2>Tech Stack</h2>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Languages</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=python" alt="Python" title="Python">
+                                    <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" title="JavaScript">
+                                    <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript" title="TypeScript">
+                                    <img src="https://skillicons.dev/icons?i=java" alt="Java" title="Java">
+                                    <img src="https://skillicons.dev/icons?i=dart" alt="Dart" title="Dart">
+                                    <img src="https://skillicons.dev/icons?i=html" alt="HTML" title="HTML">
+                                    <img src="https://skillicons.dev/icons?i=css" alt="CSS" title="CSS">
+                                    <img src="https://skillicons.dev/icons?i=cpp" alt="C++" title="C++">
+                                </div>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Frontend & Mobile</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=react" alt="React" title="React">
+                                    <img src="https://skillicons.dev/icons?i=nextjs" alt="Next.js" title="Next.js">
+                                    <img src="https://skillicons.dev/icons?i=vue" alt="Vue.js" title="Vue.js">
+                                    <img src="https://skillicons.dev/icons?i=flutter" alt="Flutter" title="Flutter">
+                                    <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS"
+                                        title="Tailwind CSS">
+                                    <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap"
+                                        title="Bootstrap">
+                                    <img src="https://skillicons.dev/icons?i=threejs" alt="Three.js" title="Three.js">
+                                    <img src="https://skillicons.dev/icons?i=vite" alt="Vite" title="Vite">
+                                </div>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Backend & Cloud</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=nodejs" alt="Node.js" title="Node.js">
+                                    <img src="https://skillicons.dev/icons?i=flask" alt="Flask" title="Flask">
+                                    <img src="https://skillicons.dev/icons?i=supabase" alt="Supabase" title="Supabase">
+                                    <img src="https://skillicons.dev/icons?i=postgres" alt="PostgreSQL"
+                                        title="PostgreSQL">
+                                    <img src="https://skillicons.dev/icons?i=docker" alt="Docker" title="Docker">
+                                    <img src="https://skillicons.dev/icons?i=git" alt="Git" title="Git">
+                                    <img src="https://skillicons.dev/icons?i=github" alt="GitHub" title="GitHub">
+                                </div>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Tools & Hardware</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=opencv" alt="OpenCV" title="OpenCV">
+                                    <img src="https://skillicons.dev/icons?i=arduino" alt="Arduino" title="Arduino">
+                                    <img src="https://skillicons.dev/icons?i=raspberrypi" alt="Raspberry Pi"
+                                        title="Raspberry Pi">
+                                    <img src="https://skillicons.dev/icons?i=linux" alt="Linux" title="Linux">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Education Card -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="icon">🎓</span>
+                                <h2>Education</h2>
+                            </div>
+                            <div class="experience-item" style="border-bottom: none; padding: 0;">
+                                <div class="experience-dot"></div>
+                                <div class="experience-content">
+                                    <div class="experience-title">BS Information Technology</div>
+                                    <div class="experience-company">Asia Pacific College (APC)</div>
+                                    <div style="font-size: 0.8rem; color: var(--muted);">Makati City, Philippines</div>
+                                </div>
+                                <div class="experience-year">2024 - Present</div>
+                            </div>
+                        </div>
+
+                        <!-- Certifications Card -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="icon">🏆</span>
+                                <h2>Certifications</h2>
+                            </div>
+                            <div class="experience-item" style="border-bottom: none; padding: 0;">
+                                <div class="experience-dot"></div>
+                                <div class="experience-content">
+                                    <div class="experience-title">NC2 Animation Certificate</div>
+                                    <div class="experience-company">TESDA</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Skills -->
+                    <div class="side-column">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="icon">⭐</span>
+                                <h2>Skills</h2>
+                            </div>
+
+                            <div class="skill-item">
+                                <div class="skill-icon">🌐</div>
+                                <div class="skill-content">
+                                    <div class="skill-title">Web Development</div>
+                                    <div class="skill-description">Modern & responsive websites</div>
+                                </div>
+                            </div>
+
+                            <div class="skill-item">
+                                <div class="skill-icon">💻</div>
+                                <div class="skill-content">
+                                    <div class="skill-title">Computer Programming</div>
+                                    <div class="skill-description">Multiple languages & frameworks</div>
+                                </div>
+                            </div>
+
+                            <div class="skill-item">
+                                <div class="skill-icon">🎨</div>
+                                <div class="skill-content">
+                                    <div class="skill-title">Computer Animation</div>
+                                    <div class="skill-description">Creative visual effects</div>
+                                </div>
+                            </div>
+
+                            <div class="skill-item">
+                                <div class="skill-icon">🎬</div>
+                                <div class="skill-content">
+                                    <div class="skill-title">Video Editing</div>
+                                    <div class="skill-description">Professional multimedia content</div>
+                                </div>
+                            </div>
+
+                            <div class="skill-item">
+                                <div class="skill-icon">🔧</div>
+                                <div class="skill-content">
+                                    <div class="skill-title">Embedded Prototyping</div>
+                                    <div class="skill-description">IoT & hardware projects</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-
-                <section class="section" aria-labelledby="projects-title">
-                    <h2 id="projects-title">Projects</h2>
-                    <div class="two-column">
+                <!-- Projects Section Card -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <span class="icon">💼</span>
+                        <h2>Recent Projects</h2>
+                        <a href="https://github.com/Vince0028" target="_blank" class="view-all">View All →</a>
+                    </div>
+                    <div class="cards-grid">
 
                         <a class="card card-link" href="https://dengue-tect.vercel.app" target="_blank"
                             rel="noopener noreferrer">
@@ -543,12 +648,30 @@
                             </div>
                         </a>
                     </div>
-                </section>
+                </div>
 
-                <section class="section" aria-labelledby="contact-title">
-                    <h2 id="contact-title">Contact</h2>
-                    <p>Email: alobinvince@gmail.com · Phone: 09480914634</p>
-                </section>
+                <!-- Contact Section Card -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <span class="icon">📬</span>
+                        <h2>Contact</h2>
+                    </div>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div>
+                            <strong style="font-size: 0.85rem; color: var(--muted);">Email</strong>
+                            <p style="margin: 0;">alobinvince@gmail.com</p>
+                        </div>
+                        <div>
+                            <strong style="font-size: 0.85rem; color: var(--muted);">Phone</strong>
+                            <p style="margin: 0;">09480914634</p>
+                        </div>
+                        <div>
+                            <strong style="font-size: 0.85rem; color: var(--muted);">GitHub</strong>
+                            <p style="margin: 0;"><a href="https://github.com/Vince0028" target="_blank"
+                                    style="color: var(--ink);">@Vince0028</a></p>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="footer-actions"
                     style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem; text-align: center;">
