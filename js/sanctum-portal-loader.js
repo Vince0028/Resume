@@ -57,16 +57,15 @@ class SanctumPortalLoader {
         // Expand portal
         this.radius += this.expansionSpeed;
 
-        // --- THE KEY: Sharp transition where sparks are ---
-        // Transparent INSIDE (resume visible)
-        // Black OUTSIDE (void)
-        // Transition happens IN THE MIDDLE of spark density
+        // --- SPARKS SPILL OVER THE DARK BACKGROUND ---
+        // The transparent zone is SMALLER than the spark radius
+        // This means sparks will appear OVER the black void!
         const r = Math.max(0, this.radius);
 
-        // Clean view up to the spark ring
-        const clearZone = r;
-        // Black starts just 30px after the ring (sharp!)
-        const blackStart = r + 30;
+        // Transparent zone ends 80px BEFORE the current spark radius
+        // So sparks naturally fly over the black!
+        const clearZone = Math.max(0, r - 80);
+        const blackStart = Math.max(0, r - 50);
 
         this.pageLoader.style.background = `radial-gradient(circle at center, 
             transparent ${clearZone}px,
