@@ -406,20 +406,7 @@
                             </div>
                         </div>
 
-                        <!-- Certifications Card -->
-                        <div class="section-card">
-                            <div class="section-header">
-                                <i data-lucide="award" class="icon"></i>
-                                <h2>Certifications</h2>
-                            </div>
-                            <div class="experience-item" style="border-bottom: none; padding: 0;">
-                                <div class="experience-dot"></div>
-                                <div class="experience-content">
-                                    <div class="experience-title">NC2 Animation Certificate</div>
-                                    <div class="experience-company">TESDA</div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                     <!-- Right Column: Skills -->
@@ -470,6 +457,26 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Certifications Card -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <i data-lucide="award" class="icon"></i>
+                                <h2>Certifications</h2>
+                            </div>
+                            <div class="experience-item" style="border-bottom: none; padding: 0;">
+                                <div class="experience-dot"></div>
+                                <div class="experience-content">
+                                    <div class="experience-title">NC2 Animation Certificate</div>
+                                    <div class="experience-company">TESDA</div>
+                                    <div style="margin-top: 12px; cursor: pointer;"
+                                        onclick="openImageModal('../Images/NC2 cert.png')">
+                                        <img src="../Images/NC2 cert.png" alt="NC2 Animation Certificate"
+                                            style="width: 100%; border-radius: 6px; border: 1px solid var(--border); transition: transform 0.2s ease;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -481,7 +488,7 @@
                         <h2>Recent Projects</h2>
                         <a href="https://github.com/Vince0028" target="_blank" class="view-all">View All →</a>
                     </div>
-                    <div class="cards-grid">
+                    <div class="cards-grid" id="projectsGrid">
 
                         <a class="card card-link" href="https://dengue-tect.vercel.app" target="_blank"
                             rel="noopener noreferrer">
@@ -648,6 +655,79 @@
                             </div>
                         </a>
                     </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="pagination-controls"
+                        style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 24px; width: 100%; border-top: 1px solid var(--border); padding-top: 16px;">
+                        <button id="prevBtn" class="btn btn-secondary" onclick="changePage(-1)"
+                            style="min-width: 100px; justify-content: center;">
+                            <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i> Previous
+                        </button>
+                        <span id="pageIndicator"
+                            style="color: var(--muted); font-size: 0.9rem; font-weight: 500; min-width: 80px; text-align: center;">Page
+                            1 of 3</span>
+                        <button id="nextBtn" class="btn btn-secondary" onclick="changePage(1)"
+                            style="min-width: 100px; justify-content: center;">
+                            Next <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
+
+                    <script>
+                        let currentPage = 1;
+                        const itemsPerPage = 4;
+                        // Use a function to initialize to avoid global scope issues if possible, 
+                        // but simple script is fine here for now.
+
+                        function initPagination() {
+                            const grid = document.getElementById('projectsGrid');
+                            if (!grid) return;
+
+                            const projects = Array.from(grid.children);
+                            const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+                            window.showPage = function (page) {
+                                const start = (page - 1) * itemsPerPage;
+                                const end = start + itemsPerPage;
+
+                                projects.forEach((project, index) => {
+                                    if (index >= start && index < end) {
+                                        project.style.display = 'flex'; // Restore display
+                                        // Add fade-in animation
+                                        project.style.opacity = '0';
+                                        project.style.animation = 'fadeIn 0.3s forwards';
+                                    } else {
+                                        project.style.display = 'none';
+                                    }
+                                });
+
+                                // Update controls
+                                const prevBtn = document.getElementById('prevBtn');
+                                const nextBtn = document.getElementById('nextBtn');
+                                const indicator = document.getElementById('pageIndicator');
+
+                                if (prevBtn) prevBtn.disabled = page === 1;
+                                if (nextBtn) nextBtn.disabled = page === totalPages;
+                                if (indicator) indicator.textContent = `Page ${page} of ${totalPages}`;
+
+                                currentPage = page;
+                            };
+
+                            window.changePage = function (direction) {
+                                const newPage = currentPage + direction;
+                                if (newPage >= 1 && newPage <= totalPages) {
+                                    showPage(newPage);
+                                }
+                            };
+
+                            // Initialize first page
+                            showPage(1);
+                        }
+
+                        // Run after DOM load
+                        document.addEventListener('DOMContentLoaded', initPagination);
+                        // Also run immediately in case we are already loaded (inline script)
+                        initPagination();
+                    </script>
                 </div>
 
                 <!-- Contact Section Card -->
@@ -775,6 +855,62 @@
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+    </script>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <img class="modal-content" id="modalImage" onclick="event.stopPropagation()">
+    </div>
+
+    <script>
+        // Image Modal Logic
+        let currentScale = 1;
+        const MIN_SCALE = 0.5;
+        const MAX_SCALE = 5;
+
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+
+            // Reset scale
+            currentScale = 1;
+            modalImg.style.transform = `scale(${currentScale})`;
+
+            modal.style.display = "flex";
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            modalImg.src = src;
+
+            // Lock scrolling on both html and body
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+
+            // Restore scrolling
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+        }
+
+        // Scroll to Zoom Logic
+        document.getElementById('imageModal').addEventListener('wheel', function (e) {
+            e.preventDefault(); // Prevent background scrolling
+
+            const delta = e.deltaY * -0.001;
+            const newScale = Math.min(Math.max(currentScale + delta, MIN_SCALE), MAX_SCALE);
+
+            currentScale = newScale;
+            document.getElementById('modalImage').style.transform = `scale(${currentScale})`;
+        }, { passive: false });
     </script>
 
 </body>
