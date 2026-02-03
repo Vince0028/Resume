@@ -57,10 +57,18 @@ class SanctumPortalLoader {
         this.radius += this.expansionSpeed;
 
         // --- THE MAGIC: Create the Window Effect ---
-        // Update the background to have a growing transparent hole in the center
-        // Resume content shows through the transparent part!
+        // INSIDE circle = Transparent (resume visible)
+        // OUTSIDE circle = Black (everything else hidden)
+        // Dark edge in the MIDDLE of sparks for organic blend
         const r = Math.max(0, this.radius);
-        this.pageLoader.style.background = `radial-gradient(circle at center, transparent ${r}px, #0a0e27 ${r + 20}px)`;
+
+        const innerTransparent = Math.max(0, r - 40); // Fully clear inside
+        const outerBlack = r + 40; // Fully black outside
+
+        this.pageLoader.style.background = `radial-gradient(circle at center, 
+            transparent ${innerTransparent}px,
+            rgba(10, 14, 39, 0.5) ${r}px,
+            #0a0e27 ${outerBlack}px)`;
 
         // Check if full screen covered
         if (this.radius > this.maxRadius * 1.2) {
