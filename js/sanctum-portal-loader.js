@@ -23,7 +23,7 @@ class SanctumPortalLoader {
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
         this.maxRadius = Math.sqrt(this.canvas.width ** 2 + this.canvas.height ** 2);
-        this.expansionSpeed = this.canvas.width / 150;
+        this.expansionSpeed = this.maxRadius / 100;
     }
 
     createParticle() {
@@ -149,7 +149,10 @@ class SanctumPortalLoader {
 
         document.body.classList.add('loaded');
         document.body.style.overflow = '';
-        this.pageLoader.style.display = 'none';
+        // Wait for CSS transition
+        setTimeout(() => {
+            this.pageLoader.style.display = 'none';
+        }, 500);
     }
 }
 
