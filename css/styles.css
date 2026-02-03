@@ -781,3 +781,52 @@ body.light-mode .infinite-desc {
     position: relative;
     z-index: 5;
 }
+
+/* Mobile Adjustments for Infinite Gallery */
+@media (max-width: 768px) {
+    .infinite-menu-overlay {
+        top: auto;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        text-align: center;
+        z-index: 20;
+    }
+
+    .infinite-info-card {
+        padding: 1.25rem;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.8);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        max-width: 100%;
+        margin: 0 auto;
+
+        /* Change animation to slide up instead of left */
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    .infinite-info-card.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .infinite-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .infinite-desc {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .infinite-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 20px;
+    }
+}
