@@ -1,6 +1,6 @@
 /**
  * Doctor Strange Sanctum Portal Loading Effect
- * FINAL VERSION: Window Effect + High Quality Sparks
+ * VOLUMETRIC PORTAL - Sparks spill over the void boundary
  */
 
 class SanctumPortalLoader {
@@ -23,13 +23,13 @@ class SanctumPortalLoader {
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height / 2;
         this.maxRadius = Math.sqrt(this.canvas.width ** 2 + this.canvas.height ** 2);
-        this.expansionSpeed = this.canvas.width / 160; // Smooth, cinematic speed
+        this.expansionSpeed = this.canvas.width / 150;
     }
 
     createParticle() {
         const angle = Math.random() * Math.PI * 2;
-        // Particles spawn on the edge
-        const dist = this.radius + (Math.random() - 0.5) * 15;
+        // Sparks spawn AT the portal edge
+        const dist = this.radius + (Math.random() - 0.5) * 20;
 
         return {
             x: this.centerX + Math.cos(angle) * dist,
@@ -38,12 +38,13 @@ class SanctumPortalLoader {
             prevY: this.centerY + Math.sin(angle) * dist,
             angle: angle,
             distance: dist,
-            speed: 0.05 + Math.random() * 0.08,
-            radialSpeed: (Math.random() - 0.2) * 3,
+            speed: 0.04 + Math.random() * 0.08,
+            // IMPORTANT: Positive radialSpeed means flying OUTWARD into the void
+            radialSpeed: 1 + Math.random() * 3,
             size: 1.5 + Math.random() * 2.5,
             color: Math.random() > 0.4 ? '#ffb300' : '#ff3c00',
             life: 0,
-            maxLife: 15 + Math.random() * 20
+            maxLife: 20 + Math.random() * 25
         };
     }
 
@@ -56,38 +57,39 @@ class SanctumPortalLoader {
         // Expand portal
         this.radius += this.expansionSpeed;
 
-        // --- THE MAGIC: Create the Window Effect ---
-        // INSIDE circle = Transparent (resume visible)
-        // OUTSIDE circle = Black (everything else hidden)
-        // Dark edge in the MIDDLE of sparks for organic blend
+        // --- THE KEY: Sharp transition where sparks are ---
+        // Transparent INSIDE (resume visible)
+        // Black OUTSIDE (void)
+        // Transition happens IN THE MIDDLE of spark density
         const r = Math.max(0, this.radius);
 
-        const innerTransparent = Math.max(0, r - 40); // Fully clear inside
-        const outerBlack = r + 40; // Fully black outside
+        // Clean view up to the spark ring
+        const clearZone = r;
+        // Black starts just 30px after the ring (sharp!)
+        const blackStart = r + 30;
 
         this.pageLoader.style.background = `radial-gradient(circle at center, 
-            transparent ${innerTransparent}px,
-            rgba(10, 14, 39, 0.5) ${r}px,
-            #0a0e27 ${outerBlack}px)`;
+            transparent ${clearZone}px,
+            #0a0e27 ${blackStart}px)`;
 
         // Check if full screen covered
-        if (this.radius > this.maxRadius * 1.2) {
+        if (this.radius > this.maxRadius) {
             this.complete();
             return;
         }
 
-        // Spawn particles
-        const emitCount = 15;
+        // Spawn particles AT the boundary
+        const emitCount = 12;
         for (let i = 0; i < emitCount; i++) {
             this.particles.push(this.createParticle());
         }
 
         // Limit particles
-        if (this.particles.length > 300) {
-            this.particles.splice(0, this.particles.length - 300);
+        if (this.particles.length > 250) {
+            this.particles.splice(0, this.particles.length - 250);
         }
 
-        // Draw sparks
+        // Draw sparks - they FLY OUTWARD into the black void
         for (let i = this.particles.length - 1; i >= 0; i--) {
             const p = this.particles[i];
             p.life++;
@@ -100,17 +102,20 @@ class SanctumPortalLoader {
             p.prevX = p.x;
             p.prevY = p.y;
             p.angle += p.speed;
+            // Particles fly OUTWARD - breaking the frame!
             p.distance += p.radialSpeed;
             p.x = this.centerX + Math.cos(p.angle) * p.distance;
             p.y = this.centerY + Math.sin(p.angle) * p.distance;
 
-            // Draw heat streak
+            // Draw spark with glow (foreground occlusion)
+            const alpha = 1 - (p.life / p.maxLife);
             this.ctx.beginPath();
             this.ctx.moveTo(p.prevX, p.prevY);
             this.ctx.lineTo(p.x, p.y);
             this.ctx.strokeStyle = p.color;
-            this.ctx.lineWidth = p.size * (1 - p.life / p.maxLife);
-            this.ctx.shadowBlur = 10;
+            this.ctx.lineWidth = p.size * alpha;
+            this.ctx.lineCap = 'round';
+            this.ctx.shadowBlur = 12;
             this.ctx.shadowColor = p.color;
             this.ctx.stroke();
         }
@@ -126,18 +131,12 @@ class SanctumPortalLoader {
             loaderContent.style.opacity = '0';
         }
 
-        // Ensure scrolling is disabled during intro
         document.body.style.overflow = 'hidden';
 
-        // Start animation
         setTimeout(() => {
             this.isAnimating = true;
             this.radius = 0;
             this.particles = [];
-
-            // Set initial background gradient
-            this.pageLoader.style.background = `radial-gradient(circle at center, transparent 0px, #0a0e27 0px)`;
-
             this.animate();
         }, 300);
     }
@@ -148,11 +147,8 @@ class SanctumPortalLoader {
             cancelAnimationFrame(this.animationFrame);
         }
 
-        // Mark as loaded
         document.body.classList.add('loaded');
         document.body.style.overflow = '';
-
-        // Remove page loader
         this.pageLoader.style.display = 'none';
     }
 }
