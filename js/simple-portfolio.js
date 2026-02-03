@@ -10,13 +10,13 @@ let envelopeOpened = false;
 
 if (savedTheme === 'dark') {
     body.classList.add('dark-mode');
-    toggle.textContent = '☀️ Light Mode';
+    toggle.textContent = '☀️';
 }
 
 toggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-    toggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    toggle.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('simplePortfolioTheme', isDark ? 'dark' : 'light');
 });
 
@@ -24,7 +24,7 @@ const openEnvelope = () => {
     if (envelopeOpened) return;
     envelopeOpened = true;
     stage.classList.add('opened');
-    
+
     document.documentElement.style.overflow = 'auto';
     body.style.overflow = 'visible';
 };
