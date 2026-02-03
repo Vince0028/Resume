@@ -42,7 +42,8 @@ class SanctumPortalLoader {
             // IMPORTANT: Positive radialSpeed means flying OUTWARD into the void
             radialSpeed: 1 + Math.random() * 3,
             size: 1.5 + Math.random() * 2.5,
-            color: Math.random() > 0.4 ? '#ffb300' : '#ff3c00',
+            // System Palette Colors: Primary (#6366f1), Secondary (#8b5cf6), Accent (#ec4899)
+            color: Math.random() > 0.6 ? '#6366f1' : (Math.random() > 0.5 ? '#8b5cf6' : '#ec4899'),
             life: 0,
             maxLife: 20 + Math.random() * 25
         };
