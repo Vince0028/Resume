@@ -197,28 +197,26 @@
         .right-sidebar,
         .floating-actions,
         .mobile-toggle {
-            opacity: 0;
+            opacity: 1;
+            /* Visible immediately behind portal */
         }
 
 
         .sidebar {
-            transform: translateX(-100%);
-            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Static config for portal window effect */
+            transition: opacity 0.8s, transform 0.8s;
         }
 
 
         .main-content {
-            transform: scale(0.95);
-            transition: opacity 0.8s ease,
-                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Static config for portal window effect */
+            transition: opacity 0.8s, transform 0.8s;
         }
 
 
         .right-sidebar {
-            transform: translateX(100%);
-            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Static config for portal window effect */
+            transition: opacity 0.8s, transform 0.8s;
         }
 
 
@@ -282,7 +280,8 @@
 
 
         #vanta-bg {
-            opacity: 0;
+            opacity: 1;
+            /* Visible immediately */
             transition: opacity 1s ease;
         }
 
@@ -299,8 +298,8 @@
         .expertise-item,
         .project-slide,
         .contact-item {
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 1;
+            transform: none;
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
