@@ -839,6 +839,15 @@ body.dark-mode .theme-btn {
     max-width: 960px;
 }
 
+/* Fixed height for projects grid to prevent morphing */
+#projectsGrid {
+    height: 380px;
+    /* Fixed height for 2 rows */
+    align-content: start;
+    overflow: hidden;
+    /* Prevent spillover */
+}
+
 /* Section Card Styles */
 .card {
     background: var(--paper);
@@ -851,6 +860,9 @@ body.dark-mode .theme-btn {
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
+    height: 180px;
+    /* Fixed height for all project cards */
+    overflow: hidden;
 }
 
 .card .list-item {
@@ -867,12 +879,6 @@ body.dark-mode .theme-btn {
     width: auto;
     height: auto;
     max-width: 60px;
-}
-
-/* Fixed height for projects grid to prevent morphing */
-#projectsGrid {
-    height: auto;
-    align-content: start;
 }
 
 /* Section Cards */
