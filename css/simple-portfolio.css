@@ -1296,15 +1296,18 @@ body.dark-mode .theme-btn {
 
 /* Profile Action Buttons */
 .profile-actions .btn {
-    padding: 6px 14px !important;
-    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
     border-radius: 6px !important;
     font-weight: 500 !important;
     text-decoration: none !important;
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 6px !important;
     transition: all 0.2s ease !important;
+    height: 32px !important;
+    /* Smaller fixed height */
 }
 
 .btn-primary {
@@ -1330,20 +1333,27 @@ body.dark-mode .theme-btn {
 
 /* Dropdown and Theme Button Alignment */
 .resume-dropdown-btn {
-    padding: 6px 14px !important;
-    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
     border-radius: 6px !important;
     font-weight: 500 !important;
-    height: auto !important;
+    height: 32px !important;
+    /* Match profile buttons */
     min-height: unset !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .theme-btn.theme-icon {
     width: 32px !important;
+    /* Square based on height */
     height: 32px !important;
-    padding: 6px !important;
-    font-size: 1rem !important;
+    padding: 0 !important;
+    font-size: 0.9rem !important;
     border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .dropdown-row {
