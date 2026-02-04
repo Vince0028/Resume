@@ -33,7 +33,7 @@ const openEnvelope = () => {
     stage.classList.add('opened');
 
     document.documentElement.style.overflow = 'auto';
-    body.style.overflow = 'visible';
+    body.style.overflow = 'auto';
 };
 
 menuToggle?.addEventListener('click', (e) => {
@@ -41,5 +41,18 @@ menuToggle?.addEventListener('click', (e) => {
     topActions?.classList.toggle('show');
 });
 
+const resumeCard = document.getElementById('resumeCard');
+
 envelope.addEventListener('click', openEnvelope);
 envelopeBtn.addEventListener('click', openEnvelope);
+
+resumeCard.addEventListener('animationend', () => {
+    if (stage.classList.contains('opened')) {
+        resumeCard.classList.add('fully-opened');
+        // Ensure scroll is enabled
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});

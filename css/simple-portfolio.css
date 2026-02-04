@@ -305,71 +305,161 @@ body.dark-mode .envelope-button {
 
 @media (max-width: 720px) {
     .envelope-stage {
-        padding-top: 0px;
+        padding-top: 60px;
+        padding-bottom: 24px;
         overflow-x: hidden;
         width: 100%;
-        max-height: none;
-        overflow-y: visible;
         min-height: 100vh;
+        overflow-y: visible;
     }
 
-    .resume-card {
-        max-height: none;
-        overflow: hidden !important;
+    .envelope-stage.opened {
+        padding-top: 60px;
+        padding-bottom: 24px;
+        min-height: 100vh;
+        overflow-y: auto;
     }
 
     .envelope-visual {
-        height: 280px;
+        height: 260px;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    /* Keep envelope visible in background when opened - just like desktop */
+
+    /* Open the flap like desktop */
+    .envelope-stage.opened .envelope-flap {
+        transform: rotateX(172deg) translateZ(4px);
+        opacity: 0.82;
+        z-index: 3;
+    }
+
+    /* Move envelope front behind the resume when opened */
+    .envelope-stage.opened .envelope-front {
+        z-index: 2;
+    }
+
+    .envelope-stage.opened .envelope-controls {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
     }
 
     :root {
-        --resume-scale-start: 0.36;
-        --resume-scale-15: 0.42;
-        --resume-scale-35: 0.50;
-        --resume-scale-65: 0.96;
-        --resume-scale-end: 1.0;
-        --resume-translate-end: -7%;
+        --resume-scale-start: 0.28;
+        --resume-scale-15: 0.35;
+        --resume-scale-35: 0.45;
+        --resume-scale-65: 0.75;
+        --resume-scale-end: 1;
+        --resume-translate-end: 320px;
     }
 
-
     .resume-card {
+        position: absolute;
         top: 50%;
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(var(--resume-scale-start));
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%) scale(0.3);
+        opacity: 0;
+        pointer-events: none;
+        max-height: none;
+        overflow: visible !important;
+        z-index: 10;
     }
 
     .envelope-stage.opened .resume-card {
-        animation: paper-slide-mobile 0.9s ease-out forwards;
+        pointer-events: auto;
+        animation: paper-slide-mobile 1s ease-out forwards;
+        animation-delay: 0.2s;
     }
 
     @keyframes paper-slide-mobile {
         0% {
-            transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(var(--resume-scale-start));
+            transform: translateX(-50%) translateY(-50%) scale(0.3);
             opacity: 0;
             z-index: 12;
         }
 
-        20% {
-            transform: translateX(-50%) translateY(-62%) rotate(0deg) scale(var(--resume-scale-15));
+        30% {
+            transform: translateX(-50%) translateY(-80%) scale(0.8);
             opacity: 1;
-            z-index: 12;
-        }
-
-        45% {
-            transform: translateX(-50%) translateY(-72%) rotate(0deg) scale(var(--resume-scale-35));
-            z-index: 12;
-        }
-
-        70% {
-            transform: translateX(-50%) translateY(-68%) rotate(0deg) scale(var(--resume-scale-65));
             z-index: 12;
         }
 
         100% {
-            transform: translateX(-50%) translateY(var(--resume-translate-end)) rotate(0deg) scale(var(--resume-scale-end));
+            transform: translateX(-50%) translateY(-50%) scale(1);
             opacity: 1;
             z-index: 12;
         }
     }
+
+    /* Ensure profile header wraps on mobile */
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .profile-header .avatar {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+    }
+
+    .profile-info .location {
+        justify-content: center;
+    }
+
+    .profile-actions {
+        justify-content: center;
+    }
+
+    /* Project cards on mobile - stack content vertically */
+    .card {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .card .pill-row {
+        width: 100%;
+    }
+
+    .card .pill-row img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Fix projects grid height on mobile */
+    #projectsGrid {
+        height: auto;
+        min-height: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .page {
+        padding: 24px 16px !important;
+        /* Reduce padding to prevent cut-off */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        /* Optional: cleaner look on mobile */
+        border: none !important;
+    }
+}
+
+/* Post-animation state for proper scrolling flow */
+.envelope-stage.opened .resume-card.fully-opened {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    opacity: 1;
+    width: 100%;
+    max-width: 100%;
+    animation: none;
+    pointer-events: auto;
 }
 
 .header {
@@ -740,7 +830,7 @@ body.dark-mode .theme-btn {
 
 /* Fixed height for projects grid to prevent morphing */
 #projectsGrid {
-    height: 360px;
+    height: auto;
     align-content: start;
 }
 
@@ -798,6 +888,26 @@ body.dark-mode .theme-btn {
     align-items: flex-start;
     gap: 20px;
     padding: 28px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-header .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    /* Ensure existing avatar styles are applied if they rely on class selection */
+    border: 1px solid var(--border);
+    background: var(--accent-light) url('../Images/web_logo.png') center/cover no-repeat;
+    transition: background-image 0.2s ease;
 }
 
 .profile-card .avatar {
@@ -865,6 +975,24 @@ body.dark-mode .theme-btn {
 .profile-actions .btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-btn.theme-icon {
+    width: auto !important;
+    height: auto !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--border) !important;
+    background: transparent !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--ink) !important;
+    cursor: pointer !important;
+}
+
+.theme-btn.theme-icon:hover {
+    background: var(--accent-light) !important;
 }
 
 /* Skill Icons */
@@ -1100,7 +1228,20 @@ body.dark-mode .theme-btn {
 @media (max-width: 768px) {
     .content-layout {
         grid-template-columns: 1fr;
+        padding: 0;
+        /* Remove extra padding on layout for mobile as page has it */
+        gap: 16px;
+    }
+
+    .section-card,
+    .profile-card {
         padding: 16px;
+    }
+
+    /* Prevent skill icon images from overflowing */
+    .skill-icons img {
+        max-width: 100%;
+        height: auto;
     }
 }
 
