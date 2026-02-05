@@ -531,11 +531,11 @@ body.dark-mode .envelope-button {
 }
 
 body.dark-mode .avatar {
-    background-image: url('../Images/darkmode_normal.png');
+    background: var(--accent-light) url('../Images/darkmode_normal.png') center center / cover no-repeat !important;
 }
 
 body.dark-mode .avatar:hover {
-    background-image: url('../Images/darkmode_shy.png');
+    background: var(--accent-light) url('../Images/darkmode_shy.png') center center / cover no-repeat !important;
 }
 
 .name {
