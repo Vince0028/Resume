@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Alobin Resume</title>
     <link rel="icon" type="image/png" href="../Images/darkmode_normal.png">
-    <link rel="stylesheet" href="../css/simple-portfolio.css">
+    <link rel="stylesheet" href="../css/simple-portfolio.css?v=18">
 
     <link rel="preload" as="image" href="../Images/web_shy.png">
     <link rel="preload" as="image" href="../Images/darkmode_normal.png">
@@ -45,14 +45,20 @@
                 align-items: center !important;
                 justify-content: flex-end !important;
                 gap: 0.5rem !important;
-                margin-bottom: 48px !important;
+                margin-bottom: 46px !important;
+                /* Adjusted to align with profile buttons */
                 z-index: 100 !important;
                 background: transparent !important;
                 box-shadow: none !important;
                 border: none !important;
                 flex-shrink: 0;
                 width: auto;
-
+                height: 100%;
+                /* Ensure it takes height to align if needed, usually auto is fine */
+                align-self: flex-end;
+                /* Ensure it sits at the bottom with the other content */
+                padding-bottom: 4px;
+                /* Slight adjustment to match visual baseline of buttons usually */
             }
 
             .header {
@@ -245,7 +251,7 @@
                             <div class="profile-info">
                                 <div class="name">Vince Nelmar Alobin</div>
                                 <div class="location">
-                                    <i data-lucide="map-pin"></i> Makati City, Philippines
+                                    <i data-lucide="map-pin"></i> Pasay City, Philippines
                                 </div>
                                 <div class="tagline">BSIT Student • Full Stack Developer</div>
                                 <div class="profile-actions">
@@ -359,7 +365,7 @@
                                 <div class="experience-content">
                                     <div class="experience-title">BS Information Technology</div>
                                     <div class="experience-company">Asia Pacific College (APC)</div>
-                                    <div style="font-size: 0.8rem; color: var(--muted);">Makati City, Philippines</div>
+                                    <div style="font-size: 0.8rem; color: var(--muted);">Pasay City, Philippines</div>
                                 </div>
                                 <div class="experience-year">2024 - Present</div>
                             </div>

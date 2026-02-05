@@ -509,23 +509,25 @@ body.dark-mode .envelope-button {
     margin-bottom: 28px;
 }
 
-.header-main {
+.profile-header {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 24px;
 }
 
 .avatar {
-    width: 96px;
-    height: 96px;
+    width: 136px !important;
+    height: 136px !important;
+    flex-shrink: 0;
+    display: block;
     border: 1px solid var(--border);
-    border-radius: 0;
-    background: var(--accent-light) url('../Images/web_logo.png') center/cover no-repeat;
-    transition: background-image 0.2s ease;
+    border-radius: 8px;
+    background: var(--accent-light) url('../Images/web_logo.png') center center / cover no-repeat !important;
+    transition: all 0.2s ease;
 }
 
 .avatar:hover {
-    background-image: url('../Images/web_shy.png');
+    background: var(--accent-light) url('../Images/web_shy.png') center center / cover no-repeat !important;
 }
 
 body.dark-mode .avatar {
