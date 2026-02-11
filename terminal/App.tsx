@@ -1511,15 +1511,15 @@ const App: React.FC = () => {
           </div>
 
           { }
-          <div className="absolute inset-0 z-0 pointer-events-none flex justify-between items-center px-8 md:px-12 opacity-40 text-indigo-500 font-mono text-xs md:text-xl leading-none whitespace-pre select-none origin-center">
-            <div className="hidden md:block">
+          <div className="absolute inset-0 z-0 pointer-events-none flex flex-col 2xl:flex-row justify-between items-center px-4 2xl:px-12 py-12 2xl:py-0 opacity-40 text-indigo-500 font-mono text-[10px] sm:text-xs md:text-sm 2xl:text-xl leading-none whitespace-pre select-none origin-center">
+            <div className="block opacity-50 2xl:opacity-100">
               {`__      __  ___   _   _    ___   _____ 
  \\ \\    / / |_ _| | \\ | |  / __| | ____|
   \\ \\  / /   | |  |  \\| | | |    |  _|  
    \\ \\/ /    | |  | |\\  | | |___ | |___ 
     \\__/    |___| |_| \\_|  \\___| |_____|`}
             </div>
-            <div className="hidden md:block text-right scale-110 origin-right">
+            <div className="block text-center 2xl:text-right scale-110 origin-center 2xl:origin-right opacity-50 2xl:opacity-100">
               {`   _      _       ___    ___   ___   _   _ 
   /_\\    | |     / _ \\  | _ ) |_ _| | \\ | |
  / _ \\   | |__  | (_) | | _ \\  | |  |  \\| |
