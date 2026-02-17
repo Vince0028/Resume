@@ -1,6 +1,16 @@
 {
   "outputDirectory": ".",
+  "builds": [
+    {
+      "src": "backend/src/main.ts",
+      "use": "@vercel/node"
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/api/guestbook/(.*)",
+      "destination": "/backend/src/main.ts"
+    },
     {
       "source": "/terminal/assets/(.*)",
       "destination": "/terminal/dist/assets/$1"

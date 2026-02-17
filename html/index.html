@@ -438,6 +438,15 @@
                                 <i class="bi bi-envelope-fill"></i>
                                 Contact Me
                             </a>
+                            <a href="https://github.com/Vince0028" target="_blank" class="btn-hero btn-hero-outline">
+                                <i class="bi bi-github"></i>
+                                GitHub
+                            </a>
+                            <a href="https://www.linkedin.com/in/vince-nelmar-alobin-26a361321" target="_blank"
+                                class="btn-hero btn-hero-outline">
+                                <i class="bi bi-linkedin"></i>
+                                LinkedIn
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -932,7 +941,7 @@
                             :class="['alert', 'alert-' + (statusType === 'success' ? 'success' : 'danger')]">
                             {{ statusMessage }}
                         </div>
-                        <form v-on:submit.prevent="addMessage">
+                        <form @submit.prevent>
                             <div class="mb-3">
                                 <input type="text" class="form-control custom-input" placeholder="Your Name"
                                     v-model="visitorName" required>
@@ -945,9 +954,14 @@
                                 <textarea class="form-control custom-input" rows="3" placeholder="Leave a message..."
                                     v-model="visitorMessage" required></textarea>
                             </div>
-                            <button type="submit" class="btn-hero btn-hero-primary w-100">
-                                <i class="bi bi-send-fill"></i> Send Message to Vince
-                            </button>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="button" @click="sendEmail" class="btn-hero btn-hero-primary flex-grow-1">
+                                    <i class="bi bi-envelope-fill"></i> Send Email
+                                </button>
+                                <button type="button" @click="addComment" class="btn-hero btn-hero-outline flex-grow-1">
+                                    <i class="bi bi-chat-quote-fill"></i> Comment
+                                </button>
+                            </div>
                         </form>
                     </div>
 

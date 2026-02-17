@@ -6,53 +6,89 @@ const guestbookApp = Vue.createApp({
             visitorMessage: '',
             isSending: false,
             statusMessage: '',
-            statusType: '', 
+            statusType: '',
             messages: []
         }
     },
     methods: {
-        async addMessage() {
-            if (!this.visitorName || !this.visitorEmail || !this.visitorMessage) return;
+        async sendEmail() {
+            if (!this.validateForm()) return;
+            const url = this.getApiUrl('email');
+            this.performAction(url, 'Email sent successfully!', true);
+        },
 
+        async addComment() {
+            if (!this.validateForm()) return;
+            const url = this.getApiUrl('comment');
+            this.performAction(url, 'Comment added to Guestbook!', false);
+        },
+
+        getApiUrl(endpoint) {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+            if (isLocal) {
+                // Local NestJS Server
+                return `http://localhost:3000/guestbook/${endpoint}`;
+            } else {
+                // Vercel Serverless Functions fallback
+                // endpoint 'email' -> /api/send-email
+                // endpoint 'comment' -> /api/ui-guestbook
+                return endpoint === 'email' ? '/api/send-email' : '/api/ui-guestbook';
+            }
+        },
+
+        validateForm() {
+            if (!this.visitorName || !this.visitorEmail || !this.visitorMessage) {
+                this.statusType = 'error';
+                this.statusMessage = 'Please fill in all fields.';
+                return false;
+            }
+            return true;
+        },
+
+        async performAction(url, successMsg, isEmail) {
             this.isSending = true;
             this.statusMessage = '';
 
             try {
-                const response = await fetch('/api/send-email', {
+                const payload = {
+                    name: this.visitorName,
+                    email: this.visitorEmail,
+                    message: this.visitorMessage
+                };
+
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: this.visitorName,
-                        email: this.visitorEmail,
-                        message: this.visitorMessage
-                    })
+                    body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error + (result.details ? ': ' + result.details : ''));
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    result = {};
                 }
 
-                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Request failed');
+                }
+
                 this.visitorName = '';
                 this.visitorEmail = '';
                 this.visitorMessage = '';
 
                 this.statusType = 'success';
-                this.statusMessage = 'Message sent successfully!';
+                this.statusMessage = successMsg;
+
+                // If comment added, maybe refresh list? (Not implemented)
 
             } catch (error) {
                 console.error('Error:', error);
                 this.statusType = 'error';
-                if (error.message.includes('Failed to fetch')) {
-                    this.statusMessage = 'Network Error: Cannot reach server. Are you running "vercel dev" or deployed?';
-                } else {
-                    this.statusMessage = 'Failed to send message: ' + error.message;
-                }
+                this.statusMessage = 'Failed: ' + error.message;
             } finally {
                 this.isSending = false;
-                
                 setTimeout(() => {
                     this.statusMessage = '';
                 }, 3000);
