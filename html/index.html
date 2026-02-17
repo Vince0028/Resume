@@ -965,6 +965,55 @@
                         </form>
                     </div>
 
+                    <div class="guestbook-comments-section" v-if="comments.length > 0" style="margin-top: 3rem;">
+                        <h4 class="subsection-title"
+                            style="text-align: center; margin-bottom: 25px; color: #fff; font-weight: 600;">
+                            <i class="bi bi-chat-quote"></i> Recent Messages
+                        </h4>
+
+                        <div class="comments-carousel"
+                            style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                            <button class="carousel-btn prev-btn" @click="prevPage" :disabled="!hasPrev"
+                                :style="{ opacity: hasPrev ? 1 : 0.3, cursor: hasPrev ? 'pointer' : 'default', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem' }">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+
+                            <div class="comments-track"
+                                style="display: flex; gap: 20px; width: 100%; max-width: 800px; justify-content: center;">
+                                <div v-for="comment in visibleComments" :key="comment.id" class="comment-card"
+                                    style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 16px; width: 48%; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(5px); transition: transform 0.3s ease;">
+                                    <div class="comment-header"
+                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div
+                                                style="width: 30px; height: 30px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;">
+                                                {{ comment.name.charAt(0).toUpperCase() }}
+                                            </div>
+                                            <strong style="color: #e2e8f0; font-size: 0.95rem;">{{ comment.name
+                                                }}</strong>
+                                        </div>
+                                        <small style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">{{ new
+                                            Date(comment.created_at).toLocaleDateString() }}</small>
+                                    </div>
+                                    <p class="comment-body"
+                                        style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                        {{ comment.message }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button class="carousel-btn next-btn" @click="nextPage" :disabled="!hasNext"
+                                :style="{ opacity: hasNext ? 1 : 0.3, cursor: hasNext ? 'pointer' : 'default', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem' }">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else-if="isLoadingComments"
+                        style="text-align: center; margin-top: 2rem; color: rgba(255,255,255,0.6);">
+                        <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9rem;">Loading comments...</div>
+                    </div>
 
                 </div>
 

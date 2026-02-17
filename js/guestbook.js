@@ -7,7 +7,20 @@ const guestbookApp = Vue.createApp({
             isSending: false,
             statusMessage: '',
             statusType: '',
-            messages: []
+            comments: [],
+            currentIndex: 0,
+            isLoadingComments: false
+        }
+    },
+    computed: {
+        visibleComments() {
+            return this.comments.slice(this.currentIndex, this.currentIndex + 2);
+        },
+        hasNext() {
+            return this.currentIndex + 2 < this.comments.length;
+        },
+        hasPrev() {
+            return this.currentIndex > 0;
         }
     },
     methods: {
@@ -20,7 +33,8 @@ const guestbookApp = Vue.createApp({
         async addComment() {
             if (!this.validateForm()) return;
             const url = this.getApiUrl('comment');
-            this.performAction(url, 'Comment added to Guestbook!', false);
+            await this.performAction(url, 'Comment added to Guestbook!', false);
+            this.fetchComments(); // Refresh comments after adding
         },
 
         getApiUrl(endpoint) {
@@ -33,8 +47,33 @@ const guestbookApp = Vue.createApp({
                 // Vercel Serverless Functions fallback
                 // endpoint 'email' -> /api/send-email
                 // endpoint 'comment' -> /api/ui-guestbook
-                return endpoint === 'email' ? '/api/send-email' : '/api/ui-guestbook';
+                // endpoint 'comments' -> /api/ui-guestbook (GET)
+                if (endpoint === 'email') return '/api/send-email';
+                return '/api/ui-guestbook';
             }
+        },
+
+        async fetchComments() {
+            this.isLoadingComments = true;
+            try {
+                const url = this.getApiUrl('comments');
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Failed to fetch comments');
+                const data = await response.json();
+                this.comments = Array.isArray(data) ? data : [];
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            } finally {
+                this.isLoadingComments = false;
+            }
+        },
+
+        nextPage() {
+            if (this.hasNext) this.currentIndex += 2;
+        },
+
+        prevPage() {
+            if (this.hasPrev) this.currentIndex -= 2;
         },
 
         validateForm() {
@@ -81,8 +120,6 @@ const guestbookApp = Vue.createApp({
                 this.statusType = 'success';
                 this.statusMessage = successMsg;
 
-                // If comment added, maybe refresh list? (Not implemented)
-
             } catch (error) {
                 console.error('Error:', error);
                 this.statusType = 'error';
@@ -95,8 +132,11 @@ const guestbookApp = Vue.createApp({
             }
         },
         deleteMessage(id) {
-            this.messages = this.messages.filter(msg => msg.id !== id);
+            this.comments = this.comments.filter(msg => msg.id !== id);
         }
+    },
+    mounted() {
+        this.fetchComments();
     }
 });
 
