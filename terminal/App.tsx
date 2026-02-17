@@ -21,6 +21,7 @@ import BrightnessCheck from './components/BrightnessCheck';
 import RadarMain from './components/Radar/RadarMain';
 import DecryptedText from './components/DecryptedText';
 
+
 const findNode = (name: string, nodes: FileSystemNode[] = FILE_SYSTEM): FileSystemNode | null => {
   for (const node of nodes) {
     if (node.name === name) return node;
