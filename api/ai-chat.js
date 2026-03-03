@@ -94,7 +94,7 @@ Age: 19 years old
 City: Pasay City, Philippines
 Parents: Nelson Alobin Jr. (father), Maria Lourdes P. Alobin (mother)
 Email: alobinvince@gmail.com
-Phone: 09480914634
+Phone: 09276922670
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign
 Certifications: Full-Stack Web Development, Programming Foundations, Software Design
 Projects: Driver expression detector with Raspberry Pi, DengueTect dengue risk site, Student Portal, AnaLytics for rice retailers, benPDF tools including PDF to Word, SmartShut smart light system, voice assistant for the elderly, facial recognition attendance system
@@ -148,7 +148,7 @@ Edad: 19 taong gulang
 Lungsod: Pasay City, Philippines
 Mga Magulang: Nelson Alobin Jr. (ama), Maria Lourdes P. Alobin (ina)
 Email: alobinvince@gmail.com
-Phone: 09480914634
+Phone: 09276922670
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign
 Certifications: Full-Stack Web Development, Programming Foundations, Software Design
 Projects: Driver expression detector gamit ang Raspberry Pi, DengueTect dengue risk site, Student Portal, AnaLytics para sa mga rice retailer, benPDF tools kasama ang PDF to Word, SmartShut smart light system, voice assistant para sa matatanda, facial recognition attendance system
@@ -202,7 +202,7 @@ Age: 19 years old
 City: Pasay City, Philippines
 Parents: Nelson Alobin Jr. (father), Maria Lourdes P. Alobin (mother)
 Email: alobinvince@gmail.com
-Phone: 09480914634
+Phone: 09276922670
 Skills: JavaScript, Python, HTML, CSS, Java, SQL, web development, animation, video editing, data analysis, Microsoft Excel, Adobe InDesign
 Certifications: Full-Stack Web Development, Programming Foundations, Software Design
 Projects: Driver expression detector with Raspberry Pi, DengueTect dengue risk site, Student Portal, AnaLytics para sa rice retailers, benPDF tools including PDF to Word, SmartShut smart light system, voice assistant para sa elderly, facial recognition attendance system

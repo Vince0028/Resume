@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Alobin Resume</title>
     <link rel="icon" type="image/png" href="../Images/web_logo.png">
-    <link rel="stylesheet" href="../css/simple-portfolio.css?v=19">
+    <link rel="stylesheet" href="../css/simple-portfolio.css?v=20">
 
     <link rel="preload" as="image" href="../Images/web_shy.png">
     <link rel="preload" as="image" href="../Images/darkmode_normal.png">
@@ -257,7 +257,7 @@
                                 <div class="profile-actions">
                                     <a href="mailto:alobinvince@gmail.com" class="btn btn-primary"><i
                                             data-lucide="mail"></i> Send Email</a>
-                                    <a href="tel:09480914634" class="btn btn-secondary"><i data-lucide="phone"></i>
+                                    <a href="tel:09276922670" class="btn btn-secondary"><i data-lucide="phone"></i>
                                         Call</a>
                                     <a href="https://github.com/Vince0028" target="_blank" class="btn btn-secondary"><i
                                             data-lucide="github"></i> GitHub</a>
@@ -429,6 +429,7 @@
                             <div class="section-header">
                                 <i data-lucide="award" class="icon"></i>
                                 <h2>Certifications</h2>
+                                <a href="#" class="view-all" id="certsViewAllBtn" onclick="openCertsModal(); return false;">View All →</a>
                             </div>
                             <div class="experience-item" style="border-bottom: none; padding: 0;">
                                 <div class="experience-dot"></div>
@@ -700,13 +701,13 @@
                                 <div class="contact-value">alobinvince@gmail.com</div>
                             </div>
                         </a>
-                        <a href="tel:09480914634" class="contact-item">
+                        <a href="tel:09276922670" class="contact-item">
                             <div class="contact-icon">
                                 <i data-lucide="phone"></i>
                             </div>
                             <div class="contact-content">
                                 <div class="contact-label">Phone</div>
-                                <div class="contact-value">09480914634</div>
+                                <div class="contact-value">09276922670</div>
                             </div>
                         </a>
                         <a href="https://github.com/Vince0028" target="_blank" class="contact-item">
@@ -834,6 +835,35 @@
         lucide.createIcons();
     </script>
 
+    <!-- Certificates Gallery Modal -->
+    <div id="certsModal" class="certs-modal" onclick="handleCertsModalOverlayClick(event)">
+        <div class="certs-modal-paper">
+            <div class="certs-modal-header">
+                <div class="certs-modal-title">
+                    <i data-lucide="award" class="icon" style="width:20px;height:20px;"></i>
+                    <h2>All Certificates</h2>
+                </div>
+                <button class="certs-modal-close" onclick="closeCertsModal()" aria-label="Close">&#10005;</button>
+            </div>
+            <div class="certs-filter-bar" id="certsFilterBar"></div>
+            <div class="certs-grid" id="certsGrid"></div>
+        </div>
+    </div>
+
+    <!-- Certificate Lightbox (opens on card click, overlays gallery) -->
+    <div id="certLightbox" class="cert-lightbox" onclick="closeCertLightbox()">
+        <div class="cert-lightbox-paper" onclick="event.stopPropagation()">
+            <div class="cert-lightbox-header">
+                <span class="cert-lightbox-title" id="certLightboxTitle"></span>
+                <div class="cert-lightbox-actions">
+                    <a id="certLightboxOpenBtn" href="#" target="_blank" class="cert-lightbox-open-btn">Open &#8599;</a>
+                    <button class="cert-lightbox-close" onclick="closeCertLightbox()">&#10005; Close</button>
+                </div>
+            </div>
+            <div class="cert-lightbox-body" id="certLightboxBody"></div>
+        </div>
+    </div>
+
     <!-- Image Modal -->
     <div id="imageModal" class="image-modal" onclick="closeImageModal()">
         <span class="close-modal" onclick="closeImageModal()">&times;</span>
@@ -888,6 +918,230 @@
             currentScale = newScale;
             document.getElementById('modalImage').style.transform = `scale(${currentScale})`;
         }, { passive: false });
+    </script>
+
+    <!-- Certificates Gallery Script -->
+    <script>
+        const CERTS_BASE = './CERTIFICATES/';
+
+        const CERTIFICATES_DATA = [
+            {
+                category: 'AI & Machine Learning',
+                items: [
+                    { name: 'AI for Organizational Leaders', file: 'CertificateOfCompletion_AI for Organizational Leaders by Microsoft and LinkedIn.pdf', type: 'pdf' },
+                    { name: 'Career Essentials in Generative AI', file: 'CertificateOfCompletion_Career Essentials in Generative AI by Microsoft and LinkedIn.pdf', type: 'pdf' },
+                    { name: 'Deep Learning Image Recognition', file: 'CertificateOfCompletion_Deep Learning Image Recognition.pdf', type: 'pdf' },
+                    { name: 'Machine Learning Statistical Foundations', file: 'CertificateOfCompletion_Machine Learning Statistical Foundations Professional Certificate by Wolfram Research.pdf', type: 'pdf' },
+                    { name: 'Microsoft Azure AI Essentials', file: 'CertificateOfCompletion_Microsoft Azure AI Essentials Professional Certificate by Microsoft and LinkedIn.pdf', type: 'pdf' },
+                    { name: 'Using AI for UX Design and Research', file: 'CertificateOfCompletion_Using AI for UX Design and Research.pdf', type: 'pdf' },
+                    { name: 'IBM Explore Emerging Tech', file: 'IBM_Explore_Emerging_Tech_Certificate.png', type: 'img' },
+                ]
+            },
+            {
+                category: 'Business & Management',
+                items: [
+                    { name: 'Introduction to S/4HANA', file: 'BUSPROS1-Introduction to S4HANA.pdf', type: 'pdf' },
+                    { name: 'Agile Project Management with Microsoft Project', file: 'CertificateOfCompletion_Agile Project Management with Microsoft Project 2021.pdf', type: 'pdf' },
+                    { name: 'Career Essentials in Project Management', file: 'CertificateOfCompletion_Career Essentials in Project Management by Microsoft and LinkedIn.pdf', type: 'pdf' },
+                    { name: 'Learning SAP Production Planning', file: 'CertificateOfCompletion_Learning SAP Production Planning.pdf', type: 'pdf' },
+                    { name: 'Negotiation Professional Certificate', file: 'CertificateOfCompletion_Negotiation Professional Certificate by American Negotiation Institute.pdf', type: 'pdf' },
+                    { name: 'Project Management Foundations', file: 'CertificateOfCompletion_Project Management Foundations.pdf', type: 'pdf' },
+                    { name: 'Public Speaking Skills – Toastmasters', file: 'CertificateOfCompletion_Public Speaking Skills Professional Certificate by Toastmasters International.pdf', type: 'pdf' },
+                ]
+            },
+            {
+                category: 'Cloud, IT & Cybersecurity',
+                items: [
+                    { name: 'AWS Academy – Cloud Foundations', file: 'AWS Academy Graduate - Cloud Foundations - Training Badge.png', type: 'img' },
+                    { name: 'COC – Alobin', file: 'COC - Alobin.pdf', type: 'pdf' },
+                    { name: 'Atlassian IT Service Management (ITSM)', file: 'CertificateOfCompletion_Atlassian IT Service Management ITSM Professional Certificate.pdf', type: 'pdf' },
+                    { name: 'Career Essentials in GitHub', file: 'CertificateOfCompletion_Career Essentials in GitHub Professional Certificate.pdf', type: 'pdf' },
+                    { name: 'CISM – Information Security Program', file: 'CertificateOfCompletion_Certified Information Security Manager CISM Cert Prep 2022 3 Information Security Program.pdf', type: 'pdf' },
+                    { name: 'Master Microsoft Teams', file: 'CertificateOfCompletion_Master Microsoft Teams (1).pdf', type: 'pdf' },
+                    { name: 'Microsoft Security Essentials', file: 'CertificateOfCompletion_Microsoft Security Essentials Concepts Solutions and AIPowered Protection.pdf', type: 'pdf' },
+                    { name: 'CompTIA Network+ Practice Exam 1', file: 'CertificateOfCompletion_Practice Exam 1 for CompTIA Network N10009.pdf', type: 'pdf' },
+                    { name: 'CompTIA Network+ Practice Exam 2', file: 'CertificateOfCompletion_Practice Exam 2 for CompTIA Network N10009.pdf', type: 'pdf' },
+                    { name: 'ServiceNow IT Leadership', file: 'CertificateOfCompletion_ServiceNow IT Leadership Professional Certificate.pdf', type: 'pdf' },
+                    { name: 'Ubuntu Linux – Canonical', file: 'CertificateOfCompletion_Ubuntu Linux Professional Certificate by Canonical.pdf', type: 'pdf' },
+                    { name: 'Zendesk Customer Service', file: 'CertificateOfCompletion_Zendesk Customer Service Professional Certificate.pdf', type: 'pdf' },
+                    { name: 'Salesforce AgentBlazer (Badge)', file: 'Salesforce_AgentBlazer_Certificate.png', type: 'img' },
+                ]
+            },
+            {
+                category: 'Data & Analytics',
+                items: [
+                    { name: 'Complete Guide to Excel Statistics with Copilot', file: 'CertificateOfCompletion_Complete Guide to Excel Statistics with Copilot.pdf', type: 'pdf' },
+                    { name: 'Excel and ChatGPT Data Analysis Power Tips', file: 'CertificateOfCompletion_Excel and ChatGPT Data Analysis Power Tips.pdf', type: 'pdf' },
+                    { name: 'Statistics Foundations 1 – Exam', file: 'CertificateOfCompletion_Statistics Foundations 1 The Basics Exam.pdf', type: 'pdf' },
+                    { name: 'Statistics Foundations 1 – The Basics', file: 'CertificateOfCompletion_Statistics Foundations 1 The Basics.pdf', type: 'pdf' },
+                ]
+            },
+            {
+                category: 'Design',
+                items: [
+                    { name: 'Adobe InDesign 2024 Professional Certificate', file: 'CertificateOfCompletion_Essential Skills in Adobe InDesign 2024 Professional Certificate.pdf', type: 'pdf' },
+                    { name: 'NC2 Animation Certificate (TESDA)', file: 'NC2_Animation_TESDA_Certificate.png', type: 'img' },
+                ]
+            },
+            {
+                category: 'Programming & Development',
+                items: [
+                    { name: 'Become a Full-Stack Web Developer', file: 'CertificateOfCompletion_Become a FullStack Web Developer.pdf', type: 'pdf' },
+                    { name: 'Java Foundations – JetBrains', file: 'CertificateOfCompletion_Java Foundations Professional Certificate by JetBrains.pdf', type: 'pdf' },
+                    { name: 'JavaScript Foundations – Mozilla', file: 'CertificateOfCompletion_JavaScript Foundations Professional Certificate by Mozilla.pdf', type: 'pdf' },
+                    { name: 'Programming Foundations: Data Structures', file: 'CertificateOfCompletion_Programming Foundations Data Structures 2019.pdf', type: 'pdf' },
+                    { name: 'Programming Foundations: Test-Driven Development', file: 'CertificateOfCompletion_Programming Foundations TestDriven Development.pdf', type: 'pdf' },
+                    { name: 'Python Data Structures: Stacks', file: 'CertificateOfCompletion_Python Data Structures  Stacks  .pdf', type: 'pdf' },
+                    { name: 'Python Data Structures: Trees', file: 'CertificateOfCompletion_Python Data Structures  Trees.pdf', type: 'pdf' },
+                    { name: 'Python Data Structures: Linked Lists', file: 'CertificateOfCompletion_Python Data Structures Power of Linked Lists.pdf', type: 'pdf' },
+                    { name: 'Python Essential Training', file: 'CertificateOfCompletion_Python Essential Training.pdf', type: 'pdf' },
+                    { name: 'Python Recursion', file: 'CertificateOfCompletion_Python Recursion.pdf', type: 'pdf' },
+                    { name: 'Software Design: Developing Effective Requirements', file: 'CertificateOfCompletion_Software Design Developing Effective Requirements.pdf', type: 'pdf' },
+                ]
+            },
+        ];
+
+        function resolveFile(category, file) {
+            const parts = file.split('/');
+            const encodedParts = parts.map(p => encodeURIComponent(p));
+            return CERTS_BASE + encodeURIComponent(category) + '/' + encodedParts.join('/');
+        }
+
+        // Set cert count on View All button
+        document.addEventListener('DOMContentLoaded', function () {
+            const total = CERTIFICATES_DATA.reduce((sum, g) => sum + g.items.length, 0);
+            const btn = document.getElementById('certsViewAllBtn');
+            if (btn) btn.textContent = 'View All (' + total + ') \u2192';
+        });
+
+        let activeCategory = 'All';
+
+        function openCertsModal() {
+            const modal = document.getElementById('certsModal');
+            buildCertsFilterBar();
+            buildCertsGrid('All');
+            activeCategory = 'All';
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            lucide.createIcons();
+            setTimeout(initPdfLazyLoad, 100);
+        }
+
+        function closeCertsModal() {
+            const modal = document.getElementById('certsModal');
+            modal.classList.remove('open');
+            closeCertLightbox();
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
+        function handleCertsModalOverlayClick(e) {
+            if (e.target === document.getElementById('certsModal')) {
+                closeCertsModal();
+            }
+        }
+
+        function buildCertsFilterBar() {
+            const bar = document.getElementById('certsFilterBar');
+            const categories = ['All', ...CERTIFICATES_DATA.map(c => c.category)];
+            bar.innerHTML = categories.map(cat => {
+                const count = cat === 'All'
+                    ? CERTIFICATES_DATA.reduce((s, g) => s + g.items.length, 0)
+                    : (CERTIFICATES_DATA.find(g => g.category === cat) || { items: [] }).items.length;
+                return `<button class="certs-filter-btn${cat === 'All' ? ' active' : ''}" onclick="filterCerts('${cat}')">${cat} <span class="cert-filter-count">${count}</span></button>`;
+            }).join('');
+        }
+
+        function filterCerts(category) {
+            activeCategory = category;
+            document.querySelectorAll('.certs-filter-btn').forEach(btn => {
+                const btnCat = btn.textContent.replace(/\s*\d+$/, '').trim();
+                btn.classList.toggle('active', btnCat === category);
+            });
+            buildCertsGrid(category);
+            setTimeout(initPdfLazyLoad, 100);
+        }
+
+        function buildCertsGrid(category) {
+            const grid = document.getElementById('certsGrid');
+
+            function cardHTML(item) {
+                const src = resolveFile(item.category, item.file);
+                const safeCat  = item.category.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const safeFile = item.file.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const safeName = item.name.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const thumbURL = item.type === 'img'
+                    ? src
+                    : resolveFile(item.category, item.file.replace(/\.pdf$/i, '.thumb.jpg'));
+                return `<div class="cert-card" onclick="viewCert('${safeCat}','${safeFile}','${safeName}','${item.type}')">
+                    <div class="cert-card-thumb"><img src="${thumbURL}" alt="${safeName}" loading="lazy"></div>
+                    <div class="cert-card-info">
+                        <div class="cert-card-name">${item.name}</div>
+                        ${category === 'All' ? '' : `<div class="cert-card-category">${item.category}</div>`}
+                    </div>
+                </div>`;
+            }
+
+            if (category === 'All') {
+                grid.innerHTML = CERTIFICATES_DATA.map(group => `
+                    <div class="certs-group">
+                        <div class="certs-group-header">${group.category}</div>
+                        <div class="certs-group-grid">
+                            ${group.items.map(item => cardHTML({ ...item, category: group.category })).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                const group = CERTIFICATES_DATA.find(g => g.category === category);
+                const items = group ? group.items.map(i => ({ ...i, category: group.category })) : [];
+                grid.innerHTML = `<div class="certs-group-grid">${items.map(cardHTML).join('')}</div>`;
+            }
+        }
+
+        function initPdfLazyLoad() { /* thumbnails are pre-generated .thumb.jpg images */ }
+
+        // --- Lightbox (opens on card click, overlays gallery) ---
+        function viewCert(category, file, name, type) {
+            const lightbox = document.getElementById('certLightbox');
+            const title = document.getElementById('certLightboxTitle');
+            const body = document.getElementById('certLightboxBody');
+            const openBtn = document.getElementById('certLightboxOpenBtn');
+            const src = resolveFile(category, file);
+
+            title.textContent = name;
+            openBtn.href = src;
+
+            if (type === 'img') {
+                body.innerHTML = `<img src="${src}" alt="${name}">`;
+            } else {
+                body.innerHTML = `<object data="${src}" type="application/pdf">
+                    <div class="cert-lightbox-fallback">
+                        <p>PDF preview is not available in your browser.</p>
+                        <a href="${src}" target="_blank">Open PDF in new tab ↗</a>
+                    </div>
+                </object>`;
+            }
+
+            lightbox.classList.add('open');
+        }
+
+        function closeCertLightbox() {
+            const lightbox = document.getElementById('certLightbox');
+            const body = document.getElementById('certLightboxBody');
+            lightbox.classList.remove('open');
+            body.innerHTML = '';
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('certLightbox').classList.contains('open')) {
+                    closeCertLightbox();
+                } else if (document.getElementById('certsModal').classList.contains('open')) {
+                    closeCertsModal();
+                }
+            }
+        });
     </script>
 
 </body>

@@ -1533,3 +1533,396 @@ body.dark-mode .theme-btn {
         word-break: break-word;
     }
 }
+
+/* ── Certificates Gallery Modal ─────────────────────────────── */
+.certs-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+    backdrop-filter: blur(3px);
+}
+
+.certs-modal.open {
+    display: flex;
+}
+
+.certs-modal-paper {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    width: 100%;
+    max-width: 900px;
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 36px 36px;
+    position: relative;
+    font-family: "Georgia", "Times New Roman", serif;
+    overflow: hidden;
+}
+
+.certs-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+}
+
+.certs-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.certs-modal-title h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+}
+
+.certs-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.15s, color 0.15s;
+}
+
+.certs-modal-close:hover {
+    background: var(--accent-light);
+    color: var(--ink);
+}
+
+/* Category filter tabs */
+.certs-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.certs-filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+}
+
+.certs-filter-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+}
+
+.certs-filter-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+}
+
+/* Certificate grid */
+.certs-grid {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.certs-group-header {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+
+.certs-group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 14px;
+}
+
+.cert-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s;
+    background: var(--paper);
+}
+
+.cert-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent);
+}
+
+.cert-card-thumb {
+    width: 100%;
+    height: 150px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.cert-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Fallback placeholder */
+.cert-pdf-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, var(--accent-light) 0%, var(--paper) 100%);
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 12px;
+    transition: background 0.18s;
+}
+
+.cert-card:hover .cert-pdf-thumb {
+    background: linear-gradient(145deg, #e8eaf0 0%, var(--accent-light) 100%);
+}
+
+.cert-pdf-thumb svg {
+    width: 38px;
+    height: 38px;
+    opacity: 0.4;
+    flex-shrink: 0;
+}
+
+body.dark-mode .cert-pdf-thumb {
+    background: linear-gradient(145deg, #2d3748 0%, #374151 100%);
+}
+
+body.dark-mode .cert-card:hover .cert-pdf-thumb {
+    background: linear-gradient(145deg, #374151 0%, #4b5563 100%);
+}
+
+.cert-card-info {
+    padding: 8px 10px 10px;
+    border-top: 1px solid var(--border);
+}
+
+.cert-card-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cert-card-category {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 3px;
+}
+
+/* Filter count badge */
+.cert-filter-count {
+    display: inline-block;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-left: 2px;
+}
+
+/* ── Certificate Lightbox ─────────────────────────────── */
+.cert-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    backdrop-filter: blur(4px);
+}
+
+.cert-lightbox.open {
+    display: flex;
+}
+
+.cert-lightbox-paper {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 860px;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Georgia", "Times New Roman", serif;
+    overflow: hidden;
+}
+
+.cert-lightbox-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--accent-light);
+    flex-shrink: 0;
+}
+
+.cert-lightbox-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 12px;
+}
+
+.cert-lightbox-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.cert-lightbox-open-btn {
+    font-family: inherit;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 10px;
+    transition: all 0.15s;
+}
+
+.cert-lightbox-open-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+}
+
+.cert-lightbox-close {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 3px 10px;
+    transition: all 0.15s;
+}
+
+.cert-lightbox-close:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+}
+
+.cert-lightbox-body {
+    flex: 1;
+    overflow: auto;
+    background: var(--accent-light);
+    min-height: 0;
+}
+
+.cert-lightbox-body object,
+.cert-lightbox-body iframe {
+    width: 100%;
+    height: 75vh;
+    border: none;
+    display: block;
+}
+
+.cert-lightbox-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.cert-lightbox-fallback a {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: opacity 0.15s;
+}
+
+.cert-lightbox-fallback a:hover {
+    opacity: 0.8;
+}
+
+.cert-lightbox-body img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    background: var(--accent-light);
+}
+
+@media (max-width: 640px) {
+    .certs-modal-paper {
+        padding: 20px 18px 24px;
+        height: 92vh;
+    }
+
+    .certs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .cert-lightbox-body iframe {
+        height: 65vh;
+    }
+}
