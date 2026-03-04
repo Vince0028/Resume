@@ -324,7 +324,7 @@
                             <div class="tech-category">
                                 <div class="tech-category-title">Languages</div>
                                 <div class="skill-icons">
-                                    <img src="https://skillicons.dev/icons?i=cpp,java,python,dart,js,ts"
+                                    <img src="https://skillicons.dev/icons?i=cpp,java,python,dart,kotlin,js,ts"
                                         alt="Languages">
                                 </div>
                             </div>
@@ -332,7 +332,7 @@
                             <div class="tech-category">
                                 <div class="tech-category-title">Frontend & Mobile</div>
                                 <div class="skill-icons">
-                                    <img src="https://skillicons.dev/icons?i=react,vue,flutter,html,css,vite,bootstrap,threejs"
+                                    <img src="https://skillicons.dev/icons?i=react,vue,flutter,html,css,tailwind,vite,bootstrap,threejs"
                                         alt="Frontend & Mobile">
                                 </div>
                             </div>
@@ -340,16 +340,32 @@
                             <div class="tech-category">
                                 <div class="tech-category-title">Backend & Database</div>
                                 <div class="skill-icons">
-                                    <img src="https://skillicons.dev/icons?i=nodejs,flask,nextjs,supabase,postgres,sqlite,mysql"
+                                    <img src="https://skillicons.dev/icons?i=nodejs,nestjs,flask,nextjs,supabase,postgres,sqlite,mysql"
                                         alt="Backend & Database">
                                 </div>
                             </div>
 
                             <div class="tech-category">
-                                <div class="tech-category-title">Tools, Hardware & AI</div>
+                                <div class="tech-category-title">Cloud & DevOps</div>
                                 <div class="skill-icons">
-                                    <img src="https://skillicons.dev/icons?i=opencv,powershell,bash,npm,git,docker,arduino,raspberrypi,linux"
-                                        alt="Tools, Hardware & AI">
+                                    <img src="https://skillicons.dev/icons?i=docker,azure,aws,git,github,npm"
+                                        alt="Cloud & DevOps">
+                                </div>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Dev Tools & AI</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=vscode,postman,powershell,bash,opencv"
+                                        alt="Dev Tools & AI">
+                                </div>
+                            </div>
+
+                            <div class="tech-category">
+                                <div class="tech-category-title">Hardware & OS</div>
+                                <div class="skill-icons">
+                                    <img src="https://skillicons.dev/icons?i=arduino,raspberrypi,kali,ubuntu,linux"
+                                        alt="Hardware & OS">
                                 </div>
                             </div>
                         </div>
@@ -453,53 +469,48 @@
                     <div class="section-header">
                         <i data-lucide="briefcase" class="icon"></i>
                         <h2>Recent Projects</h2>
+                        <span id="projectCountBadge" style="font-size:0.75rem;font-weight:600;background:var(--accent,#336699);color:#fff;padding:2px 9px;border-radius:999px;margin-left:2px;">0</span>
                         <a href="https://github.com/Vince0028" target="_blank" class="view-all">View All →</a>
                     </div>
                     <div class="cards-grid" id="projectsGrid">
 
-                        <a class="card card-link" href="https://dengue-tect.vercel.app" target="_blank"
-                            rel="noopener noreferrer">
-                            <span class="link-label">LINK</span>
-                            <div class="list-item">
-                                <strong>DengueTect</strong>
-                                <p>AI-powered tool assessing dengue risk from symptoms and mosquito bite images.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=react,nextjs,tailwind,python,flask,supabase,ts&perline=2"
-                                    alt="Tech Stack">
-                            </div>
-                        </a>
-                        <a class="card card-link" href="https://analytics-page-1.vercel.app" target="_blank"
-                            rel="noopener noreferrer">
-                            <span class="link-label">LINK</span>
-                            <div class="list-item">
-                                <strong>AnaLytics</strong>
-                                <p>Rice retailer app for waste tracking and online storefronts.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=python,flask,supabase,postgres,html,css,js&perline=2"
-                                    alt="Tech Stack">
-                            </div>
-                        </a>
+                        <!-- 1 – GitChat (user pick) -->
                         <div class="card">
                             <div class="list-item">
-                                <strong>Driver Expression Detector</strong>
-                                <p>Detects yawns or lost focus and triggers buzzer for driver safety.</p>
+                                <strong>GitChat</strong>
+                                <p>Fully offline mesh chat and video call app using BLE, Wi-Fi Direct, and WebRTC — no internet required.</p>
                             </div>
                             <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=python,raspberrypi&perline=2" alt="Tech Stack">
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="list-item">
-                                <strong>SmartShut</strong>
-                                <p>Arduino-based motion-aware lighting with warning buzzer.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=arduino,cpp&perline=2" alt="Tech Stack">
+                                <img src="https://skillicons.dev/icons?i=flutter,dart,kotlin,arduino&perline=2"
+                                    alt="Tech Stack">
                             </div>
                         </div>
 
+                        <!-- 2 – Veriface (user pick) -->
+                        <div class="card">
+                            <div class="list-item">
+                                <strong>Veriface</strong>
+                                <p>Advanced attendance tracking system powered by Computer Vision & ML.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=python,opencv,numpy&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </div>
+
+                        <!-- 3 – Hand Gesture Recognition (user pick) -->
+                        <div class="card">
+                            <div class="list-item">
+                                <strong>Hand Gesture Recognition</strong>
+                                <p>Real-time hand gesture recognition via webcam to detect and identify common hand signs.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=python,opencv&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </div>
+
+                        <!-- 4 – NoFluff.ai (user pick) -->
                         <a class="card card-link" href="https://no-fluff-ai.vercel.app/" target="_blank"
                             rel="noopener noreferrer">
                             <span class="link-label">LINK</span>
@@ -513,40 +524,7 @@
                             </div>
                         </a>
 
-                        <div class="card">
-                            <div class="list-item">
-                                <strong>Veriface</strong>
-                                <p>Advanced attendance tracking system powered by Computer Vision & ML.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=python,opencv,numpy&perline=2"
-                                    alt="Tech Stack">
-                            </div>
-                        </div>
-                        <a class="card card-link" href="https://track-my-gains-psi.vercel.app" target="_blank"
-                            rel="noopener noreferrer">
-                            <span class="link-label">LINK</span>
-                            <div class="list-item">
-                                <strong>TrackMyGains</strong>
-                                <p>Gym companion app for tracking splits, progress, and AI-powered meal analysis.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=js,react,vite,supabase,tailwind&perline=2"
-                                    alt="Tech Stack">
-                            </div>
-                        </a>
-                        <a class="card card-link" href="https://beta-budget.vercel.app" target="_blank"
-                            rel="noopener noreferrer">
-                            <span class="link-label">LINK</span>
-                            <div class="list-item">
-                                <strong>BETA</strong>
-                                <p>AI-powered financial management with smart receipt scanning and budgeting.</p>
-                            </div>
-                            <div class="pill-row">
-                                <img src="https://skillicons.dev/icons?i=react,ts,tailwind,supabase,vite&perline=2"
-                                    alt="Tech Stack">
-                            </div>
-                        </a>
+                        <!-- 5 – Student Portal (user pick) -->
                         <a class="card card-link" href="https://student-monitor-student-portal.onrender.com"
                             target="_blank" rel="noopener noreferrer">
                             <span class="link-label">LINK</span>
@@ -559,6 +537,8 @@
                                     alt="Tech Stack">
                             </div>
                         </a>
+
+                        <!-- 6 – benPDF (user pick) -->
                         <a class="card card-link" href="https://benpdf.onrender.com" target="_blank"
                             rel="noopener noreferrer">
                             <span class="link-label">LINK</span>
@@ -572,6 +552,99 @@
                             </div>
                         </a>
 
+                        <!-- 7 – SmartShut (user pick) -->
+                        <div class="card">
+                            <div class="list-item">
+                                <strong>SmartShut</strong>
+                                <p>Arduino-based motion-aware lighting with warning buzzer.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=arduino,cpp&perline=2" alt="Tech Stack">
+                            </div>
+                        </div>
+
+                        <!-- 8 – DengueTect: AI + CV + multi-framework full-stack -->
+                        <a class="card card-link" href="https://dengue-tect.vercel.app" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>DengueTect</strong>
+                                <p>AI-powered tool assessing dengue risk from symptoms and mosquito bite images.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=react,nextjs,tailwind,python,flask,supabase,ts&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
+                        <!-- 9 – Driver Expression Detector: CV + Raspberry Pi hardware -->
+                        <div class="card">
+                            <div class="list-item">
+                                <strong>Driver Expression Detector</strong>
+                                <p>Detects yawns or lost focus and triggers buzzer for driver safety.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=python,raspberrypi&perline=2" alt="Tech Stack">
+                            </div>
+                        </div>
+
+                        <!-- 10 – TrackMyGains: full-stack + Gemini AI -->
+                        <a class="card card-link" href="https://track-my-gains-psi.vercel.app" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>TrackMyGains</strong>
+                                <p>Gym companion app for tracking splits, progress, and AI-powered meal analysis.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=js,react,vite,supabase,tailwind&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
+                        <!-- 11 – BETA: AI receipt scanning + full-stack -->
+                        <a class="card card-link" href="https://beta-budget.vercel.app" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>BETA</strong>
+                                <p>AI-powered financial management with smart receipt scanning and budgeting.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=react,ts,tailwind,supabase,vite&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
+                        <!-- 12 – Hotel Reservation System: React + Vite + Supabase -->
+                        <a class="card card-link" href="https://hotelreservation-phi.vercel.app" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>Hotel Reservation System</strong>
+                                <p>Full-stack hotel reservation system with separate guest and staff interfaces for booking and reporting.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=react,vite,tailwind,supabase&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
+                        <!-- 13 – AnaLytics: Flask + Supabase -->
+                        <a class="card card-link" href="https://analytics-page-1.vercel.app" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>AnaLytics</strong>
+                                <p>Rice retailer app for waste tracking and online storefronts.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=python,flask,supabase,postgres,html,css,js&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
+                        <!-- 14 – Project Incognito: Flutter real-time multiplayer -->
                         <a class="card card-link" href="https://github.com/Vince0028/Impostor-game" target="_blank"
                             rel="noopener noreferrer">
                             <span class="link-label">REPO</span>
@@ -584,6 +657,8 @@
                                     alt="Tech Stack">
                             </div>
                         </a>
+
+                        <!-- 15 – Resume Ranking: Flutter + Supabase -->
                         <a class="card card-link" href="https://github.com/Vince0028/Resume_Ranking" target="_blank"
                             rel="noopener noreferrer">
                             <span class="link-label">REPO</span>
@@ -596,19 +671,35 @@
                                     alt="Tech Stack">
                             </div>
                         </a>
+
+                        <!-- 16 – Synapse: React dashboard -->
                         <a class="card card-link" href="https://synapse-ben.vercel.app/" target="_blank"
                             rel="noopener noreferrer">
                             <span class="link-label">LINK</span>
                             <div class="list-item">
                                 <strong>Synapse</strong>
-                                <p>The Digital Toolkit Hub for discovering, tracking, and organizing resources & AI
-                                    agents.</p>
+                                <p>The Digital Toolkit Hub for discovering, tracking, and organizing resources & AI agents.</p>
                             </div>
                             <div class="pill-row">
                                 <img src="https://skillicons.dev/icons?i=react,ts,vite,tailwind,supabase&perline=2"
                                     alt="Tech Stack">
                             </div>
                         </a>
+
+                        <!-- 17 – Resume Website: HTML/CSS/JS -->
+                        <a class="card card-link" href="https://miterm-resume-alobin.vercel.app/" target="_blank"
+                            rel="noopener noreferrer">
+                            <span class="link-label">LINK</span>
+                            <div class="list-item">
+                                <strong>Resume Website</strong>
+                                <p>Interactive resume with Simple, UI, and Terminal views plus AI Chat.</p>
+                            </div>
+                            <div class="pill-row">
+                                <img src="https://skillicons.dev/icons?i=html,css,js,nodejs,ts&perline=2"
+                                    alt="Tech Stack">
+                            </div>
+                        </a>
+
                     </div>
 
                     <!-- Pagination Controls -->
@@ -639,6 +730,10 @@
 
                             const projects = Array.from(grid.children);
                             const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+                            // Update the count badge
+                            const badge = document.getElementById('projectCountBadge');
+                            if (badge) badge.textContent = projects.length;
 
                             window.showPage = function (page) {
                                 const start = (page - 1) * itemsPerPage;
