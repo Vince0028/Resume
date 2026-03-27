@@ -1048,6 +1048,7 @@
                 category: 'Cloud, IT & Cybersecurity',
                 items: [
                     { name: 'AWS Academy – Cloud Foundations', file: 'AWS Academy Graduate - Cloud Foundations - Training Badge.png', type: 'img' },
+                    { name: 'AWS Cloud Club Core', file: 'aws-cloud-club-core-team.png', type: 'img' },
                     { name: 'COC – Alobin', file: 'COC - Alobin.pdf', type: 'pdf' },
                     { name: 'Atlassian IT Service Management (ITSM)', file: 'CertificateOfCompletion_Atlassian IT Service Management ITSM Professional Certificate.pdf', type: 'pdf' },
                     { name: 'Career Essentials in GitHub', file: 'CertificateOfCompletion_Career Essentials in GitHub Professional Certificate.pdf', type: 'pdf' },
@@ -1096,6 +1097,26 @@
             },
         ];
 
+        const ESSENTIAL_CATEGORY = 'Essential Certificates';
+        const ESSENTIAL_CERT_KEYS = [
+            'Design::NC2_Animation_TESDA_Certificate.png',
+            'Cloud, IT & Cybersecurity::COC - Alobin.pdf',
+            'Cloud, IT & Cybersecurity::AWS Academy Graduate - Cloud Foundations - Training Badge.png',
+            'Cloud, IT & Cybersecurity::aws-cloud-club-core-team.png'
+        ];
+
+        function getAllCertificateItems() {
+            return CERTIFICATES_DATA.flatMap(group =>
+                group.items.map(item => ({ ...item, category: group.category }))
+            );
+        }
+
+        function getEssentialCertificates() {
+            const allItems = getAllCertificateItems();
+            const byKey = new Map(allItems.map(item => [`${item.category}::${item.file}`, item]));
+            return ESSENTIAL_CERT_KEYS.map(key => byKey.get(key)).filter(Boolean);
+        }
+
         function resolveFile(category, file) {
             const parts = file.split('/');
             const encodedParts = parts.map(p => encodeURIComponent(p));
@@ -1139,10 +1160,12 @@
 
         function buildCertsFilterBar() {
             const bar = document.getElementById('certsFilterBar');
-            const categories = ['All', ...CERTIFICATES_DATA.map(c => c.category)];
+            const categories = ['All', ESSENTIAL_CATEGORY, ...CERTIFICATES_DATA.map(c => c.category)];
             bar.innerHTML = categories.map(cat => {
                 const count = cat === 'All'
                     ? CERTIFICATES_DATA.reduce((s, g) => s + g.items.length, 0)
+                    : cat === ESSENTIAL_CATEGORY
+                        ? getEssentialCertificates().length
                     : (CERTIFICATES_DATA.find(g => g.category === cat) || { items: [] }).items.length;
                 return `<button class="certs-filter-btn${cat === 'All' ? ' active' : ''}" onclick="filterCerts('${cat}')">${cat} <span class="cert-filter-count">${count}</span></button>`;
             }).join('');
@@ -1160,6 +1183,8 @@
 
         function buildCertsGrid(category) {
             const grid = document.getElementById('certsGrid');
+            const essentialItems = getEssentialCertificates();
+            const essentialKeys = new Set(essentialItems.map(item => `${item.category}::${item.file}`));
 
             function cardHTML(item) {
                 const src = resolveFile(item.category, item.file);
@@ -1179,14 +1204,35 @@
             }
 
             if (category === 'All') {
-                grid.innerHTML = CERTIFICATES_DATA.map(group => `
+                const essentialGroupHTML = essentialItems.length
+                    ? `
+                    <div class="certs-group">
+                        <div class="certs-group-header">${ESSENTIAL_CATEGORY}</div>
+                        <div class="certs-group-grid">
+                            ${essentialItems.map(cardHTML).join('')}
+                        </div>
+                    </div>
+                `
+                    : '';
+
+                const regularGroupsHTML = CERTIFICATES_DATA.map(group => {
+                    const nonEssentialItems = group.items
+                        .map(item => ({ ...item, category: group.category }))
+                        .filter(item => !essentialKeys.has(`${item.category}::${item.file}`));
+
+                    return `
                     <div class="certs-group">
                         <div class="certs-group-header">${group.category}</div>
                         <div class="certs-group-grid">
-                            ${group.items.map(item => cardHTML({ ...item, category: group.category })).join('')}
+                            ${nonEssentialItems.map(cardHTML).join('')}
                         </div>
                     </div>
-                `).join('');
+                `;
+                }).join('');
+
+                grid.innerHTML = essentialGroupHTML + regularGroupsHTML;
+            } else if (category === ESSENTIAL_CATEGORY) {
+                grid.innerHTML = `<div class="certs-group-grid">${essentialItems.map(cardHTML).join('')}</div>`;
             } else {
                 const group = CERTIFICATES_DATA.find(g => g.category === category);
                 const items = group ? group.items.map(i => ({ ...i, category: group.category })) : [];
