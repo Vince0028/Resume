@@ -1500,6 +1500,12 @@ body.dark-mode .theme-btn {
     height: 20px;
 }
 
+.contact-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
 .contact-content {
     flex: 1;
     min-width: 0;
