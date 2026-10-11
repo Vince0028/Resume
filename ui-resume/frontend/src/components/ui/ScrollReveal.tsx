@@ -35,7 +35,8 @@ const ScrollReveal = ({
             if (!containerRef.current) return;
 
             const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefersReducedMotion) {
+            const isInsideTransition = !!containerRef.current.closest('[data-transition-overlay]');
+            if (prefersReducedMotion || isInsideTransition) {
                 gsap.set(containerRef.current, { autoAlpha: 1 });
                 if (isStaggeredChildren) {
                     gsap.set(containerRef.current.children, { autoAlpha: 1 });

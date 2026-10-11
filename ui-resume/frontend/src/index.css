@@ -139,17 +139,9 @@
   color: #09090b;
 }
 
-/* Native View Transition Circular Explosion */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
+/* Transition overlay instant visibility for high performance */
+[data-transition-overlay] .opacity-0,
+[data-transition-overlay] .invisible {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
