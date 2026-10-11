@@ -30,6 +30,22 @@
       "destination": "https://vercel-ai-chatbot-rho.vercel.app/api/$1"
     },
     {
+      "source": "/ui-resume/assets/(.*)",
+      "destination": "/ui-resume/frontend/dist/assets/$1"
+    },
+    {
+      "source": "/ui-resume/images/(.*)",
+      "destination": "/ui-resume/frontend/dist/images/$1"
+    },
+    {
+      "source": "/ui-resume",
+      "destination": "/ui-resume/frontend/dist/index.html"
+    },
+    {
+      "source": "/ui-resume/(.*)",
+      "destination": "/ui-resume/frontend/dist/index.html"
+    },
+    {
       "source": "/resume",
       "destination": "/html/index.html"
     },

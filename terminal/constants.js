@@ -50,6 +50,7 @@ export const INITIAL_BOOT_SEQUENCE = [
 ];
 
 export const RESUME_FALLBACK_URLS = [
+  '../ui-resume/frontend/dist/index.html',
   '../html/index.html?resume=1',
   '../html/index.html'
 ];

@@ -551,8 +551,8 @@ const App = () => {
         <div>
           <div>Email: <a href="mailto:alobinvince@gmail.com">alobinvince@gmail.com</a></div>
           <div>GitHub: <a href="https://github.com/Vince0028" target="_blank" rel="noreferrer">github.com/Vince0028</a></div>
-          <div>LinkedIn: <a href="https://linkedin.com" target="_blank" rel="noreferrer">linkedin.com</a></div>
-          <div>Website: <a href="/index.html?resume=1">Portfolio (open)</a></div>
+          <div>LinkedIn: <a href="https://www.linkedin.com/in/vince-nelmar-alobin-26a361321" target="_blank" rel="noreferrer">linkedin.com/in/vince-nelmar-alobin-26a361321</a></div>
+          <div>Website: <a href="../ui-resume/frontend/dist/index.html">UI Resume (open)</a></div>
         </div>
       `;
       setHistory(prev => [...prev, { id: `contact-${Date.now()}`, type: MessageType.SYSTEM, content: html, timestamp: Date.now() }]);
