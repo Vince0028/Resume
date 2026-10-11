@@ -72,6 +72,7 @@ const Index = () => {
 
   // Intro animation state
   const [introPhase, setIntroPhase] = useState<'closed' | 'opening' | 'done'>('closed');
+  const [smokeFading, setSmokeFading] = useState(false);
 
   // Smoke particle canvas ref
   const smokeCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,12 +80,14 @@ const Index = () => {
   useEffect(() => {
     // Start opening after a brief pause so the closed state is visible
     const t1 = setTimeout(() => setIntroPhase('opening'), 800);
-    // Mark done after animation completes (3s animation + 800ms delay)
-    const t2 = setTimeout(() => setIntroPhase('done'), 4200);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    // Start smooth fade-out of the smoke canvas at 3400ms
+    const t2 = setTimeout(() => setSmokeFading(true), 3400);
+    // Mark intro fully done after shutters have docked and smoke has completely faded out (4600ms total)
+    const t3 = setTimeout(() => setIntroPhase('done'), 4600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
 
-  // Smoke particle effect along the seam AND panel edges
+  // Smoke particle effect along the seam AND panel edges with smooth fade-out
   useEffect(() => {
     if (introPhase !== 'opening') return;
     const canvas = smokeCanvasRef.current;
@@ -139,7 +142,7 @@ const Index = () => {
     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
     let animId: number;
     const animDuration = 3000;
-    const spawnDuration = 2800;
+    const spawnMaxDuration = 2600;
 
     const spawnAt = (yPos: number, count: number, driftDir: number) => {
       for (let i = 0; i < count; i++) {
@@ -150,7 +153,7 @@ const Index = () => {
           vy: driftDir * (Math.random() * 1.5 + 0.3),
           size: Math.random() * 25 + 12,
           alpha: Math.random() * 0.35 + 0.12,
-          decay: Math.random() * 0.004 + 0.002,
+          decay: Math.random() * 0.003 + 0.002,
           color: Math.random() > 0.3
             ? `hsla(${primaryColor} / VAR)`
             : `hsla(0 0% 60% / VAR)`,
@@ -173,8 +176,12 @@ const Index = () => {
       const topEdge = halfH - offset;   // bottom edge of top panel
       const bottomEdge = halfH + offset; // top edge of bottom panel
 
-      // Spawn particles along all three lines
-      if (elapsed < spawnDuration && Math.random() > 0.25) {
+      // Smoothly taper off particle spawning starting at 1800ms down to 0 at 2600ms
+      const spawnRate = elapsed < 1800
+        ? 0.75
+        : Math.max(0, 0.75 * (1 - (elapsed - 1800) / 800));
+
+      if (elapsed < spawnMaxDuration && Math.random() < spawnRate) {
         // Center seam (fewer as it spreads)
         const seamCount = progress < 0.3 ? 3 : 1;
         spawnAt(halfH, seamCount, Math.random() > 0.5 ? -1 : 1);
@@ -186,20 +193,28 @@ const Index = () => {
         spawnAt(bottomEdge, 2, 1);
       }
 
+      // Smooth fade multiplier: begins fading gently at 2200ms and reaches 0 by 3600ms
+      const fadeMultiplier = elapsed < 2200
+        ? 1.0
+        : Math.max(0, 1.0 - Math.pow((elapsed - 2200) / 1400, 1.3));
+
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.alpha -= p.decay;
-        p.size += 0.3;
+        // As smoke dissipates, particles accelerate their natural decay and gently expand
+        p.alpha -= p.decay * (elapsed > 2200 ? 1.6 : 1.0);
+        p.size += 0.35;
 
-        if (p.alpha <= 0) {
+        const effectiveAlpha = Math.max(0, p.alpha * fadeMultiplier);
+
+        if (p.alpha <= 0 || effectiveAlpha <= 0.002) {
           particles.splice(i, 1);
           continue;
         }
 
         ctx.save();
-        ctx.globalAlpha = p.alpha;
+        ctx.globalAlpha = effectiveAlpha;
         const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
         const col = p.color.replace('VAR', '0.6');
         const colT = p.color.replace('VAR', '0');
@@ -212,7 +227,7 @@ const Index = () => {
         ctx.restore();
       }
 
-      if (particles.length > 0 || elapsed < spawnDuration) {
+      if (particles.length > 0 || elapsed < 3600) {
         animId = requestAnimationFrame(loop);
       }
     };
@@ -305,10 +320,12 @@ const Index = () => {
               transform: 'translateY(-50%)',
             }}
           />
-          {/* Smoke particles canvas */}
+          {/* Smoke particles canvas with smooth fade-out */}
           <canvas
             ref={smokeCanvasRef}
-            className="fixed inset-0 z-[202] pointer-events-none"
+            className={`fixed inset-0 z-[202] pointer-events-none transition-opacity duration-1000 ease-out ${
+              smokeFading ? 'opacity-0' : 'opacity-100'
+            }`}
           />
         </>
       )}
