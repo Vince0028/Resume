@@ -32,7 +32,14 @@ const FooterEdge = () => (
   </div>
 );
 
-import { Linkedin, Github } from 'lucide-react';
+import { Linkedin, Github, ArrowLeft } from 'lucide-react';
+
+const getSimpleResumeUrl = () => {
+  if (typeof window !== 'undefined' && window.location.protocol === 'file:') {
+    return '../../html/simple_portfolio.html';
+  }
+  return '/simple_portfolio.html';
+};
 
 const footerLinks = [
   { label: 'Resume', href: '#experience' },
@@ -49,9 +56,17 @@ const FooterBar = ({ minimal = false }: FooterBarProps) => (
     <FooterEdge />
 
     <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-      {/* Left: copyright */}
-      <div className="hidden md:flex items-center flex-1">
-        <span className="font-mono text-xs tracking-widest text-foreground/50 uppercase transition-colors duration-1000">
+      {/* Left: copyright & Back to Simple Resume button */}
+      <div className="hidden md:flex items-center gap-4 flex-1">
+        <a
+          href={getSimpleResumeUrl()}
+          className="group inline-flex items-center gap-2 px-3 py-1 rounded border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary transition-all duration-300 font-mono text-xs font-semibold tracking-wider uppercase shadow-[0_0_10px_rgba(212,132,26,0.12)] hover:shadow-[0_0_15px_rgba(212,132,26,0.25)]"
+          title="Return to the simple portfolio resume"
+        >
+          <ArrowLeft size={12} className="group-hover:-translate-x-0.5 transition-transform" />
+          <span>Simple Resume</span>
+        </a>
+        <span className="hidden lg:inline font-mono text-xs tracking-widest text-foreground/50 uppercase transition-colors duration-1000">
           &copy; 2026 Vince Nelmar Alobin
         </span>
       </div>
@@ -94,10 +109,19 @@ const FooterBar = ({ minimal = false }: FooterBarProps) => (
         <div className="hidden md:flex flex-1" />
       )}
 
-      {/* Mobile: just copyright */}
-      <span className="md:hidden font-mono text-xs text-foreground/50 transition-colors duration-1000">
-        &copy; 2026
-      </span>
+      {/* Mobile: copyright + Back to Simple Resume */}
+      <div className="md:hidden flex items-center justify-between w-full">
+        <a
+          href={getSimpleResumeUrl()}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[11px] font-semibold tracking-wider uppercase"
+        >
+          <ArrowLeft size={11} />
+          <span>Simple Resume</span>
+        </a>
+        <span className="font-mono text-xs text-foreground/50 transition-colors duration-1000">
+          &copy; 2026
+        </span>
+      </div>
     </div>
   </footer>
 );

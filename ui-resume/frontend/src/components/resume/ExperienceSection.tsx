@@ -4,41 +4,72 @@ import ScrollReveal from '../ui/ScrollReveal';
 import LightRays from './LightRays';
 import { useState } from 'react';
 
-const experiences = [
+interface ExperienceItem {
+  period: string;
+  role: string;
+  company: string;
+  subtitle?: string;
+  description?: string;
+  bullets?: string[];
+  icon: React.ReactNode;
+  tags: string[];
+  status: 'ACTIVE' | 'COMPLETED';
+}
+
+const experiences: ExperienceItem[] = [
   {
-    period: '2024 - Present',
-    title: 'Division Science and Technology Fair (DSTF) — Technical Lead',
-    description:
-      'Designed and deployed award-level projects including an AI dengue risk assessment tool (DengueTect) and retailer analytics platform (AnaLytics) live on Vercel. Led end-to-end lifecycle across AI, hardware, and web.',
+    period: 'Sep 10 – 20, 2026',
+    role: 'DevOps & Web Developer',
+    company: 'APC-NAMFREL BARMM Election Monitoring Portal',
+    subtitle: 'Bangsamoro Parliamentary Elections Monitoring | DevOps, CI/CD, Database Caching',
+    bullets: [
+      'Served as a specialized web developer and DevOps engineer supporting the high-profile Bangsamoro Parliamentary Elections monitoring portal viewed and monitored nationwide.',
+      'Architected automated CI/CD deployment pipelines and implemented multi-layer database caching strategies to ensure horizontal scalability, zero downtime, and instant query responsiveness under peak nationwide voting traffic.',
+    ],
     icon: <Briefcase size={14} />,
-    tags: ['Technical Lead', 'DengueTect', 'AnaLytics', 'AI / CV', 'Vercel'],
-    status: 'ACTIVE',
+    tags: ['DevOps', 'CI/CD', 'Database Caching', 'PostgreSQL', 'NAMFREL', 'APC', 'High Traffic Architecture'],
+    status: 'COMPLETED',
   },
   {
-    period: '2024 - Present',
-    title: 'BS Information Technology — Asia Pacific College (APC)',
-    description:
-      'Pursuing BSIT focusing on full-stack web, mobile architectures, cloud, and AI engineering. Coursework in WebProg, MobProg, Data Structures, and Data Management.',
-    icon: <GraduationCap size={14} />,
-    tags: ['BSIT', 'React', 'Flutter', 'TypeScript', 'Supabase', 'Python'],
-    status: 'ACTIVE',
-  },
-  {
-    period: '2024 - Present',
-    title: 'Academic Project Developer — APC Capstones',
-    description:
-      'Engineered subject capstones including a Hotel Reservation System, AI-powered budget tracker (BETA), Flutter Resume Ranking app, and webcam Hand Gesture Recognition.',
+    period: 'Aug 2025 – Oct 2025',
+    role: 'Lead Developer',
+    company: 'PCSHS • Division Science and Technology Fair (DSTF)',
+    subtitle: 'Division Science and Technology Fair (DSTF) | Python, React, Next.js, Arduino, Raspberry Pi',
+    bullets: [
+      'Built all 4 competition projects from start to finish, serving as the sole programmer and technical lead across 4 separate teams with a total of 15 researchers.',
+      'DengueTect: AI-powered dengue risk assessment and health diagnostic web application.',
+      'AnaLytics: Real-time retail inventory and foot-traffic analytics dashboard.',
+      'Driver Expression Detector: Computer vision vehicle safety camera monitoring driver fatigue and facial expressions.',
+      'SmartShut: IoT automated intelligent smart lighting and sensor-driven enclosure system.',
+    ],
     icon: <Terminal size={14} />,
-    tags: ['Full Stack', 'OpenCV', 'Gemini AI', 'Flask', 'PostgreSQL'],
+    tags: ['Lead Developer', 'Python', 'React', 'Next.js', 'Arduino', 'Raspberry Pi', 'OpenCV', 'IoT'],
+    status: 'COMPLETED',
+  },
+  {
+    period: '2024 – Present',
+    role: 'BS Information Technology',
+    company: 'Asia Pacific College (APC)',
+    subtitle: 'Specializing in Full-Stack Web, Mobile Architectures & AI Systems',
+    bullets: [
+      'Pursuing Bachelor of Science in Information Technology focusing on modern reactive web ecosystems, mobile platforms, backend architectures, and computer vision systems.',
+      'Backed by 40+ professional industry certifications in Cloud Computing, Artificial Intelligence, and Cybersecurity.',
+    ],
+    icon: <GraduationCap size={14} />,
+    tags: ['BSIT', 'Asia Pacific College', 'React', 'Flutter', 'TypeScript', 'Supabase', 'Python'],
     status: 'ACTIVE',
   },
   {
-    period: '2022 - 2024',
-    title: 'Senior High School — STEM Strand (With Honors & TESDA NC2)',
-    description:
-      'Graduated STEM strand with academic honors from Pasay City South High School. Earned TESDA National Certificate II (NC2) in Animation.',
+    period: '2022 – 2024',
+    role: 'Senior High School — STEM Strand',
+    company: 'Pasay City South High School (PCSHS)',
+    subtitle: 'Graduated With Academic Honors • TESDA National Certificate II (NC2)',
+    bullets: [
+      'Graduated with Academic Honors under the Science, Technology, Engineering, and Mathematics (STEM) strand.',
+      'Earned TESDA National Certificate II (NC2) in Computer Animation and 2D Digital Design.',
+    ],
     icon: <GraduationCap size={14} />,
-    tags: ['STEM', 'Academic Honors', 'TESDA NC2', 'Computer Animation'],
+    tags: ['STEM', 'Academic Honors', 'TESDA NC2', 'Computer Animation', 'PCSHS'],
     status: 'COMPLETED',
   },
 ];
@@ -171,13 +202,34 @@ const ExperienceSection = ({ className = "", isDarkMode = true }: ExperienceSect
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-300">
-                    {exp.title}
-                  </h3>
+                  {/* Role Title & Organization */}
+                  <div className="mb-2.5">
+                    <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300 flex items-baseline gap-2 flex-wrap">
+                      <span>{exp.role}</span>
+                      <span className="text-xs font-mono font-normal text-primary/80">@ {exp.company}</span>
+                    </h3>
+                    {exp.subtitle && (
+                      <p className="font-mono text-xs text-muted-foreground mt-0.5 tracking-wide">
+                        {exp.subtitle}
+                      </p>
+                    )}
+                  </div>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-2xl">
-                    {exp.description}
-                  </p>
+                  {/* Bullets or Description */}
+                  {exp.bullets && exp.bullets.length > 0 ? (
+                    <ul className="space-y-2 mb-4 max-w-2xl text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-zinc-200">
+                      {exp.bullets.map((bullet, bIdx) => (
+                        <li key={bIdx} className="flex items-start gap-2.5">
+                          <span className="text-primary text-xs mt-1 select-none font-mono">▸</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm leading-relaxed mb-4 max-w-2xl text-zinc-800 dark:text-zinc-200 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-zinc-200">
+                      {exp.description}
+                    </p>
+                  )}
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">

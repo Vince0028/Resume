@@ -77,7 +77,7 @@ const HeroSection = ({ introPhase = 'done', isTransition = false }: HeroSectionP
             <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-amber-500/20 to-primary/40 rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition duration-700 pointer-events-none" />
 
             {/* Pure image container without any text overlay */}
-            <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/40">
+            <div id="hero-grad-photo" className="relative overflow-hidden rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/40">
               <img
                 src={`${import.meta.env.BASE_URL}images/grad.png`}
                 alt="Vince Nelmar Alobin"
