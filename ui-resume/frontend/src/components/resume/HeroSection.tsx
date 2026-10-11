@@ -75,6 +75,23 @@ const HeroSection = ({ introPhase = 'done', isTransition = false }: HeroSectionP
             />
           </div>
         </div>
+
+        {/* Right: Big Hero Photo (Graduation Photo) */}
+        <div className={`lg:flex-1 flex justify-center lg:justify-end items-center pointer-events-auto transition-all duration-1000 ${opacityClass}`}>
+          <div className="relative group max-w-sm sm:max-w-md lg:max-w-lg w-full">
+            {/* Ambient golden/primary glow behind image */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-amber-500/20 to-primary/40 rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition duration-700 pointer-events-none" />
+
+            {/* Pure image container without any text overlay */}
+            <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/40">
+              <img
+                src={`${import.meta.env.BASE_URL}images/grad.png`}
+                alt="Vince Nelmar Alobin"
+                className="w-full h-auto max-h-[560px] object-cover rounded-2xl select-none"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="absolute bottom-12 flex flex-col items-center gap-2 text-muted-foreground">

@@ -347,19 +347,6 @@ const Index = () => {
 
       {/* LAYER 1: Base — stays in document flow, scroll position preserved */}
       <div className={`${isDarkMode ? 'theme-dark' : 'theme-light'} relative ${isTransitioning ? '!transition-none !duration-0 [&_*]:!transition-none [&_*]:!duration-0' : ''}`}>
-        {/* LANYARD — absolute within hero area, scrolls with content */}
-        <div
-          className="absolute top-0 left-0 right-0 z-[58] hidden lg:block pointer-events-none"
-          style={{ height: '100vh' }}
-        >
-          <div className="pointer-events-none w-full h-full [&_canvas]:pointer-events-auto">
-            <LanyardErrorBoundary>
-              <Suspense fallback={null}>
-                <Lanyard position={[2, 0, 18]} gravity={[0, -40, 0]} fov={15} />
-              </Suspense>
-            </LanyardErrorBoundary>
-          </div>
-        </div>
         <ResumeContent isDarkMode={isDarkMode} onToggle={toggleTheme} introPhase={introPhase} />
       </div>
 
