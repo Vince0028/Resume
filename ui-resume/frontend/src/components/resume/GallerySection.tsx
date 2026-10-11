@@ -77,7 +77,7 @@ const GallerySection = ({ className = '', isTransition = false }: GallerySection
   return (
     <section id="gallery" className={`py-24 ${className}`}>
       <div className="px-6 max-w-6xl mx-auto">
-        <SectionHeader number="03.5" title="Gallery" />
+        <SectionHeader number="07" title="Gallery" />
         <ScrollReveal direction="up" delay={0.2}>
           <p className="text-muted-foreground mb-10">
             A visual archive — hover to explore.

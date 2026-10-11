@@ -80,7 +80,7 @@ const HobbiesSection = ({ className = "" }: HobbiesSectionProps) => {
   return (
     <section id="hobbies" className={`py-24 ${className}`}>
       <div className="px-6 max-w-5xl mx-auto">
-        <SectionHeader number="03" title="Hobbies" />
+        <SectionHeader number="06" title="Hobbies" />
 
         <div className="grid md:grid-cols-2 gap-16 items-start">
           {/* ── Desktop PC ── */}

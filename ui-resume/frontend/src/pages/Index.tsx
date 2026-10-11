@@ -6,7 +6,9 @@ import Navbar from '@/components/resume/Navbar';
 import HeroSection from '@/components/resume/HeroSection';
 import AboutSection from '@/components/resume/AboutSection';
 import ExperienceSection from '@/components/resume/ExperienceSection';
+import ProjectsSection from '@/components/resume/ProjectsSection';
 import SkillsSection from '@/components/resume/SkillsSection';
+import CertificatesSection from '@/components/resume/CertificatesSection';
 import HobbiesSection from '@/components/resume/HobbiesSection';
 import GallerySection from '@/components/resume/GallerySection';
 import TerminalSection from '@/components/resume/TerminalSection';
@@ -49,7 +51,9 @@ const ResumeContent = ({ isDarkMode, onToggle, scrollOffset, isTransition = fals
         <HeroSection introPhase={introPhase} isTransition={isTransition} />
         <AboutSection className="bg-secondary/30" />
         <ExperienceSection isDarkMode={isDarkMode} />
+        <ProjectsSection isDarkMode={isDarkMode} className="bg-secondary/20" />
         <SkillsSection isDarkMode={isDarkMode} className="bg-secondary/30" isTransition={isTransition} />
+        <CertificatesSection isDarkMode={isDarkMode} className="bg-secondary/20" />
         <HobbiesSection />
         <GallerySection className="bg-secondary/30" isTransition={isTransition} />
         <TerminalSection isTransition={isTransition} />

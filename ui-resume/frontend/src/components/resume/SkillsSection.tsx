@@ -68,7 +68,7 @@ const SkillsSection = ({ className = "", isDarkMode = true, isTransition = false
   return (
     <section id="skills" className={`py-24 ${className}`}>
       <div className="px-6 max-w-7xl mx-auto">
-        <SectionHeader number="02" title="Skills" />
+        <SectionHeader number="04" title="Skills" />
 
         <div className="grid lg:grid-cols-5 gap-12 items-start">
           {/* Left Column: 3D Robot (Desktop Only) — skip during theme transition to avoid lag.

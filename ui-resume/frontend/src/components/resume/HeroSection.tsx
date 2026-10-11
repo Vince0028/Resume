@@ -1,5 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 import Shuffle from '@/components/ui/Shuffle';
+import SnakeGridBackground from './SnakeGridBackground';
 
 interface HeroSectionProps {
   introPhase?: 'closed' | 'opening' | 'done';
@@ -12,15 +13,8 @@ const HeroSection = ({ introPhase = 'done', isTransition = false }: HeroSectionP
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden pt-16">
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }}
-      />
+      {/* 2D Snake, Ladders, and Hearts Animated Grid Background */}
+      <SnakeGridBackground />
 
       <div className="relative z-[56] w-full max-w-7xl flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 pointer-events-none">
         {/* Left: Text content */}

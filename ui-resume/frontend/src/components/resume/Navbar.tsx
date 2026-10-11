@@ -13,13 +13,17 @@ const getSimpleResumeUrl = () => {
   return '/simple_portfolio.html';
 };
 
-const navLinks = [
+const leftNavLinks = [
   { label: 'Home', href: '#' },
   { label: 'About', href: '#about' },
+  { label: 'Projects', href: '#projects' },
+];
+
+const rightNavLinks = [
   { label: 'Skills', href: '#skills' },
+  { label: 'Certs', href: '#certificates' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Simple', href: getSimpleResumeUrl() },
-  { label: 'Contact', href: '#terminal' },
 ];
 
 /**
@@ -61,12 +65,12 @@ const Navbar = ({ isDarkMode, onToggle, hideControls = false }: NavbarProps) => 
   <nav className="relative bg-background/90 backdrop-blur-sm transition-colors duration-1000">
     <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
       {/* Left nav links */}
-      <div className={`hidden md:flex items-center gap-10 flex-1 ${hideControls ? 'opacity-0 pointer-events-none' : ''}`}>
-        {navLinks.slice(0, 2).map((link) => (
+      <div className={`hidden md:flex items-center gap-6 lg:gap-8 flex-1 ${hideControls ? 'opacity-0 pointer-events-none' : ''}`}>
+        {leftNavLinks.map((link) => (
           <a
             key={link.label}
             href={link.href}
-            className="font-mono text-sm font-semibold tracking-widest text-foreground/80 hover:text-primary transition-all duration-1000 uppercase"
+            className="font-mono text-xs lg:text-sm font-semibold tracking-wider text-foreground/80 hover:text-primary transition-all duration-1000 uppercase"
           >
             {link.label}
           </a>
@@ -81,12 +85,12 @@ const Navbar = ({ isDarkMode, onToggle, hideControls = false }: NavbarProps) => 
       </div>
 
       {/* Right nav links + theme toggle */}
-      <div className={`hidden md:flex items-center gap-10 flex-1 justify-end ${hideControls ? 'opacity-0 pointer-events-none' : ''}`}>
-        {navLinks.slice(2).map((link) => (
+      <div className={`hidden md:flex items-center gap-6 lg:gap-8 flex-1 justify-end ${hideControls ? 'opacity-0 pointer-events-none' : ''}`}>
+        {rightNavLinks.map((link) => (
           <a
             key={link.label}
             href={link.href}
-            className="font-mono text-sm font-semibold tracking-widest text-foreground/80 hover:text-primary transition-all duration-1000 uppercase"
+            className="font-mono text-xs lg:text-sm font-semibold tracking-wider text-foreground/80 hover:text-primary transition-all duration-1000 uppercase"
           >
             {link.label}
           </a>
