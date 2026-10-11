@@ -5,6 +5,7 @@
     "start-api": "node servers/api-server.js",
     "install-terminal": "cd terminal && npm install",
     "build-ui-resume": "cd ui-resume/frontend && npm install && npm run build",
+    "vercel-build": "npm run build",
     "build": "cd terminal && npm install && npm run build && cd ../ui-resume/frontend && npm install && npm run build"
   },
   "dependencies": {

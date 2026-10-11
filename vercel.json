@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run build",
   "outputDirectory": ".",
   "redirects": [
     {
@@ -69,8 +70,16 @@
       "destination": "/ui-resume/frontend/dist/favicon.ico"
     },
     {
+      "source": "/ui-resume/favicon.png",
+      "destination": "/ui-resume/frontend/dist/favicon.png"
+    },
+    {
       "source": "/ui-resume/placeholder.svg",
       "destination": "/ui-resume/frontend/dist/placeholder.svg"
+    },
+    {
+      "source": "/ui-resume/web_logo.png",
+      "destination": "/ui-resume/frontend/dist/web_logo.png"
     },
     {
       "source": "/images/(.*)",
@@ -87,6 +96,18 @@
     {
       "source": "/3d/(.*)",
       "destination": "/ui-resume/frontend/dist/3d/$1"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/ui-resume/frontend/dist/favicon.ico"
+    },
+    {
+      "source": "/favicon.png",
+      "destination": "/ui-resume/frontend/dist/favicon.png"
+    },
+    {
+      "source": "/ui-resume/(.*\\.(?:png|jpg|jpeg|svg|ico|webp|gif|glb|gltf|json|js|css|woff|woff2|ttf))",
+      "destination": "/ui-resume/frontend/dist/$1"
     },
     {
       "source": "/ui-resume",
