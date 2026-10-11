@@ -70,9 +70,7 @@ const Index = () => {
   const [navTheme, setNavTheme] = useState(true); // flips immediately for smooth navbar transition
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [ripplePos, setRipplePos] = useState({ x: 0, y: 0 });
-  const [transitionScroll, setTransitionScroll] = useState(0);
   const isAnimating = useRef(false);
-  const overlayTargetDark = useRef(false); // locked at toggle time — never reactive
 
   // Intro animation state
   const [introPhase, setIntroPhase] = useState<'closed' | 'opening' | 'done'>('closed');
@@ -255,36 +253,62 @@ const Index = () => {
       y = rect.top + rect.height / 2;
     }
 
-    const currentScroll = window.scrollY;
-
-    // Lock the overlay's target theme BEFORE any state changes.
-    // This ref stays constant even when isDarkMode flips later.
-    overlayTargetDark.current = !isDarkMode;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
 
     setRipplePos({ x, y });
-    setTransitionScroll(currentScroll);
     setIsTransitioning(true);
-    setNavTheme((prev) => !prev); // flip navbar theme immediately
 
-    // After clip-path animation completes:
-    // 1. Swap the base theme (invisible — overlay still covers it with correct theme via ref)
-    // 2. Wait for the browser to paint the new base theme
-    // 3. Remove overlay — seamless handoff
-    setTimeout(() => {
+    if (!('startViewTransition' in document)) {
+      setIsDarkMode((prev) => !prev);
+      setNavTheme((prev) => !prev);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        isAnimating.current = false;
+      }, 750);
+      return;
+    }
+
+    const transition = (document as any).startViewTransition(() => {
       flushSync(() => {
         setIsDarkMode((prev) => !prev);
+        setNavTheme((prev) => !prev);
       });
+    });
 
-      // Double-rAF: let the browser fully paint the new base theme
-      // under the still-present overlay before removing it
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+    transition.ready
+      .then(() => {
+        const anim = document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 750,
+            easing: 'ease-in-out',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+
+        anim.onfinish = () => {
           setIsTransitioning(false);
           isAnimating.current = false;
-        });
+        };
+      })
+      .catch(() => {
+        setIsTransitioning(false);
+        isAnimating.current = false;
       });
-    }, 1000);
-  }, [isDarkMode]);
+
+    transition.finished.finally(() => {
+      setIsTransitioning(false);
+      isAnimating.current = false;
+    });
+  }, []);
 
   return (
     <>
@@ -297,7 +321,7 @@ const Index = () => {
               }`}
             style={{ height: '50vh' }}
           >
-            <div className={`${navTheme ? 'theme-dark' : 'theme-light'} h-full flex flex-col`}>
+            <div className={`${navTheme ? 'theme-dark dark' : 'theme-light'} h-full flex flex-col`}>
               {/* Navbar preview at the bottom of the top panel */}
               <div className="flex-1" />
               <Navbar isDarkMode={navTheme} onToggle={() => { }} hideControls={true} />
@@ -309,7 +333,7 @@ const Index = () => {
               }`}
             style={{ height: '50vh' }}
           >
-            <div className={`${navTheme ? 'theme-dark' : 'theme-light'} h-full flex flex-col`}>
+            <div className={`${navTheme ? 'theme-dark dark' : 'theme-light'} h-full flex flex-col`}>
               <FooterBar minimal />
               <div className="flex-1" />
             </div>
@@ -337,71 +361,48 @@ const Index = () => {
 
       {/* NAVBAR — only after intro animation completes */}
       {introPhase === 'done' && (
-        <div className={`${navTheme ? 'theme-dark' : 'theme-light'} fixed top-0 left-0 right-0 z-[60] transition-colors duration-1000`}>
+        <div className={`${navTheme ? 'theme-dark dark' : 'theme-light'} fixed top-0 left-0 right-0 z-[60]`}>
           <Navbar isDarkMode={navTheme} onToggle={toggleTheme} />
         </div>
       )}
 
       {/* FOOTER BAR — only after intro animation completes */}
       {introPhase === 'done' && (
-        <div className={`${navTheme ? 'theme-dark' : 'theme-light'} fixed bottom-0 left-0 right-0 z-[60] transition-colors duration-1000`}>
+        <div className={`${navTheme ? 'theme-dark dark' : 'theme-light'} fixed bottom-0 left-0 right-0 z-[60]`}>
           <FooterBar />
         </div>
       )}
 
-      {/* LAYER 1: Base — stays in document flow, scroll position preserved */}
-      <div className={`${isDarkMode ? 'theme-dark' : 'theme-light'} relative ${isTransitioning ? '!transition-none !duration-0 [&_*]:!transition-none [&_*]:!duration-0' : ''}`}>
+      {/* Base — stays in document flow, scroll position preserved */}
+      <div className={`${isDarkMode ? 'theme-dark dark' : 'theme-light'} relative`}>
         <ResumeContent isDarkMode={isDarkMode} onToggle={toggleTheme} introPhase={introPhase} />
       </div>
 
-      {/* LAYER 2: Transition overlay — renders TARGET theme, expands from click */}
+      {/* Glowing wavefront edge */}
       {isTransitioning && (
         <div
-          className="fixed inset-0 z-[57] pointer-events-none overflow-hidden"
+          className="fixed rounded-full pointer-events-none z-[99999]"
           style={{
-            animation: 'explode-clip 1s ease-in-out forwards',
+            top: ripplePos.y,
+            left: ripplePos.x,
+            transform: 'translate(-50%, -50%)',
+            animation: 'explode-wave 0.75s ease-out forwards',
+            borderStyle: 'solid',
+            borderColor: isDarkMode
+              ? 'hsla(35, 90%, 55%, 0.35)'
+              : 'hsla(220, 70%, 60%, 0.35)',
           }}
-        >
-          {/* Target theme content, synced to user's scroll position */}
-          <div className={overlayTargetDark.current ? 'theme-dark' : 'theme-light'}>
-            <ResumeContent
-              isDarkMode={overlayTargetDark.current}
-              onToggle={() => { }}
-              scrollOffset={transitionScroll}
-              isTransition={true}
-              introPhase={introPhase}
-            />
-          </div>
-
-          {/* Glowing wavefront edge */}
-          <div
-            className="fixed rounded-full pointer-events-none"
-            style={{
-              top: ripplePos.y,
-              left: ripplePos.x,
-              transform: 'translate(-50%, -50%)',
-              animation: 'explode-wave 1s ease-out forwards',
-              borderStyle: 'solid',
-              borderColor: overlayTargetDark.current
-                ? 'hsla(35, 90%, 55%, 0.25)'
-                : 'hsla(220, 70%, 60%, 0.25)',
-            }}
-          />
-        </div>
+        />
       )}
 
       {/* Dynamic keyframes scoped to click position */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            @keyframes explode-clip {
-              0% { clip-path: circle(0% at ${ripplePos.x}px ${ripplePos.y}px); }
-              100% { clip-path: circle(200% at ${ripplePos.x}px ${ripplePos.y}px); }
-            }
             @keyframes explode-wave {
               0% { width: 0px; height: 0px; opacity: 1; border-width: 60px; }
-              40% { opacity: 1; border-width: 20px; }
-              100% { width: 450vmax; height: 450vmax; opacity: 0; border-width: 0px; }
+              40% { opacity: 1; border-width: 25px; }
+              100% { width: 350vmax; height: 350vmax; opacity: 0; border-width: 0px; }
             }
 
             /* Intro box-open animation — smooth with two stutters */

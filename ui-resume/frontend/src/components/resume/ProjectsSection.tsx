@@ -472,7 +472,7 @@ const ProjectsSection = ({ className = '' }: ProjectsSectionProps) => {
                           {project.title}
                         </h3>
 
-                        <p className="text-sm text-muted-foreground mt-2.5 line-clamp-3 leading-relaxed">
+                        <p className="text-sm text-foreground/90 mt-2.5 line-clamp-3 leading-relaxed">
                           {project.description}
                         </p>
                       </div>

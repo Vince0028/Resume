@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, ChevronRight, Terminal } from 'lucide-react';
+import { Briefcase, ChevronRight, Terminal } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import ScrollReveal from '../ui/ScrollReveal';
 import LightRays from './LightRays';
@@ -44,32 +44,6 @@ const experiences: ExperienceItem[] = [
     ],
     icon: <Terminal size={14} />,
     tags: ['Lead Developer', 'Python', 'React', 'Next.js', 'Arduino', 'Raspberry Pi', 'OpenCV', 'IoT'],
-    status: 'COMPLETED',
-  },
-  {
-    period: '2024 – Present',
-    role: 'BS Information Technology',
-    company: 'Asia Pacific College (APC)',
-    subtitle: 'Specializing in Full-Stack Web, Mobile Architectures & AI Systems',
-    bullets: [
-      'Pursuing Bachelor of Science in Information Technology focusing on modern reactive web ecosystems, mobile platforms, backend architectures, and computer vision systems.',
-      'Backed by 40+ professional industry certifications in Cloud Computing, Artificial Intelligence, and Cybersecurity.',
-    ],
-    icon: <GraduationCap size={14} />,
-    tags: ['BSIT', 'Asia Pacific College', 'React', 'Flutter', 'TypeScript', 'Supabase', 'Python'],
-    status: 'ACTIVE',
-  },
-  {
-    period: '2022 – 2024',
-    role: 'Senior High School — STEM Strand',
-    company: 'Pasay City South High School (PCSHS)',
-    subtitle: 'Graduated With Academic Honors • TESDA National Certificate II (NC2)',
-    bullets: [
-      'Graduated with Academic Honors under the Science, Technology, Engineering, and Mathematics (STEM) strand.',
-      'Earned TESDA National Certificate II (NC2) in Computer Animation and 2D Digital Design.',
-    ],
-    icon: <GraduationCap size={14} />,
-    tags: ['STEM', 'Academic Honors', 'TESDA NC2', 'Computer Animation', 'PCSHS'],
     status: 'COMPLETED',
   },
 ];
@@ -217,7 +191,7 @@ const ExperienceSection = ({ className = "", isDarkMode = true }: ExperienceSect
 
                   {/* Bullets or Description */}
                   {exp.bullets && exp.bullets.length > 0 ? (
-                    <ul className="space-y-2 mb-4 max-w-2xl text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-zinc-200">
+                    <ul className="space-y-2 mb-4 max-w-2xl text-sm leading-relaxed text-foreground">
                       {exp.bullets.map((bullet, bIdx) => (
                         <li key={bIdx} className="flex items-start gap-2.5">
                           <span className="text-primary text-xs mt-1 select-none font-mono">▸</span>
@@ -226,7 +200,7 @@ const ExperienceSection = ({ className = "", isDarkMode = true }: ExperienceSect
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-sm leading-relaxed mb-4 max-w-2xl text-zinc-800 dark:text-zinc-200 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-zinc-200">
+                    <p className="text-sm leading-relaxed mb-4 max-w-2xl text-foreground">
                       {exp.description}
                     </p>
                   )}
@@ -236,7 +210,7 @@ const ExperienceSection = ({ className = "", isDarkMode = true }: ExperienceSect
                     {exp.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-sm border border-border bg-secondary/50 text-muted-foreground"
+                        className="font-mono text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-sm border border-border bg-secondary/80 text-foreground/80"
                       >
                         {tag}
                       </span>

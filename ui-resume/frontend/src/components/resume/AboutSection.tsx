@@ -44,14 +44,14 @@ const AboutSection = ({ className = '' }: AboutSectionProps) => (
             <h3 className="font-mono text-sm tracking-[0.3em] text-primary mb-4 uppercase">
               Who I Am
             </h3>
-            <p className="text-lg text-black dark:text-white [ .theme-light_& ]:text-black [ .theme-dark_& ]:text-white font-normal leading-relaxed mb-6">
+            <p className="text-lg text-foreground font-normal leading-relaxed mb-6">
               Hey! I'm <span className="text-primary font-bold">Vince Nelmar Alobin</span>, a motivated
               BS Information Technology student from Pasay City, Philippines who genuinely enjoys engineering full-stack solutions.
             </p>
-            <p className="text-base text-zinc-900 dark:text-white/95 [ .theme-light_& ]:text-zinc-900 [ .theme-dark_& ]:text-white/95 leading-relaxed mb-6">
-              Currently studying at <span className="font-semibold text-black dark:text-white [ .theme-light_& ]:text-black [ .theme-dark_& ]:text-white">Asia Pacific College (APC)</span>, I build across diverse ecosystems — from modern reactive web apps (React, Next.js, Vite, TypeScript) and mobile platforms (Flutter) to backend architectures (Node.js, Flask, Supabase) and real-time computer vision systems (OpenCV, Python).
+            <p className="text-base text-foreground/90 leading-relaxed mb-6">
+              Currently studying at <span className="font-semibold text-foreground">Asia Pacific College (APC)</span>, I build across diverse ecosystems — from modern reactive web apps (React, Next.js, Vite, TypeScript) and mobile platforms (Flutter) to backend architectures (Node.js, Flask, Supabase) and real-time computer vision systems (OpenCV, Python).
             </p>
-            <p className="text-base text-zinc-900 dark:text-white/95 [ .theme-light_& ]:text-zinc-900 [ .theme-dark_& ]:text-white/95 leading-relaxed mb-8">
+            <p className="text-base text-foreground/90 leading-relaxed mb-8">
               Passionate about shipping end-to-end products, AI integrations (Gemini, LLMs), and continuous growth — backed by 40+ professional industry certifications in Cloud, AI, and Cybersecurity.
             </p>
           </ScrollReveal>
@@ -60,15 +60,15 @@ const AboutSection = ({ className = '' }: AboutSectionProps) => (
           <ScrollReveal direction="up" isStaggeredChildren delay={0.4} stagger={0.2} className="grid grid-cols-3 gap-6 border-t border-border pt-6">
             <div>
               <span className="block text-2xl font-bold text-primary font-mono">40+</span>
-              <span className="text-xs text-zinc-700 dark:text-white/75 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-white/75 font-mono uppercase tracking-wider">Certifications</span>
+              <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Certifications</span>
             </div>
             <div>
               <span className="block text-2xl font-bold text-primary font-mono">15+</span>
-              <span className="text-xs text-zinc-700 dark:text-white/75 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-white/75 font-mono uppercase tracking-wider">Projects</span>
+              <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Projects</span>
             </div>
             <div>
               <span className="block text-2xl font-bold text-primary font-mono">100%</span>
-              <span className="text-xs text-zinc-700 dark:text-white/75 [ .theme-light_& ]:text-zinc-800 [ .theme-dark_& ]:text-white/75 font-mono uppercase tracking-wider">Commitment</span>
+              <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Commitment</span>
             </div>
           </ScrollReveal>
         </div>

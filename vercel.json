@@ -1,5 +1,12 @@
 {
   "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/ui-resume",
+      "destination": "/ui-resume/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/terminal/assets/(.*)",
@@ -30,6 +37,10 @@
       "destination": "https://vercel-ai-chatbot-rho.vercel.app/api/$1"
     },
     {
+      "source": "/ui-resume/frontend/dist/(.*)",
+      "destination": "/ui-resume/frontend/dist/$1"
+    },
+    {
       "source": "/ui-resume/assets/(.*)",
       "destination": "/ui-resume/frontend/dist/assets/$1"
     },
@@ -38,7 +49,51 @@
       "destination": "/ui-resume/frontend/dist/images/$1"
     },
     {
+      "source": "/ui-resume/certificates/(.*)",
+      "destination": "/ui-resume/frontend/dist/certificates/$1"
+    },
+    {
+      "source": "/ui-resume/certificates_preview/(.*)",
+      "destination": "/ui-resume/frontend/dist/certificates_preview/$1"
+    },
+    {
+      "source": "/ui-resume/3d/(.*)",
+      "destination": "/ui-resume/frontend/dist/3d/$1"
+    },
+    {
+      "source": "/ui-resume/favicon.svg",
+      "destination": "/ui-resume/frontend/dist/favicon.svg"
+    },
+    {
+      "source": "/ui-resume/favicon.ico",
+      "destination": "/ui-resume/frontend/dist/favicon.ico"
+    },
+    {
+      "source": "/ui-resume/placeholder.svg",
+      "destination": "/ui-resume/frontend/dist/placeholder.svg"
+    },
+    {
+      "source": "/images/(.*)",
+      "destination": "/ui-resume/frontend/dist/images/$1"
+    },
+    {
+      "source": "/certificates/(.*)",
+      "destination": "/ui-resume/frontend/dist/certificates/$1"
+    },
+    {
+      "source": "/certificates_preview/(.*)",
+      "destination": "/ui-resume/frontend/dist/certificates_preview/$1"
+    },
+    {
+      "source": "/3d/(.*)",
+      "destination": "/ui-resume/frontend/dist/3d/$1"
+    },
+    {
       "source": "/ui-resume",
+      "destination": "/ui-resume/frontend/dist/index.html"
+    },
+    {
+      "source": "/ui-resume/",
       "destination": "/ui-resume/frontend/dist/index.html"
     },
     {

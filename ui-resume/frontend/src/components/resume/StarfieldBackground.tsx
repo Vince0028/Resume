@@ -340,9 +340,8 @@ const StarfieldBackground: React.FC<StarfieldBackgroundProps> = ({ className = '
       />
 
       {/* Simple human instruction */}
-      <div className="absolute bottom-4 right-4 z-10 pointer-events-none flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/85 border border-primary/25 backdrop-blur-md text-[11px] font-mono text-zinc-900 dark:text-white/95 [ .theme-light_& ]:text-zinc-900 [ .theme-dark_& ]:text-white/95 shadow-xl">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-        <span>Click the sky to shoot a star ✨</span>
+      <div className="absolute bottom-4 right-4 z-10 pointer-events-none px-3 py-1.5 bg-background/90 border border-primary/30 backdrop-blur-md text-[11px] font-mono text-foreground shadow-md">
+        Click the sky to shoot a star
       </div>
     </div>
   );

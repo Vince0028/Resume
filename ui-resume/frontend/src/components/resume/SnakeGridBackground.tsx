@@ -39,35 +39,62 @@ const HEART_FILLED_CELLS: CellCoord[] = [
   { c: 3, r: 5 },
 ];
 
-// 7-column x 7-row Claude Asterisk perimeter path relative to top-left anchor
+// 8-column x 5-row Clawd Pixel Mascot perimeter path relative to top-left anchor
+// Matches the official Claude Code retro 8-bit terracotta pixel crab mascot
 const CLAUDE_PERIMETER: CellCoord[] = [
-  { c: 3, r: 0 }, // North tip
-  { c: 4, r: 1 },
-  { c: 5, r: 1 }, // NE tip
-  { c: 5, r: 2 },
-  { c: 6, r: 3 }, // East tip
+  { c: 1, r: 0 }, // Head top-left
+  { c: 2, r: 0 },
+  { c: 3, r: 0 },
+  { c: 4, r: 0 },
+  { c: 5, r: 0 },
+  { c: 6, r: 0 }, // Head top-right
+  { c: 6, r: 1 },
+  { c: 6, r: 2 },
+  { c: 7, r: 2 }, // Right pincer/arm out
+  { c: 6, r: 2 },
+  { c: 6, r: 3 },
+  { c: 6, r: 4 }, // Right legs
   { c: 5, r: 4 },
-  { c: 5, r: 5 }, // SE tip
-  { c: 4, r: 5 },
-  { c: 3, r: 6 }, // South tip
-  { c: 2, r: 5 },
-  { c: 1, r: 5 }, // SW tip
+  { c: 5, r: 3 },
+  { c: 4, r: 3 }, // Central under-belly
+  { c: 3, r: 3 },
+  { c: 2, r: 3 },
+  { c: 2, r: 4 }, // Left legs
   { c: 1, r: 4 },
-  { c: 0, r: 3 }, // West tip
+  { c: 1, r: 3 },
   { c: 1, r: 2 },
-  { c: 1, r: 1 }, // NW tip
-  { c: 2, r: 1 },
+  { c: 0, r: 2 }, // Left pincer/arm out
+  { c: 1, r: 2 },
+  { c: 1, r: 1 },
 ];
 
-// All cells comprising the filled Claude Asterisk (7x7)
+// All cells comprising the filled Clawd Pixel Mascot (8x5)
 const CLAUDE_FILLED_CELLS: CellCoord[] = [
-  { c: 3, r: 0 },
-  { c: 1, r: 1 }, { c: 3, r: 1 }, { c: 5, r: 1 },
-  { c: 2, r: 2 }, { c: 3, r: 2 }, { c: 4, r: 2 },
-  { c: 0, r: 3 }, { c: 1, r: 3 }, { c: 2, r: 3 }, { c: 3, r: 3 }, { c: 4, r: 3 }, { c: 5, r: 3 }, { c: 6, r: 3 },
-  { c: 2, r: 4 }, { c: 3, r: 4 }, { c: 4, r: 4 },
-  { c: 1, r: 5 }, { c: 3, r: 5 }, { c: 5, r: 5 },
-  { c: 3, r: 6 },
+  // Row 0: Head top
+  { c: 1, r: 0 }, { c: 2, r: 0 }, { c: 3, r: 0 }, { c: 4, r: 0 }, { c: 5, r: 0 }, { c: 6, r: 0 },
+  // Row 1: Eye row / upper body
+  { c: 1, r: 1 }, { c: 2, r: 1 }, { c: 3, r: 1 }, { c: 4, r: 1 }, { c: 5, r: 1 }, { c: 6, r: 1 },
+  // Row 2: Mid body and horizontal pincers (columns 0 through 7)
+  { c: 0, r: 2 }, { c: 1, r: 2 }, { c: 2, r: 2 }, { c: 3, r: 2 }, { c: 4, r: 2 }, { c: 5, r: 2 }, { c: 6, r: 2 }, { c: 7, r: 2 },
+  // Row 3: Lower body
+  { c: 1, r: 3 }, { c: 2, r: 3 }, { c: 3, r: 3 }, { c: 4, r: 3 }, { c: 5, r: 3 }, { c: 6, r: 3 },
+  // Row 4: 4 bottom legs (left pair and right pair with central gap)
+  { c: 1, r: 4 }, { c: 2, r: 4 }, { c: 5, r: 4 }, { c: 6, r: 4 },
+];
+
+// Exact 16x10 pixel sprite matrix for Clawd (Claude Code's pixel art mascot)
+// Rendered from authentic terracotta pixel artwork
+const CLAWD_SPRITE_ROWS = [
+  '..############..', // Row 0
+  '..############..', // Row 1
+  '..##.######.##..', // Row 2 (eyes cut out at col 4 and col 11)
+  '..##.######.##..', // Row 3 (eyes cut out at col 4 and col 11)
+  '################', // Row 4 (pincers/arms extend fully)
+  '################', // Row 5 (pincers/arms extend fully)
+  '..############..', // Row 6 (lower body)
+  '..############..', // Row 7 (lower body)
+  '...#.#....#.#...', // Row 8 (4 bottom legs: cols 3, 5, 10, 12)
+  '...#.#....#.#...', // Row 9 (4 bottom legs: cols 3, 5, 10, 12)
 ];
 
 interface Ladder {
@@ -166,56 +193,52 @@ const drawVectorHeart = (
   ctx.restore();
 };
 
-// Draw official Anthropic Claude asterisk logo icon
+// Draw authentic Clawd (Claude Code pixel art crab mascot)
 const drawClaudeLogo = (
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
   size: number,
-  color = '#DE7356',
+  color = '#D97757', // Authentic Claude terracotta (#D97757)
   alpha = 1
 ) => {
   ctx.save();
-  ctx.translate(cx, cy);
   ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
 
-  const numRays = 8;
-  const rayLen = size * 0.95;
-  const rayWidth = size * 0.28;
-  const coreRadius = size * 0.32;
+  const cols = 16;
+  const rows = 10;
+  const pxSize = size / cols;
+  const totalW = cols * pxSize;
+  const totalH = rows * pxSize;
+  const startX = cx - totalW / 2;
+  const startY = cy - totalH / 2;
 
+  // 1. Draw solid terracotta pixel blocks
   ctx.fillStyle = color;
-  for (let i = 0; i < numRays; i++) {
-    const angle = (i * Math.PI * 2) / numRays;
-    ctx.save();
-    ctx.rotate(angle);
-    ctx.beginPath();
-    const w = i % 2 === 0 ? rayWidth : rayWidth * 0.82;
-    const len = i % 2 === 0 ? rayLen : rayLen * 0.82;
-    if (typeof ctx.roundRect === 'function') {
-      ctx.roundRect(-w / 2, -len, w, len * 0.85, w / 2);
-    } else {
-      ctx.rect(-w / 2, -len, w, len * 0.85);
+  for (let r = 0; r < rows; r++) {
+    const rowStr = CLAWD_SPRITE_ROWS[r];
+    for (let c = 0; c < cols; c++) {
+      if (rowStr[c] === '#') {
+        ctx.fillRect(startX + c * pxSize, startY + r * pxSize, pxSize + 0.25, pxSize + 0.25);
+      }
     }
-    ctx.fill();
-    ctx.restore();
   }
 
-  ctx.beginPath();
-  ctx.arc(0, 0, coreRadius, 0, Math.PI * 2);
-  ctx.fill();
+  // 2. Draw the vertical rectangular eye cutouts in bright white
+  ctx.fillStyle = '#ffffff';
+  // Left eye: col 4, rows 2 & 3
+  ctx.fillRect(startX + 4 * pxSize, startY + 2 * pxSize, pxSize, pxSize * 2);
+  // Right eye: col 11, rows 2 & 3
+  ctx.fillRect(startX + 11 * pxSize, startY + 2 * pxSize, pxSize, pxSize * 2);
 
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.arc(0, 0, coreRadius * 0.7, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-  ctx.font = 'bold 9px monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('CLAUDE', 0, size * 0.95);
+  // 3. Subtle pixel label underneath if large enough
+  if (size >= 40) {
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.font = 'bold 10px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('CLAWD', cx, startY + totalH + 3);
+  }
 
   ctx.restore();
 };
@@ -588,9 +611,9 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
         shapeSnake.currentShapeKind = kind;
 
         if (kind === 'claude') {
-          shapeSnake.color = '#DE7356'; // Claude terracotta
-          shapeSnake.secondaryColor = '#FCD34D';
-          shapeSnake.glowColor = 'rgba(222, 115, 86, 0.25)';
+          shapeSnake.color = '#D97757'; // Authentic Clawd terracotta
+          shapeSnake.secondaryColor = '#FF9E79';
+          shapeSnake.glowColor = 'rgba(217, 119, 87, 0.25)';
         } else {
           shapeSnake.color = '#f43f5e'; // Heart rose
           shapeSnake.secondaryColor = '#fda4af';
@@ -634,7 +657,7 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
           snake.currentShapeKind = nextKind;
 
           if (nextKind === 'claude') {
-            shapeColors(snake, '#DE7356', '#FCD34D', 'rgba(222, 115, 86, 0.25)');
+            shapeColors(snake, '#D97757', '#FF9E79', 'rgba(217, 119, 87, 0.25)');
           } else {
             shapeColors(snake, '#f43f5e', '#fda4af', 'rgba(244, 63, 94, 0.25)');
           }
@@ -674,8 +697,8 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
                   });
                 }
 
-                const centerCellX = offsetX + (target.anchorC + 3.5) * CELL_SIZE;
-                const centerCellY = offsetY + (target.anchorR + (target.kind === 'claude' ? 3.5 : 2.5)) * CELL_SIZE;
+                const centerCellX = offsetX + (target.anchorC + (target.kind === 'claude' ? 4 : 3.5)) * CELL_SIZE;
+                const centerCellY = offsetY + (target.anchorR + 2.5) * CELL_SIZE;
                 spawnParticles(centerCellX, centerCellY, snake.color, 20, target.kind);
 
                 snake.shapeTarget = undefined;
@@ -838,9 +861,9 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
       if (isCellBlocked(clickC, clickR)) return;
 
       const chosenKind: ShapeKind = Math.random() > 0.5 ? 'claude' : 'heart';
-      const anchorC = Math.max(1, Math.min(cols - 8, clickC - 3));
-      const anchorR = Math.max(1, Math.min(rows - 8, clickR - 3));
-      const burstColor = chosenKind === 'claude' ? '#DE7356' : '#f43f5e';
+      const anchorC = Math.max(1, Math.min(cols - (chosenKind === 'claude' ? 9 : 8), clickC - 4));
+      const anchorR = Math.max(1, Math.min(rows - (chosenKind === 'claude' ? 6 : 7), clickR - 2));
+      const burstColor = chosenKind === 'claude' ? '#D97757' : '#f43f5e';
 
       // Instantly light up the shape around the clicked box!
       activeShapes.push({
@@ -998,23 +1021,23 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
             const cx = offsetX + (shape.anchorC + cell.c) * CELL_SIZE;
             const cy = offsetY + (shape.anchorR + cell.r) * CELL_SIZE;
 
-            ctx.fillStyle = `rgba(222, 115, 86, ${alpha * 0.22})`;
+            ctx.fillStyle = `rgba(217, 119, 87, ${alpha * 0.22})`;
             ctx.fillRect(cx + 2, cy + 2, CELL_SIZE - 4, CELL_SIZE - 4);
 
-            ctx.strokeStyle = `rgba(245, 158, 11, ${alpha * 0.45})`;
+            ctx.strokeStyle = `rgba(217, 119, 87, ${alpha * 0.45})`;
             ctx.lineWidth = 1;
             ctx.strokeRect(cx + 2, cy + 2, CELL_SIZE - 4, CELL_SIZE - 4);
           }
 
-          const centerX = offsetX + (shape.anchorC + 3.5) * CELL_SIZE;
-          const centerY = offsetY + (shape.anchorR + 3.2) * CELL_SIZE;
+          const centerX = offsetX + (shape.anchorC + 4) * CELL_SIZE;
+          const centerY = offsetY + (shape.anchorR + 2.5) * CELL_SIZE;
           drawClaudeLogo(
             ctx,
             centerX,
             centerY,
-            20 * scale,
-            '#DE7356',
-            alpha
+            CELL_SIZE * 3.6 * scale,
+            '#D97757',
+            Math.min(1, shape.fade) * 0.9
           );
         }
       }
@@ -1204,7 +1227,7 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
         } else if (pt.shapeType === 'heart') {
           drawVectorHeart(ctx, pt.x, pt.y, pt.size * 1.8, pt.color, '#ffffff', pt.alpha * 0.5);
         } else if (pt.shapeType === 'claude') {
-          drawClaudeLogo(ctx, pt.x, pt.y, pt.size * 1.5, '#DE7356', pt.alpha * 0.5);
+          drawClaudeLogo(ctx, pt.x, pt.y, pt.size * 3.2, '#D97757', pt.alpha * 0.7);
         } else {
           ctx.save();
           ctx.globalAlpha = Math.max(0, pt.alpha * 0.6);
@@ -1252,13 +1275,12 @@ const SnakeGridBackground: React.FC<SnakeGridBackgroundProps> = ({ className = '
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full block cursor-pointer z-0"
-        title="Click any box to make a heart or Claude!"
+        title="Click any box to make a heart or Clawd (Claude)!"
       />
 
       {/* Simple human instruction */}
-      <div className="absolute bottom-4 right-4 z-10 pointer-events-none flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/85 border border-primary/25 backdrop-blur-md text-[11px] font-mono text-zinc-900 dark:text-white/95 [ .theme-light_& ]:text-zinc-900 [ .theme-dark_& ]:text-white/95 shadow-xl">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-        <span>Click any box to make a heart or Claude ❤️</span>
+      <div className="absolute bottom-4 right-4 z-10 pointer-events-none px-3 py-1.5 bg-background/90 border border-primary/30 backdrop-blur-md text-[11px] font-mono text-foreground shadow-md">
+        Click any box to make a heart or Claude
       </div>
     </div>
   );
