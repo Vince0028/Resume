@@ -22,7 +22,7 @@ const leftNavLinks = [
 const rightNavLinks = [
   { label: 'Skills', href: '#skills' },
   { label: 'Certs', href: '#certificates' },
-  { label: 'Gallery', href: '#gallery' },
+  { label: 'Hobbies', href: '#hobbies' },
   { label: 'Simple', href: getSimpleResumeUrl() },
 ];
 

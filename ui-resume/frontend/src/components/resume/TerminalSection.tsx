@@ -85,7 +85,7 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
   return (
     <section id="terminal" className={`py-24 ${className}`}>
       <div className="px-6 max-w-4xl mx-auto">
-        <SectionHeader number="08" title="The Terminal" />
+        <SectionHeader number="07" title="The Terminal" />
         <ScrollReveal direction="up" delay={0.2}>
           <p className="text-muted-foreground mb-8">
             Leave a digital footprint. Say hello or drop a critique.

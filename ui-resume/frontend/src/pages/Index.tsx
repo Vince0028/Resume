@@ -10,7 +10,6 @@ import ProjectsSection from '@/components/resume/ProjectsSection';
 import SkillsSection from '@/components/resume/SkillsSection';
 import CertificatesSection from '@/components/resume/CertificatesSection';
 import HobbiesSection from '@/components/resume/HobbiesSection';
-import GallerySection from '@/components/resume/GallerySection';
 import TerminalSection from '@/components/resume/TerminalSection';
 import FooterBar from '@/components/resume/FooterBar';
 
@@ -55,8 +54,7 @@ const ResumeContent = ({ isDarkMode, onToggle, scrollOffset, isTransition = fals
         <SkillsSection isDarkMode={isDarkMode} className="bg-secondary/30" isTransition={isTransition} />
         <CertificatesSection isDarkMode={isDarkMode} className="bg-secondary/20" />
         <HobbiesSection />
-        <GallerySection className="bg-secondary/30" isTransition={isTransition} />
-        <TerminalSection isTransition={isTransition} />
+        <TerminalSection className="bg-secondary/20" isTransition={isTransition} />
         <div className="h-14" /> {/* FooterBar spacer */}
       </div>
     </div>
