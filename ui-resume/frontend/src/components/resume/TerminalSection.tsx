@@ -15,6 +15,7 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [dbError, setDbError] = useState<string | null>(null);
 
   const BACKEND = import.meta.env.VITE_BACKEND_URL ?? '';
 
@@ -27,7 +28,12 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
 
     if (!isTransition) { // Don't redundantly fetch in the overlay
       fetch(`${BACKEND}/api/guestbook`)
-        .then(res => res.json())
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+          }
+          return res.json();
+        })
         .then(data => {
           if (Array.isArray(data)) {
             const mapped = data.map((item: any) => ({
@@ -38,16 +44,20 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
             const rev = mapped.reverse();
             win._cachedGuestbook = rev;
             setMessages(rev);
+            setDbError(null);
           }
         })
-        .catch(err => console.error('Failed to fetch guestbook:', err));
+        .catch(err => {
+          console.error('Failed to fetch guestbook:', err);
+          setDbError('Supabase database is currently paused/inactive (7-day free tier inactivity limit). Please unpause in the Supabase dashboard.');
+        });
     }
   }, [isTransition]);
 
   // Auto-dismiss toast
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 3000);
+    const t = setTimeout(() => setToast(null), 5000);
     return () => clearTimeout(t);
   }, [toast]);
 
@@ -75,9 +85,20 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
       setMessages(prev => [...prev, { handle: saved.name, msg: saved.comment, time }]);
       setMessage('');
       setToast({ type: 'success', text: 'Message saved to guestbook!' });
+      setDbError(null);
     } catch (error: any) {
       console.error('Failed to send message:', error);
-      setToast({ type: 'error', text: error.message || 'Failed to send. Check your connection.' });
+      const errMsg = 'Supabase database is paused/inactive (7-day free tier limit). Please unpause project in Supabase dashboard.';
+      setToast({ type: 'error', text: 'Supabase paused/inactive (7-day limit).' });
+      setMessages(prev => [
+        ...prev,
+        {
+          handle: 'SYSTEM_ERROR',
+          msg: errMsg,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+      setDbError(errMsg);
     } finally {
       setSending(false);
     }
@@ -132,12 +153,21 @@ const TerminalSection = ({ className = "", isTransition = false }: TerminalSecti
                 <p className="mb-2 text-muted-foreground/60">
                   {'>'} system: Welcome. Type a message below to sign the guestbook...
                 </p>
+                {dbError && (
+                  <div className="mb-3 p-2.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs leading-relaxed">
+                    <span className="font-bold text-amber-400">[SUPABASE INACTIVE]</span> {dbError}
+                  </div>
+                )}
                 {messages.map((m, i) => (
                   <p key={i} className="mb-1">
-                    <span className="text-terminal-green">{m.handle}</span>
+                    <span className={m.handle === 'SYSTEM_ERROR' ? 'text-red-400 font-bold' : 'text-terminal-green'}>
+                      {m.handle}
+                    </span>
                     <span className="text-muted-foreground">@{m.time}</span>
                     <span className="text-muted-foreground"> ~ </span>
-                    <span className="text-foreground">{m.msg}</span>
+                    <span className={m.handle === 'SYSTEM_ERROR' ? 'text-red-300' : 'text-foreground'}>
+                      {m.msg}
+                    </span>
                   </p>
                 ))}
                 <span className="inline-block w-2 h-4 bg-terminal-green animate-blink" />

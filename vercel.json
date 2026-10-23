@@ -30,6 +30,10 @@
       "destination": "/terminal/dist/index.html"
     },
     {
+      "source": "/terminal/",
+      "destination": "/terminal/dist/index.html"
+    },
+    {
       "source": "/terminal/(.*)",
       "destination": "/terminal/dist/index.html"
     },

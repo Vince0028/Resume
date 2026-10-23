@@ -118,7 +118,7 @@ const LiveChat = ({ onExit }) => {
             }
         } catch (error) {
             setUsername('');
-            setUsernameError('Connection error. Please try again.');
+            setUsernameError('Connection error: Supabase database is paused/inactive (7-day free tier limit). Please unpause in Supabase dashboard.');
         } finally {
             setAuthPending(false);
         }
@@ -141,7 +141,7 @@ const LiveChat = ({ onExit }) => {
                 body: JSON.stringify({ username, content }),
             });
         } catch (error) {
-            setUsernameError('Error sending message.');
+            setUsernameError('Error sending message: Supabase is paused/inactive (7-day inactivity limit).');
         }
     };
 
@@ -178,7 +178,7 @@ const LiveChat = ({ onExit }) => {
         <div className="w-full h-full flex flex-col mt-4">
             <div className={`${THEME_COLOR} border-b border-indigo-500/30 pb-2 mb-2 flex justify-between`}>
                 <span>SECURE CHANNEL ESTABLISHED as [{username}]</span>
-                <span>{isConnected ? 'ONLINE (SECURE)' : 'CONNECTING...'}</span>
+                <span className={isConnected ? 'text-green-400' : 'text-amber-400 font-mono text-xs'}>{isConnected ? 'ONLINE (SECURE)' : 'OFFLINE (SUPABASE PAUSED/INACTIVE)'}</span>
             </div>
             <div className="flex-1 overflow-y-auto min-h-[300px] max-h-[60vh] mb-4 scrollbar-hide">
                 {messages.map((msg) => (

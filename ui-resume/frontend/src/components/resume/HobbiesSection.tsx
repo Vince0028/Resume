@@ -17,21 +17,29 @@ const HobbiesSection = ({ className = "" }: HobbiesSectionProps) => {
   const [sending, setSending] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [dbError, setDbError] = useState<string | null>(null);
 
   const BACKEND = import.meta.env.VITE_BACKEND_URL ?? '';
 
   const fetchMessages = useCallback(() => {
     fetch(`${BACKEND}/api/livechat?limit=20`)
-      .then(res => res.json())
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         if (Array.isArray(data)) {
           setMessages(data.map((item: any) => ({
             handle: item.username,
             msg: item.message
           })).reverse());
+          setDbError(null);
         }
       })
-      .catch(err => console.error('Failed to fetch chat history', err));
+      .catch(err => {
+        console.error('Failed to fetch chat history', err);
+        setDbError('Supabase database is paused/inactive (7-day free tier limit). Please unpause in Supabase dashboard.');
+      });
   }, [BACKEND]);
 
   useEffect(() => {
@@ -43,7 +51,7 @@ const HobbiesSection = ({ className = "" }: HobbiesSectionProps) => {
   // Auto-dismiss toast
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 3000);
+    const t = setTimeout(() => setToast(null), 5000);
     return () => clearTimeout(t);
   }, [toast]);
 
@@ -69,9 +77,19 @@ const HobbiesSection = ({ className = "" }: HobbiesSectionProps) => {
       setMessage('');
       fetchMessages();
       setToast({ type: 'success', text: 'Message sent!' });
+      setDbError(null);
     } catch (err: any) {
       console.error('Failed to send message', err);
-      setToast({ type: 'error', text: err.message || 'Failed to send.' });
+      const errMsg = 'Supabase database is paused/inactive (7-day free tier limit). Please unpause project in Supabase.';
+      setToast({ type: 'error', text: 'Supabase paused/inactive (7-day limit).' });
+      setMessages(prev => [
+        ...prev,
+        {
+          handle: 'SYS_ERR',
+          msg: errMsg
+        }
+      ]);
+      setDbError(errMsg);
     } finally {
       setSending(false);
     }
@@ -111,11 +129,20 @@ const HobbiesSection = ({ className = "" }: HobbiesSectionProps) => {
                         <p className="text-terminal-green">
                           system@desktop ~$ <span className="text-foreground">Welcome. Type below.</span>
                         </p>
+                        {dbError && (
+                          <div className="my-1.5 p-1.5 rounded bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[10px] leading-tight">
+                            <span className="font-bold text-amber-400">[DATABASE OFFLINE]</span> {dbError}
+                          </div>
+                        )}
                         {messages.map((m, i) => (
                           <p key={i} className="text-terminal-green mt-0.5">
-                            <span className="text-primary">{m.handle}</span>
+                            <span className={m.handle === 'SYS_ERR' ? 'text-red-400 font-bold' : 'text-primary'}>
+                              {m.handle}
+                            </span>
                             <span className="text-muted-foreground">: </span>
-                            <span className="text-foreground">{m.msg}</span>
+                            <span className={m.handle === 'SYS_ERR' ? 'text-red-300' : 'text-foreground'}>
+                              {m.msg}
+                            </span>
                           </p>
                         ))}
                         <span className="inline-block w-1.5 h-3.5 bg-terminal-green animate-blink mt-0.5" />
